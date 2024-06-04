@@ -87,6 +87,7 @@ $RECYCLE.BIN/
 *.lnk
 
 #eclipse personal setting
+db.properties
 .project
 .classpath
 .settings
