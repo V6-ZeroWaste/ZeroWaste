@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.review.reviewMapper">
+	<sql id ="ORDERBYSql">
+	   <if test = "orderBy == null or orderBy == 'date_desc'">
+	   		ORDER BY
+	   			review.regist_date DESC;
+	   </if>	
+	   <if test="orderBy =='date_asc'">
+				ORDER BY
+					review.regist_date ASC;
+	    </if>
+		<if test="orderBy =='score_desc'">
+				ORDER BY
+					review.score DESC;
+		</if>
+		<if test="orderBy =='score_asc'">
+				ORDER BY
+					review.score ASC;
+		</if>
+	</sql>
+	
+	<select id="list" parameterType="kr.co.soaff.review.reviewMapper" resultType="kr.co.soaff.review.reviewMapper">
+		SELECT 
+			review.review_no, review.review_img,item.name,
+			review.title,review.score,item.category_name,
+			review.regist_date,review.exposed_status
+		FROM
+			review 
+			INNER JOIN item
+			On review.item_no = item.item_no
+	<if test="SearchWord != null and SearchWord != ''">
+		WHERE
+			item.name LIKE CONCAT('%${SearchWord}%') 
+			OR 
+			review.title LIKE CONCAT('%${SearchWord}%')
+			OR 
+			item.category_name LIKE CONCAT('%${SearchWord}')		
+	</if>
+	<choose>
+		<when test="startDate != null and endDate != null">
+			AND
+			review.regist_date between #{startDate} and #{endDate}
+		</when>
+		<when test="startDate != null and endDate == null">
+			AND
+			review.regist_date >= #{startDate}
+		</when>
+		<when test="endDate != null and startDate == null">
+			AND
+			#{endDate} >= review.regist_date  
+		</when>
+	</choose>
+		<include refid="ORDERBYSql"/>
+		LIMIT #{startIdx}, 20
+	</select>
+	
+	<select id="listDetail" parameterType="kr.co.soaff.review.reviewMapper" resultType="kr.co.soaff.review.reviewMapper">
+		SELECT
+			review.review_no, review.review_img,item.name,
+			review.title,review.score,item.category_name,
+			review.regist_date,review.exposed_status,
+			review.user_id,review.content
+		FROM
+			review 
+			INNER JOIN item
+			On review.item_no = item.item_no;
+	</select>
+	
+	<select id="updateStatus" parameterType="int">
+		UPDATE review SET status =#{status} WHERE review_no=#{review_no};
+	</select>
+
+	<select id="count" parameterType="kr.co.soaff.review.reviewMapper" resultType="int">
+		select count(*) from review;
+	</select>
+
+</mapper>
