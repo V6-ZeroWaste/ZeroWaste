@@ -27,6 +27,8 @@ public class OrderVO {
 	private String buyer_tel;
 	private int delivery_status;
 	private Timestamp delivery_date;
+	private String id;
+	private int payment_price;
 
 	// 주문 총 수량
 	private int total_amount;
@@ -37,7 +39,7 @@ public class OrderVO {
 	// 사용자로부터 전송되어지는 값(검색, 페이징, 필터링(조건))
 	private String searchWord;
 	private String orderBy;
-	private String filter;
+	private Integer filter;
 	private int page; // 사용자가 요청한 페이지 번호
 	private int startIdx; // limit 앞에 들어갈 시작인덱스값
 
