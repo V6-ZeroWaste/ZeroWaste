@@ -17,11 +17,11 @@
 		<include refid="searchSql"/>
 		<if test="orderby == 'date_asc'">
 			ORDER BY date ASC
-			LIMIT #{startIdx}, 10
+			LIMIT #{startIdx}, 20
 		</if>
 		<if test="orderby == 'date_desc'">
 			ORDER BY date DESC
-			LIMIT #{startIdx}, 10
+			LIMIT #{startIdx}, 20
 		</if>
 	</select>
 	
