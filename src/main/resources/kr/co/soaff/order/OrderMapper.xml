@@ -5,27 +5,30 @@
 	<sql id="searchSql">
 		<where>
 			<if test="searchWord != null">
-				`order`.order_no LIKE '%${searchWord}%' 
+				`order`.order_no LIKE '%${searchWord}%'
 				OR user.id LIKE '%${searchWord}%'
-				OR item.name '%${searchWord}%'
+				OR item.name LIKE '%${searchWord}%'
 			</if>
 			<if test="filter != null">
-				`order`.delivery_status = #{filter}
+				`order`.order_status = #{filter}
 			</if>
 		</where>
+	</sql>
+	
+	<sql id="orderBySql">
 		<if test="orderBy == null">
 			ORDER BY `order`.payment_date DESC
 		</if>
-		<if test="orderBy == 최신순">
+		<if test="orderBy == '최신순'">
 			ORDER BY `order`.payment_date DESC
 		</if>
-		<if test="orderBy == 오래된순">
+		<if test="orderBy == '오래된순'">
 			ORDER BY `order`.payment_date
 		</if>
-		<if test="orderBy == 주문금액많은순">
+		<if test="orderBy == '주문금액많은순'">
 			ORDER BY total_price DESC
 		</if>
-		<if test="orderBy == 주문금액적은순">
+		<if test="orderBy == '주문금액적은순'">
 			ORDER BY total_price
 		</if>
 	</sql>
@@ -38,13 +41,14 @@
 		    user.id,
 		    `order`.payment_price,
 		    COUNT(*) as total_amount,
-		    `order`.delivery_status
+		    `order`.order_status
 		FROM `order` 
 		JOIN user ON `order`.user_no = user.user_no
 		JOIN order_detail ON `order`.order_no = order_detail.order_no
 		JOIN item ON order_detail.item_no = item.item_no
-		GROUP BY `order`.order_no
 		<include refid="searchSql"/>
+		GROUP BY `order`.order_no
+		<include refid="orderBySql"/>
 		LIMIT #{startIdx}, 20
 	</select>
 	
@@ -52,6 +56,7 @@
 	<select id="count" parameterType="kr.co.soaff.order.OrderVO" resultType="int">
 		SELECT COUNT(*) FROM `order`
 		<include refid="searchSql"/>
+		<include refid="orderBySql"/>
 	</select>
 	
 	<!-- detail -->
