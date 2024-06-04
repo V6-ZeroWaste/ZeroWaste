@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 public class OrderDetailVO {
 
-	private int order_detail_noorder_no;
+	private int order_detail_no;
+	private int order_no;
 	private int user_no;
 	private int amount;
 	private int price;
@@ -18,5 +19,10 @@ public class OrderDetailVO {
 	private int cancel_reason_type;
 	private int item_no;
 	private String cancel_reason_detail;
+
+	// join으로 가져올 데이터
+	private String item_img;
+	private String name;
+	private String total_item_price;
 
 }
