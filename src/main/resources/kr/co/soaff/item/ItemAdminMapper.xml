@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.item.ItemAdminMapper">
+	<!-- 상품 리스트 가져오기 -->
+	<select id="list" parameterType="kr.co.soaff.item.ItemVO"
+        resultType="kr.co.soaff.item.ItemVO">
+	    SELECT i.*, IFNULL(od.sales_amount, 0) AS sales_amount
+	    FROM item i
+	    LEFT JOIN (
+	        SELECT item_no, COUNT(*) AS sales_amount
+	        FROM order_detail
+	        GROUP BY item_no
+	    ) od ON i.item_no = od.item_no
+	    <where>
+	        <if test="filter != null">
+	            AND i.category_name = #{filter}
+	        </if>
+	        <if test="searchWord != null">
+	            <!--  AND (i.item_no LIKE '%${searchWord}%' OR i.name LIKE '%${searchWord}%') -->
+	            AND concat_ws("-", i.item_no, i.name)  like '%${searchWord}%'
+	        </if>
+	    </where>
+	    <choose>
+	        <when test="orderBy == '등록일자순'">
+	            ORDER BY i.item_regist_date ASC
+	        </when>
+	        <when test="orderBy == '등록일자역순'">
+	            ORDER BY i.item_regist_date DESC
+	        </when>
+	        <when test="orderBy == '재고량많은순'">
+	            ORDER BY i.amount DESC
+	        </when>
+	        <when test="orderBy == '재고량적은순'">
+	            ORDER BY i.amount ASC
+	        </when>
+	        <when test="orderBy == '판매수량많은순'">
+	            ORDER BY od.sales_amount DESC
+	        </when>
+	        <when test="orderBy == '판매수량적은순'">
+	            ORDER BY od.sales_amount ASC
+	        </when>
+	        <otherwise>
+	            ORDER BY i.item_regist_date DESC
+	        </otherwise>
+	    </choose>
+	    LIMIT #{startIdx}, 20
+	</select>
+
+	<!-- 상품 상세 정보 가져오기 -->
+	<select id="detail" parameterType="kr.co.soaff.item.ItemVO"
+			resultType="kr.co.soaff.item.ItemVO">
+		SELECT * FROM item WHERE item_no = ${item_no}
+	</select>
+
+	<!-- 상품 등록하기 -->
+	<insert id="insert" parameterType="kr.co.soaff.item.ItemVO">
+		INSERT INTO item (
+		category_name, name, description, price,
+		discount_rate, discounted_price, amount,
+		detail, item_img,
+		exposed_status, packable_option,
+		packing_price
+		) VALUES (
+		#{category_name}, #{name}, #{description}, #{price},
+		#{discount_rate},
+		#{discounted_price}, #{amount},
+		#{detail}, #{item_img},
+		#{exposed_status}, #{packable_option},
+		#{packing_price}
+		)
+		<selectKey keyProperty="item_no" order="AFTER"
+				   resultType="int">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<!-- 상품 상세 정보 수정하기 -->
+	<update id="update" parameterType="kr.co.soaff.item.ItemVO">
+		UPDATE item SET
+						item_img =
+							#{item_img},
+						category_name = #{category_name},
+						name = #{name},
+						packable_option = #{packable_option},
+						price = #{price},
+						discount_rate =
+							#{discount_rate},
+						exposed_status = #{exposed_status},
+						detail = #{detail}
+		WHERE item_no = #{item_no}
+	</update>
+	<!-- 상품 삭제하기 -->
+	<delete id="delete" parameterType="int">
+		delete from item where item_no
+								   = #{item_no}
+	</delete>
+
+	<!-- 아이템 총 개수 -->
+	<select id="count"
+			parameterType="kr.co.soaff.item.ItemVO" resultType="int">
+		select
+			count(*) from item
+	</select>
+</mapper>
