@@ -9,4 +9,6 @@ public interface PointMapper {
 	List<PointVO> list(PointVO vo);
 	int insert(PointVO vo);
 	int delete(PointVO vo);
+	int count(PointVO vo);
+	int total(PointVO vo);
 }
