@@ -15,11 +15,11 @@
 	<select id="list" parameterType="kr.co.soaff.user.UserVO">
 		SELECT * FROM user
 		<include refid="searchSql"/>
-		<if test="orderby == 'date_asc'">
+		<if test="orderBy == 'date_asc'">
 			ORDER BY date ASC
 			LIMIT #{startIdx}, 20
 		</if>
-		<if test="orderby == 'date_desc'">
+		<if test="orderBy == 'date_desc'">
 			ORDER BY date DESC
 			LIMIT #{startIdx}, 20
 		</if>
