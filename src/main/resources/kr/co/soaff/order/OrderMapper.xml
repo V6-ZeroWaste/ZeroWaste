@@ -13,6 +13,9 @@
 				`order`.delivery_status = #{filter}
 			</if>
 		</where>
+		<if test="orderBy == null">
+			ORDER BY `order`.payment_date DESC
+		</if>
 		<if test="orderBy == 최신순">
 			ORDER BY `order`.payment_date DESC
 		</if>

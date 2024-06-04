@@ -4,13 +4,13 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface OrderMapper {
-	OrderVO list();
+	OrderVO list(OrderVO vo);
 
-	int count();
+	int count(OrderVO vo);
 
-	OrderVO detailFromOrderVO();
+	OrderVO detailFromOrderVO(OrderDetailVO vo);
 
-	OrderDetailVO detailFromOrderDetailVO();
+	OrderDetailVO detailFromOrderDetailVO(OrderDetailVO vo);
 
-	int updateDeliveryStatus();
+	int updateDeliveryStatus(OrderVO vo);
 }
