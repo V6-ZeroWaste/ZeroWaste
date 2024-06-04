@@ -25,7 +25,7 @@ public class UserAdminTest {
 	@Test
 	public void list() {
 		UserVO vo = new UserVO();
-		vo.setOrderby("date_desc");
+		vo.setOrderBy("date_desc");
 		vo.setPage(1);
 		vo.setSearchWord("1");
 		log.info(mapper.list(vo));
@@ -33,7 +33,7 @@ public class UserAdminTest {
 	@Test
 	public void count() {
 		UserVO vo = new UserVO();
-		vo.setOrderby("date_desc");
+		vo.setOrderBy("date_desc");
 		vo.setPage(1);
 		vo.setSearchWord("1");
 		log.info(mapper.count(vo));
