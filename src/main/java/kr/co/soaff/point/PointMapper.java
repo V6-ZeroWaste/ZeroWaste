@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface PointMapper {
 	List<PointVO> list(PointVO vo);
 	int insert(PointVO vo);
-	int delete(PointVO vo);
+	int delete(int point_no);
 	int count(PointVO vo);
 	int total(PointVO vo);
 }
