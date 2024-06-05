@@ -5,9 +5,9 @@
 	<sql id="searchSql">
 		<where>
 			<if test="searchWord != null">
-				`order`.order_no LIKE '%${searchWord}%'
-				OR user.id LIKE '%${searchWord}%'
-				OR item.name LIKE '%${searchWord}%'
+				
+				AND concat_ws("-", `order`.order_no, user.id, item.name)  like '%${searchWord}%'
+
 			</if>
 			<if test="filter != null">
 				and `order`.order_status = #{filter}
@@ -17,6 +17,11 @@
 			</if>
 			<if test="start_date != null and end_date == null">
 				and `order`.payment_date BETWEEN #{start_date} AND NOW()
+			</if>
+			<if test="start_date == null and end_date != null">
+				<![CDATA[
+					and `order`.payment_date <= #{end_date}
+				]]>
 			</if>
 		</where>
 	</sql>
@@ -71,33 +76,31 @@
 	
 	<!-- detail -->
 	<!-- OrderVO에 담는 정보 -->
-	<select id="detailFromOrderVO" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.order.OrderVO">
+	<select id="detailFromOrderVO" parameterType="kr.co.soaff.order.OrderVO">
 		SELECT 
-			`order`.order_no,
-			`order`.payment_date,
-		    `order`.receiver_name,
-		    `order`.receiver_tel,
-		    `order`.addr,
-		    `order`.addr_detail,
-		    `order`.delivery_request,
-		    `order`.delivery_status,
-			`order`.delivery_price,
-		    `order`.point,
-		    `order`.payment_method
+			order_no,
+			payment_date,
+		    receiver_name,
+		    receiver_tel,
+		    addr,
+		    addr_detail,
+		    delivery_request,
+		    delivery_status,
+			delivery_price,
+		    point,
+		    payment_method
 		FROM `order`
-		WHERE `order`.order_no = #{order_no}
+		WHERE order_no = #{order_no}
 	</select>
 	<!-- OrderDetailVO에 담는 정보 -->
-	<select id="detailFromOrderDetailVO" parameterType="kr.co.soaff.order.OrderDetailVO" resultType="kr.co.soaff.order.OrderDetailVO">
+	<select id="detailFromOrderDetailVO" parameterType="kr.co.soaff.order.OrderDetailVO">
 		SELECT 
-			user.id as user_id,
 			item.item_img,
 			item.name as item_name,
 			order_detail.price,
 			order_detail.cancel_status,
 			(SELECT sum(price) FROM order_detail WHERE order_no=order_detail.order_no) total_item_price
 		FROM order_detail 
-		JOIN user ON order_detail.user_no = user.user_no
 		JOIN item ON order_detail.item_no = item.item_no
 		WHERE order_detail.order_no = #{order_no};
 	</select>
