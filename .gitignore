@@ -94,6 +94,10 @@ db.properties
 .settings
 */target/*
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+db.properties
+>>>>>>> refs/heads/master
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
 <<<<<<< HEAD
