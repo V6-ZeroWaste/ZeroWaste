@@ -86,23 +86,19 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-
-#eclipse personal setting
+<<<<<<< HEAD
+.classpath
+.settings
+*/target/*
 db.properties
+# End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
+/target/
+=======
+#eclipse personal setting
 .project
 .classpath
 .settings
 */target/*
-<<<<<<< HEAD
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
-<<<<<<< HEAD
-/target/
-=======
-/target/
->>>>>>> 887b12710f479aab1039d6026373ced62491e984
-=======
-db.properties
-# End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
-/target/
->>>>>>> refs/heads/order
+>>>>>>> origin/order
