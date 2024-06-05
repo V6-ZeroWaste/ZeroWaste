@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import kr.co.soaff.qna.QnaMapper;
+import kr.co.soaff.qna.QnaAdminMapper;
 import kr.co.soaff.qna.QnaVO;
 import lombok.extern.log4j.Log4j;
 
@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j;
 public class QnaTest {
 
 	@Autowired
-	QnaMapper mapper;
+	QnaAdminMapper mapper;
 
 	@Test
 	public void list() {

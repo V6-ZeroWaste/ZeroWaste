@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.qna.QnaMapper">
-	<sql id ="ORDERBYSql">
-	   <if test="orderBy == null">
-	   		ORDER BY
-	   			reply_date asc,question_date asc
-	   			<!-- null 정렬할떄 무조건 asc -->
-	   </if>
-	   <if test="orderBy =='최신순'">
-	   		ORDER BY
-				qna.question_date desc		
-	   </if>
-		<if test="orderBy =='오래된순'">
-			ORDER BY
-				qna.question_date asc		
-		</if>
-	</sql>
+<sql id ="ORDERBYSql">
+    <if test="orderBy == null and startDate == null and endDate == null">
+        ORDER BY reply_date asc, question_date asc <!-- null 정렬할때 무조건 asc -->
+    </if>
+    <if test="orderBy =='최신순'">
+        <choose>
+            <when test="startDate != null and endDate != null">
+                ORDER BY question_date desc
+            </when>
+            <otherwise>
+                ORDER BY qna.question_date desc
+            </otherwise>
+        </choose>
+    </if>
+    <if test="orderBy =='오래된순'">
+        <choose>
+            <when test="startDate != null and endDate != null">
+                ORDER BY question_date asc
+            </when>
+            <otherwise>
+                ORDER BY qna.question_date asc
+            </otherwise>
+        </choose>
+    </if>
+</sql>
+
 	
 
    <sql id="filter">
@@ -98,17 +109,18 @@
 	<!-- 답변이 널이 될 수 없으니까 전체 삭제가 맞겠지?? -->
 	<delete id="deleteContent" parameterType="int">
 		DELETE FROM qna
-		WHERE qna_no = #{qna_no};
+		WHERE qna_no = #{qna.no};
 	</delete>
 	
-	<update id="deleteAndUpdateReply" parameterType="kr.co.soaff.qna.QnaVO">
-		<if test="reply =='' or deleteAndUpdateReply ==0">
-		UPDATE qna SET reply = NULL WHERE (qna_no = #{qna_no});	
-		</if>
-		<if test="deleteAndUpdateReply ==1 and reply != null">
+	<update id="UpdateReply" parameterType="kr.co.soaff.qna.QnaVO">
+		<if test="reply!=null">
 		UPDATE qna SET reply = #{reply}, reply_date = DATE_FORMAT(CURRENT_TIMESTAMP, '%Y-%m-%d')
 		WHERE (qna_no = #{qna_no});
 		</if>
+	</update>
+	
+	<update id="deleteReply" parameterType="int">
+		UPDATE qna SET reply = NULL WHERE (qna_no = #{qna_no});	
 	</update>
 
 	<select id="count" parameterType="kr.co.soaff.qna.QnaVO" resultType="int">
