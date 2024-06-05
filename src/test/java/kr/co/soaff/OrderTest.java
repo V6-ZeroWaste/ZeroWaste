@@ -62,6 +62,7 @@ public class OrderTest {
 	}
 
 	@Test
+
 	public void 최신순정렬() {
 		OrderVO vo = new OrderVO();
 		vo.setOrderBy("최신순");
@@ -69,6 +70,7 @@ public class OrderTest {
 	}
 
 	@Test
+
 	public void 오래된순() {
 		OrderVO vo = new OrderVO();
 		vo.setOrderBy("오래된순");
@@ -138,6 +140,7 @@ public class OrderTest {
 		} catch (Exception e) {
 			return null;
 		}
+
 	}
 
 }

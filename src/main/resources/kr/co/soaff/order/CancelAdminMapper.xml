@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.order.CancelAdminMapper">
+
+	<sql id="searchSql">
+		<where>
+			<if test="searchWord != null and searchWord != ''">
+				(od.order_no LIKE '%${searchWord}%'
+				OR u.id LIKE
+				'%${searchWord}%'
+				OR i.name LIKE '%${searchWord}%')
+			</if>
+			<if test="filter != null">
+				AND od.cancel_status = #{filter}
+			</if>
+			<if
+				test="filter == null and cancelStatusList != null and cancelStatusList.size() > 0">
+				AND od.cancel_status IN
+				<foreach item="status" collection="cancelStatusList"
+					open="(" separator="," close=")">
+					#{status}
+				</foreach>
+			</if>
+			<if test="startRequestDate != null and endRequestDate != null">
+				AND od.cancel_request_date BETWEEN #{startRequestDate}
+				AND
+				#{endRequestDate}
+			</if>
+			<if test="startApproveDate != null and endApproveDate != null">
+				AND od.cancel_approve_date BETWEEN #{startApproveDate}
+				AND
+				#{endApproveDate}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="orderBySql">
+		<if test="orderBy == null">
+			ORDER BY
+			CASE
+			WHEN od.cancel_status = 0 THEN 1
+			WHEN
+			od.cancel_status = 1 THEN 2
+			ELSE 3
+			END,
+			od.cancel_request_date ASC
+		</if>
+		<if test="orderBy == '최신순'">
+			ORDER BY
+			CASE
+			WHEN od.cancel_status = 0 THEN 1
+			WHEN
+			od.cancel_status = 1 THEN 2
+			ELSE 3
+			END,
+			od.cancel_request_date DESC
+		</if>
+		<if test="orderBy == '오래된순'">
+			ORDER BY
+			CASE
+			WHEN od.cancel_status = 0 THEN 1
+			WHEN
+			od.cancel_status = 1 THEN 2
+			ELSE 3
+			END,
+			od.cancel_request_date ASC
+		</if>
+	</sql>
+
+	<select id="list" parameterType="map"
+		resultType="kr.co.soaff.order.OrderDetailVO">
+		SELECT
+		od.order_detail_no,
+		od.order_no,
+		u.id AS user_id,
+		i.name AS
+		item_name,
+		od.amount,
+		od.price,
+		od.cancel_status,
+		od.cancel_request_date,
+		od.cancel_approve_date
+		FROM order_detail od
+		JOIN `order` o ON
+		od.order_no = o.order_no
+		JOIN user u ON od.user_no = u.user_no
+		JOIN item
+		i ON od.item_no = i.item_no
+		<include refid="searchSql" />
+		<include refid="orderBySql" />
+		LIMIT #{startIdx}, 20
+	</select>
+
+	<select id="count" parameterType="map" resultType="int">
+		SELECT COUNT(*) FROM `order_detail` od
+		JOIN `order` o ON od.order_no =
+		o.order_no
+		JOIN user u ON od.user_no = u.user_no
+		JOIN item i ON
+		od.item_no = i.item_no
+		<include refid="searchSql" />
+	</select>
+
+
+	<!-- 상세 조회 -->
+	<select id="getCancelById" parameterType="int"
+		resultType="kr.co.soaff.order.OrderDetailVO">
+		SELECT
+		od.order_detail_no,
+		od.order_no,
+		u.id AS user_id,
+		i.name AS item_name,
+		o.payment_method AS order_method,
+		o.payment_price
+		AS refund_price,
+		o.point AS refund_point,
+		(i.price - i.discounted_price)
+		AS sale_price,
+		od.amount,
+		od.price,
+		od.cancel_status,
+		od.cancel_request_date,
+		od.cancel_approve_date,
+		od.confirm_date,
+		od.cancel_reason_type,
+		od.cancel_reason_detail
+		FROM order_detail od
+		JOIN
+		`order` o ON od.order_no = o.order_no
+		JOIN user
+		u ON od.user_no =
+		u.user_no
+		JOIN item i ON od.item_no = i.item_no
+		WHERE
+		od.order_detail_no
+		= #{order_detail_no}
+	</select>
+
+	<!-- 취소 요청 승인 -->
+	<update id="approveCancel"
+		parameterType="kr.co.soaff.order.OrderDetailVO">
+		UPDATE order_detail
+		SET cancel_status = 1
+		WHERE
+		order_detail_no = #{order_detail_no}
+	</update>
+
+	<!-- 취소 요청 완료 -->
+	<update id="completeCancel"
+		parameterType="kr.co.soaff.order.OrderDetailVO">
+		UPDATE order_detail
+		SET cancel_status = 2,
+		cancel_approve_date = CURRENT_TIMESTAMP
+		WHERE order_detail_no =
+		#{order_detail_no}
+	</update>
+
+	<!-- 관리자 강제 취소 -->
+	<update id="adminCancel"
+		parameterType="kr.co.soaff.order.OrderDetailVO">
+		UPDATE order_detail
+		SET
+		cancel_status = 2,
+		cancel_reason_type = 1,
+		cancel_request_date = CURRENT_TIMESTAMP,
+		cancel_approve_date = CURRENT_TIMESTAMP,
+		cancel_reason_detail =
+		#{cancel_reason_detail}
+		WHERE order_detail_no = #{order_detail_no}
+	</update>
+
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.order.OrderMapper">
+	
+	<sql id="searchSql">
+		<where>
+			<if test="searchWord != null">
+				AND `order`.order_no LIKE '%${searchWord}%'
+				OR user.id LIKE '%${searchWord}%'
+				OR item.name LIKE '%${searchWord}%'
+			</if>
+			<if test="filter != null">
+				AND `order`.order_status = #{filter}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="orderBySql">
+		<if test="orderBy == null">
+			ORDER BY `order`.payment_date DESC
+		</if>
+		<if test="orderBy == '최신순'">
+			ORDER BY `order`.payment_date DESC
+		</if>
+		<if test="orderBy == '오래된순'">
+			ORDER BY `order`.payment_date
+		</if>
+		<if test="orderBy == '주문금액많은순'">
+			ORDER BY payment_price DESC
+		</if>
+		<if test="orderBy == '주문금액적은순'">
+			ORDER BY payment_price
+		</if>
+	</sql>
+	
+	<!-- list -->
+	<select id="list" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.order.OrderVO">
+		SELECT 
+		    `order`.order_no,
+		    `order`.payment_date,
+		    user.id,
+		    `order`.payment_price,
+		    COUNT(*) as total_amount,
+		    `order`.order_status
+		FROM `order` 
+		JOIN user ON `order`.user_no = user.user_no
+		JOIN order_detail ON `order`.order_no = order_detail.order_no
+		JOIN item ON order_detail.item_no = item.item_no
+		<include refid="searchSql"/>
+		GROUP BY `order`.order_no
+		<include refid="orderBySql"/>
+		LIMIT #{startIdx}, 20
+	</select>
+	
+	<!-- count -->
+	<select id="count" parameterType="kr.co.soaff.order.OrderVO" resultType="int">
+		SELECT COUNT(*) FROM `order`
+		<include refid="searchSql"/>
+		<include refid="orderBySql"/>
+	</select>
+	
+	<!-- detail -->
+	<!-- OrderVO에 담는 정보 -->
+	<select id="detailFromOrderVO" parameterType="kr.co.soaff.order.OrderDetailVO" resultType="kr.co.soaff.order.OrderVO">
+		SELECT 
+			`order`.order_no,
+			`order`.payment_date,
+		    `order`.receiver_name,
+		    `order`.receiver_tel,
+		    `order`.addr,
+		    `order`.addr_detail,
+		    `order`.delivery_request,
+		    `order`.order_status,
+			`order`.delivery_price,
+		    `order`.point,
+		    `order`.payment_method
+		FROM `order`
+		WHERE `order`.order_no = #{order_no}
+	</select>
+	<!-- OrderDetailVO에 담는 정보 -->
+	<select id="detailFromOrderDetailVO" parameterType="kr.co.soaff.order.OrderDetailVO" resultType="kr.co.soaff.order.OrderDetailVO">
+		SELECT 
+			user.id,
+			item.item_img,
+			item.name,
+			order_detail.price,
+			order_detail.cancel_status,
+			(SELECT sum(price) FROM order_detail WHERE order_no=order_detail.order_no) total_item_price
+		FROM order_detail 
+		JOIN user ON order_detail.user_no = user.user_no
+		JOIN item ON order_detail.item_no = item.item_no
+		WHERE order_detail.order_no = #{order_no};
+	</select>
+	
+	<!-- 배송정보 업데이트 -->
+	<update id="updateDeliveryStatus" parameterType="kr.co.soaff.order.OrderVO">
+		UPDATE order SET delivery_status=#{delivery_status} WHERE order_no=#{order_no}
+	</update>
+</mapper>
