@@ -10,7 +10,7 @@
 	
 	<sql id="searchSql">
 		<if test="searchWord != null">
-            AND concat_ws("-", i.item_no, i.name)  like '%${searchWord}%'
+            AND concat_ws("-", i.item_no, i.name)  LIKE CONCAT('%', #{searchWord},'%')
         </if>	
 	</sql>
 	
