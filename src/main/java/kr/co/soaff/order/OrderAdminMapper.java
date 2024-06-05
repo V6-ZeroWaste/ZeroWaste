@@ -12,7 +12,7 @@ public interface OrderAdminMapper {
 
 	OrderVO detailFromOrderVO(OrderVO vo);
 
-	OrderDetailVO detailFromOrderDetailVO(OrderDetailVO vo);
+	List<OrderDetailVO> detailFromOrderDetailVO(OrderDetailVO vo);
 
 	int updateDeliveryStatus(OrderVO vo);
 }
