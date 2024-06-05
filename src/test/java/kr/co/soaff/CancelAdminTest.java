@@ -1,4 +1,4 @@
-package co.kr.soaff;
+package kr.co.soaff;
 
 import java.util.Arrays;
 import java.util.HashMap;
