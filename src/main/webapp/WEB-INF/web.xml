@@ -33,6 +33,7 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
 <filter>
        <!-- 
           <%
@@ -56,6 +57,7 @@
         <filter-name>encoding-filter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
 
 	<filter>
 		<filter-name>encodingFilter</filter-name>
