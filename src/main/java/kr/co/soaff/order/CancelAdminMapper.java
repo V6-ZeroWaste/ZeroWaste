@@ -10,16 +10,10 @@ public interface CancelAdminMapper {
     int count(OrderDetailVO vo);
     int approveCancel(OrderDetailVO orderDetailVO);
     int completeCancel(OrderDetailVO orderDetailVO);
+    int refuseCancel(OrderDetailVO orderDetailVO);
     int adminCancel(OrderDetailVO orderDetailVO);
-    List<OrderDetailVO> list(
-        @Param("startIdx") int startIdx,
-        @Param("cancelStatusList") List<Integer> cancelStatusList,
-        @Param("searchWord") String searchWord,
-        @Param("filter") Integer filter,
-        @Param("startRequestDate") String startRequestDate,
-        @Param("endRequestDate") String endRequestDate,
-        @Param("startApproveDate") String startApproveDate,
-        @Param("endApproveDate") String endApproveDate,
-        @Param("orderBy") String orderBy
-    );
+    List<OrderDetailVO> list(OrderDetailVO orderDetailVO);
+    OrderDetailVO detailFromOrderDetailVO(OrderDetailVO orderDetailVO);
+    OrderVO detailFromOrderVO(int orderNo);
+    
 }

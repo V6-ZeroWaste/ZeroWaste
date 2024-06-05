@@ -4,25 +4,28 @@
 
     <sql id="searchSql">
         <where>
+        	od.cancel_status IS NOT NULL
             <if test="searchWord != null and searchWord != ''">
-                (od.order_no LIKE CONCAT('%', #{searchWord}, '%')
-                OR u.id LIKE CONCAT('%', #{searchWord}, '%')
-                OR i.name LIKE CONCAT('%', #{searchWord}, '%'))
+               	AND (
+               		od.order_no LIKE CONCAT('%', #{searchWord}, '%')
+	                OR u.id LIKE CONCAT('%', #{searchWord}, '%')
+	                OR i.name LIKE CONCAT('%', #{searchWord}, '%')
+	            	)
             </if>
             <if test="filter != null">
                 AND od.cancel_status = #{filter}
             </if>
-            <if test="filter == null and cancelStatusList != null and cancelStatusList.size() > 0">
-                AND od.cancel_status IN
-                <foreach item="status" collection="cancelStatusList" open="(" separator="," close=")">
-                    #{status}
-                </foreach>
+           	<if test="startRequestDate != null">
+                AND od.cancel_request_date >= #{startRequestDate}
             </if>
-            <if test="startRequestDate != null and endRequestDate != null">
-                AND od.cancel_request_date BETWEEN #{startRequestDate} AND #{endRequestDate}
+           	<if test="endRequestDate != null">
+                AND #{endRequestDate} >= od.cancel_request_date
             </if>
-            <if test="startApproveDate != null and endApproveDate != null">
-                AND od.cancel_approve_date BETWEEN #{startApproveDate} AND #{endApproveDate}
+            <if test="startApproveDate != null">
+                AND od.cancel_approve_date >= #{startApproveDate}
+            </if>
+            <if test="endApproveDate != null">
+                AND #{endApproveDate} >= od.cancel_approve_date
             </if>
         </where>
     </sql>
@@ -57,7 +60,8 @@
         </if>
     </sql>
 
-    <select id="list" parameterType="map" resultType="kr.co.soaff.order.OrderDetailVO">
+	<!-- 취소 관리 리스트 -->
+    <select id="list" parameterType="kr.co.soaff.order.OrderDetailVO" resultType="kr.co.soaff.order.OrderDetailVO">
         SELECT
             od.order_detail_no,
             od.order_no,
@@ -69,33 +73,26 @@
             od.cancel_request_date,
             od.cancel_approve_date
         FROM order_detail od
-        JOIN `order` o ON od.order_no = o.order_no
         JOIN user u ON od.user_no = u.user_no
         JOIN item i ON od.item_no = i.item_no
         <include refid="searchSql" />
         <include refid="orderBySql" />
         LIMIT #{startIdx}, 20
     </select>
-
+	<!-- 취소관리 리스트 count -->
     <select id="count" parameterType="kr.co.soaff.order.OrderDetailVO" resultType="int">
         SELECT COUNT(*)
         FROM order_detail od
-        JOIN `order` o ON od.order_no = o.order_no
         JOIN user u ON od.user_no = u.user_no
         JOIN item i ON od.item_no = i.item_no
         <include refid="searchSql" />
     </select>
-
-    <select id="getCancelById" parameterType="int" resultType="kr.co.soaff.order.OrderDetailVO">
+    
+	<!-- 취소 상세 orderDetailVO에 담을 것 -->
+	<select id="detailFromOrderDetailVO" parameterType="int" resultType="kr.co.soaff.order.OrderDetailVO">
         SELECT
             od.order_detail_no,
             od.order_no,
-            u.id AS user_id,
-            i.name AS item_name,
-            o.payment_method AS order_method,
-            o.payment_price AS refund_price,
-            o.point AS refund_point,
-            (i.price - i.discounted_price) AS sale_price,
             od.amount,
             od.price,
             od.cancel_status,
@@ -105,24 +102,44 @@
             od.cancel_reason_type,
             od.cancel_reason_detail
         FROM order_detail od
-        JOIN `order` o ON od.order_no = o.order_no
-        JOIN user u ON od.user_no = u.user_no
-        JOIN item i ON od.item_no = i.item_no
         WHERE od.order_detail_no = #{order_detail_no}
     </select>
-
+    <!-- 취소 상세 OrderVO에 담는 정보 -->
+	<select id="detailFromOrderVO" parameterType="int">
+		SELECT 
+			order_no,
+			payment_price,
+		    payment_method,
+		    payment_id,
+		    payment_date,
+		    point,
+		    imp_uid,
+		    refund_price,
+			delivery_price
+		FROM `order`
+		WHERE order_no = #{order_no}
+	</select>
+    
+	
+	<!-- 취소관리>취소상세 - 취소 승인 -->
     <update id="approveCancel" parameterType="kr.co.soaff.order.OrderDetailVO">
         UPDATE order_detail
         SET cancel_status = 1
         WHERE order_detail_no = #{order_detail_no}
     </update>
-
+	<!-- 취소관리>취소상세 - 취소 완료 -->
     <update id="completeCancel" parameterType="kr.co.soaff.order.OrderDetailVO">
         UPDATE order_detail
         SET cancel_status = 2, cancel_approve_date = CURRENT_TIMESTAMP
         WHERE order_detail_no = #{order_detail_no}
     </update>
-
+	<!-- 취소관리>취소상세 - 취소 거절 -->
+    <update id="refuseCancel" parameterType="kr.co.soaff.order.OrderDetailVO">
+        UPDATE order_detail
+        SET cancel_status = null, cancel_approve_date = null
+        WHERE order_detail_no = #{order_detail_no}
+    </update>
+	<!-- 강제취소 -->
     <update id="adminCancel" parameterType="kr.co.soaff.order.OrderDetailVO">
         UPDATE order_detail
         SET cancel_status = 2, cancel_reason_type = 1,
