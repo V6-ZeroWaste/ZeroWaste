@@ -5,12 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface OrderMapper {
+public interface OrderAdminMapper {
 	List<OrderVO> list(OrderVO vo);
 
 	int count(OrderVO vo);
 
-	OrderVO detailFromOrderVO(OrderDetailVO vo);
+	OrderVO detailFromOrderVO(OrderVO vo);
 
 	OrderDetailVO detailFromOrderDetailVO(OrderDetailVO vo);
 

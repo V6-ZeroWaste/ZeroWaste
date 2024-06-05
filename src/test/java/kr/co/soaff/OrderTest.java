@@ -1,5 +1,9 @@
 package kr.co.soaff;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +11,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import kr.co.soaff.order.OrderMapper;
+import kr.co.soaff.order.OrderAdminMapper;
+import kr.co.soaff.order.OrderDetailVO;
 import kr.co.soaff.order.OrderVO;
 import lombok.extern.log4j.Log4j;
 
@@ -18,12 +23,13 @@ import lombok.extern.log4j.Log4j;
 public class OrderTest {
 
 	@Autowired
-	OrderMapper mapper;
+	OrderAdminMapper mapper;
 
 	@Test
 	public void 검색조건없는리스트() {
 		OrderVO vo = new OrderVO();
 		mapper.list(vo);
+		log.info(mapper.count(vo));
 	}
 
 	@Test
@@ -31,6 +37,7 @@ public class OrderTest {
 		OrderVO vo = new OrderVO();
 		vo.setFilter(0);
 		mapper.list(vo);
+		log.info(mapper.count(vo));
 	}
 
 	@Test
@@ -55,26 +62,85 @@ public class OrderTest {
 	}
 
 	@Test
-	public void 리스트정렬() {
+
+	public void 최신순정렬() {
 		OrderVO vo = new OrderVO();
-//		vo.setOrderBy("최신순");
-//		mapper.list(vo);
-//		vo.setOrderBy("오래된순");
-//		mapper.list(vo);
-//		vo.setOrderBy("주문금액많은순");
-//		mapper.list(vo);
-//		vo.setOrderBy("주문금액적은순");
-//		mapper.list(vo);
+		vo.setOrderBy("최신순");
+		mapper.list(vo);
 	}
 
 	@Test
-	public void 필터검색정렬적용() {
 
+	public void 오래된순() {
 		OrderVO vo = new OrderVO();
-		vo.setFilter(1);
-		vo.setOrderBy("주문금액많은순");
-		vo.setSearchWord("블렌더");
+		vo.setOrderBy("오래된순");
 		mapper.list(vo);
+
+	}
+
+	@Test
+	public void 주문금액많은순() {
+		OrderVO vo = new OrderVO();
+		vo.setOrderBy("주문금액많은순");
+		mapper.list(vo);
+
+	}
+
+	@Test
+	public void 주문금액적은순() {
+		OrderVO vo = new OrderVO();
+		vo.setOrderBy("주문금액적은순");
+		mapper.list(vo);
+
+	}
+
+	// 필터정렬검색
+	@Test
+	public void filterSearchOrder() {
+		OrderVO vo = new OrderVO();
+		vo.setOrderBy("주문금액적은순");
+//		vo.setFilter(1);
+		vo.setStart_date(convertStringToTimestamp("2024-06-04 00:00:00", "yyyy-MM-dd HH:mm:ss"));
+//		vo.setEnd_date(convertStringToTimestamp("2024-06-06 00:00:00", "yyyy-MM-dd HH:mm:ss"));
+//		vo.setSearchWord("블렌더");
+		log.info(mapper.list(vo));
+		log.info(mapper.count(vo));
+	}
+
+	// 주문상세페이지
+	@Test
+	public void OrderDetailPage() {
+		OrderVO vo = new OrderVO();
+		OrderDetailVO voDetail = new OrderDetailVO();
+		vo.setOrder_no(1);
+		voDetail.setOrder_no(1);
+		log.info(mapper.detailFromOrderVO(vo));
+		log.info(mapper.detailFromOrderDetailVO(voDetail));
+	}
+
+	// 배송정보 업데이트
+	@Test
+	public void updateDeliveryState() {
+		OrderVO vo = new OrderVO();
+		OrderDetailVO voDetail = new OrderDetailVO();
+		voDetail.setOrder_no(1);
+		vo.setOrder_no(1);
+		vo.setDelivery_status(2);
+		log.info(mapper.updateDeliveryStatus(vo));
+		log.info(mapper.detailFromOrderVO(vo));
+	}
+
+	public static Timestamp convertStringToTimestamp(String dateTime, String format) {
+		if (dateTime == null)
+			return null;
+
+		try {
+			Date date = new SimpleDateFormat(format).parse(dateTime);
+			return new Timestamp(date.getTime());
+		} catch (Exception e) {
+			return null;
+		}
+
 	}
 
 }
