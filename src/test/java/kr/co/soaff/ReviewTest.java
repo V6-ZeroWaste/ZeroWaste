@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import kr.co.soaff.review.ReviewMapper;
+import kr.co.soaff.review.ReviewAdminMapper;
 import kr.co.soaff.review.ReviewVO;
 import lombok.extern.log4j.Log4j;
 
@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j;
 public class ReviewTest {
 
 	@Autowired
-	ReviewMapper mapper;
+	ReviewAdminMapper mapper;
 
 	
 // 리스트 & 카운트 ----------------------------------------------------------------------------------------

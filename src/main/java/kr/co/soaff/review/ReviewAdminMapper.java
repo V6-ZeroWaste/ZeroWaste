@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import kr.co.soaff.review.ReviewVO;
 
 @Mapper
-public interface ReviewMapper {
+public interface ReviewAdminMapper {
 	List<ReviewVO> list(ReviewVO vo);
 	ReviewVO detail(ReviewVO vo);
 	int updateStatus(ReviewVO vo);
