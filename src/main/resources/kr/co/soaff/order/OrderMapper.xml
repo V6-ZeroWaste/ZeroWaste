@@ -5,12 +5,12 @@
 	<sql id="searchSql">
 		<where>
 			<if test="searchWord != null">
-				`order`.order_no LIKE '%${searchWord}%'
+				AND `order`.order_no LIKE '%${searchWord}%'
 				OR user.id LIKE '%${searchWord}%'
 				OR item.name LIKE '%${searchWord}%'
 			</if>
 			<if test="filter != null">
-				`order`.order_status = #{filter}
+				AND `order`.order_status = #{filter}
 			</if>
 		</where>
 	</sql>
@@ -26,10 +26,10 @@
 			ORDER BY `order`.payment_date
 		</if>
 		<if test="orderBy == '주문금액많은순'">
-			ORDER BY total_price DESC
+			ORDER BY payment_price DESC
 		</if>
 		<if test="orderBy == '주문금액적은순'">
-			ORDER BY total_price
+			ORDER BY payment_price
 		</if>
 	</sql>
 	
