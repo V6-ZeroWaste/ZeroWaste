@@ -56,7 +56,7 @@ public class OrderTest {
 
 	@Test
 	public void 리스트정렬() {
-//		OrderVO vo = new OrderVO();
+		OrderVO vo = new OrderVO();
 //		vo.setOrderBy("최신순");
 //		mapper.list(vo);
 //		vo.setOrderBy("오래된순");
@@ -69,6 +69,12 @@ public class OrderTest {
 
 	@Test
 	public void 필터검색정렬적용() {
+
+		OrderVO vo = new OrderVO();
+		vo.setFilter(1);
+		vo.setOrderBy("주문금액많은순");
+		vo.setSearchWord("블렌더");
+		mapper.list(vo);
 	}
 
 }
