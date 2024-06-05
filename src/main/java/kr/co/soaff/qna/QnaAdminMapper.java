@@ -12,7 +12,9 @@ public interface QnaAdminMapper {
 
 	int deleteContent(int qna_no);
 
-	int deleteAndUpdateReply(QnaVO vo);
+	int updateReply(QnaVO vo);
+	
+	int deleteReply(QnaVO vo);
 
 	int count(QnaVO vo);
 }

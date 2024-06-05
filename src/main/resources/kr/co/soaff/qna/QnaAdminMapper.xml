@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.qna.QnaAdminMapper">
-<sql id ="ORDERBYSql">
+<sql id ="orderBySql">
     <if test="orderBy == null and startDate == null and endDate == null">
         ORDER BY reply_date asc, question_date asc <!-- null 정렬할때 무조건 asc -->
     </if>
@@ -86,13 +86,10 @@
 			INNER JOIN item
 			On qna.item_no = item.item_no
 		<include refid="filter"/>
-		<include refid="ORDERBYSql"/>
+		<include refid="orderBySql"/>
 		LIMIT #{startIdx}, 20
 	</select>
-	
-	
-	
-	
+
 	<select id="detail" parameterType="kr.co.soaff.qna.QnaVO" resultType="kr.co.soaff.qna.QnaVO">
 		SELECT
 			qna.qna_no,qna.question_date,qna.title,qna.type,
@@ -112,15 +109,24 @@
 		WHERE qna_no = #{qna.no};
 	</delete>
 	
-	<update id="UpdateReply" parameterType="kr.co.soaff.qna.QnaVO">
+	<update id="updateReply" parameterType="kr.co.soaff.qna.QnaVO">
 		<if test="reply!=null">
-		UPDATE qna SET reply = #{reply}, reply_date = DATE_FORMAT(CURRENT_TIMESTAMP, '%Y-%m-%d')
-		WHERE (qna_no = #{qna_no});
+		UPDATE 
+			qna
+		SET 
+			reply = #{reply}, reply_date = current_timestamp()
+		WHERE
+			qna_no = #{qna_no};
 		</if>
 	</update>
 	
 	<update id="deleteReply" parameterType="int">
-		UPDATE qna SET reply = NULL WHERE (qna_no = #{qna_no});	
+		UPDATE 
+			qna 
+		SET 
+			reply = NULL, reply_date = NULL 
+		WHERE
+			(qna_no = #{qna_no});	
 	</update>
 
 	<select id="count" parameterType="kr.co.soaff.qna.QnaVO" resultType="int">

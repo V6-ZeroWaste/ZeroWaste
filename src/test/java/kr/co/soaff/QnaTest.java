@@ -124,7 +124,7 @@ public class QnaTest {
 	@Test
 	public void 검색달력() {
 		QnaVO vo = new QnaVO();
-		vo.setSearchWord("블렌더");
+		vo.setSearchWord("책");
 		Calendar calendar1 = Calendar.getInstance();
 		calendar1.set(2023, Calendar.MAY, 1, 0, 0, 0);
 		long timeInMillis1 = calendar1.getTimeInMillis();
@@ -203,10 +203,20 @@ public class QnaTest {
 	@Test
 	public void 수정삭제() {
 		QnaVO vo = new QnaVO();
+		vo.setReply(" ");
+		vo.setQna_no(4);
+		mapper.updateReply(vo);
 
 	}
 // 삭제수정 ----------------------------------------------------------------------------------------
 
+	@Test
+	public void 수정삭제1() {
+		QnaVO vo = new QnaVO();
+		vo.setQna_no(4);
+		mapper.deleteReply(vo);
+
+	}
 // 카운트 ----------------------------------------------------------------------------------------
 	@Test
 	public void 카운트() {

@@ -6,21 +6,19 @@ import lombok.Data;
 
 @Data
 public class QnaVO {
-	int qna_no;
-	int user_no;
-	String user_id;
-	String name;
-	int type;
-	String title;
-	String content;
-	String qna_img;
-	Timestamp question_date;
-	String reply;
-	Timestamp reply_date;
-	int item_no;
+	private int qna_no;
+	private int user_no;
+	private String user_id;
+	private String name;
+	private int type;
+	private String title;
+	private String content;
+	private String qna_img;
+	private Timestamp question_date;
+	private String reply;
+	private Timestamp reply_date;
+	private int item_no;
 
-	private int deleteContent;
-	private int deleteAndUpdateReply; // 0 이 삭제(null 처리) 1 수정
 	private String searchWord;
 	private String orderBy;
 	private String filter;
