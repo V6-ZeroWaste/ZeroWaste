@@ -1,10 +1,15 @@
 package kr.co.soaff.review;
 
-import kr.co.soaff.qna.QnaVO;
+import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
+import kr.co.soaff.review.ReviewVO;
+
+@Mapper
 public interface ReviewMapper {
-	QnaVO list(QnaVO vo);
-	QnaVO detail(QnaVO vo);
-	int updateStatus(QnaVO vo);
-	int count (QnaVO vo);
+	List<ReviewVO> list(ReviewVO vo);
+	ReviewVO detail(ReviewVO vo);
+	int updateStatus(ReviewVO vo);
+	int count (ReviewVO vo);
 }

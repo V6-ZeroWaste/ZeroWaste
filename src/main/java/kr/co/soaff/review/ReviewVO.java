@@ -25,6 +25,8 @@ public class ReviewVO {
 	private Timestamp endDate;
 	private int page;
 	private int startIdx; // limit 앞에 들어갈 시작인덱스값
+	private String name; // item name
+	private String category_name; // item.category_name
 	
 	public ReviewVO() {
 		this.page = 1;
