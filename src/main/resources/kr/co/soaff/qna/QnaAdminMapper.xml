@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.co.soaff.qna.QnaMapper">
+<mapper namespace="kr.co.soaff.qna.QnaAdminMapper">
 <sql id ="ORDERBYSql">
     <if test="orderBy == null and startDate == null and endDate == null">
         ORDER BY reply_date asc, question_date asc <!-- null 정렬할때 무조건 asc -->
