@@ -6,13 +6,11 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface CancelAdminMapper {
-//	List<OrderDetailVO> list(OrderDetailVO vo);
     OrderDetailVO getCancelById(@Param("order_detail_no") int order_detail_no);
     int count(OrderDetailVO vo);
     int approveCancel(OrderDetailVO orderDetailVO);
     int completeCancel(OrderDetailVO orderDetailVO);
     int adminCancel(OrderDetailVO orderDetailVO);
-
     List<OrderDetailVO> list(
         @Param("startIdx") int startIdx,
         @Param("cancelStatusList") List<Integer> cancelStatusList,
