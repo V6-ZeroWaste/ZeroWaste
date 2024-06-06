@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.order.OrderAdminMapper">
+	
+	<sql id="searchSql">
+		<where>
+			<if test="searchWord != null">
+				
+				AND concat_ws("-", `order`.order_no, user.id, item.name)  like '%${searchWord}%'
+
+			</if>
+			<if test="filter != null">
+				and `order`.order_status = #{filter}
+			</if>
+			<if test="start_date != null and end_date != null">
+				and `order`.payment_date BETWEEN #{start_date} AND #{end_date}
+			</if>
+			<if test="start_date != null and end_date == null">
+				and `order`.payment_date BETWEEN #{start_date} AND NOW()
+			</if>
+			<if test="start_date == null and end_date != null">
+				<![CDATA[
+					and `order`.payment_date <= #{end_date}
+				]]>
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="orderBySql">
+		<if test="orderBy == null">
+			ORDER BY `order`.payment_date DESC
+		</if>
+		<if test="orderBy == '최신순'">
+			ORDER BY `order`.payment_date DESC
+		</if>
+		<if test="orderBy == '오래된순'">
+			ORDER BY `order`.payment_date
+		</if>
+		<if test="orderBy == '주문금액많은순'">
+			ORDER BY payment_price DESC
+		</if>
+		<if test="orderBy == '주문금액적은순'">
+			ORDER BY payment_price
+		</if>
+	</sql>
+	
+	<!-- list -->
+	<select id="list" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.order.OrderVO">
+		SELECT 
+		    `order`.order_no,
+		    `order`.payment_date,
+		    user.id,
+		    `order`.payment_price,
+		    COUNT(*) as total_amount,
+		    `order`.order_status
+		FROM `order` 
+		JOIN user ON `order`.user_no = user.user_no
+		JOIN order_detail ON `order`.order_no = order_detail.order_no
+		JOIN item ON order_detail.item_no = item.item_no
+		<include refid="searchSql"/>
+		GROUP BY `order`.order_no
+		<include refid="orderBySql"/>
+		LIMIT #{startIdx}, 20
+	</select>
+	
+	<!-- count -->
+	<select id="count" parameterType="kr.co.soaff.order.OrderVO" resultType="int">
+		SELECT COUNT(DISTINCT(`order`.order_no))
+		FROM `order` 
+		JOIN user ON `order`.user_no = user.user_no
+		JOIN order_detail ON `order`.order_no = order_detail.order_no
+		JOIN item ON order_detail.item_no = item.item_no
+		<include refid="searchSql"/>
+		<include refid="orderBySql"/>
+	</select>
+	
+	<!-- detail -->
+	<!-- OrderVO에 담는 정보 -->
+	<select id="detailFromOrderVO" parameterType="kr.co.soaff.order.OrderVO">
+		SELECT 
+			order_no,
+			payment_date,
+		    receiver_name,
+		    receiver_tel,
+		    addr,
+		    addr_detail,
+		    delivery_request,
+		    delivery_status,
+			delivery_price,
+		    point,
+		    payment_method
+		FROM `order`
+		WHERE order_no = #{order_no}
+	</select>
+	<!-- OrderDetailVO에 담는 정보 -->
+	<select id="detailFromOrderDetailVO" parameterType="kr.co.soaff.order.OrderDetailVO">
+		SELECT 
+			item.item_img,
+			item.name as item_name,
+			order_detail.price,
+			order_detail.cancel_status,
+			(SELECT sum(price) FROM order_detail WHERE order_no=order_detail.order_no) total_item_price
+		FROM order_detail 
+		JOIN item ON order_detail.item_no = item.item_no
+		WHERE order_detail.order_no = #{order_no};
+	</select>
+	
+	<!-- 배송정보 업데이트 -->
+	<update id="updateDeliveryStatus" parameterType="kr.co.soaff.order.OrderVO">
+		UPDATE `order` SET delivery_status=#{delivery_status} WHERE order_no=#{order_no}
+	</update>
+</mapper>
