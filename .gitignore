@@ -88,17 +88,13 @@ $RECYCLE.BIN/
 
 
 #eclipse personal setting
-db.properties
 .project
 .classpath
 .settings
 */target/*
-
+/target/
 db.properties
-
-
 /.gitignore
 
-db.properties
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
-/target/
+
