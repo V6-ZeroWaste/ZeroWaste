@@ -1,11 +1,6 @@
 package kr.co.soaff.review;
 
 import java.util.List;
-<<<<<<< HEAD
-
-import kr.co.soaff.qna.QnaVO;
-=======
->>>>>>> refs/heads/qna2
 
 import org.apache.ibatis.annotations.Mapper;
 
