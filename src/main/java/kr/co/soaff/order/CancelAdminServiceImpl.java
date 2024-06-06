@@ -38,5 +38,33 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		return map;
 	}
 	
+	@Override
+	public int approveCancel(int orderDetailNo) {
+		OrderDetailVO vo = new OrderDetailVO();
+		vo.setOrder_detail_no(orderDetailNo);
+		return mapper.approveCancel(vo);
+	}
+
+	@Override
+	public int refuseCancel(int orderDetailNo) {
+		OrderDetailVO vo = new OrderDetailVO();
+		vo.setOrder_detail_no(orderDetailNo);
+		return mapper.refuseCancel(vo);
+	}
+
+	@Override
+	public int completeCancel(int orderDetailNo) {
+		OrderDetailVO vo = new OrderDetailVO();
+		vo.setOrder_detail_no(orderDetailNo);
+		return mapper.completeCancel(vo);
+	}
+
+	@Override
+	public int adminCancel(int orderDetailNo, String reason) {
+		OrderDetailVO vo = new OrderDetailVO();
+		vo.setOrder_detail_no(orderDetailNo);
+		vo.setCancel_reason_detail(reason);
+		return mapper.adminCancel(vo);
+	}
 
 }

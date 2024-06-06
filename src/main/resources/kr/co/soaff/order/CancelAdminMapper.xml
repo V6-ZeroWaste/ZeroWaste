@@ -99,6 +99,7 @@
 		cancel_reason_type,
 		cancel_reason_detail
 		FROM order_detail
+		cancel_price
 		WHERE od.order_detail_no = #{order_detail_no}
 	</select>
 		

@@ -13,4 +13,6 @@ public interface CancelAdminMapper {
     int refuseCancel(OrderDetailVO vo);
     int completeCancel(OrderDetailVO vo);
     int adminCancel(OrderDetailVO vo);
+    OrderDetailVO detailFromOrderDetailVO(OrderDetailVO orderDetailVO);
+    OrderVO detailFromOrderVO(int orderNo);
 }
