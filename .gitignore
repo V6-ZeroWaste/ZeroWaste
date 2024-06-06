@@ -93,20 +93,12 @@ db.properties
 .classpath
 .settings
 */target/*
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-db.properties
->>>>>>> refs/heads/master
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
-<<<<<<< HEAD
-/target/
-=======
-/target/
->>>>>>> 887b12710f479aab1039d6026373ced62491e984
-=======
+db.properties
+
+
+/.gitignore
+
 db.properties
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
 /target/
->>>>>>> refs/heads/order

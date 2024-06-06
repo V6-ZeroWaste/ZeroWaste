@@ -78,7 +78,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-=======
        <!-- 
           <%
              request.setCharacterEncoding("UTF-8")
