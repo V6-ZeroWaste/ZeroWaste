@@ -51,4 +51,16 @@ public class OrderDetailVO {
     public int getStartIdx() {
         return (page - 1) * 20;
     }
+    
+//    public OrderDetailVO(int order_detail_no, int order_no, String user_id, String item_name, int amount, int price, int cancel_status, Timestamp cancel_request_date, Timestamp cancel_approve_date) {
+//        this.order_detail_no = order_detail_no;
+//        this.order_no = order_no;
+//        this.user_id = user_id;
+//        this.item_name = item_name;
+//        this.amount = amount;
+//        this.price = price;
+//        this.cancel_status = cancel_status;
+//        this.cancel_request_date = cancel_request_date;
+//        this.cancel_approve_date = cancel_approve_date;
+//    }
 }
