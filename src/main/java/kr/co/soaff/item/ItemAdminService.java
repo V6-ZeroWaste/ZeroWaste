@@ -1,6 +1,7 @@
 package kr.co.soaff.item;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,9 +15,15 @@ public interface ItemAdminService {
 
 	int insert(ItemVO vo, MultipartFile file, HttpServletRequest request);
 
-	int update(ItemVO vo);
+	int update(ItemVO vo, MultipartFile file, HttpServletRequest request);
 
-	int delete(int item_no);
+	int delete(ItemVO vo, HttpServletRequest request);
+
+	public int deleteImg(ItemVO vo, HttpServletRequest request);
+
+	public Map<String, Object> index(ItemVO vo);
 
 	int count(ItemVO vo);
+
+	public String[] categories();
 }
