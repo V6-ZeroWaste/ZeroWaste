@@ -9,17 +9,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 	@Autowired
-	AdminService service;
+	private AdminService service;
 	
 	@GetMapping("/login")
 	public String login() {
-		return "admin/login";
+		return "/admin/login";
 	}
-	@PostMapping("/login.do")
+	@PostMapping("/login")
 	public String login(AdminVO vo, Model model, HttpSession session) {
 		AdminVO login = service.login(vo);
 		if(login == null) {

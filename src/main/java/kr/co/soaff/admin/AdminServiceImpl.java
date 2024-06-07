@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminServiceImpl implements AdminService {
 	@Autowired
-	AdminMapper mapper;
+	private AdminMapper mapper;
 	
 	@Override
 	public AdminVO login(AdminVO vo) {
