@@ -17,4 +17,6 @@ public interface ItemAdminMapper {
 	int delete(int item_no);
 
 	int count(ItemVO vo);
+	
+	String[] categories();
 }

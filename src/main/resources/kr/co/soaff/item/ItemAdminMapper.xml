@@ -3,13 +3,13 @@
 <mapper namespace="kr.co.soaff.item.ItemAdminMapper">
 
 	<sql id="filterSql">
-		<if test="filter != null">
+		<if test="filter != null and filter != ''">
             AND i.category_name = #{filter}
         </if>
 	</sql>
 	
 	<sql id="searchSql">
-		<if test="searchWord != null">
+		<if test="searchWord != null and searchWord != ''">
             AND concat_ws("-", i.item_no, i.name)  LIKE CONCAT('%', #{searchWord},'%')
         </if>	
 	</sql>
@@ -95,6 +95,8 @@
 						price = #{price},
 						discount_rate =
 							#{discount_rate},
+						discounted_price =
+							#{discounted_price},
 						exposed_status = #{exposed_status},
 						detail = #{detail}
 		WHERE item_no = #{item_no}
@@ -114,5 +116,10 @@
 		    <include refid="filterSql"></include>
 		    <include refid="searchSql"></include>
 	    </where>	
+	</select>
+	
+	<!-- 카테고리 이름 가져오기 -->
+	<select id="categories">
+		SELECT distinct category_name FROM item
 	</select>
 </mapper>
