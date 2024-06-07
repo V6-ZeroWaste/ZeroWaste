@@ -17,7 +17,7 @@ public class UserAdminController {
 	@GetMapping("/user")
 	public String list(Model model, UserVO vo) {
 		model.addAttribute("map", service.list(vo));
-		return "admin/user";
+		return "admin/user/list";
 	}
 	
 	@GetMapping("/user/detail")
