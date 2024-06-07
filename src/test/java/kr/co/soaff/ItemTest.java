@@ -102,4 +102,12 @@ public class ItemTest {
 		vo.setSearchWord("스마트");
 		mapper.count(vo);
 	}
+	
+	@Test
+	public void category() {
+		String[] categories = mapper.categories();
+		for(String category : categories ) {
+			log.info(category);
+		};
+	}
 }
