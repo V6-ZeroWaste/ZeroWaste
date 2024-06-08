@@ -32,6 +32,7 @@ public class OrderAdminController {
 
 	// 상품상세페이지 배송상태 변경
 	// ajax로 alert 띄울 예정
+//	@ResponseBody
 	@PostMapping("/admin/order/detail/updateDeliveryStatus")
 	public int updateDeliveryStatus(OrderVO orderVO) {
 		return service.updateDeliveryStatus(orderVO);
