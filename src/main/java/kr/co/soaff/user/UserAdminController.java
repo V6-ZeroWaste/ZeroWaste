@@ -1,11 +1,17 @@
 package kr.co.soaff.user;
 
+import java.io.IOException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/admin")
@@ -14,11 +20,20 @@ public class UserAdminController {
 	@Autowired
 	private UserAdminService service;
 
-	@GetMapping("/user")
+	// 회원 상세 페이지
+	@GetMapping("/user/list")
 	public String list(Model model, UserVO vo) {
-		model.addAttribute("map", service.list(vo));
 		return "admin/user/list";
 	}
+	
+	// 회원 상세 페이지 - 리스트 불러오기 (ajax)  
+	@GetMapping("/user/list.do") // Do:  회원가입 id 중복 체크
+	@ResponseBody
+	public Map<String, Object> idCheck(UserVO vo, HttpServletResponse resp){
+		System.out.println(vo.toString());
+		return service.list(vo);
+	}
+	
 	
 	@GetMapping("/user/detail")
 	public String detail(Model model, UserVO vo) {
