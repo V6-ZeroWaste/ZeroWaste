@@ -213,8 +213,9 @@ public class QnaTest {
 	@Test
 	public void 수정삭제1() {
 		QnaVO vo = new QnaVO();
-		vo.setQna_no(4);
-		mapper.deleteReply(vo);
+		vo.setQna_no(3);
+		int a = vo.getQna_no();
+		mapper.deleteReply(a);
 
 	}
 // 카운트 ----------------------------------------------------------------------------------------

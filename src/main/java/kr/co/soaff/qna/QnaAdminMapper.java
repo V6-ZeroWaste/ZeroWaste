@@ -14,7 +14,7 @@ public interface QnaAdminMapper {
 
 	int updateReply(QnaVO vo);
 	
-	int deleteReply(QnaVO vo);
+	int deleteReply(int qna_no);
 
 	int count(QnaVO vo);
 }
