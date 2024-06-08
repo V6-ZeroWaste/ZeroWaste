@@ -14,35 +14,40 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin")
 public class CancelAdminController {
 
-	@Autowired
-	private CancelAdminService service;
+    @Autowired
+    private CancelAdminService service;
 
-	@GetMapping("/cancelList")
-	public Map<String, Object> canceladminlist(OrderDetailVO vo) {
-		return service.list(vo);
-	}
+    @GetMapping("/cancelAdminList")
+    public Map<String, Object> cancelAdminList(CancelAdminListVO vo) {
+        return service.list(vo);
+    }
 
-	@PutMapping("/approveCancel/{orderDetailNo}")
-	public String approveCancel(@PathVariable int orderDetailNo) {
-		int r = service.approveCancel(orderDetailNo);
-		return r == 1 ? "취소승인" : "오류";
-	}
+    @GetMapping("/cancelDetail/{order_detail_no}")
+    public Map<String, Object> cancelDetail(@PathVariable int order_detail_no) {
+        return service.cancelDetail(order_detail_no);
+    }
 
-	@PutMapping("/refuseCancel/{orderDetailNo}")
-	public String refuseCancel(@PathVariable int orderDetailNo) {
-		int r = service.refuseCancel(orderDetailNo);
-		return r == 1 ? "취소거절" : "오류";
-	}
+    @PutMapping("/approveCancel/{order_detail_no}")
+    public String approveCancel(@PathVariable int order_detail_no) {
+        int r = service.approveCancel(order_detail_no);
+        return r == 1 ? "취소승인" : "오류";
+    }
 
-	@PutMapping("/completeCancel/{orderDetailNo}")
-	public String completeCancel(@PathVariable int orderDetailNo) {
-		int r = service.completeCancel(orderDetailNo);
-		return r == 1 ? "취소완료" : "오류";
-	}
+    @PutMapping("/refuseCancel/{order_detail_no}")
+    public String refuseCancel(@PathVariable int order_detail_no) {
+        int r = service.refuseCancel(order_detail_no);
+        return r == 1 ? "취소거절" : "오류";
+    }
 
-	@PutMapping("/adminCancel/{orderDetailNo}")
-	public String adminCancel(@PathVariable int orderDetailNo, @RequestParam String reason) {
-		int r = service.adminCancel(orderDetailNo, reason);
-		return r == 1 ? "강제취소완료" : "오류";
-	}
+    @PutMapping("/completeCancel/{order_detail_no}")
+    public String completeCancel(@PathVariable int order_detail_no) {
+        int r = service.completeCancel(order_detail_no);
+        return r == 1 ? "취소완료" : "오류";
+    }
+
+    @PutMapping("/adminCancel/{order_detail_no}")
+    public String adminCancel(@PathVariable int order_detail_no, @RequestParam String reason) {
+        int r = service.adminCancel(order_detail_no, reason);
+        return r == 1 ? "강제취소완료" : "오류";
+    }
 }

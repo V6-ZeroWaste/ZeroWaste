@@ -27,7 +27,6 @@
 		</where>
 	</sql>
 
-
 	<sql id="orderBySql">
 		<if test="orderBy == null">
 			ORDER BY
@@ -61,11 +60,10 @@
 		</if>
 	</sql>
 
-	
 	<!-- 취소관리 리스트 -->
 	<select id="list"
-		parameterType="kr.co.soaff.order.OrderDetailVO"
-		resultType="kr.co.soaff.order.OrderDetailVO">
+		parameterType="kr.co.soaff.order.CancelAdminListVO"
+		resultType="kr.co.soaff.order.CancelAdminListVO">
 		SELECT
 		od.order_detail_no,
 		od.order_no,
@@ -78,57 +76,73 @@
 		od.cancel_request_date,
 		od.cancel_approve_date
 		FROM order_detail od
-		JOIN user u ON od.user_no = u.user_no
+		JOIN user u ON od.user_no =
+		u.user_no
 		JOIN item i ON od.item_no = i.item_no
 		<include refid="searchSql" />
 		<include refid="orderBySql" />
 		LIMIT #{startIdx}, 20
 	</select>
-	
+
 	<select id="detailFromOrderDetailVO" parameterType="int"
-		resultType="kr.co.soaff.order.OrderDetailVO">
+		resultType="kr.co.soaff.order.CancelAdminDetailVO">
 		SELECT
 		order_detail_no,
 		order_no,
+		user_no,
 		amount,
 		price,
 		cancel_status,
+		confirm_date,
 		cancel_request_date,
 		cancel_approve_date,
-		confirm_date,
 		cancel_reason_type,
 		cancel_reason_detail
 		FROM order_detail
-		cancel_price
-		WHERE od.order_detail_no = #{order_detail_no}
+		WHERE
+		order_detail_no = #{order_detail_no}
 	</select>
-		
-	<select id="detailFromOrderVO" parameterType="int" resultType="kr.co.soaff.order.OrderDetailVO">
-		SELECT 
-			order_no,
-			payment_date,
-			point,
-			payment_id,
-			imp_uid
-			payment_price
-			payment_method,
-			delivery_price
+
+	<select id="detailFromOrderVO" parameterType="int"
+		resultType="kr.co.soaff.order.CancelAdminOrderVO">
+		SELECT
+		order_no,
+		user_no,
+		payment_date,
+		point,
+		payment_id,
+		imp_uid,
+		payment_price,
+		payment_method,
+		delivery_price
 		FROM `order`
-		WHERE `order`.order_no = #{order_no}
+		WHERE
+		order_no = #{order_no}
 	</select>
 
 	<select id="count"
-		parameterType="kr.co.soaff.order.OrderDetailVO" resultType="int">
+		parameterType="kr.co.soaff.order.CancelAdminListVO" resultType="int">
 		SELECT COUNT(*)
 		FROM order_detail od
-		JOIN user u ON od.user_no = u.user_no
+		JOIN user u ON od.user_no =
+		u.user_no
 		JOIN item i ON od.item_no = i.item_no
 		<include refid="searchSql" />
 	</select>
 
+	<select id="countOrderItems" parameterType="int"
+		resultType="int">
+		SELECT COALESCE(SUM(amount), 0)
+		FROM order_detail
+		WHERE order_no = #{order_no}
+		AND (cancel_status IS NULL
+		OR cancel_status = 0)
+	</select>
+
+
 	<!-- 상세에서 승인버튼시 취소승인 -->
 	<update id="approveCancel"
-		parameterType="kr.co.soaff.order.OrderDetailVO">
+		parameterType="kr.co.soaff.order.CancelAdminDetailVO">
 		UPDATE order_detail
 		SET cancel_status = 1
 		WHERE
@@ -137,7 +151,7 @@
 
 	<!-- 상세에서 거절버튼 취소거절 -->
 	<update id="refuseCancel"
-		parameterType="kr.co.soaff.order.OrderDetailVO">
+		parameterType="kr.co.soaff.order.CancelAdminDetailVO">
 		UPDATE order_detail
 		SET cancel_status = null
 		WHERE
@@ -146,7 +160,7 @@
 
 	<!-- 환불완료시 취소완료 -->
 	<update id="completeCancel"
-		parameterType="kr.co.soaff.order.OrderDetailVO">
+		parameterType="kr.co.soaff.order.CancelAdminDetailVO">
 		UPDATE order_detail
 		SET cancel_status = 2,
 		cancel_approve_date = CURRENT_TIMESTAMP
@@ -156,7 +170,7 @@
 
 	<!-- 주문상세에서 강제취소 -->
 	<update id="adminCancel"
-		parameterType="kr.co.soaff.order.OrderDetailVO">
+		parameterType="kr.co.soaff.order.CancelAdminDetailVO">
 		UPDATE order_detail
 		SET cancel_status = 2,
 		cancel_reason_type = 1,
