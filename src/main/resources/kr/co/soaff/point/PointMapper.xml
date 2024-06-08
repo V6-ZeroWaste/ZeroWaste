@@ -18,7 +18,7 @@
 		
 	<!--  보유 적립 -->
 	<select id="total" parameterType="kr.co.soaff.point.PointVO">
-		SELECT SUM(point) FROM point
+		SELECT IFNULL(SUM(point), 0) FROM point
 		WHERE user_no = #{user_no}
 	</select>
 			
