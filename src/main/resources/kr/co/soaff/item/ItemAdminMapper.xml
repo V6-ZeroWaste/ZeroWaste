@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.item.ItemAdminMapper">
-	<!-- 상품 리스트 가져오기 -->
-	<select id="list" parameterType="kr.co.soaff.item.ItemVO"
-        resultType="kr.co.soaff.item.ItemVO">
-	    SELECT i.*, IFNULL(od.sales_amount, 0) AS sales_amount
-	    FROM item i
-	    LEFT JOIN (
-	        SELECT item_no, COUNT(*) AS sales_amount
-	        FROM order_detail
-	        GROUP BY item_no
-	    ) od ON i.item_no = od.item_no
-	    <where>
-	        <if test="filter != null">
-	            AND i.category_name = #{filter}
-	        </if>
-	        <if test="searchWord != null">
-	            <!--  AND (i.item_no LIKE '%${searchWord}%' OR i.name LIKE '%${searchWord}%') -->
-	            AND concat_ws("-", i.item_no, i.name)  like '%${searchWord}%'
-	        </if>
-	    </where>
-	    <choose>
+
+	<sql id="filterSql">
+		<if test="filter != null">
+            AND i.category_name = #{filter}
+        </if>
+	</sql>
+	
+	<sql id="searchSql">
+		<if test="searchWord != null">
+            AND concat_ws("-", i.item_no, i.name)  LIKE CONCAT('%', #{searchWord},'%')
+        </if>	
+	</sql>
+	
+	<sql id="orderBySql">
+		<choose>
 	        <when test="orderBy == '등록일자순'">
 	            ORDER BY i.item_regist_date ASC
 	        </when>
@@ -43,6 +38,22 @@
 	            ORDER BY i.item_regist_date DESC
 	        </otherwise>
 	    </choose>
+	</sql>
+	<!-- 상품 리스트 가져오기 -->
+	<select id="list" parameterType="kr.co.soaff.item.ItemVO"
+        resultType="kr.co.soaff.item.ItemVO">
+	    SELECT i.*, IFNULL(od.sales_amount, 0) AS sales_amount
+	    FROM item i
+	    LEFT JOIN (
+	        SELECT item_no, COUNT(*) AS sales_amount
+	        FROM order_detail
+	        GROUP BY item_no
+	    ) od ON i.item_no = od.item_no
+	    <where>
+		    <include refid="filterSql"></include>
+		    <include refid="searchSql"></include>
+	    </where>
+	    <include refid="orderBySql"></include>
 	    LIMIT #{startIdx}, 20
 	</select>
 
@@ -98,6 +109,10 @@
 	<select id="count"
 			parameterType="kr.co.soaff.item.ItemVO" resultType="int">
 		select
-			count(*) from item
+			count(*) from item i
+		<where>
+		    <include refid="filterSql"></include>
+		    <include refid="searchSql"></include>
+	    </where>	
 	</select>
 </mapper>

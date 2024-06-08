@@ -34,9 +34,14 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-    <!-- Encoding Filter 정의 -->
-    <filter>
-        <filter-name>encoding-filter</filter-name>
+	<filter>
+       <!-- 
+          <%
+             request.setCharacterEncoding("UTF-8")
+             넣을 필요가 사라진다.
+          %> 
+        -->
+     <filter-name>encoding-filter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
         <init-param>
             <param-name>encoding</param-name>
@@ -52,5 +57,5 @@
         <filter-name>encoding-filter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
 </web-app>
+

@@ -27,9 +27,10 @@ public class ItemTest {
 //		mapper.list(vo);
 //
 //		// 카테고리 필터 -> 성공
-//		vo.setFilter("비누");
-//		mapper.list(vo);
-//
+//		vo.setFilter("전자기기");
+//		vo.setSearchWord("스마트");
+		mapper.list(vo);
+
 ////		 검색 단어
 ////		vo.setSearchWord("비누");
 ////		mapper.list(vo);
@@ -97,6 +98,8 @@ public class ItemTest {
 	@Test
 	public void count() {
 		ItemVO vo = new ItemVO();
+		vo.setFilter("전자기기");
+		vo.setSearchWord("스마트");
 		mapper.count(vo);
 	}
 }
