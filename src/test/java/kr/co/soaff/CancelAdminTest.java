@@ -25,24 +25,8 @@ public class CancelAdminTest {
 
     @Test
     public void list() {
-        List<OrderDetailVO> list = mapper.list(
-            20, // startIdx
-            null, // cancelStatusList
-            null, // searchWord
-            null, // filter
-            null, // startRequestDate
-            null, // endRequestDate
-            null, // startApproveDate
-            null, // endApproveDate
-            null  // orderBy
-        );
-        list.forEach(System.out::println);
-    }
-
-    @Test
-    public void getCancelById() {
-        OrderDetailVO vo = mapper.getCancelById(2);
-        System.out.println(vo);
+        OrderDetailVO vo = new OrderDetailVO();
+        log.info(mapper.list(vo));
     }
 
     @Test
@@ -52,7 +36,14 @@ public class CancelAdminTest {
         int result = mapper.approveCancel(vo);
         System.out.println("승인 결과: " + result);
     }
-
+    
+    @Test
+    public void refuseCancel() {
+    	OrderDetailVO vo = new OrderDetailVO();
+    	vo.setOrder_detail_no(4);
+    	int result = mapper.refuseCancel(vo);
+    	System.out.println("취소: " + result);
+    }
     @Test
     public void completeCancel() {
         OrderDetailVO vo = new OrderDetailVO();
@@ -68,63 +59,6 @@ public class CancelAdminTest {
         vo.setCancel_reason_detail("관리자 요청에 의한 취소");
         int result = mapper.adminCancel(vo);
         System.out.println("관리자 취소 결과: " + result);
-    }
-
-    @Test
-    public void searchCancel() {
-        List<Integer> cancelStatusList = Arrays.asList(0, 1, 2);
-        String searchWord = "user";
-        String startRequestDate = "2024-06-04 21:00:00";
-        String endRequestDate = "2024-06-30";
-        String startApproveDate = null;
-        String endApproveDate = null;
-        String orderBy = "최신순";
-        Integer filter = 0;
-
-        List<OrderDetailVO> list = mapper.list(
-            0, // startIdx
-            cancelStatusList,
-            searchWord,
-            filter,
-            startRequestDate,
-            endRequestDate,
-            startApproveDate,
-            endApproveDate,
-            orderBy
-        );
-        list.forEach(System.out::println);
-    }
-
-    @Test
-    public void listWithoutFilter() {
-        List<OrderDetailVO> list = mapper.list(
-            0, // startIdx
-            null, // cancelStatusList
-            null, // searchWord
-            null, // filter
-            null, // startRequestDate
-            null, // endRequestDate
-            null, // startApproveDate
-            null, // endApproveDate
-            null  // orderBy
-        );
-        list.forEach(System.out::println);
-    }
-
-    @Test
-    public void listWithTypeOnly() {
-        List<OrderDetailVO> list = mapper.list(
-            0, // startIdx
-            null, // cancelStatusList
-            null, // searchWord
-            1, // filter
-            null, // startRequestDate
-            null, // endRequestDate
-            null, // startApproveDate
-            null, // endApproveDate
-            null  // orderBy
-        );
-        list.forEach(System.out::println);
     }
 
     @Test
