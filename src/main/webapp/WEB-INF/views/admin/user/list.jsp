@@ -46,13 +46,7 @@
                 data: data, // 전송할 데이터
                 dataType: "json", // 응답 받을 데이터 type
                 success : function(resp){
-                   	console.log(resp)
                    	// 데이터 리스트 출력
-                   	let printList = "";
-                   	if(resp.list.length == 0){
-                   		printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
-                   	}
-                   	
                		$("#printList").html(resp.printList);
                		
                		// 페이지네이션 출력
