@@ -38,8 +38,8 @@ public class OrderVO {
 	private String searchWord;
 	private String orderBy;
 	private Integer filter;
-	private Timestamp start_date;
-	private Timestamp end_date;
+	private String start_date;
+	private String end_date;
 	private int page; // 사용자가 요청한 페이지 번호
 	private int startIdx; // limit 앞에 들어갈 시작인덱스값
 

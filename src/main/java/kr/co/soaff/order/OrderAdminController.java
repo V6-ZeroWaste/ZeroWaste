@@ -16,17 +16,19 @@ public class OrderAdminController {
 	private OrderAdminService service;
 
 //	@ResponseBody
-	@GetMapping("/admin/order/index")
-	public String index(Model model, OrderVO vo) {
-		model.addAttribute("map", service.list(vo));
-		return "/admin/order/index";
+	@GetMapping("/admin/order/list")
+	public String index(Model model, OrderVO orderVO) {
+		model.addAttribute("map", service.list(orderVO));
+//		log.info(vo.getStart_date() + "");
+//		log.info(vo.getEnd_date() + "");
+		return "/admin/order/list";
 	}
 
 //	@ResponseBody
-	@PostMapping("/admin/order/detail")
+	@GetMapping("/admin/order/detail")
 	public String detail(Model model, OrderVO orderVO) {
 		model.addAttribute("detailMap", service.detail(orderVO));
-//		log.info("order_no={}", orderVO.getOrder_no());
+		log.info("order_no={}", orderVO.getOrder_no());
 		return "/admin/order/detail";
 	}
 

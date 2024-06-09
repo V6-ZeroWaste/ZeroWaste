@@ -1,72 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>order admin detail</title>
-</head>
-<body>
-  
-            <c:if test="${empty detailMap.detailFromOrderVO }">
-                <tr>
-                    <td class="first" colspan="8">등록된 글이 없습니다.</td>
-                </tr>
-            </c:if>
-            
-            ${detailMap.detailFromOrderVO }<br>
-            
-            <c:forEach var="vo" items="${detailMap.detailFromOrderDetailVO }">       
-                <tr>
-                    <td>${vo.item_img }</td>
-
-                </tr>
-                
-            </c:forEach>
-
-
-
-    <!--
-
-    <div class="pagenate clear">
-        <ul class='paging'>
-        <c:if test="${map.prev }">
-            <li><a href="index.do?page=${map.startPage-1 }&searchType=${replyVO.searchType}&searchWord=${replyVO.searchWord}"> << </a></li>
-        </c:if>
-        <c:forEach var="p" begin="${map.startPage}" end="${map.endPage}">
-            <c:if test="${p == replyVO.page}">
-            <li><a href='#;' class='current'>${p}</a></li>
-            </c:if>
-            <c:if test="${p != replyVO.page}">
-            <li><a href='index.do?page=${p}&searchType=${replyVO.searchType}&searchWord=${replyVO.searchWord}'>${p}</a></li>
-            </c:if>
-        </c:forEach>
-        <c:if test="${map.next }">
-            <li><a href="index.do?page=${map.endPage+1 }&searchType=${replyVO.searchType}&searchWord=${replyVO.searchWord}"> >> </a></li>
-        </c:if>
-        </ul> 
-    </div>
-
-    <!-- 페이지처리 -->
-    <!--
-    <div class="bbsSearch">
-        <form method="get" name="searchForm" id="searchForm" action="index.do">
-            <span class="srchSelect">
-                <select id="stype" name="searchType" class="dSelect" title="검색분류 선택">
-                    <option value="all">전체</option>
-                    <option value="title" <c:if test="${replyVO.searchType == 'title'}">selected</c:if>>제목</option>
-                    <option value="content" <c:if test="${replyVO.searchType == 'content'}">selected</c:if>>내용</option>
-                </select>
-            </span>
-            <span class="searchWord">
-                <input type="text" id="sval" name="searchWord" value="${replyVO.searchWord}"  title="검색어 입력">
-                <input type="button" id="" value="검색" title="검색">
-            </span>
-        </form>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>admin order detail</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="/admin/css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="/admin/js/scripts.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="/admin/js/datatables-simple-demo.js"></script>
+    </head>
+    <body>
+        <%@ include file="/WEB-INF/views/admin/include/header.jsp" %>
+        <div id="layoutSidenav">
+        	<%@ include file="/WEB-INF/views/admin/include/sidenav.jsp" %>
+        	<div id="layoutSidenav_content">
+        		<main>
+        		
+        		
+        		
+        		
+        		</main>
+                <%@ include file="/WEB-INF/views/admin//include/footer.jsp" %>
+            </div>
+        </div>
         
-    </div>
-	
-	-->
-</body>
+    </body>
 </html>
