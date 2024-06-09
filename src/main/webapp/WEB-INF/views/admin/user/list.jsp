@@ -28,11 +28,16 @@
        		page = 1;
        		getList();
         }
+        function changePage(obj){
+       		page = obj.getAttribute("data-page");
+       		getList();
+        }
         function getList(){
         	var data = {
         			searchWord: $('#searchWord').val(),
         			orderBy: $('#orderBy').val(),
         			page: page,
+        		
         	}
             
            	$.ajax({
@@ -45,18 +50,10 @@
                    	// 데이터 리스트 출력
                    	let printList = "";
                    	if(resp.list.length == 0){
-                   		printList = "<td class=\"first\" colspan=\"5\">등록된 글이 없습니다.</td>";
+                   		printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
                    	}
-                   	for(vo in resp.list){
-                   		printList += '<tr onclick="location.href='+"'/admin/user/detail?user_no="+ resp.list[vo].user_no + "'"+'">';
-                   		printList += "<td>" + resp.list[vo].user_no + "</td>";
-                   		printList += "<td>" + resp.list[vo].id + "</td>";
-                   		printList += "<td>" + resp.list[vo].name + "</td>";
-                   		printList += "<td>" + resp.list[vo].tel + "</td>";
-                   		printList += "<td>" + resp.list[vo].email + "</td>";
-                   		printList += "</tr>";
-                   	}
-               		$("#printList").html(printList);
+                   	
+               		$("#printList").html(resp.printList);
                		
                		// 페이지네이션 출력
                		// 총 개수
@@ -113,7 +110,7 @@
 
                             		<div class="datatable-dropdown">
 							            <label>
-							                <select id="orderBy" class="datatable-selector" onchange="applyCondition(this);">
+							                <select id="orderBy" class="datatable-selector" onchange="if($('#orderBy').val()!=''){applyCondition();}">
 								                <option value="" selected="">===정렬===</option>
 								                <option value="가입일자최신순">가입일자 최신순</option>
 								                <option value="가입일자오래된순">가입일자 오래된 순</option>

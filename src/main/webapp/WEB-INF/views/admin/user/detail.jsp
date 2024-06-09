@@ -17,6 +17,7 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/admin/js/scripts.js"></script>
+        
         <style>
         .title {
 		    display: flex;
@@ -29,6 +30,83 @@
 			justify-content: space-around;
 		}
 		</style>
+		<script type="text/javascript">
+        let page = 1;
+        window.onload=function(){
+        	  getList();
+        	}
+        function applyCondition(){
+       		page = 1;
+       		getList();
+        }
+        function changePage(obj){
+       		page = obj.getAttribute("data-page");
+       		getList();
+        }
+        function getList(){
+        	var data = {
+        			searchWord: $('#searchWord').val(),
+        			orderBy: $('#orderBy').val(),
+        			page: page,
+        	}
+            
+           	$.ajax({
+				type: "GET", // method type
+				url: "/admin/user/list.do", // 요청할 url
+                data: data, // 전송할 데이터
+                dataType: "json", // 응답 받을 데이터 type
+                success : function(resp){
+                   	console.log(resp)
+                   	// 데이터 리스트 출력
+                   	let printList = "";
+                   	if(resp.list.length == 0){
+                   		printList = "<td class=\"first\" colspan=\"5\">등록된 글이 없습니다.</td>";
+                   	}
+                   	for(vo in resp.list){
+                   		printList += '<tr onclick="location.href='+"'/admin/user/detail?user_no="+ resp.list[vo].user_no + "'"+'">';
+                   		printList += "<td>" + resp.list[vo].user_no + "</td>";
+                   		printList += "<td>" + resp.list[vo].id + "</td>";
+                   		printList += "<td>" + resp.list[vo].name + "</td>";
+                   		printList += "<td>" + resp.list[vo].tel + "</td>";
+                   		printList += "<td>" + resp.list[vo].email + "</td>";
+                   		printList += "</tr>";
+                   	}
+               		$("#printList").html(printList);
+               		
+               		// 페이지네이션 출력
+               		// 총 개수
+               		$(".datatable-info").html("Showing "+((page-1)*20+1)+" to "+(page*20<=resp.total? page*20 : resp.total)+" of "+resp.total+" entries"); 
+               		// 페이지네이션
+               		let printPage = "";
+               		if(resp.isPrev){
+               			printPage += '<li class="datatable-pagination-list-item">';
+               			printPage += '<a data-page="1" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+               			printPage += '<li class="datatable-pagination-list-item">';
+               			printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+               		}
+               		for(i = resp.startPage; i<=resp.endPage; i++){
+               			printPage += '<li class="datatable-pagination-list-item'+(i==page? ' datatable-active' : '')+'">';
+               			printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link" onclick="changePage(this);">'+i+'</a></li>';
+               		}
+               		if(resp.isNext){
+               			printPage += '<li class="datatable-pagination-list-item">';
+               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+               			printPage += '<li class="datatable-pagination-list-item">';
+               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+               		}
+               		$(".datatable-pagination-list").html(printPage);
+               		
+                   	
+                   	
+                },
+                error:function (data, textStatus) {
+                    $('#fail').html("관리자에게 문의하세요.") // 서버오류
+                    console.log('error', data, textStatus);
+                }
+           	})
+        	
+		}
+        </script>
     </head>
     <body>
         <%@ include file="/WEB-INF/views/admin/include/header.jsp" %>
