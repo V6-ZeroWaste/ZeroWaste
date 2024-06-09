@@ -30,7 +30,7 @@ public class UserAdminController {
 	// 회원 상세 페이지 - 리스트 불러오기 (ajax)  
 	@GetMapping("/user/list.do") // Do:  회원가입 id 중복 체크
 	@ResponseBody
-	public Map<String, Object> idCheck(UserVO vo){
+	public Map<String, Object> listAjax(UserVO vo){
 		Map<String, Object> map = service.list(vo);
 		String printList = "";
 		List<UserVO> userList = (List<UserVO>) map.get("list");
