@@ -18,13 +18,13 @@ public class ItemAdminController {
 	@Autowired
 	private ItemAdminService service;
 
-	@GetMapping("/admin/item/index")
+	@GetMapping("/admin/item/list")
 	public String index(Model model, HttpServletRequest request, ItemVO vo) {
 		model.addAttribute("map", service.index(vo));
 		request.setAttribute("item", vo);
 		String[] categories = service.categories();
 		request.setAttribute("categories", categories);
-		return "admin/item/index";
+		return "admin/item/list";
 	}
 
 	@GetMapping("/admin/item/detail")
@@ -50,13 +50,14 @@ public class ItemAdminController {
 		if (result == 0) {
 			return "redirect:detail?item_no=" + vo.getItem_no();
 		}
-		return "redirect:index";
+		return "redirect:list";
 	}
 
 	@PostMapping("/admin/item/update")
 	public String upadteItem(HttpServletRequest request, ItemVO vo, @RequestParam("file") MultipartFile detail)
 			throws IOException {
 		System.out.println(vo);
+		System.out.println("update");
 		service.update(vo, detail, request);
 		ItemVO vo2 = service.detail(vo);
 		return "redirect:detail?item_no=" + vo.getItem_no();
@@ -68,7 +69,7 @@ public class ItemAdminController {
 		tmp.setItem_no(itemNo);
 		ItemVO vo = service.detail(tmp);
 		service.delete(vo, request);
-		return "redirect:index";
+		return "redirect:list";
 	}
 
 	@PostMapping("/admin/item/deleteImg")
