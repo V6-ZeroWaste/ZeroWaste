@@ -4,7 +4,7 @@
 
 	<sql id="filterSql">
 		<if test="filter != null and filter != ''">
-            AND i.category_name = #{filter}
+            AND i.category_no = #{filter}
         </if>
 	</sql>
 	
@@ -42,13 +42,14 @@
 	<!-- 상품 리스트 가져오기 -->
 	<select id="list" parameterType="kr.co.soaff.item.ItemVO"
         resultType="kr.co.soaff.item.ItemVO">
-	    SELECT i.*, IFNULL(od.sales_amount, 0) AS sales_amount
+	    SELECT i.*, IFNULL(od.sales_amount, 0) AS sales_amount, c.name AS category_name
 	    FROM item i
 	    LEFT JOIN (
 	        SELECT item_no, COUNT(*) AS sales_amount
 	        FROM order_detail
 	        GROUP BY item_no
 	    ) od ON i.item_no = od.item_no
+	    LEFT JOIN category c ON i.category_no = c.category_no
 	    <where>
 		    <include refid="filterSql"></include>
 		    <include refid="searchSql"></include>
@@ -60,7 +61,9 @@
 	<!-- 상품 상세 정보 가져오기 -->
 	<select id="detail" parameterType="kr.co.soaff.item.ItemVO"
 			resultType="kr.co.soaff.item.ItemVO">
-		SELECT * FROM item WHERE item_no = ${item_no}
+		SELECT i.*, c.name as category_name FROM item i
+		LEFT JOIN category c ON i.category_no = c.category_no 
+		WHERE item_no = ${item_no}
 	</select>
 
 	<!-- 상품 등록하기 -->
@@ -89,7 +92,7 @@
 		UPDATE item SET
 						item_img =
 							#{item_img},
-						category_name = #{category_name},
+						category_no = #{category_no},
 						name = #{name},
 						packable_option = #{packable_option},
 						price = #{price},
@@ -118,8 +121,35 @@
 	    </where>	
 	</select>
 	
-	<!-- 카테고리 이름 가져오기 -->
-	<select id="categories">
-		SELECT distinct category_name FROM item
+	<!-- 카테고리 정보 가져오기 -->
+	<select id="categories" resultType="kr.co.soaff.item.CategoryVO">
+		SELECT c.category_no , c.name, count(i.item_no) AS quantity  
+		FROM category c LEFT OUTER JOIN item i 
+		ON c.category_no = i.category_no 
+		GROUP BY category_no, c.name;
 	</select>
+	
+	<update id="updateCategory" parameterType="kr.co.soaff.item.CategoryVO">
+		UPDATE category SET
+						name = #{name}
+		WHERE category_no = #{category_no}
+	</update>
+	
+	<delete id="deleteCategory" parameterType="int">
+		delete from category where category_no
+								   = #{category_no}
+	</delete>
+	
+	<insert id="insertCategory" parameterType="kr.co.soaff.item.CategoryVO">
+		INSERT INTO category (
+			name
+		) VALUES (
+			#{name}
+		)
+		<selectKey keyProperty="category_no" order="AFTER"
+				   resultType="int">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
 </mapper>

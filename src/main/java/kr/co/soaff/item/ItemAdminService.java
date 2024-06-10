@@ -25,5 +25,11 @@ public interface ItemAdminService {
 
 	int count(ItemVO vo);
 
-	public String[] categories();
+	List<CategoryVO> categories();
+
+	int updateCategory(CategoryVO vo);
+
+	int deleteCategory(int category_no);
+
+	int insertCategory(CategoryVO vo);
 }

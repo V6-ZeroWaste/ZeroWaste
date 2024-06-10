@@ -69,7 +69,14 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 			String org = file.getOriginalFilename();
 			String ext = org.substring(org.lastIndexOf("."));
 			String real = System.currentTimeMillis() + ext;
-			String path = request.getRealPath("/upload/item_img/") + real;
+			String uploadDir = request.getRealPath("/upload/item_img/");
+			String path = uploadDir + real;
+
+			File dir = new File(uploadDir);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+
 			try {
 				file.transferTo(new File(path));
 			} catch (Exception e) {
@@ -88,10 +95,20 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 			String org = file.getOriginalFilename();
 			String ext = org.substring(org.lastIndexOf("."));
 			String real = System.currentTimeMillis() + ext;
-			String path = request.getRealPath("/upload/item_img/") + real;
+			String uploadDir = request.getRealPath("/upload/item_img/");
+			String path = uploadDir + real;
+			System.out.println(uploadDir);
+			System.out.println(path);
+
+			File dir = new File(uploadDir);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+
 			try {
 				file.transferTo(new File(path));
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			vo.setItem_img(real);
 		}
@@ -135,7 +152,23 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 	}
 
 	@Override
-	public String[] categories() {
+	public List<CategoryVO> categories() {
 		return mapper.categories();
 	}
+
+	@Override
+	public int updateCategory(CategoryVO vo) {
+		return mapper.updateCategory(vo);
+	}
+
+	@Override
+	public int deleteCategory(int category_no) {
+		return mapper.deleteCategory(category_no);
+	}
+
+	@Override
+	public int insertCategory(CategoryVO vo) {
+		return mapper.insertCategory(vo);
+	}
+
 }

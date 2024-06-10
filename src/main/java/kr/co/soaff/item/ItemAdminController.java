@@ -1,6 +1,7 @@
 package kr.co.soaff.item;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -22,7 +25,7 @@ public class ItemAdminController {
 	public String index(Model model, HttpServletRequest request, ItemVO vo) {
 		model.addAttribute("map", service.index(vo));
 		request.setAttribute("item", vo);
-		String[] categories = service.categories();
+		List<CategoryVO> categories = service.categories();
 		request.setAttribute("categories", categories);
 		return "admin/item/list";
 	}
@@ -30,7 +33,7 @@ public class ItemAdminController {
 	@GetMapping("/admin/item/detail")
 	public String detail(HttpServletRequest request, ItemVO vo) {
 		ItemVO item = service.detail(vo);
-		String[] categories = service.categories();
+		List<CategoryVO> categories = service.categories();
 		request.setAttribute("item", item);
 		request.setAttribute("categories", categories);
 		return "admin/item/detail";
@@ -38,7 +41,7 @@ public class ItemAdminController {
 
 	@GetMapping("/admin/item/regist")
 	public String regist(HttpServletRequest request, ItemVO vo) {
-		String[] categories = service.categories();
+		List<CategoryVO> categories = service.categories();
 		request.setAttribute("categories", categories);
 		return "admin/item/regist";
 	}
@@ -72,13 +75,70 @@ public class ItemAdminController {
 		return "redirect:list";
 	}
 
-	@PostMapping("/admin/item/deleteImg")
+//	@PostMapping("/admin/item/deleteImg")
+//	public String deleteImg(HttpServletRequest request, int itemNo) throws IOException {
+//		ItemVO tmp = new ItemVO();
+//		tmp.setItem_no(itemNo);
+//		ItemVO vo = service.detail(tmp);
+//		service.deleteImg(vo, request);
+//		return "redirect:detail?item_no=" + vo.getItem_no();
+//	}
+	@PostMapping(value = "/admin/item/deleteImg", produces = "application/tex; charset=utf8")
+	@ResponseBody
 	public String deleteImg(HttpServletRequest request, int itemNo) throws IOException {
+		String msg = "";
 		ItemVO tmp = new ItemVO();
 		tmp.setItem_no(itemNo);
 		ItemVO vo = service.detail(tmp);
-		service.deleteImg(vo, request);
-		return "redirect:detail?item_no=" + vo.getItem_no();
+		if (service.deleteImg(vo, request) != 0) {
+			msg = "삭제 완료";
+		} else {
+			msg = "삭제 실패";
+		}
+		return msg;
+	}
+
+	@GetMapping("/admin/item/category")
+	public String category(Model model) throws IOException {
+		List<CategoryVO> categories = service.categories();
+		model.addAttribute("categories", categories);
+		return "admin/item/category";
+	}
+
+	@PostMapping(value = "/admin/item/category/fix", produces = "application/tex; charset=utf8")
+	@ResponseBody
+	public String fixCategory(@RequestBody CategoryVO vo) throws IOException {
+		String msg = "";
+		if (service.updateCategory(vo) != 0) {
+			msg = "수정 완료";
+		} else {
+			msg = "수정 실패";
+		}
+		return msg;
+	}
+
+	@PostMapping(value = "/admin/item/category/delete", produces = "application/tex; charset=utf8")
+	@ResponseBody
+	public String deleteCategory(@RequestBody CategoryVO vo) throws IOException {
+		String msg = "";
+		if (service.deleteCategory(vo.getCategory_no()) != 0) {
+			msg = "삭제 완료";
+		} else {
+			msg = "삭제 실패";
+		}
+		return msg;
+	}
+
+	@PostMapping(value = "/admin/item/category/insert", produces = "application/tex; charset=utf8")
+	@ResponseBody
+	public String insertCategory(@RequestBody CategoryVO vo) throws IOException {
+		String msg = "";
+		if (service.insertCategory(vo) != 0) {
+			msg = "추가 완료";
+		} else {
+			msg = "추가 실패";
+		}
+		return msg;
 	}
 
 }

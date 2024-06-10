@@ -19,7 +19,15 @@ pageEncoding="UTF-8" isELIgnored="false" %>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="/smarteditor/js/HuskyEZCreator.js"></script>
-
+	<style>
+		img{
+			max-height: 300px;
+			max-width: 500px;
+		}
+		.title-img{
+			height: 500px;
+		}
+	</style>
     <script>
         var oEditors = [];
         $(function() {
@@ -45,6 +53,16 @@ pageEncoding="UTF-8" isELIgnored="false" %>
         function goSave() {
             oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []); // 에디터의 내용이 textarea에 적용됩니다.
             document.forms[name='update'].submit(); // 폼 제출
+        }
+        
+        function openPopup(){
+            var windowPopup = window.open("category", "new", "toolbar=no, menubar=no, scrollbars=yes, resizable=no, width=1000, height=700, left=0, top=0" );
+            windowPopup.onbeforeunload = function() {
+            	window.location.reload();
+            };
+            windowPopup.onload = function() {
+            	window.location.reload();
+            };
         }
 
     </script>
@@ -76,11 +94,11 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                     type : "POST",
                     data : {itemNo : itemNo },
                     success : function(response){
-                        alert("삭제 성공");
+                        alert(response);
                         window.location.reload();
                     },
                     error: function(xhr, status, error){
-                        alert("삭제 실패: " + error);
+                        alert(response);
                     }
                 });
             }
@@ -108,7 +126,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
         <main>
         <div class="container-fluid px-4">
         	<div class="container-fluid px-4 d-flex justify-content-end">
-            <button class="btn btn-dark my-3" onclick="history.back()">돌아가기</button>
+            <button class="btn btn-primary my-3" onclick="history.back()">돌아가기</button>
             </div>
             <div class="card mb-4">
             	<div class="list-group">
@@ -137,16 +155,16 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                     </div>
                     <div class="list-group-item">
                         <div class="row align-items-center">
-                            <div class="col-md-1 text-center">
+                            <div class="col-md-1 text-center title-img d-flex align-items-center justify-content-center">
                                 <b>상품 대표<br>이미지</b>
                             </div>
                             <div class="col-md-3">
                                 <input class="form-control" type="file" name="file" id="file" class="wid100"/>
                             </div>
                             <div class="col-md-3 d-flex flex-column align-items-center">
-							    <img src="/upload/item_img/${item.item_img}" alt="Item Image" class="img-fluid"/>
+							    <img src="/upload/item_img/${item.item_img}" class="img-fluid"/>
 							    <p>${item.item_img}</p>
-							    <input class="btn btn-dark" type="button" name="x" value="이미지삭제버튼" onclick="deleteImg()">
+							    <input class="btn btn-primary" type="button" name="x" value="이미지삭제버튼" onclick="deleteImg()">
 							</div>
                         </div>
                     </div>
@@ -156,16 +174,21 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 			                    <b>카테고리</b>
                 			</div>
                 			<div class="col-md-2">
-		                    	<select name="category_name" class="form-select">
+		                    	<select name="category_no" class="form-select">
 			                        <c:forEach var="category" items="${categories}">
-			                            <c:if test="${item.category_name == category}">
-			                                <option value="${category}" selected>${category}</option>
-			                            </c:if>
-			                            <c:if test="${item.category_name != category}">
-			                                <option value="${category}">${category}</option>
-			                            </c:if>
-			                        </c:forEach>
+                                        <c:choose>
+                                            <c:when test="${item.category_no == category.category_no}">
+                                                <option value="${category.category_no}" selected>${category.name}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option value="${category.category_no}">${category.name}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
 			                    </select>
+                			</div>
+                			<div class="col-md-2">
+                				<input type="button" class="btn btn-outline-primary" value="수정" onclick="openPopup()">
                 			</div>
                     	</div>
                     </div>
@@ -220,7 +243,10 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 		                    	<b>상품 가격</b>
                 			</div>
                 			<div class="col-md-2">
-		                    	<input type="text" name="price" class="form-control" value="${item.price}">원
+		                    	<input type="text" name="price" class="form-control" value="${item.price}">
+                			</div>
+                			<div class="col-md-1">
+		                    	원
                 			</div>
                     	</div>
                     </div>
@@ -230,7 +256,10 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 		                    	<b>할인율</b>
                 			</div>
                 			<div class="col-md-2">
-		                    	<input type="text" name="discount_rate" class="form-control" value="${item.discount_rate}" disabled >%
+		                    	<input type="text" name="discount_rate" class="form-control" value="${item.discount_rate}" disabled >
+                			</div>
+                			<div class="col-md-1">
+		                    	%
                 			</div>
                     	</div>
                     </div>
@@ -240,7 +269,10 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 		                    	<b>판매 가격</b>
                 			</div>
                 			<div class="col-md-2">
-		                    	<input type="text" name="discounted_price" class="form-control" value="${item.discounted_price}" >원
+		                    	<input type="text" name="discounted_price" class="form-control" value="${item.discounted_price}" >
+                			</div>
+                			<div class="col-md-1">
+		                    	원
                 			</div>
                     	</div>
                     </div>
@@ -252,7 +284,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                 			<div class="col-md-2">
                 				<input type="radio" class="form-check-input" name="exposed_status" value="true"
 		                               ${item.exposed_status ? 'checked="checked"' : '' }
-		                        >노출 |
+		                        >노출  | 
 		                        <input type="radio" class="form-check-input" name="exposed_status" value="false"
 		                               ${!item.exposed_status ? 'checked="checked"' : '' }
 		                        >숨김
@@ -270,8 +302,8 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                     	</div>
                     </div>
                     <div class="list-group-item d-flex justify-content-center">
-                    <input class="btn btn-dark me-3" type="button" value="수정하기" onclick="goSave()">
-                    <input class="btn btn-dark" type="button" value="삭제하기" onclick="deleteItem()">
+                    <input class="btn btn-primary me-3" type="button" value="수정" onclick="goSave()">
+                    <input class="btn btn-danger" type="button" value="삭제" onclick="deleteItem()">
                     </div>
                 </form>
                 </div>
