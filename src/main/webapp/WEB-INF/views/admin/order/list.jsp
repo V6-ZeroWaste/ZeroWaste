@@ -117,7 +117,7 @@
 												<div class="datatable-dropdown">
 													<label>
 														<select id="orderBy" name="orderBy" class="datatable-selector" onchange="applyCondition();">
-															<option value="">==정렬==</option>
+															<option value="none">==정렬==</option>
 															<option value="최신순">최신순</option>
 															<option value="오래된순">오래된순</option>
 															<option value="주문금액많은순">주문금액 많은 순</option>

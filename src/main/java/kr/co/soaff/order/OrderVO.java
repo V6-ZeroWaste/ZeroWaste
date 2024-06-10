@@ -30,6 +30,7 @@ public class OrderVO {
 	private String id;
 	private int payment_price;
 	private String payment_method;
+	private int total_item_price;
 
 	// 주문 총 수량
 	private int total_amount;
