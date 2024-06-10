@@ -33,10 +33,14 @@
                             <div class="card-body">
                              	<!-- 리스트 정렬, 필터 검색 영역  -->
 								<form method="get" name="searchForm" id="searchForm" action="/admin/order/list">
-										<div class="datatable-dropdown">
-											<span>주문 날짜</span>
-											<input name="start_date" type="datetime-local" class="datatable-selector" <c:if test="${orderVO.start_date} != null">value=${orderVO.start_date}</c:if>>-<input name="end_date" type="datetime-local" class="datatable-selector" <c:if test="${orderVO.end_date} != null">value=${orderVO.end_date}</c:if>>
-										</div>
+											<div class="datatable-top">
+												<div class="datatable-dropdown">
+													<span>주문 날짜</span>
+													<input name="start_date" type="datetime-local" class="datatable-selector" <c:if test="${orderVO.start_date} != null">value=${orderVO.start_date}</c:if>>-<input name="end_date" type="datetime-local" class="datatable-selector" <c:if test="${orderVO.end_date} != null">value=${orderVO.end_date}</c:if>>
+												</div>
+												<input name="SearchWord" class="datatable-input" type="search" placeholder="주문no/주문한 아이디/상품명" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if>>
+												<input type="submit" value="검색" class="btn btn-primary">
+											</div>
 										<div class="datatable-dropdown">
 											<label>
 												<select name="orderBy" class="datatable-selector">
@@ -58,10 +62,6 @@
 													<option value="5" <c:if test="${orderVO.filter == 5}">selected</c:if>>구매확정</option>
 												</select>
 											</label>
-											<div class="datatable-top">
-												<input name="SearchWord" class="datatable-input" type="search" placeholder="주문no/주문한 아이디/상품명" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if>>
-												<input type="submit" value="검색" class="btn btn-primary">
-											</div>
 										</div>
 									
 							    </form>   
