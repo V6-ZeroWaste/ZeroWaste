@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>admin order list</title>
+        <title>상품 목록</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -18,6 +18,33 @@
         <script src="/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="/admin/js/datatables-simple-demo.js"></script>
+        <style>
+			.col-item-img {
+			    width: 10%;
+			    text-align: center;
+			}
+			
+			.img-container {
+			    display: flex;
+			    justify-content: center;
+			    align-items: center;
+			    height: 100%;
+			}
+			
+			.fixed-size-img {
+			    width: 50px; /* 고정된 너비 */
+			    height: auto; /* 비율을 유지하며 높이 자동 조정 */
+			}
+			.col-item-no,
+			.col-item-name,
+			.col-item-price,
+			.col-item-discount,
+			.col-item-category,
+			.col-item-amount,
+			.col-item-exposed {
+			    width: 12.85%;
+			}
+        </style>
         <script>
 	        window.onload = function() {
 	            document.querySelectorAll('.itemRow').forEach(function(row) {
@@ -99,58 +126,67 @@
 								
                             	
                             	<!-- 리스트 영역 -->
-                            	<div class="datatable-container">
-                                <table class="datatable-table">
-                                    <thead>
-                                        <tr>
-                                       	   <th>상품 번호</th> <th>상품 이미지</th> <th>상품명</th> <th>상품 가격</th>
-                                           <th>판매가(할인율)</th> <th>카테고리</th> <th>상품 재고</th> <th>노출 여부</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                            <c:forEach var="item" items="${map.items}">
-                                                <tr class="itemRow" data-itemno="${item.item_no}">
-                                                    <td>
-                                                        ${item.item_no}
-                                                    </td>
-                                                    <td>
-                                                        <img src="/upload/item_img/${item.item_img}" style="width: 5%"/>
-                                                        ${item.item_img}
-                                                    </td>
-                                                    <td>
-                                                        ${item.name}
-                                                    </td>
-                                                    <td>
-                                                        ${item.price}
-                                                    </td>
-                                                    <td>
-                                                        ${item.discounted_price}
-                                                        <c:if test="${item.discount_rate != null && item.discount_rate != 0}">
-                                                            (${item.discount_rate}%)
-                                                        </c:if>
-                                                        <c:if test="${item.discount_rate == null || item.discount_rate == 0}">
-                                                            (-)
-                                                        </c:if>
-                                                    </td>
-                                                    <td>
-                                                        ${item.category_name}
-                                                    </td>
-                                                    <td>
-                                                        ${item.amount}
-                                                    </td>
-                                                    <td>
-                                                        <c:if test="${item.exposed_status}">
-                                                            O
-                                                        </c:if>
-                                                        <c:if test="${!item.exposed_status}">
-                                                            X
-                                                        </c:if>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                     </tbody>
-                                </table>
-                            </div>
+								<div class="datatable-container">
+								    <table class="datatable-table">
+								        <thead>
+								            <tr>
+								                <th class="col-item-no">상품 번호</th>
+								                <th class="col-item-img">상품 이미지</th>
+								                <th class="col-item-name">상품명</th>
+								                <th class="col-item-price">상품 가격</th>
+								                <th class="col-item-discount">판매가(할인율)</th>
+								                <th class="col-item-category">카테고리</th>
+								                <th class="col-item-amount">상품 재고</th>
+								                <th class="col-item-exposed">노출 여부</th>
+								            </tr>
+								        </thead>
+								        <tbody>
+								            <c:forEach var="item" items="${map.items}">
+								                <tr class="itemRow" data-itemno="${item.item_no}">
+								                    <td class="col-item-no">
+								                        ${item.item_no}
+								                    </td>
+								                    <td class="col-item-img">
+								                        <div class="img-container">
+								                            <img src="/upload/item_img/${item.item_img}" class="fixed-size-img"/>
+								                        </div>
+								                        ${item.item_img}
+								                    </td>
+								                    <td class="col-item-name">
+								                        ${item.name}
+								                    </td>
+								                    <td class="col-item-price">
+								                        ${item.price}
+								                    </td>
+								                    <td class="col-item-discount">
+								                        ${item.discounted_price}
+								                        <c:if test="${item.discount_rate != null && item.discount_rate != 0}">
+								                            (${item.discount_rate}%)
+								                        </c:if>
+								                        <c:if test="${item.discount_rate == null || item.discount_rate == 0}">
+								                            (-)
+								                        </c:if>
+								                    </td>
+								                    <td class="col-item-category">
+								                        ${item.category_name}
+								                    </td>
+								                    <td class="col-item-amount">
+								                        ${item.amount}
+								                    </td>
+								                    <td class="col-item-exposed">
+								                        <c:if test="${item.exposed_status}">
+								                            O
+								                        </c:if>
+								                        <c:if test="${!item.exposed_status}">
+								                            X
+								                        </c:if>
+								                    </td>
+								                </tr>
+								            </c:forEach>
+								        </tbody>
+								    </table>
+								</div>
+
 
                             <!-- 페이지네이션-->
                             <div class="datatable-bottom">
