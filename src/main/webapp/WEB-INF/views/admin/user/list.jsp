@@ -111,24 +111,17 @@
 							                </select>
 							            </label>
 							        </div>
+							            
                             		<div class="row align-items-center">
 	                                    <div class="col-md-9">
 	                                         <input id="searchWord" class="datatable-input" type="search" placeholder="회원 아이디/이름 검색" onkeyup="if(window.event.keyCode==13){applyCondition();}">
 	                                    </div>
-                                 	</div>
-                            	</div>
-                            	
-                            	<div class="datatable-top">
-                                    <div class="row align-items-center">
-	                                    <div class="col-md-9">
-	                                         <input name="searchWord" class="datatable-input" type="search" placeholder="상품명/상품 번호 입력" 
-	                                        value="${item.searchWord != null ? item.searchWord : ''}">
-	                                    </div>
+	                                    
                                     	<div class="col-md-1">
-                                        	<input type="submit" value="검색" class="btn btn-primary"> 
+                                        	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition()"> 
                                       	</div>
                                  	</div>
-                                 </div>
+                            	</div>
                             	
                             	<!-- 리스트 영역 -->
                             	<div class="datatable-container">
