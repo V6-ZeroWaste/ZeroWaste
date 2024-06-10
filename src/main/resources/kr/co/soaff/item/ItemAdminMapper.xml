@@ -69,13 +69,13 @@
 	<!-- 상품 등록하기 -->
 	<insert id="insert" parameterType="kr.co.soaff.item.ItemVO">
 		INSERT INTO item (
-		category_name, name, description, price,
+		category_no, name, description, price,
 		discount_rate, discounted_price, amount,
 		detail, item_img,
 		exposed_status, packable_option,
 		packing_price
 		) VALUES (
-		#{category_name}, #{name}, #{description}, #{price},
+		#{category_no}, #{name}, #{description}, #{price},
 		#{discount_rate},
 		#{discounted_price}, #{amount},
 		#{detail}, #{item_img},
