@@ -21,11 +21,11 @@ public class ReviewVO {
 	
 	private String searchWord;
 	private String orderBy;
-	private Timestamp startDate;
-	private Timestamp endDate;
+	private String startDate;
+	private String endDate;
 	private int page;
 	private int startIdx; // limit 앞에 들어갈 시작인덱스값
-	private String name; // item name
+	private String item_name; // item name
 	private String category_name; // item.category_name
 	
 	public ReviewVO() {
