@@ -12,24 +12,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/user")
 public class UserAdminController {
 	
 	@Autowired
 	private UserAdminService service;
 
 	// 회원 상세 페이지
-	@GetMapping("/user/list")
+	@GetMapping("/list")
 	public String list(Model model, UserVO vo) {
 		return "admin/user/list";
 	}
 	
 	// 회원 상세 페이지 - 리스트 불러오기 (ajax)  
-	@GetMapping("/user/getList")
+	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(UserVO vo){
 		Map<String, Object> map = service.list(vo);
@@ -52,16 +53,15 @@ public class UserAdminController {
 	}
 	
 	
-	@GetMapping("/user/detail")
+	@GetMapping("/detail")
 	public String detail(Model model, UserVO vo) {
 		model.addAttribute("user", service.detail(vo));
 		return "admin/user/detail";
 	}
 	
-	@PostMapping("/user/update")
-	@ResponseBody
-	public String update(UserVO vo, HttpServletResponse response) throws IOException {
-		response.setContentType("text/xml; charset=UTF-8");
+	@PostMapping(value="/update", produces = "application/tex; charset=utf8")
+	@ResponseBody()
+	public String update(@RequestBody UserVO vo) {
 		
 		String msg = "";
 		if(service.update(vo)) {

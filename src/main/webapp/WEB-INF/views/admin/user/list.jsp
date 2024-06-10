@@ -104,7 +104,7 @@
 
                             		<div class="datatable-dropdown">
 							            <label>
-							                <select id="orderBy" class="datatable-selector" onchange="if($('#orderBy').val()!=''){applyCondition();}">
+							                <select id="orderBy" class="datatable-selector" onchange="applyCondition();">
 								                <option value="" selected="">===정렬===</option>
 								                <option value="가입일자최신순">가입일자 최신순</option>
 								                <option value="가입일자오래된순">가입일자 오래된 순</option>

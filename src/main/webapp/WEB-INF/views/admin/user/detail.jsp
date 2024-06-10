@@ -51,7 +51,7 @@
             
            	$.ajax({
 				type: "GET", // method type
-				url: "/point/list.do", // 요청할 url
+				url: "/point/getList", // 요청할 url
                 data: data, // 전송할 데이터
                 dataType: "json", // 응답 받을 데이터 type
                 success : function(resp){
@@ -147,35 +147,64 @@
         
     	// 수정 버튼 클릭시 처리
     	$(function(){
-    		if( $("#tel1")=="" || $("#tel2")=="" || $("#tel2")==""){
-    			alert("전화번호를 입력하세요")
-    		}
-    		$("#modify").click(function(){
-	        	if(confirm("수정하시겠습니까?")){
-	        		var data = {
-	            			user_no: ${user.user_no},
-	        				zipcode: $("#zipcode").val(),
-	        				addr: $("#addr").val(),
-	        				addr_detail: $("#addr_detail").val(),
-	        				tel: $("#tel1").val()+"-"+$("#tel2").val()+"-"+$("#tel3").val(),
-	            	}
-	        		$.ajax({
-	    				type: "POST", // method type
-	    				url: "/admin/user/update", // 요청할 url
-	                    data: data, // 전송할 데이터
-	                    dataType: "text", // 응답 받을 데이터 type
-	                    contentType: "charset=UTF-8",
-	                    success : function(resp){
-	                    	alert(resp);
-	                    },
-	                    error:function (data, textStatus) {
-	                       	alert("서버 오류") // 서버오류
-						}
-	               	})
-	        		
-	        	}
-			})
+	    	$("#modify").click(function(){
+	       		if( $("#tel1").val().trim()=="" || $("#tel2").val().trim()=="" || $("#tel2").val().trim()==""){
+	       			alert("전화번호를 입력하세요");
+	       			
+        		}else{
+		        	if(confirm("수정하시겠습니까?")){
+		        		var data = {
+		            			user_no: ${user.user_no},
+		        				zipcode: $("#zipcode").val().trim(),
+		        				addr: $("#addr").val().trim(),
+		        				addr_detail: $("#addr_detail").val().trim(),
+		        				tel: $("#tel1").val().trim()+"-"+$("#tel2").val().trim()+"-"+$("#tel3").val().trim(),
+		            	}
+		        		console.log(data);
+		        		$.ajax({
+		    				type: "POST", // method type
+		    				url: "/admin/user/update", // 요청할 url
+		                    data: JSON.stringify(data), // 전송할 데이터
+		                    dataType: "text", // 응답 받을 데이터 type
+		                    contentType: "application/json; charset=UTF-8",
+		                    success : function(resp){
+		                    	alert(resp);
+		                    },
+		                    error:function (data, textStatus) {
+		                       	alert("서버 오류") // 서버오류
+							}
+		        		
+			        	})
+			        }
+        		}
+		    })
+
     	})
+        
+        
+    	// 포인트 삭제 버튼 클릭시 처리
+    	function pointDelete(obj){
+    		if(confirm("삭제하시겠습니까?")){
+    			var data = {
+            			point_no: obj.getAttribute("point_no")
+            	}
+    			$.ajax({
+    				type: "POST", // method type
+    				url: "/point/delete", // 요청할 url
+                    data: JSON.stringify(data), // 전송할 데이터
+                    dataType: "text", // 응답 받을 데이터 type
+                    contentType: "application/json; charset=UTF-8",
+                    success : function(resp){
+                    	alert(resp);
+                    	getList();
+                    },
+                    error:function (data, textStatus) {
+                       	alert("서버 오류") // 서버오류
+					}
+               	})
+    		}
+    		
+        }
         
     </script>
     </head>
@@ -269,7 +298,7 @@
                         	<div class="card-body">
                         		<div class="datatable-top">
                             		<div class="datatable-search">
-                            			<button class="btn btn-primary" style="height:38px">추가하기</button>
+                            			<button class="btn btn-primary" style="height:38px">추가</button>
                             		</div>
                             		
                             	</div>
