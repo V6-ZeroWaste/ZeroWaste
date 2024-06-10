@@ -137,7 +137,7 @@
 													</label>
 												</div>
 												<div class="datatable-search">
-													<input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="주문no/주문한 아이디/상품명" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}">
+													<input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="주문no/주문한 아이디/상품명" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width: 300px;">
 												</div>
 											</div>
 						
