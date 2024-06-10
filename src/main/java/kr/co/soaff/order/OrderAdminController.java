@@ -1,10 +1,14 @@
 package kr.co.soaff.order;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +26,30 @@ public class OrderAdminController {
 //		log.info(vo.getStart_date() + "");
 //		log.info(vo.getEnd_date() + "");
 		return "/admin/order/list";
+	}
+
+// 회원 상세 페이지 - 리스트 불러오기 (ajax)  
+	@GetMapping("/admin/order/getList")
+	@ResponseBody
+	public Map<String, Object> listAjax(OrderVO orderVO) {
+		Map<String, Object> map = service.list(orderVO);
+		String printList = "";
+		List<OrderVO> orderList = (List<OrderVO>) map.get("list");
+		if (orderList.size() == 0) {
+			printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
+		}
+		for (OrderVO vo : orderList) {
+			printList += "<tr>";
+			printList += "<td location.href='/admin/order/detail?order_no='" + vo.getOrder_no() + ">" + vo.getOrder_no()
+					+ "</td>";
+			printList += "<td>" + vo.getPayment_date() + "</td>";
+			printList += "<td>" + vo.getId() + "</td>";
+			printList += "<td>" + vo.getPayment_price() + "(" + vo.getTotal_amount() + ")</td>";
+			printList += "<td>" + vo.getOrder_status() + "</td>";
+			printList += "</tr>";
+		}
+		map.put("printList", printList);
+		return map;
 	}
 
 //	@ResponseBody

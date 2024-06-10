@@ -5,11 +5,8 @@
 	<sql id="searchSql">
 		<where>
 			<if test="searchWord != null">
-				
 				AND concat_ws("-", `order`.order_no, user.id, item.name)  like '%${searchWord}%'
-
 			</if>
-
 			<if test="filter != null">
 				AND `order`.order_status = #{filter}
 			</if>
