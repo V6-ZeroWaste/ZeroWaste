@@ -62,7 +62,9 @@ public class OrderAdminServiceImpl implements OrderAdminService {
 
 	@Override
 	public int updateDeliveryStatus(OrderVO orderVO) {
+		System.out.println(orderVO.toString());
 		int result = mapper.updateDeliveryStatus(orderVO);
+		System.out.println(result);
 		return result;
 	}
 

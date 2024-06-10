@@ -1,5 +1,7 @@
 package kr.co.soaff.point;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +15,11 @@ public class PointController {
 	@Autowired
 	PointService service;
 	
-	// point 리스트
-	@GetMapping("/point/list")
-	public String list(Model model, PointVO vo) {
-		model.addAttribute("map", service.list(vo));
-		return "admin/user/pointList";
+	// point 리스트 ajax 처리
+	@GetMapping("/point/list.do")
+	@ResponseBody
+	public Map<String, Object> list(PointVO vo) {
+		return service.list(vo);
 	}
 	
 	// point 삭제
