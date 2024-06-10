@@ -38,8 +38,8 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
-    public QnaVO detail(QnaVO vo) {
-        return mapper.detail(vo);
+    public QnaVO detail(int qna_no) {
+        return mapper.detail(qna_no);
     }
 
     @Override
