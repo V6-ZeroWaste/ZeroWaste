@@ -115,6 +115,7 @@
                             	
                             		<div class="datatable-search">
                             			<input id="searchWord" class="datatable-input" type="search" placeholder="회원 아이디/이름 검색" onkeyup="if(window.event.keyCode==13){applyCondition();}">
+                            			<button class="btn btn-primary" onclick="applyCondition();">검색</button>
                             		</div>
                             	</div>
                             	
