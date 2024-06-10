@@ -42,7 +42,7 @@
             
            	$.ajax({
 				type: "GET", // method type
-				url: "/admin/user/list.do", // 요청할 url
+				url: "/admin/user/getList", // 요청할 url
                 data: data, // 전송할 데이터
                 dataType: "json", // 응답 받을 데이터 type
                 success : function(resp){
@@ -93,10 +93,10 @@
         			<div class="container-fluid px-4">
                         <h1 class="mt-4">회원관리</h1>
                         <div class="card mb-4">
-                            <div class="card-header">
+                            <!-- <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 DataTable Example
-                            </div>
+                            </div> -->
                             
                             <div class="card-body">
                              	<!-- 리스트 정렬, 필터 검색 영역  -->
@@ -123,7 +123,7 @@
                                 <table class="datatable-table">
                                     <thead>
                                         <tr>
-                                            <th>회원번호</th>
+                                            <th>회원 번호</th>
                                             <th>아이디</th>
                                             <th>이름</th>
                                             <th>휴대폰</th>
