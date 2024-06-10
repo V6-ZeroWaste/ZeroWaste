@@ -48,7 +48,7 @@ public class PointController {
 	
 	// point 삭제
 	@PostMapping(value="/point/delete", produces = "application/tex; charset=utf8")
-	@ResponseBody()
+	@ResponseBody
 	public String delete(@RequestBody PointVO vo) {
 		String msg = "";
 		if(service.delete(vo.getPoint_no())) {
@@ -59,17 +59,23 @@ public class PointController {
 		return msg;
 	}
 	
+	
+	// point 추가 페이지
+	@GetMapping("/point/form")
+	public String form(Model model, PointVO vo) {
+		return "admin/user/pointForm";
+	}
 	// point 추가
-	@PostMapping("/point/form")
-	public String insert(Model model, PointVO vo) {
+	@PostMapping(value="/point/insert", produces = "application/tex; charset=utf8")
+	@ResponseBody
+	public String insert(@RequestBody PointVO vo) {
+		String msg = "";
 		if(service.insert(vo)) {
-			model.addAttribute("msg", "추가되었습니다.");
-			model.addAttribute("url", "/user/detail");
-		}else{
-			model.addAttribute("msg", "오류: 관리자에게 문의하세요.");
-			model.addAttribute("url", "/user/detail");	
+			msg = "등록 완료";
+		}else {
+			msg = "등록 실패";
 		}
-		return "common/alert";
+		return msg;
 	}
 
 }

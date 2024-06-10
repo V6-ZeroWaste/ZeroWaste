@@ -182,7 +182,7 @@
     	})
         
         
-    	// 포인트 삭제 버튼 클릭시 처리
+    	// 적립금 삭제 버튼 클릭시 처리
     	function pointDelete(obj){
     		if(confirm("삭제하시겠습니까?")){
     			var data = {
@@ -204,6 +204,24 @@
                	})
     		}
     		
+        }
+        
+        
+        // 적립금 추가 팝업 처리
+        function openPopup(){
+        	// 팝업 창 열기
+            var url = "/point/form";
+            var name = "적립금 추가";
+            var option = "width = 500, height = 300, top = 100, left = 200, location = no, resizable=no"
+            var pointForm = window.open(url, name, option);
+            pointForm.onload = function() {
+            	$(pointForm.document).find('#user_no').val(${user.user_no});
+            };
+            // 팝업 창 닫은 후
+            pointForm.onbeforeunload = function() {
+                // 실행할 내용
+            	getList();
+            };
         }
         
     </script>
@@ -298,7 +316,7 @@
                         	<div class="card-body">
                         		<div class="datatable-top">
                             		<div class="datatable-search">
-                            			<button class="btn btn-primary" style="height:38px">추가</button>
+                            			<button class="btn btn-primary" style="height:38px" onclick="openPopup();">추가</button>
                             		</div>
                             		
                             	</div>
