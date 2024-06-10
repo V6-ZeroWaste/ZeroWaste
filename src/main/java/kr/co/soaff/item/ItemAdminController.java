@@ -59,30 +59,26 @@ public class ItemAdminController {
 	@PostMapping("/admin/item/update")
 	public String upadteItem(HttpServletRequest request, ItemVO vo, @RequestParam("file") MultipartFile detail)
 			throws IOException {
-		System.out.println(vo);
-		System.out.println("update");
 		service.update(vo, detail, request);
 		ItemVO vo2 = service.detail(vo);
 		return "redirect:detail?item_no=" + vo.getItem_no();
 	}
 
-	@PostMapping("/admin/item/delete")
+	@PostMapping(value = "/admin/item/delete", produces = "application/tex; charset=utf8")
+	@ResponseBody
 	public String delete(HttpServletRequest request, int itemNo) throws IOException {
+		String msg = "";
 		ItemVO tmp = new ItemVO();
 		tmp.setItem_no(itemNo);
 		ItemVO vo = service.detail(tmp);
-		service.delete(vo, request);
-		return "redirect:list";
+		if (service.delete(vo, request) != 0) {
+			msg = "삭제 완료";
+		} else {
+			msg = "삭제 실패";
+		}
+		return msg;
 	}
 
-//	@PostMapping("/admin/item/deleteImg")
-//	public String deleteImg(HttpServletRequest request, int itemNo) throws IOException {
-//		ItemVO tmp = new ItemVO();
-//		tmp.setItem_no(itemNo);
-//		ItemVO vo = service.detail(tmp);
-//		service.deleteImg(vo, request);
-//		return "redirect:detail?item_no=" + vo.getItem_no();
-//	}
 	@PostMapping(value = "/admin/item/deleteImg", produces = "application/tex; charset=utf8")
 	@ResponseBody
 	public String deleteImg(HttpServletRequest request, int itemNo) throws IOException {

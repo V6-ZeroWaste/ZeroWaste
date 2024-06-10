@@ -77,11 +77,11 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                     type : "POST",
                     data : {itemNo : itemNo},
                     success : function(response){
-                        alert("삭제 성공");
-                        document.location.href = 'index';
+                        alert(response);
+                        document.location.href = 'list';
                     },
                     error: function(xhr, status, error){
-                        alert("삭제 실패: " + error);
+                        alert(response);
                     }
                 });
             }
@@ -164,7 +164,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                             <div class="col-md-3 d-flex flex-column align-items-center">
 							    <img src="/upload/item_img/${item.item_img}" class="img-fluid"/>
 							    <p>${item.item_img}</p>
-							    <input class="btn btn-primary" type="button" name="x" value="이미지삭제버튼" onclick="deleteImg()">
+							    <input class="btn btn-danger" type="button" name="x" value="이미지 삭제" onclick="deleteImg()">
 							</div>
                         </div>
                     </div>
