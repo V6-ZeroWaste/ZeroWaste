@@ -107,7 +107,7 @@
                             <div class="card-body">
                              	<!-- 리스트 정렬, 필터 검색 영역  -->
 								
-												<div class="datatable-dropdown">
+												<div class="datatable-dropdown" style="margin-bottom: 20px">
 													<span>주문 날짜</span>
 													<input id="start_date" name="start_date" type="date" class="datatable-selector" onchange="applyCondition();">-<input id="end_date" name="end_date" type="date" class="datatable-selector" onchange="applyCondition();">
 												</div>
@@ -136,9 +136,18 @@
 														</select>
 													</label>
 												</div>
-												<div class="datatable-search">
-													<input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="주문no/주문한 아이디/상품명" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width: 300px;">
-												</div>
+												
+												<div class="row align-items-center">
+				                                    <div class="col-md-9">
+				                                         <input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="주문no/주문한 아이디/상품명" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width:250px">
+				                                    </div>
+				                                    
+			                                    	<div class="col-md-1">
+			                                        	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition()"> 
+			                                      	</div>
+			                                 	</div>
+													
+											
 											</div>
 						
                            	
