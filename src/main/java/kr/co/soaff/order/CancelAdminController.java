@@ -29,7 +29,8 @@ public class CancelAdminController {
 	@GetMapping("cancel/list")
 	public String index(Model model, CancelAdminListVO vo) {
 		model.addAttribute("map", service.list(vo));
-		return "admin/cancel/list";
+//		return "admin/cancel/list";
+		return "user/review/list";
 	}
 
 //    @GetMapping("/cancelDetail/{order_detail_no}")
