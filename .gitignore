@@ -99,3 +99,6 @@ db.properties
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
 
 /bin/
+
+/.apt_generated/
+/.apt_generated_tests/

@@ -13,16 +13,17 @@
 	
 	<!-- 회원관리 리스트 -->
 	<select id="list" parameterType="kr.co.soaff.user.UserVO">
-		SELECT * FROM user
+		SELECT
+			user_no, id, name, email, zipcode, addr, addr_detail, tel, date
+		FROM user
 		<include refid="searchSql"/>
-		<if test="orderBy == 'date_asc'">
+		<if test="orderBy == '가입일자오래된순'">
 			ORDER BY date ASC
-			LIMIT #{startIdx}, 20
 		</if>
-		<if test="orderBy == 'date_desc'">
+		<if test="orderBy != '가입일자오래된순'">
 			ORDER BY date DESC
-			LIMIT #{startIdx}, 20
 		</if>
+		LIMIT #{startIdx}, 20
 	</select>
 	
 	<!-- 회원관리 리스트 건수 -->
@@ -33,7 +34,9 @@
 		
 	<!--  회원관리 - 상세 -->
 	<select id="detail" parameterType="kr.co.soaff.user.UserVO">
-		SELECT * FROM user WHERE user_no = #{user_no} 
+		SELECT
+			user_no, id, name, email, zipcode, addr, addr_detail, tel, date
+		FROM user WHERE user_no = #{user_no} 
 	</select>
 			
 	<!--  회원관리 - 상세 수정 -->
