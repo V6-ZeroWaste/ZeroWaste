@@ -59,7 +59,7 @@ public class UserAdminController {
 		return "admin/user/detail";
 	}
 	
-	@PostMapping(value="/update", produces = "application/tex; charset=utf8")
+	@PostMapping(value="/update", produces = "application/text; charset=utf8")
 	@ResponseBody()
 	public String update(@RequestBody UserVO vo) {
 		
