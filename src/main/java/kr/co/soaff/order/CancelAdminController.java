@@ -93,6 +93,8 @@ public class CancelAdminController {
 		return ResponseEntity.ok(response);
 	}
 	
+	//aasdasdasddsa
+	
 	@GetMapping("/cancel/force/{order_detail_no}")
 	public String forceDetail(@PathVariable int order_detail_no, Model model) {
 		Map<String, Object> forceDetail = service.forceDetail(order_detail_no);
