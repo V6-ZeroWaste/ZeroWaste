@@ -1,5 +1,9 @@
 package kr.co.soaff.admin;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -20,17 +25,21 @@ public class AdminController {
 	public String login() {
 		return "/admin/login";
 	}
-	@PostMapping("/login")
-	public String login(AdminVO vo, Model model, HttpSession session) {
+	@PostMapping(value="/login")
+	@ResponseBody
+	public void login(AdminVO vo, HttpSession session, HttpServletResponse resp) throws IOException {
 		AdminVO login = service.login(vo);
+		resp.setContentType("text/html;charset=utf8");
+		System.out.println(vo.toString());
+		PrintWriter out = resp.getWriter();
 		if(login == null) {
-			model.addAttribute("msg","아이디, 비밀번호를 확인하세요.");
-			model.addAttribute("url", "/admin/login");
-			return "common/alert";
+			out.print("<script>alert('아이디, 비밀번호를 확인하세요'); history.go(-1)");
+			out.print("</script>");
 		} else {
 			session.setAttribute("login", login);
+			out.print("<script>location.href='/admin/index'");
+			out.print("</script>");
 		}
-		return "redirect:/admin/index";
 	}
 
 }
