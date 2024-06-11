@@ -68,10 +68,10 @@
     <!-- 리뷰 상세 조회 -->
     <select id="detail" parameterType="kr.co.soaff.review.ReviewVO" resultType="kr.co.soaff.review.ReviewVO">
         SELECT
-            review.review_no, review.review_img, item.name as item_name,
-            review.title, review.score, category.name as category_name,
-            review.regist_date, review.exposed_status,
-            review.user_id, review.content
+            review.review_no, review.review_img,review.title, review.content,
+            review.score,review.regist_date, review.exposed_status,
+            item.name as item_name, item.item_no, category.name as category_name,
+            review.user_id, review.user_no
         FROM
             review 
             INNER JOIN item

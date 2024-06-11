@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,20 +19,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/review")
 public class ReviewAdminController {
 	
 	@Autowired
 	private ReviewAdminService service;
 	
-	@GetMapping("/review/list")
+	@GetMapping("/list")
 	public String index(Model model, ReviewVO vo) {
 		model.addAttribute("map", service.list(vo));
 		return "/admin/review/list";
 	}
 	
 	// 회원 상세 페이지 - 리스트 불러오기 (ajax)  
-		@GetMapping("/review/getList") // Do:  회원가입 id 중복 체크
+		@GetMapping("/getList") // Do:  회원가입 id 중복 체크
 		@ResponseBody
 		public Map<String, Object> listAjax(ReviewVO vo){
 			Map<String, Object> map = service.list(vo);
@@ -56,23 +57,25 @@ public class ReviewAdminController {
 			return map;
 		}
 	
-	@GetMapping("/review/detail")
-	public String reply(Model model,@RequestParam int review_no) {
-		ReviewVO vo = new ReviewVO();
-		vo.setReview_no(review_no);
+	@GetMapping("/detail")
+	public String reply(Model model, ReviewVO vo) {
 		model.addAttribute("vo", service.detail(vo));
 		return "/admin/review/detail";
 	}
 	
-	@PostMapping("/review/updateStatus")
-    @ResponseBody
-    public String updateStatus(@RequestParam int review_no, @RequestParam int exposed_status) {
-        ReviewVO vo = new ReviewVO();
-        vo.setReview_no(review_no);
-        vo.setExposed_status(exposed_status);
-        int result = service.updateStatus(vo);
-        return result > 0 ? "성공" : "실패";
-    }
+	@PostMapping(value="/update", produces = "application/tex; charset=utf8")
+	@ResponseBody()
+	public String update(@RequestBody ReviewVO vo) {
+		
+		String msg = "";
+		if(service.updateStatus(vo) == 0) {
+			msg = "수정 실패";
+		}else {
+			msg = "수정 완료";
+		}
+		return msg;
+	}
+
 	
 	
 }
