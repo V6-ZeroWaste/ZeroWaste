@@ -45,7 +45,7 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 		boolean next = endPage < totalPage ? true : false;
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("totalCount", totalCount);
+		map.put("total", totalCount);
 		map.put("totalPage", totalPage);
 		map.put("items", items); // 모델에 직접 넣어줘도 됨
 

@@ -18,6 +18,7 @@
         <script src="/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="/admin/js/datatables-simple-demo.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <style>
 			.col-item-img {
 			    width: 10%;
@@ -44,29 +45,81 @@
 			.col-item-exposed {
 			    width: 12.85%;
 			}
+			.button-container {
+			    display: flex;
+			    justify-content: flex-end;
+			}
         </style>
         <script>
-	        window.onload = function() {
-	            document.querySelectorAll('.itemRow').forEach(function(row) {
-	                row.addEventListener('click', function() {
-	                    var itemNo = this.getAttribute('data-itemno');
-	                    window.location.href = 'detail?item_no=' + itemNo;
-	                });
-	            });
-	
-	            document.querySelector('select[name="filter"]').addEventListener('change', function() {
-	                this.form.submit();
-	            });
-	
-	            document.querySelector('select[name="orderBy"]').addEventListener('change', function() {
-	                this.form.submit();
-	            });
-	        }
         
 	        function regist(){
 	            window.location.href = "regist";
 	        }
 	        
+	        let page = 1;
+	        window.onload=function(){
+	        	  getList();
+	        	}
+	        function applyCondition(){
+	       		page = 1;
+	       		getList();
+	        }
+	        function changePage(obj){
+	       		page = obj.getAttribute("data-page");
+	       		getList();
+	        }
+	        
+	        function getList(){
+	        	var data = {
+	        			searchWord: $('#searchWord').val(),
+	        			orderBy: $('#orderBy').val(),
+	        			filter: $('#filter').val(),
+	        			page: page,
+	        		
+	        	}
+	            
+	           	$.ajax({
+					type: "GET", // method type
+					url: "/admin/item/getList", // 요청할 url
+	                data: data, // 전송할 데이터
+	                dataType: "json", // 응답 받을 데이터 type
+	                success : function(resp){
+	                   	// 데이터 리스트 출력
+	               		$("#printList").html(resp.printList);
+	               		
+	               		// 페이지네이션 출력
+	               		// 총 개수
+	               		$(".datatable-info").html("Showing "+((page-1)*20+1)+" to "+(page*20<=resp.total? page*20 : resp.total)+" of "+resp.total+" entries"); 
+	               		// 페이지네이션
+	               		let printPage = "";
+	               		if(resp.isPrev){
+	               			printPage += '<li class="datatable-pagination-list-item">';
+	               			printPage += '<a data-page="1" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+	               			printPage += '<li class="datatable-pagination-list-item">';
+	               			printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+	               		}
+	               		for(i = resp.startPage; i<=resp.endPage; i++){
+	               			printPage += '<li class="datatable-pagination-list-item'+(i==page? ' datatable-active' : '')+'">';
+	               			printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link" onclick="changePage(this);">'+i+'</a></li>';
+	               		}
+	               		if(resp.isNext){
+	               			printPage += '<li class="datatable-pagination-list-item">';
+	               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+	               			printPage += '<li class="datatable-pagination-list-item">';
+	               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+	               		}
+	               		$(".datatable-pagination-list").html(printPage);
+	               		
+	                   	
+	                   	
+	                },
+	                error:function (data, textStatus) {
+	                    $('#fail').html("관리자에게 문의하세요.") // 서버오류
+	                    console.log('error', data, textStatus);
+	                }
+	           	})
+	        	
+			}
         </script>
     </head>
     <body>
@@ -77,52 +130,50 @@
         		<main>
         			<div class="container-fluid px-4">
                         <h1 class="mt-4">상품 관리</h1>
+                        <div class="button-container">
+	                        <input type="button" class="btn btn-primary my-2" onclick="regist()" value="등록">
+                        </div>
                         <div class="card mb-4">
-
                             <div class="card-body">
                             	<div class="container-fluid px-4 d-flex justify-content-end">
-                            	<input type="button" class="btn btn-primary my-2" onclick="regist()" value="등록">
                             	</div>
-                             	<!-- 리스트 정렬, 필터 검색 영역  -->
-								<form method="get" name="searchForm" id="searchForm" action="list">
-										<div class="datatable-dropdown">
-											<label>
-												<select name="orderBy" class="datatable-selector">
-													<option value="등록일자역순" <c:if test="${param.orderBy == '등록일자역순'}">selected</c:if>>등록일자역순</option>
-                                                     <option value="등록일자순" <c:if test="${param.orderBy == '등록일자순'}">selected</c:if>>등록일자순</option>
-                                                     <option value="재고량많은순" <c:if test="${param.orderBy == '재고량많은순'}">selected</c:if>>재고량많은순</option>
-                                                     <option value="재고량적은순" <c:if test="${param.orderBy == '재고량적은순'}">selected</c:if>>재고량적은순</option>
-                                                     <option value="판매수량많은순" <c:if test="${param.orderBy == '판매수량많은순'}">selected</c:if>>판매수량많은순</option>
-                                                     <option value="판매수량적은순" <c:if test="${param.orderBy == '판매수량적은순'}">selected</c:if>>판매수량적은순</option>
-												</select>
-											</label>
-											<label>
-												<select name="filter" class="datatable-selector">
-													<option value="">모든 카테고리</option>
-                                                        <c:forEach var="category" items="${categories}">
-                                                            <c:if test="${param.filter == category.category_no}">
-                                                                <option value="${category.category_no}" selected>${category.name}</option>
-                                                            </c:if>
-                                                            <c:if test="${param.filter != category.category_no}">
-                                                                <option value="${category.category_no}">${category.name}</option>
-                                                            </c:if>
-                                                        </c:forEach>
-												</select>
-											</label>
-											<div class="datatable-top">
-												<div class="row align-items-center">
-												<div class="col-md-9">
-							        				<input name="searchWord" class="datatable-input" type="search" placeholder="상품명/상품 번호 입력" 
-    												value="${item.searchWord != null ? item.searchWord : ''}">
-							        			</div>
-												<div class="col-md-1">
-							        				<input type="submit" value="검색" class="btn btn-primary"> 
-							        			</div>
-												</div>
-											</div>
-										</div>
-							    </form>   
-                           	
+                            	<!-- 리스트 정렬, 필터 검색 영역  -->
+								<div class="datatable-dropdown row align-items-center">
+								    <div class="col-md-8">
+								        <label>
+								            <select name="orderBy" id="orderBy" class="datatable-selector" onchange="applyCondition();">
+								                <option value="등록일자역순" <c:if test="${param.orderBy == '등록일자역순'}">selected</c:if>>등록일자역순</option>
+								                <option value="등록일자순" <c:if test="${param.orderBy == '등록일자순'}">selected</c:if>>등록일자순</option>
+								                <option value="재고량많은순" <c:if test="${param.orderBy == '재고량많은순'}">selected</c:if>>재고량많은순</option>
+								                <option value="재고량적은순" <c:if test="${param.orderBy == '재고량적은순'}">selected</c:if>>재고량적은순</option>
+								                <option value="판매수량많은순" <c:if test="${param.orderBy == '판매수량많은순'}">selected</c:if>>판매수량많은순</option>
+								                <option value="판매수량적은순" <c:if test="${param.orderBy == '판매수량적은순'}">selected</c:if>>판매수량적은순</option>
+								            </select>
+								        </label>
+								        <label>
+								            <select name="filter" id="filter" class="datatable-selector" onchange="applyCondition();">
+								                <option value="">모든 카테고리</option>
+								                <c:forEach var="category" items="${categories}">
+								                    <c:if test="${param.filter == category.category_no}">
+								                        <option value="${category.category_no}" selected>${category.name}</option>
+								                    </c:if>
+								                    <c:if test="${param.filter != category.category_no}">
+								                        <option value="${category.category_no}">${category.name}</option>
+								                    </c:if>
+								                </c:forEach>
+								            </select>
+								        </label>
+								    </div>
+								    <div class="col-md-3">
+								        <div class="form-inline">
+								            <input name="searchWord" id="searchWord" class="datatable-input" type="search" placeholder="상품명/상품 번호 입력" 
+								                value="${item.searchWord != null ? item.searchWord : ''}">
+								        </div>
+								    </div>
+								    <div class="col-md-1">
+								    	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition();">
+								    </div>
+								</div>
 								
                             	
                             	<!-- 리스트 영역 -->
@@ -140,49 +191,8 @@
 								                <th class="col-item-exposed">노출 여부</th>
 								            </tr>
 								        </thead>
-								        <tbody>
-								            <c:forEach var="item" items="${map.items}">
-								                <tr class="itemRow" data-itemno="${item.item_no}">
-								                    <td class="col-item-no">
-								                        ${item.item_no}
-								                    </td>
-								                    <td class="col-item-img">
-								                        <div class="img-container">
-								                            <img src="/upload/item_img/${item.item_img}" class="fixed-size-img"/>
-								                        </div>
-								                        ${item.item_img}
-								                    </td>
-								                    <td class="col-item-name">
-								                        ${item.name}
-								                    </td>
-								                    <td class="col-item-price">
-								                        ${item.price}
-								                    </td>
-								                    <td class="col-item-discount">
-								                        ${item.discounted_price}
-								                        <c:if test="${item.discount_rate != null && item.discount_rate != 0}">
-								                            (${item.discount_rate}%)
-								                        </c:if>
-								                        <c:if test="${item.discount_rate == null || item.discount_rate == 0}">
-								                            (-)
-								                        </c:if>
-								                    </td>
-								                    <td class="col-item-category">
-								                        ${item.category_name}
-								                    </td>
-								                    <td class="col-item-amount">
-								                        ${item.amount}
-								                    </td>
-								                    <td class="col-item-exposed">
-								                        <c:if test="${item.exposed_status}">
-								                            O
-								                        </c:if>
-								                        <c:if test="${!item.exposed_status}">
-								                            X
-								                        </c:if>
-								                    </td>
-								                </tr>
-								            </c:forEach>
+								        <tbody id="printList">
+								        	
 								        </tbody>
 								    </table>
 								</div>
@@ -193,26 +203,6 @@
 							    <div class="datatable-info">Showing ${item.page} to ${map.totalPage } of ${map.count } entries</div>
 							    <nav class="datatable-pagination">
 							    	<ul class="datatable-pagination-list">
-							    		
-							    		<c:if test="${map.isPrev }">
-							    			<li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-				                        		<a href="list?page=${map.startPage-1 }&start_date=${item.start_date}&end_date=${item.end_date}&orderBy=${item.orderBy}&filter=${item.filter}&searchWord=${item.searchWord}">‹‹</a>
-				                        	</li>
-				                        </c:if>
-				                        
-				                        <c:forEach var="p" begin="${map.startPage}" end="${map.endPage}">
-				                        	<c:if test="${p == item.page}">
-					                            <li class="datatable-pagination-list-item datatable-active">
-					                            	<a href='#;' class='current'>${p}</a>
-					                            </li>
-				                            </c:if>
-				                            <c:if test="${p != item.page}">
-					                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-					                            	<a href="list?page=${map.startPage-1 }&start_date=${item.start_date}&end_date=${item.end_date}&orderBy=${item.orderBy}&filter=${item.filter}&searchWord=${item.searchWord}">${p}</a>
-					                            </li>
-				                            </c:if>
-			                        	</c:forEach>
-
 							    	</ul>
 							    </nav>
 							    </div>

@@ -2,6 +2,7 @@ package kr.co.soaff.item;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,8 +31,51 @@ public class ItemAdminController {
 		return "admin/item/list";
 	}
 
+	@GetMapping("/admin/item/getList")
+	@ResponseBody
+	public Map<String, Object> listAjax(HttpServletRequest request, ItemVO vo) {
+		Map<String, Object> map = service.index(vo);
+		String printList = "";
+		List<ItemVO> itemList = (List<ItemVO>) map.get("items");
+		for (ItemVO item : itemList) {
+			printList += "<tr class='itemRow' onclick=\"location.href='/admin/item/detail?item_no=" + item.getItem_no()
+					+ "'\">";
+			printList += "<td class=\"col-item-no\">" + item.getItem_no() + "</td>";
+
+			printList += "<td class=\"col-item-img\">";
+			printList += "<div class='img-container'>";
+			if (item.getItem_img() != null && !item.getItem_img().equals("")) {
+				printList += "<img src='/upload/item_img/" + item.getItem_img() + "' class='fixed-size-img'/>";
+			}
+			printList += "</div>";
+			printList += "</td>";
+
+			printList += "<td class=\"col-item-name\">" + item.getName() + "</td>";
+			printList += "<td class=\"col-item-price\">" + item.getPrice() + "</td>";
+
+			printList += "<td class=\"col-item-discount\">";
+			printList += item.getDiscounted_price();
+			printList += item.getDiscount_rate() == 0 ? "(-)" : "(" + item.getDiscount_rate() + "%)";
+			printList += "</td>";
+
+			printList += "<td class=\"col-item-category\">" + item.getCategory_name() + "</td>";
+			printList += "<td class=\"col-item-amount\">" + item.getAmount() + "</td>";
+
+			printList += "<td class=\"col-item-exposed\">";
+			printList += item.isExposed_status() ? "O" : "X";
+			printList += "</td>";
+			printList += "</tr>";
+		}
+
+		List<CategoryVO> categories = service.categories();
+		request.setAttribute("categories", categories);
+		map.put("printList", printList);
+		return map;
+	}
+
 	@GetMapping("/admin/item/detail")
 	public String detail(HttpServletRequest request, ItemVO vo) {
+		System.out.println(vo);
 		ItemVO item = service.detail(vo);
 		List<CategoryVO> categories = service.categories();
 		request.setAttribute("item", item);
