@@ -45,6 +45,10 @@
 			.col-item-exposed {
 			    width: 12.85%;
 			}
+			.button-container {
+			    display: flex;
+			    justify-content: flex-end;
+			}
         </style>
         <script>
         
@@ -126,50 +130,50 @@
         		<main>
         			<div class="container-fluid px-4">
                         <h1 class="mt-4">상품 관리</h1>
+                        <div class="button-container">
+	                        <input type="button" class="btn btn-primary my-2" onclick="regist()" value="등록">
+                        </div>
                         <div class="card mb-4">
-
                             <div class="card-body">
                             	<div class="container-fluid px-4 d-flex justify-content-end">
-                            	<input type="button" class="btn btn-primary my-2" onclick="regist()" value="등록">
                             	</div>
-                             	<!-- 리스트 정렬, 필터 검색 영역  -->
-								<div class="datatable-dropdown">
-									<label>
-										<select name="orderBy" id="orderBy" class="datatable-selector" onchange="applyCondition();">
-											<option value="등록일자역순" <c:if test="${param.orderBy == '등록일자역순'}">selected</c:if>>등록일자역순</option>
-                                                   <option value="등록일자순" <c:if test="${param.orderBy == '등록일자순'}">selected</c:if>>등록일자순</option>
-                                                   <option value="재고량많은순" <c:if test="${param.orderBy == '재고량많은순'}">selected</c:if>>재고량많은순</option>
-                                                   <option value="재고량적은순" <c:if test="${param.orderBy == '재고량적은순'}">selected</c:if>>재고량적은순</option>
-                                                   <option value="판매수량많은순" <c:if test="${param.orderBy == '판매수량많은순'}">selected</c:if>>판매수량많은순</option>
-                                                   <option value="판매수량적은순" <c:if test="${param.orderBy == '판매수량적은순'}">selected</c:if>>판매수량적은순</option>
-										</select>
-									</label>
-									<label>
-										<select name="filter" id="filter" class="datatable-selector" onchange="applyCondition();">
-											<option value="">모든 카테고리</option>
-                                                      <c:forEach var="category" items="${categories}">
-                                                          <c:if test="${param.filter == category.category_no}">
-                                                              <option value="${category.category_no}" selected>${category.name}</option>
-                                                          </c:if>
-                                                          <c:if test="${param.filter != category.category_no}">
-                                                              <option value="${category.category_no}">${category.name}</option>
-                                                          </c:if>
-                                                      </c:forEach>
-										</select>
-									</label>
-									<div class="datatable-top">
-										<div class="row align-items-center">
-										<div class="col-md-9">
-					        				<input name="searchWord" id="searchWord" class="datatable-input" type="search" placeholder="상품명/상품 번호 입력" 
-  												value="${item.searchWord != null ? item.searchWord : ''}">
-					        			</div>
-										<div class="col-md-1">
-					        				<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition();"> 
-					        			</div>
-										</div>
-									</div>
+                            	<!-- 리스트 정렬, 필터 검색 영역  -->
+								<div class="datatable-dropdown row align-items-center">
+								    <div class="col-md-8">
+								        <label>
+								            <select name="orderBy" id="orderBy" class="datatable-selector" onchange="applyCondition();">
+								                <option value="등록일자역순" <c:if test="${param.orderBy == '등록일자역순'}">selected</c:if>>등록일자역순</option>
+								                <option value="등록일자순" <c:if test="${param.orderBy == '등록일자순'}">selected</c:if>>등록일자순</option>
+								                <option value="재고량많은순" <c:if test="${param.orderBy == '재고량많은순'}">selected</c:if>>재고량많은순</option>
+								                <option value="재고량적은순" <c:if test="${param.orderBy == '재고량적은순'}">selected</c:if>>재고량적은순</option>
+								                <option value="판매수량많은순" <c:if test="${param.orderBy == '판매수량많은순'}">selected</c:if>>판매수량많은순</option>
+								                <option value="판매수량적은순" <c:if test="${param.orderBy == '판매수량적은순'}">selected</c:if>>판매수량적은순</option>
+								            </select>
+								        </label>
+								        <label>
+								            <select name="filter" id="filter" class="datatable-selector" onchange="applyCondition();">
+								                <option value="">모든 카테고리</option>
+								                <c:forEach var="category" items="${categories}">
+								                    <c:if test="${param.filter == category.category_no}">
+								                        <option value="${category.category_no}" selected>${category.name}</option>
+								                    </c:if>
+								                    <c:if test="${param.filter != category.category_no}">
+								                        <option value="${category.category_no}">${category.name}</option>
+								                    </c:if>
+								                </c:forEach>
+								            </select>
+								        </label>
+								    </div>
+								    <div class="col-md-3">
+								        <div class="form-inline">
+								            <input name="searchWord" id="searchWord" class="datatable-input" type="search" placeholder="상품명/상품 번호 입력" 
+								                value="${item.searchWord != null ? item.searchWord : ''}">
+								        </div>
+								    </div>
+								    <div class="col-md-1">
+								    	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition();">
+								    </div>
 								</div>
-                           	
 								
                             	
                             	<!-- 리스트 영역 -->
