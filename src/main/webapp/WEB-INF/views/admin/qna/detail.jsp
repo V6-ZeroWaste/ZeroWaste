@@ -122,7 +122,7 @@
                         <!-- 제목 -->
                         <div class="title">
                             <h1 class="mt-4">상품 문의 상세</h1>
-                            <input class="btn btn-primary" type="button" style="height:38px" onclick="history.back()" value="돌아가기"> 
+                            <input class="btn btn-primary" type="button" style="height:38px" onclick="location.href = '/admin/qna/list'" value="돌아가기"> 
                         </div>
                         
                         <!-- 문의 영역 -->
@@ -141,7 +141,7 @@
                                         </tr>
                                         <tr>
                                             <th>답변 상태</th>
-                                            <td>${vo.replyState}</td>
+                                            <td class="h5">${vo.replyState}</td>
                                             <th>문의 유형</th>
                                             <td>${vo.type}</td>
                                         </tr>
@@ -161,14 +161,21 @@
                                         </tr>
                                         <tr>
                                             <th>문의 내용</th>
-                                            <td colspan="3">
+                                           	<c:if test="${not empty vo.qna_img}">
+                                            <td colspan="1">                                                
                                                 <div>
-                                                    <img src="/upload/qna_img/${vo.qna_img}" class="img-fluid"/>
-                                                </div>
-                                                <div>
-                                                    ${vo.content}
+                                                    <img src="/upload/qna_img/${vo.qna_img}" class="img-fluid"/>	                                                                                                     
                                                 </div>
                                             </td>
+                                            <td colspan="2">
+                                                	${vo.content}
+                                            </td>
+                                            </c:if>
+                                              	<c:if test="${empty vo.qna_img}">
+                                            <td colspan="3">
+                                            	${vo.content}                                                 
+                                            </td>                                                	                                      
+                                            </c:if> 
                                         </tr>
                                     </tbody>
                                 </table>

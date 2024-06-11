@@ -79,18 +79,18 @@ public class QnaController {
 
     @PostMapping("/qna/updateReply")
     @ResponseBody
-    public String updateReply(@RequestParam int qna_no, @RequestParam String reply) {
+    public int updateReply(@RequestParam int qna_no, @RequestParam String reply) {
         QnaVO vo = new QnaVO();
         vo.setQna_no(qna_no);
         vo.setReply(reply);
         int result = service.updateReply(vo);
-        return result > 0 ? "success" : "failure";
+        return result > 0 ? 1 : 0;
     }
 
     @PostMapping("/qna/deleteReply")
     @ResponseBody
-    public String deleteReply(@RequestParam int qna_no) {
+    public int deleteReply(@RequestParam int qna_no) {
         int result = service.deleteReply(qna_no);
-        return result > 0 ? "success" : "failure";
+        return result > 0 ? 1 : 0;
     }
 }
