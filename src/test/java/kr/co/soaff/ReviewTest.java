@@ -23,7 +23,6 @@ public class ReviewTest {
 	@Autowired
 	ReviewAdminMapper mapper;
 
-	
 // 리스트 & 카운트 ----------------------------------------------------------------------------------------
 // 테스트내용 
 // [완료] 검색어 
@@ -36,11 +35,11 @@ public class ReviewTest {
 	@Test
 	public void list() {
 		ReviewVO vo = new ReviewVO();
-		
+
 		// 검색어 적용
 		vo.setSearchWord("4");
 //		vo.setSearchWord("리뷰");
-		
+
 		// 날짜 적용
 		Calendar calendar = Calendar.getInstance();
 		// 시작 시간은 00:00:00
@@ -51,24 +50,19 @@ public class ReviewTest {
 		calendar2.set(2024, Calendar.JUNE, 6, 23, 59, 59);
 		long timeInMillis2 = calendar2.getTimeInMillis();
 		Timestamp timestamp2 = new Timestamp(timeInMillis2);
-		
-			 
-		vo.setStartDate(timestamp); // 시작날짜
-		vo.setEndDate(timestamp2); // 종료날
-		
-		
-		
+
+//		vo.setStartDate(timestamp); // 시작날짜
+//		vo.setEndDate(timestamp2); // 종료날
+
 		// 정렬적용
 		vo.setOrderBy("최신순");
 		vo.setOrderBy("오래된순");
 		vo.setOrderBy("평점높은순");
 //		vo.setOrderBy("평점낮은순");
-			
-		
+
 		log.info(mapper.list(vo));
 		System.out.println(mapper.count(vo));
 	}
-
 
 // 상세 ----------------------------------------------------------------------------------------
 	@Test
