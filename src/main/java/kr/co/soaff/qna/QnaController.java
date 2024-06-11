@@ -72,9 +72,9 @@ public class QnaController {
 
     @PostMapping("/qna/deleteContent")
     @ResponseBody
-    public String deleteContent(@RequestParam int qna_no) {
+    public int deleteContent(@RequestParam int qna_no) {
         int result = service.deleteContent(qna_no);
-        return result > 0 ? "success" : "failure";
+        return result > 0 ? 1 : 0;
     }
 
     @PostMapping("/qna/updateReply")

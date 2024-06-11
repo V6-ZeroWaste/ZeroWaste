@@ -50,7 +50,7 @@
                         reply: reply
                     },
                     success: function(response) {
-                        if (response === "success") {
+                        if (response === 1) {
                             alert("답변이 등록/수정되었습니다.");
                             location.reload();
                         } else {
@@ -75,7 +75,7 @@
                         url: "/qna/deleteReply",
                         data: { qna_no: ${vo.qna_no} },
                         success: function(response) {
-                            if (response === "success") {
+                            if (response === 1) {
                                 alert("답변이 삭제되었습니다.");
                                 location.reload();
                             } else {
@@ -84,6 +84,7 @@
                         },
                         error: function() {
                             alert("서버와의 통신 중 오류가 발생했습니다.");
+                            location.href = "/admin/qna/list";
                         }
                     });
                 }
@@ -96,7 +97,7 @@
                         url: "/qna/deleteContent",
                         data: { qna_no: ${vo.qna_no} },
                         success: function(response) {
-                            if (response === "success") {
+                            if (response === 1) {
                                 alert("문의가 삭제되었습니다.");
                                 location.href = "/admin/qna/list";
                             } else {
@@ -219,9 +220,6 @@
                                 <button id="deleteReply" class="btn btn-danger" onclick="handleDeleteReply();" style="height:38px">삭제</button>        
                             </c:if>
                         </div>
-
-                        <!-- 추가된 답변 입력 필드 -->
-                        <div id="replyContainer"></div>
                     </div>
                 </main>
                 <%@ include file="/WEB-INF/views/admin/include/footer.jsp" %>
