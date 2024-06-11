@@ -1,142 +1,145 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.qna.QnaAdminMapper">
-<sql id ="orderBySql">
-    <if test="orderBy == null and startDate == null and endDate == null">
-        ORDER BY reply_date asc, question_date asc <!-- null 정렬할때 무조건 asc -->
-    </if>
-    <if test="orderBy =='최신순'">
-        <choose>
-            <when test="startDate != null and endDate != null">
-                ORDER BY question_date desc
-            </when>
-            <otherwise>
-                ORDER BY qna.question_date desc
-            </otherwise>
-        </choose>
-    </if>
-    <if test="orderBy =='오래된순'">
-        <choose>
-            <when test="startDate != null and endDate != null">
-                ORDER BY question_date asc
-            </when>
-            <otherwise>
-                ORDER BY qna.question_date asc
-            </otherwise>
-        </choose>
-    </if>
-</sql>
 
-	
-
-   <sql id="filter">
-    <where>
-        <choose>
-            <when test="filter == '답변안함'">
-                qna.reply IS NULL
-                <include refid="searchAndCal"/>
-            </when>
-            <when test="filter == '답변함'">
-                qna.reply IS NOT NULL
-                <include refid="searchAndCal"/>
-            </when>
-            <when test="filter == null">
-            	1=1
-                <include refid="searchAndCal"/>
-            </when>
-        </choose>
-     </where>
-	</sql>
-    
-    
-   <!-- 검색어, 달력 처리 -->
-    <sql id="searchAndCal">
-            <if test="searchWord != null and searchWord != ''">
-                AND(
-                item.name LIKE CONCAT('%${searchWord}%')
-                OR 
-                qna.title LIKE CONCAT('%${searchWord}%')
-                OR 
-                item.category_name LIKE CONCAT('%${searchWord}%')
-                )
-            </if>
-            <if test="searchWord == null or searchWord == ''">
-                AND 1=1
-            </if>
+    <sql id="orderBySql">
+        <if test="orderBy == null or orderBy == ''">
+            ORDER BY reply_date ASC, question_date ASC
+        </if>
+        <if test="orderBy == '최신순'">
             <choose>
-                <when test="startDate != null and endDate != null">
-                    AND qna.question_date BETWEEN #{startDate} AND #{endDate}
+                <when test="start_date != null and end_date != null">
+                    ORDER BY question_date DESC
                 </when>
-                <when test="startDate != null and endDate == null">
-                    AND qna.question_date >= #{startDate}
-                </when>
-                <when test="endDate != null and startDate == null">
-                    AND  #{endDate} >= qna.question_date
-                </when>
+                <otherwise>
+                    ORDER BY qna.question_date DESC
+                </otherwise>
             </choose>
+        </if>
+        <if test="orderBy == '오래된순'">
+            <choose>
+                <when test="start_date != null and end_date != null">
+                    ORDER BY question_date ASC
+                </when>
+                <otherwise>
+                    ORDER BY qna.question_date ASC
+                </otherwise>
+            </choose>
+        </if>
     </sql>
-     
-	<select id="list" parameterType="kr.co.soaff.qna.QnaVO" resultType="kr.co.soaff.qna.QnaVO">
-		SELECT 
-			qna.qna_no,item.name,qna.type,
-			qna.title,qna.user_id,qna.question_date,
-			qna.reply_date
-		FROM
-			qna  
-			INNER JOIN item
-			On qna.item_no = item.item_no
-		<include refid="filter"/>
-		<include refid="orderBySql"/>
-		LIMIT #{startIdx}, 20
-	</select>
 
-	<select id="detail" parameterType="kr.co.soaff.qna.QnaVO" resultType="kr.co.soaff.qna.QnaVO">
-		SELECT
-			qna.qna_no,qna.question_date,qna.title,qna.type,
-			qna.user_id,qna.content,item.name,
-			qna.reply,qna.reply_date
-		FROM
-			qna 
-			INNER JOIN item
-			On qna.item_no = item.item_no
-		WHERE
-			qna.qna_no = #{qna_no}
-	</select>
-	
-	<!-- 답변이 널이 될 수 없으니까 전체 삭제가 맞겠지?? -->
-	<delete id="deleteContent" parameterType="int">
-		DELETE FROM qna
-		WHERE qna_no = #{qna.no};
-	</delete>
-	
-	<update id="updateReply" parameterType="kr.co.soaff.qna.QnaVO">
-		<if test="reply!=null">
-		UPDATE 
-			qna
-		SET 
-			reply = #{reply}, reply_date = current_timestamp()
-		WHERE
-			qna_no = #{qna_no};
-		</if>
-	</update>
-	
-	<update id="deleteReply" parameterType="int">
-		UPDATE 
-			qna 
-		SET 
-			reply = NULL, reply_date = NULL 
-		WHERE
-			(qna_no = #{qna_no});	
-	</update>
+    <sql id="filter">
+        <where>
+            <choose>
+                <when test="filter == '답변대기'">
+                    qna.reply IS NULL
+                    <include refid="searchAndCal"/>
+                </when>
+                <when test="filter == '답변완료'">
+                    qna.reply IS NOT NULL
+                    <include refid="searchAndCal"/>
+                </when>
+                <otherwise>
+                    1=1
+                    <include refid="searchAndCal"/>
+                </otherwise>
+            </choose>
+        </where>
+    </sql>
 
-	<select id="count" parameterType="kr.co.soaff.qna.QnaVO" resultType="int">
-		SELECT 
-			count(*)
-		FROM
-			qna  
-			INNER JOIN item
-			On qna.item_no = item.item_no
-		<include refid="filter"/>
-	</select>
+    <!-- 검색어, 달력 처리 -->
+    <sql id="searchAndCal">
+        <if test="searchWord != null and searchWord != ''">
+            AND (
+                item.name LIKE CONCAT('%', #{searchWord}, '%')
+                OR qna.title LIKE CONCAT('%', #{searchWord}, '%')
+                OR qna.user_id LIKE CONCAT('%', #{searchWord}, '%')
+            )
+        </if>
+        
+           <!--  <when test="(start_date != null and start_date != '') and (end_date != null and end_date != '')">
+                AND qna.question_date BETWEEN #{start_date} AND #{end_date}
+            </when>
+            <when test="(start_date != null and start_date != '') and (end_date == null or end_date == '')">
+                <![CDATA[
+                AND qna.question_date >= #{start_date}
+                ]]>
+            </when>
+            <when test="(end_date != null and end_date != '') and (start_date == null or start_date == '')">
+                <![CDATA[
+                AND qna.question_date <= #{end_date}
+                ]]>
+            </when>
+             -->
+            <if test="(start_date != null and start_date != '')">
+                <![CDATA[
+                AND qna.question_date >= #{start_date}
+                ]]>
+            </if>
+            <if test="(end_date != null and end_date != '')">
+                <![CDATA[
+                AND qna.question_date < DATE_ADD(STR_TO_DATE(#{end_date}, '%Y-%m-%d'), INTERVAL 1 DAY)
+                ]]>
+            </if>
+        
+    </sql>
+
+    <select id="list" parameterType="kr.co.soaff.qna.QnaVO" resultType="kr.co.soaff.qna.QnaVO">
+        SELECT 
+            qna.qna_no, item.name, qna.type,
+            qna.title, qna.user_id, qna.question_date,
+            qna.reply_date
+        FROM
+            qna  
+            INNER JOIN item
+            ON qna.item_no = item.item_no
+        <include refid="filter"/>
+        <include refid="orderBySql"/>
+        LIMIT #{startIdx}, 20
+    </select>
+
+    <select id="detail" parameterType="int" resultType="kr.co.soaff.qna.QnaVO">
+        SELECT
+            qna.qna_no, qna.question_date, qna.title, qna.type,
+            qna.user_id, qna.content, item.name,item.item_no,
+            qna.reply, qna.reply_date,qna.qna_img
+        FROM
+            qna 
+            INNER JOIN item
+            ON qna.item_no = item.item_no
+        WHERE
+            qna.qna_no = #{qna_no}
+    </select>
+
+    <delete id="deleteContent" parameterType="int">
+        DELETE FROM qna
+        WHERE qna_no = #{qna_no};
+    </delete>
+
+    <update id="updateReply" parameterType="kr.co.soaff.qna.QnaVO">
+        <if test="reply != null">
+            UPDATE qna
+            SET 
+                reply = #{reply}, reply_date = current_timestamp()
+            WHERE
+                qna_no = #{qna_no};
+        </if>
+    </update>
+
+    <update id="deleteReply" parameterType="int">
+        UPDATE qna
+        SET 
+            reply = NULL, reply_date = NULL 
+        WHERE
+            qna_no = #{qna_no};    
+    </update>
+
+    <select id="count" parameterType="kr.co.soaff.qna.QnaVO" resultType="int">
+        SELECT count(*)
+        FROM qna  
+        INNER JOIN item
+        ON qna.item_no = item.item_no
+        <include refid="filter"/>
+    </select>
 
 </mapper>
