@@ -34,7 +34,7 @@
                                 <div class="card bg-danger text-white mb-4">
                                     <div class="card-body fw-bold fs-5 text" >취소 요청 2건</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="/admin/cancel/list">자세히 보기</a>
+                                        <a class="small text-white stretched-link" href="/admin/cancel/list?filter=0">자세히 보기</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
@@ -43,7 +43,7 @@
                                 <div class="card bg-warning text-white mb-4">
                                     <div class="card-body fw-bold fs-5 text">문의 요청 1건</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="/admin/qna/list">자세히 보기</a>
+                                        <a class="small text-white stretched-link" href="/admin/qna/list?filter=답변대기">자세히 보기</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
@@ -73,7 +73,7 @@
                         <div class="row">
                             <div class="col-xl-6">
                                 <div class="card mb-4">
-                                    <div class="card-header">
+                                    <div class="card-header" onclick="location.href=''">
                                         <i class="fas fa-chart-area me-1"></i>
                                         매출 통계
                                     </div>
@@ -82,7 +82,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <div class="card mb-4">
-                                    <div class="card-header">
+                                    <div class="card-header" onclick="location.href=''">
                                         <i class="fas fa-chart-bar me-1"></i>
                                         상품 통계
                                     </div>
@@ -91,7 +91,7 @@
                             </div>
                             <div class="col-xl-6">
                                 <div class="card mb-4">
-                                    <div class="card-header">
+                                    <div class="card-header" onclick="location.href=''">
                                         <i class="fas fa-chart-bar me-1"></i>
                                         회원 통계
                                     </div>

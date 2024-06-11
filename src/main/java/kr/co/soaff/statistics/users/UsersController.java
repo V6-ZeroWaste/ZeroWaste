@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/statistics/users")
+@RequestMapping("/admin/statistics/users")
 public class UsersController {
 	@Autowired
 	private UsersService service;
 
 	@GetMapping("/index")
 	public String login() {
-		return "/admin/login";
+		return "/admin/statistics/users";
 	}
 
 }
