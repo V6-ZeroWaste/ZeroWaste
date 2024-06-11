@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>회원 관리</title>
+        <title>문의 관리</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -105,21 +105,16 @@
         	<div id="layoutSidenav_content">
         		<main>
         			<div class="container-fluid px-4">
-                        <h1 class="mt-4">회원관리</h1>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
-                            </div>
-                            
+                        <h1 class="mt-4">문의 관리</h1>
+                        <div class="card mb-4">                            
                             <div class="card-body">
                              	<!-- 리스트 정렬, 필터 검색 영역  -->
-                        	   <div class="datatable-dropdown">
-                                  <span>문의 일자</span>
-                                  <input id="start_date" name="start_date" type="date" class="datatable-selector" onchange="applyCondition();">-<input id="end_date" name="end_date" type="date" class="datatable-selector" onchange="applyCondition();">
+                        	   <div class="datatable-dropdown" style="margin-bottom: 20px">
+                                  	<span>문의 일자</span>
+                                  	<input id="start_date" name="start_date" type="date" class="datatable-selector" onchange="applyCondition();">-<input id="end_date" name="end_date" type="date" class="datatable-selector" onchange="applyCondition();">
+                                  
                                </div>   
-                            	<div class="datatable-top">
-						 
+                            	<div class="datatable-top">						 
                             		<div class="datatable-dropdown">
 							            <label>
 							                <select id="orderBy" class="datatable-selector" onchange="applyCondition();">
@@ -136,13 +131,15 @@
                                           </select>
                                        </label>
 							        </div>
-							     
-                            	
-                            		<div class="datatable-search">
-                            			<input id="searchWord" class="datatable-input" type="search" placeholder="회원 아이디/이름 검색" onkeyup="if(window.event.keyCode==13){applyCondition();}">
-                            		</div>
+							     <div class="row align-items-center">
+                            	 <div class="col-md-9">
+                                        <input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="상품명/주문한 아이디/문의 제목" <c:if test="${qnaVO.searchWord} != null">value=${qnaVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width:280px">
+                                 </div>                                    
+                                 <div class="col-md-1">
+                                       	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition()"> 
+                                 </div>
                             	</div>
-                            	
+                            	</div>
                             	<!-- 리스트 영역 -->
                             	<div class="datatable-container">
                                 <table class="datatable-table">

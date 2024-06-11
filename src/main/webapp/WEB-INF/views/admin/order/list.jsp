@@ -59,7 +59,7 @@
 												</select>
 											</label>
 											<div class="datatable-top">
-												<input name="SearchWord" class="datatable-input" type="search" placeholder="주문no/주문한 아이디/상품명" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if>>
+												<input name="SearchWord" class="datatable-input" type="search" placeholder="상품명/주문한 아이디/문의 제목" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if>>
 												<input type="submit" value="검색" class="btn btn-primary">
 											</div>
 										</div>
