@@ -68,12 +68,6 @@
                 updateReply(${vo.qna_no}, replyContent);
             }
 
-            function handleFixReply() {
-                if (replyContent !== null) {
-                    updateReply(${vo.qna_no}, replyContent);
-                }
-            }
-
             function handleDeleteReply() {
                 if (confirm("정말 삭제하시겠습니까?")) {
                     $.ajax({
@@ -104,7 +98,7 @@
                         success: function(response) {
                             if (response === "success") {
                                 alert("문의가 삭제되었습니다.");
-                                location.href = "/qna/list";
+                                location.href = "/admin/qna/list";
                             } else {
                                 alert("문의 삭제에 실패했습니다.");
                             }
@@ -115,10 +109,6 @@
                     });
                 }
             }
-                document.getElementById('updateReply').onclick = handleUpdateReply;
-                document.getElementById('fixReply').onclick = handleFixReply;
-                document.getElementById('deleteReply').onclick = handleDeleteReply;
-                document.getElementById('deleteQna').onclick = handleDeleteQna;
         </script>
     </head>
     <body>
@@ -186,7 +176,7 @@
                         
                         <!-- 수정/등록/취소.. 버튼 -->
                         <div class="behavior">
-                            <button id="deleteQna" class="btn btn-danger" style="height:38px">삭제</button>
+                            <button id="deleteQna" class="btn btn-danger" onclick="handleDeleteQna();"style="height:38px">삭제</button>
                         </div>
 
                         <!-- 답변 영역 -->
@@ -209,7 +199,7 @@
                                                         <input id="reply" class="input-box" value="">
                                                     </c:if>
                                                     <c:if test="${not empty vo.reply_date}">
-                                                    	<input id="reply" class="input-box" value="${vo.reply}">
+                                                        <input id="reply" class="input-box" value="${vo.reply}">
                                                     </c:if>
                                                 </div>
                                             </td>
@@ -222,11 +212,11 @@
                         <!-- 수정/등록/취소.. 버튼 -->
                         <div class="behavior">
                             <c:if test="${empty vo.reply_date}">
-                                <button id="updateReply" class="btn btn-primary" style="height:38px">등록</button>     
+                                <button id="updateReply" class="btn btn-primary" onclick="handleUpdateReply();"style="height:38px">등록</button>     
                             </c:if>
                             <c:if test="${not empty vo.reply_date}">
-                                <button id="updateReply" class="btn btn-primary" style="height:38px">수정</button>       
-                                <button id="deleteReply" class="btn btn-danger" style="height:38px">삭제</button>        
+                                <button id="updateReply" class="btn btn-primary" onclick="handleUpdateReply();"style="height:38px">수정</button>       
+                                <button id="deleteReply" class="btn btn-danger" onclick="handleDeleteReply();" style="height:38px">삭제</button>        
                             </c:if>
                         </div>
 
