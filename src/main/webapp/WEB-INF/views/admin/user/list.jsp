@@ -42,17 +42,11 @@
             
            	$.ajax({
 				type: "GET", // method type
-				url: "/admin/user/list.do", // 요청할 url
+				url: "/admin/user/getList", // 요청할 url
                 data: data, // 전송할 데이터
                 dataType: "json", // 응답 받을 데이터 type
                 success : function(resp){
-                   	console.log(resp)
                    	// 데이터 리스트 출력
-                   	let printList = "";
-                   	if(resp.list.length == 0){
-                   		printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
-                   	}
-                   	
                		$("#printList").html(resp.printList);
                		
                		// 페이지네이션 출력
@@ -99,22 +93,44 @@
         			<div class="container-fluid px-4">
                         <h1 class="mt-4">회원관리</h1>
                         <div class="card mb-4">
+<<<<<<< HEAD
+=======
+                            <!-- <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                DataTable Example
+                            </div> -->
+                            
+>>>>>>> refs/heads/develop
                             <div class="card-body">
                              	<!-- 리스트 정렬, 필터 검색 영역  -->
                             	<div class="datatable-top">
 
                             		<div class="datatable-dropdown">
 							            <label>
-							                <select id="orderBy" class="datatable-selector" onchange="if($('#orderBy').val()!=''){applyCondition();}">
+							                <select id="orderBy" class="datatable-selector" onchange="applyCondition();">
 								                <option value="" selected="">===정렬===</option>
 								                <option value="가입일자최신순">가입일자 최신순</option>
 								                <option value="가입일자오래된순">가입일자 오래된 순</option>
 							                </select>
 							            </label>
+<<<<<<< HEAD
 							        </div>							                                       
                             		<div class="datatable-search">
                             			<input id="searchWord" class="datatable-input" type="search" placeholder="회원 아이디/이름 검색" onkeyup="if(window.event.keyCode==13){applyCondition();}">
                             		</div>
+=======
+							        </div>
+							            
+                            		<div class="row align-items-center">
+	                                    <div class="col-md-9">
+	                                         <input id="searchWord" class="datatable-input" type="search" placeholder="회원 아이디/이름 검색" onkeyup="if(window.event.keyCode==13){applyCondition();}">
+	                                    </div>
+	                                    
+                                    	<div class="col-md-1">
+                                        	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition()"> 
+                                      	</div>
+                                 	</div>
+>>>>>>> refs/heads/develop
                             	</div>
                             	
                             	<!-- 리스트 영역 -->
@@ -122,7 +138,7 @@
                                 <table class="datatable-table">
                                     <thead>
                                         <tr>
-                                            <th>회원번호</th>
+                                            <th>회원 번호</th>
                                             <th>아이디</th>
                                             <th>이름</th>
                                             <th>휴대폰</th>

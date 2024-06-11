@@ -17,4 +17,13 @@ public interface ItemAdminMapper {
 	int delete(int item_no);
 
 	int count(ItemVO vo);
+
+	List<CategoryVO> categories();
+
+	int updateCategory(CategoryVO vo);
+
+	int deleteCategory(int category_no);
+
+	int insertCategory(CategoryVO vo);
+
 }

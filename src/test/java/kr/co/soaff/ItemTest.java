@@ -1,5 +1,7 @@
 package kr.co.soaff;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import kr.co.soaff.item.CategoryVO;
 import kr.co.soaff.item.ItemAdminMapper;
 import kr.co.soaff.item.ItemVO;
 import lombok.extern.log4j.Log4j;
@@ -101,5 +104,14 @@ public class ItemTest {
 		vo.setFilter("전자기기");
 		vo.setSearchWord("스마트");
 		mapper.count(vo);
+	}
+
+	@Test
+	public void category() {
+		List<CategoryVO> categories = mapper.categories();
+		for (CategoryVO category : categories) {
+			log.info(category);
+		}
+		;
 	}
 }

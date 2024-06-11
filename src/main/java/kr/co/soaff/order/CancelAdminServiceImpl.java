@@ -7,8 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import oracle.jdbc.proxy.annotation.GetDelegate;
-
 @Service
 public class CancelAdminServiceImpl implements CancelAdminService {
 	@Autowired
@@ -47,9 +45,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		// 최종 결제 정보 공식 계산
 		int total_price = order.getPayment_price() - order.getDelivery_price() + order.getPoint();
-		int refundPoint = (int) (((double) orderDetail.getPrice()*orderDetail.getAmount())
+		int refundPoint = (int) (((double) orderDetail.getPrice() * orderDetail.getAmount())
 				/ ((order.getPayment_price() - order.getDelivery_price())) * order.getPoint());
-		
 
 		// 주문 상품 총 개수 및 남은 개수 가져오기
 		int totalOrderItems = mapper.countOrderItems(orderDetail.getOrder_no());
@@ -58,12 +55,11 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		int refundPrice;
 		if (remainingItems == 0) {
 			// 모든 상품을 취소하는 경우
-			refundPrice = orderDetail.getPrice()*orderDetail.getAmount() + order.getDelivery_price() - refundPoint;
+			refundPrice = orderDetail.getPrice() * orderDetail.getAmount() + order.getDelivery_price() - refundPoint;
 		} else {
 			// 일부 상품만 취소하는 경우
-			refundPrice = orderDetail.getPrice()*orderDetail.getAmount() - refundPoint;
+			refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
 		}
-		
 
 		// VO에 필요한 데이터 설정
 		orderDetail.setRefund_price(refundPrice);
@@ -71,6 +67,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		orderDetail.setTotal_price(total_price);
 		orderDetail.setDelivery_price(order.getDelivery_price());
 		orderDetail.setPayment_method(order.getPayment_method());
+		orderDetail.setPayment_price(order.getPayment_price());
 		orderDetail.setPoint(order.getPoint());
 		orderDetail.setUser_no(order.getUser_no());
 
@@ -100,12 +97,52 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		vo.setOrder_detail_no(order_detail_no);
 		return mapper.completeCancel(vo);
 	}
-
+	
 	@Override
-	public int adminCancel(int order_detail_no, String reason) {
-		CancelAdminDetailVO vo = new CancelAdminDetailVO();
-		vo.setOrder_detail_no(order_detail_no);
-		vo.setCancel_reason_detail(reason);
-		return mapper.adminCancel(vo);
+	public int adminCancel(int order_detail_no, String cancel_reason_detail) {
+		CancelAdminDetailVO cancelDetail = new CancelAdminDetailVO();
+		cancelDetail.setOrder_detail_no(order_detail_no);
+		cancelDetail.setCancel_reason_detail(cancel_reason_detail);
+		return mapper.adminCancel(cancelDetail);
+	}
+	
+	@Override
+	public Map<String, Object> forceDetail(int order_detail_no) {
+		CancelAdminDetailVO orderDetail = mapper.detailFromOrderDetailVO(order_detail_no);
+		CancelAdminOrderVO order = mapper.detailFromOrderVO(orderDetail.getOrder_no());
+
+		// 최종 결제 정보 공식 계산
+		int total_price = order.getPayment_price() - order.getDelivery_price() + order.getPoint();
+		int refundPoint = (int) (((double) orderDetail.getPrice() * orderDetail.getAmount())
+				/ ((order.getPayment_price() - order.getDelivery_price())) * order.getPoint());
+
+		// 주문 상품 총 개수 및 남은 개수 가져오기
+		int totalOrderItems = mapper.countOrderItems(orderDetail.getOrder_no());
+		int remainingItems = totalOrderItems - orderDetail.getAmount(); // 현재 취소 요청 중인 상품을 제외한 나머지 상품 수량
+
+		int refundPrice;
+		if (remainingItems == 0) {
+			// 모든 상품을 취소하는 경우
+			refundPrice = orderDetail.getPrice() * orderDetail.getAmount() + order.getDelivery_price() - refundPoint;
+		} else {
+			// 일부 상품만 취소하는 경우
+			refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
+		}
+
+		// VO에 필요한 데이터 설정
+		orderDetail.setItem_name(orderDetail.getItem_name());
+		orderDetail.setRefund_price(refundPrice);
+		orderDetail.setRefund_point(refundPoint);
+		orderDetail.setTotal_price(total_price);
+		orderDetail.setDelivery_price(order.getDelivery_price());
+		orderDetail.setPayment_method(order.getPayment_method());
+		orderDetail.setPayment_price(order.getPayment_price());
+		orderDetail.setPoint(order.getPoint());
+		orderDetail.setUser_no(order.getUser_no());
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("forceDetail", orderDetail);
+
+		return map;
 	}
 }

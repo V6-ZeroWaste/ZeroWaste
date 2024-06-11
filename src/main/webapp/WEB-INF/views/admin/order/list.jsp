@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>admin order list</title>
+        <title>주문 관리</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -18,6 +18,80 @@
         <script src="/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="/admin/js/datatables-simple-demo.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script type="text/javascript">
+        let page = 1;
+        window.onload=function(){
+        	  getList();
+        	}
+        function applyCondition(){
+       		page = 1;
+       		getList();
+        }
+        function changePage(obj){
+       		page = obj.getAttribute("data-page");
+       		getList();
+        }
+        function getList(){
+        	var data = {
+        			searchWord: $('#searchWord').val(),
+        			orderBy: $('#orderBy').val(),
+        			filter: $('#filter').val(),
+        			start_date: $('#start_date').val(),
+        			end_date: $('#end_date').val(),
+        			page: page,
+        		
+        	}
+            
+           	$.ajax({
+				type: "GET", // method type
+				url: "/admin/order/getList", // 요청할 url
+                data: data, // 전송할 데이터
+                dataType: "json", // 응답 받을 데이터 type
+                success : function(resp){
+                   	console.log(resp)
+                   	// 데이터 리스트 출력
+                   	let printList = "";
+                   	if(resp.list.length == 0){
+                   		printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
+                   	}
+                   	
+               		$("#printList").html(resp.printList);
+               		
+               		// 페이지네이션 출력
+               		// 총 개수Showing
+               		$(".datatable-info").html("Showing "+resp.page+" to "+resp.totalPage+" of "+resp.count+" entries"); 
+               		// 페이지네이션
+               		let printPage = "";
+               		if(resp.isPrev){
+               			printPage += '<li class="datatable-pagination-list-item">';
+               			printPage += '<a data-page="1" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+               			printPage += '<li class="datatable-pagination-list-item">';
+               			printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+               		}
+               		for(i = resp.startPage; i<=resp.endPage; i++){
+               			printPage += '<li class="datatable-pagination-list-item'+(i==page? ' datatable-active' : '')+'">';
+               			printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link" onclick="changePage(this);">'+i+'</a></li>';
+               		}
+               		if(resp.isNext){
+               			printPage += '<li class="datatable-pagination-list-item">';
+               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+               			printPage += '<li class="datatable-pagination-list-item">';
+               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+               		}
+               		$(".datatable-pagination-list").html(printPage);
+               		
+                   	
+                   	
+                },
+                error:function (data, textStatus) {
+                    $('#fail').html("관리자에게 문의하세요.") // 서버오류
+                    console.log('error', data, textStatus);
+                }
+           	})
+        	
+		}
+        </script>
     </head>
     <body>
         <%@ include file="/WEB-INF/views/admin/include/header.jsp" %>
@@ -32,39 +106,50 @@
                             
                             <div class="card-body">
                              	<!-- 리스트 정렬, 필터 검색 영역  -->
-								<form method="get" name="searchForm" id="searchForm" action="/admin/order/list">
-										<div class="datatable-dropdown">
-											<span>주문 날짜</span>
-											<input name="start_date" type="datetime-local" class="datatable-selector" <c:if test="${orderVO.start_date} != null">value=${orderVO.start_date}</c:if>>-<input name="end_date" type="datetime-local" class="datatable-selector" <c:if test="${orderVO.end_date} != null">value=${orderVO.end_date}</c:if>>
-										</div>
-										<div class="datatable-dropdown">
-											<label>
-												<select name="orderBy" class="datatable-selector">
-													<option value="none" <c:if test="${empty orderVO.orderBy}">selected</c:if>>==정렬==</option>
-													<option value="최신순" <c:if test="${orderVO.orderBy == '최신순'}">selected</c:if>>최신순</option>
-													<option value="오래된순"<c:if test="${orderVO.orderBy == '오래된순'}">selected</c:if>>오래된순</option>
-													<option value="주문금액많은순"<c:if test="${orderVO.orderBy == '주문금액많은순'}">selected</c:if>>주문금액 많은 순</option>
-													<option value="주문금액적은순"<c:if test="${orderVO.orderBy == '주문금액적은순'}">selected</c:if>>주문금액 적은 순</option>
-												</select>
-											</label>
-											<label>
-												<select name="filter" class="datatable-selector">
-													<option value="" <c:if test="${empty orderVO.filter}">selected</c:if>>==필터==</option>
-													<option value="0" <c:if test="${orderVO.filter == 0}">selected</c:if>>취소 완료</option>
-													<option value="1" <c:if test="${orderVO.filter == 1}">selected</c:if>>취소 요청</option>
-													<option value="2" <c:if test="${orderVO.filter == 2}">selected</c:if>>상품준비중</option>
-													<option value="3" <c:if test="${orderVO.filter == 3}">selected</c:if>>배송중</option>
-													<option value="4" <c:if test="${orderVO.filter == 4}">selected</c:if>>배송완료</option>
-													<option value="5" <c:if test="${orderVO.filter == 5}">selected</c:if>>구매확정</option>
-												</select>
-											</label>
+								
+												<div class="datatable-dropdown" style="margin-bottom: 20px">
+													<span>주문 날짜</span>
+													<input id="start_date" name="start_date" type="date" class="datatable-selector" onchange="applyCondition();">-<input id="end_date" name="end_date" type="date" class="datatable-selector" onchange="applyCondition();">
+												</div>
 											<div class="datatable-top">
-												<input name="SearchWord" class="datatable-input" type="search" placeholder="상품명/주문한 아이디/문의 제목" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if>>
-												<input type="submit" value="검색" class="btn btn-primary">
+											
+											
+												<div class="datatable-dropdown">
+													<label>
+														<select id="orderBy" name="orderBy" class="datatable-selector" onchange="applyCondition();">
+															<option value="none">==정렬==</option>
+															<option value="최신순">최신순</option>
+															<option value="오래된순">오래된순</option>
+															<option value="주문금액많은순">주문금액 많은 순</option>
+															<option value="주문금액적은순">주문금액 적은 순</option>
+														</select>
+													</label>
+													<label>
+														<select id="filter" name="filter" class="datatable-selector" onchange="applyCondition();">
+															<option value="" >==필터==</option>
+															<option value="0" >취소 완료</option>
+															<option value="1" >취소 요청</option>
+															<option value="2" >상품준비중</option>
+															<option value="3" >배송중</option>
+															<option value="4" >배송완료</option>
+															<option value="5" >구매확정</option>
+														</select>
+													</label>
+												</div>
+												
+												<div class="row align-items-center">
+				                                    <div class="col-md-9">
+				                                         <input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="주문no/주문한 아이디/상품명" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width:250px">
+				                                    </div>
+				                                    
+			                                    	<div class="col-md-1">
+			                                        	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition()"> 
+			                                      	</div>
+			                                 	</div>
+													
+											
 											</div>
-										</div>
-									
-							    </form>   
+						
                            	
 								
                             	
@@ -80,49 +165,18 @@
                                            <th>주문 상태</th>
                                         </tr>
                                     </thead>
-                                    <c:if test="${empty map.list}">
-			                            <tr>
-			                                <td class="first" colspan="5">등록된 글이 없습니다.</td>
-			                            </tr>
-		                        	</c:if>
-		                        	<c:forEach var="vo" items="${map.list}">
-			                        	<tr>
-                                           <td onclick="location.href='/admin/order/detail?order_no=${vo.order_no}'">${vo.order_no}</td>
-                                           <td>${vo.payment_date}</td>
-                                           <td>${vo.id}</td>
-                                           <td>${vo.payment_price}(${vo.total_amount})</td>
-                                           <td>${vo.order_status}</td>
-			                        	</tr>
-		                        	</c:forEach>
+		                        	<tbody id="printList">
+                                    
                                     </tbody>
+                                    
                                 </table>
                             </div>
 
                             <!-- 페이지네이션-->
                             <div class="datatable-bottom">
-							    <div class="datatable-info">Showing ${orderVO.page} to ${map.totalPage } of ${map.count } entries</div>
+							    <div class="datatable-info"></div>
 							    <nav class="datatable-pagination">
-							    	<ul class="datatable-pagination-list">
-							    		
-							    		<c:if test="${map.isPrev }">
-							    			<li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-				                        		<a href="list?page=${map.startPage-1 }&start_date=${orderVO.start_date}&end_date=${orderVO.end_date}&orderBy=${orderVO.orderBy}&filter=${orderVO.filter}&SearchWord=${orderVO.SearchWord}">‹‹</a>
-				                        	</li>
-				                        </c:if>
-				                        
-				                        <c:forEach var="p" begin="${map.startPage}" end="${map.endPage}">
-				                        	<c:if test="${p == orderVO.page}">
-					                            <li class="datatable-pagination-list-item datatable-active">
-					                            	<a href='#;' class='current'>${p}</a>
-					                            </li>
-				                            </c:if>
-				                            <c:if test="${p != orderVO.page}">
-					                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-					                            	<a href="list?page=${map.startPage-1 }&start_date=${orderVO.start_date}&end_date=${orderVO.end_date}&orderBy=${orderVO.orderBy}&filter=${orderVO.filter}&SearchWord=${orderVO.SearchWord}">${p}</a>
-					                            </li>
-				                            </c:if>
-			                        	</c:forEach>
-
+							    	<ul class="datatable-pagination-list">                    
 							    	</ul>
 							    </nav>
 							    </div>
