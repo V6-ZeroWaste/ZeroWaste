@@ -7,7 +7,7 @@
             <when test="orderBy == '최근날짜순'">
                 ORDER BY date DESC
             </when>
-            <when test="orderBy == '오래된날짜순'">
+            <when test="orderBy == '오래된순'">
                 ORDER BY date ASC
             </when>
             <when test="orderBy == '매출량많은순'">
@@ -23,42 +23,41 @@
     </sql>
     
     <sql id="searchSql">
-        <where>
-            <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
-                AND DATE(payment_date) BETWEEN #{start_date} AND #{end_date}
-            </if>
-            <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
-                AND DATE(payment_date) BETWEEN #{start_date} AND NOW()
-            </if>
-            <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
-                <![CDATA[
-                    AND date <= #{end_date}
-                ]]>
-            </if>
-        </where>
+        <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+            AND DATE(payment_date) BETWEEN #{start_date} AND #{end_date}
+        </if>
+        <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+            AND DATE(payment_date) BETWEEN #{start_date} AND NOW()
+        </if>
+        <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+            <![CDATA[
+                AND DATE(payment_date) <= #{end_date}
+            ]]>
+        </if>
     </sql>
     
     <select id="list" parameterType="kr.co.soaff.statistics.sales.SalesVO" resultType="kr.co.soaff.statistics.sales.SalesVO">
         SELECT DATE(payment_date) AS date, SUM(payment_price) AS sales 
         FROM soaff.order 
-        <include refid="searchSql"/>
+        <where>
+            <include refid="searchSql"/>
+        </where>
         GROUP BY DATE(payment_date)
         <include refid="orderBySql"/>
         LIMIT #{startIdx}, 20;
     </select>
     
     <!-- list 총 개수 -->
-	<select id="count"
-			parameterType="kr.co.soaff.statistics.sales.SalesVO" resultType="int">
-			SELECT COUNT(*)
-			FROM (
-			    SELECT DATE(payment_date) AS date
-			    FROM soaff.order 
-			    <where>
-					<include refid="searchSql"></include>
-				</where>	
-			    GROUP BY DATE(payment_date)
-			) AS grouped_dates;
-	</select>
+    <select id="count" parameterType="kr.co.soaff.statistics.sales.SalesVO" resultType="int">
+        SELECT COUNT(*)
+        FROM (
+            SELECT DATE(payment_date) AS date
+            FROM soaff.order 
+            <where>
+                <include refid="searchSql"/>
+            </where>
+            GROUP BY DATE(payment_date)
+        ) AS grouped_dates;
+    </select>
 
 </mapper>

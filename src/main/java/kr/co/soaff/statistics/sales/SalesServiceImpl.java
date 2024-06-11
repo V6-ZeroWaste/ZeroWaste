@@ -16,7 +16,8 @@ public class SalesServiceImpl implements SalesService {
 		int totalCount = mapper.count(vo);
 
 		int totalPage = totalCount / 20;
-
+		if (totalCount % 20 > 0)
+			totalPage++;
 		// 시작인덱스
 		int startIdx = (vo.getPage() - 1) * 10;
 		vo.setStartIdx(startIdx); // sql문에 파라미터로 넣어줌

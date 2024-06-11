@@ -27,7 +27,7 @@ public class SalesController {
 
 	@GetMapping("/getList")
 	@ResponseBody
-	public Map<String, Object> listAjax(SalesVO vo) {
+	public Map<String, Object> listAjax(SalesVO vo, Model model) {
 		Map<String, Object> map = service.list(vo);
 		String printList = "";
 		List<SalesVO> list = (List<SalesVO>) map.get("list");
@@ -37,8 +37,8 @@ public class SalesController {
 			printList += "<td class=\"col-sales-sales\">" + sales.getSales() + "</td>";
 			printList += "</tr>";
 		}
-
 		map.put("printList", printList);
+		model.addAttribute("map", service.list(vo));
 		return map;
 	}
 
