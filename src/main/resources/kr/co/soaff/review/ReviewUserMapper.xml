@@ -60,7 +60,8 @@
 		review.review_img,
 		review.title, 
 		review.content,
-		review.score,review.regist_date, 
+		review.score,
+		review.regist_date, 
 		item.name as item_name, 
 		user.id as user_id
 		FROM
