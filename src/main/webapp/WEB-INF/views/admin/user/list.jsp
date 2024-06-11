@@ -93,14 +93,11 @@
         			<div class="container-fluid px-4">
                         <h1 class="mt-4">회원관리</h1>
                         <div class="card mb-4">
-<<<<<<< HEAD
-=======
                             <!-- <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 DataTable Example
                             </div> -->
                             
->>>>>>> refs/heads/develop
                             <div class="card-body">
                              	<!-- 리스트 정렬, 필터 검색 영역  -->
                             	<div class="datatable-top">
@@ -113,12 +110,6 @@
 								                <option value="가입일자오래된순">가입일자 오래된 순</option>
 							                </select>
 							            </label>
-<<<<<<< HEAD
-							        </div>							                                       
-                            		<div class="datatable-search">
-                            			<input id="searchWord" class="datatable-input" type="search" placeholder="회원 아이디/이름 검색" onkeyup="if(window.event.keyCode==13){applyCondition();}">
-                            		</div>
-=======
 							        </div>
 							            
                             		<div class="row align-items-center">
@@ -130,7 +121,6 @@
                                         	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition()"> 
                                       	</div>
                                  	</div>
->>>>>>> refs/heads/develop
                             	</div>
                             	
                             	<!-- 리스트 영역 -->
