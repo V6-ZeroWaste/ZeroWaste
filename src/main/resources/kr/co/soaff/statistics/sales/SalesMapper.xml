@@ -46,5 +46,19 @@
         <include refid="orderBySql"/>
         LIMIT #{startIdx}, 20;
     </select>
+    
+    <!-- list 총 개수 -->
+	<select id="count"
+			parameterType="kr.co.soaff.statistics.sales.SalesVO" resultType="int">
+			SELECT COUNT(*)
+			FROM (
+			    SELECT DATE(payment_date) AS date
+			    FROM soaff.order 
+			    <where>
+					<include refid="searchSql"></include>
+				</where>	
+			    GROUP BY DATE(payment_date)
+			) AS grouped_dates;
+	</select>
 
 </mapper>

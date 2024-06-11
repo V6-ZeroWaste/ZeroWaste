@@ -52,6 +52,7 @@
                 data: data, // 전송할 데이터
                 dataType: "json", // 응답 받을 데이터 type
                 success : function(resp){
+                	alert("성공");
                     console.log(resp)
                     // 데이터 리스트 출력
                     let printList = "";
@@ -88,6 +89,7 @@
 
                 },
                 error:function (data, textStatus) {
+                	alert("실패");
                     $('#fail').html("관리자에게 문의하세요.") // 서버오류
                     console.log('error', data, textStatus);
                 }
@@ -104,10 +106,13 @@
         	<div id="layoutSidenav_content">
        			<main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Dashboard</h1>
+                        <h1 class="mt-4">${vo} ${map }</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Dashboard</li>
                         </ol>
+                        <div class="col-md-1">
+					    	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition();">
+					    </div>
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
@@ -172,26 +177,19 @@
                                 DataTable Example
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>일자</th>
-                                            <th>매출액</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>일자</th>
-                                            <th>매출액</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td>2011/04/25</td>
-                                            <td>320,800</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="datatable-container">
+								    <table class="datatable-table">
+								        <thead>
+								            <tr>
+								                <th class="col-sales-date">날짜</th>
+								                <th class="col-sales-sales">매출액</th>
+								            </tr>
+								        </thead>
+								        <tbody id="printList">
+								        	
+								        </tbody>
+								    </table>
+								</div>
                             </div>
                         </div>
                     </div>

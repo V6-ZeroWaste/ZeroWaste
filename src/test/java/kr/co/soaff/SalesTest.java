@@ -24,10 +24,15 @@ public class SalesTest {
 	@Test
 	public void list() {
 		SalesVO vo = new SalesVO();
-		vo.setStart_date("2024-06-05");
 		List<SalesVO> vos = mapper.list(vo);
 		for (SalesVO voTmp : vos) {
 			System.out.println(voTmp);
 		}
+	}
+
+	@Test
+	public void count() {
+		SalesVO vo = new SalesVO();
+		log.info(mapper.count(vo));
 	}
 }

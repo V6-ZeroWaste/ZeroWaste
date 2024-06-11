@@ -1,5 +1,7 @@
 package kr.co.soaff.statistics.sales;
 
-public interface SalesService {
+import java.util.Map;
 
+public interface SalesService {
+	Map<String, Object> list(SalesVO vo);
 }
