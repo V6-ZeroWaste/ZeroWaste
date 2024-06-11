@@ -148,7 +148,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 			                    <b>등록 일자</b> 
                 			</div>
                 			<div class="col-md-2">
-		                    	${item.item_regist_date }
+                				<fmt:formatDate value="${item.item_regist_date}" pattern="yyyy-MM-dd HH:mm:ss" type="date"/>
                 			</div>
                     	</div>
                     	<input type="hidden" name="item_regist_date" value="${item.item_regist_date }">
@@ -162,9 +162,12 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                                 <input class="form-control" type="file" name="file" id="file" class="wid100"/>
                             </div>
                             <div class="col-md-3 d-flex flex-column align-items-center">
-							    <img src="/upload/item_img/${item.item_img}" class="img-fluid"/>
-							    <p>${item.item_img}</p>
-							    <input class="btn btn-danger" type="button" name="x" value="이미지 삭제" onclick="deleteImg()">
+                            	<c:if test="${item.item_img != null && item.item_img != ''}">
+                                    <img src="/upload/item_img/${item.item_img}" class="img-fluid"/>
+							    	<p>${item.item_img}</p>
+							    	<input class="btn btn-danger" type="button" name="x" value="이미지 삭제" onclick="deleteImg()">
+                            	</c:if>
+							    
 							</div>
                         </div>
                     </div>
