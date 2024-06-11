@@ -5,20 +5,18 @@
 	<sql id="searchSql">
 		<where>
 			<if test="searchWord != null">
-				
 				AND concat_ws("-", `order`.order_no, user.id, item.name)  like '%${searchWord}%'
-
 			</if>
 			<if test="filter != null">
-				and `order`.order_status = #{filter}
+				AND `order`.order_status = #{filter}
 			</if>
-			<if test="start_date != null and end_date != null">
-				and `order`.payment_date BETWEEN #{start_date} AND #{end_date}
+			<if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+				AND `order`.payment_date BETWEEN #{start_date} AND #{end_date}
 			</if>
-			<if test="start_date != null and end_date == null">
-				and `order`.payment_date BETWEEN #{start_date} AND NOW()
+			<if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+				AND `order`.payment_date BETWEEN #{start_date} AND NOW()
 			</if>
-			<if test="start_date == null and end_date != null">
+			<if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
 				<![CDATA[
 					and `order`.payment_date <= #{end_date}
 				]]>
@@ -27,7 +25,7 @@
 	</sql>
 	
 	<sql id="orderBySql">
-		<if test="orderBy == null">
+		<if test="orderBy == 'none'">
 			ORDER BY `order`.payment_date DESC
 		</if>
 		<if test="orderBy == '최신순'">
@@ -53,6 +51,7 @@
 		    `order`.payment_price,
 		    COUNT(*) as total_amount,
 		    `order`.order_status
+		    
 		FROM `order` 
 		JOIN user ON `order`.user_no = user.user_no
 		JOIN order_detail ON `order`.order_no = order_detail.order_no
@@ -88,8 +87,9 @@
 		    delivery_status,
 			delivery_price,
 		    point,
-		    payment_method
-		FROM `order`
+		    payment_method,
+		    payment_price
+   		FROM `order`
 		WHERE order_no = #{order_no}
 	</select>
 	<!-- OrderDetailVO에 담는 정보 -->
@@ -98,8 +98,8 @@
 			item.item_img,
 			item.name as item_name,
 			order_detail.price,
-			order_detail.cancel_status,
-			(SELECT sum(price) FROM order_detail WHERE order_no=order_detail.order_no) total_item_price
+			order_detail.cancel_status
+			
 		FROM order_detail 
 		JOIN item ON order_detail.item_no = item.item_no
 		WHERE order_detail.order_no = #{order_no};

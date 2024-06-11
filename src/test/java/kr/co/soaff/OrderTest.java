@@ -35,7 +35,7 @@ public class OrderTest {
 	@Test
 	public void 필터적용리스트0() {
 		OrderVO vo = new OrderVO();
-		vo.setFilter(0);
+		vo.setFilter(2);
 		mapper.list(vo);
 		log.info(mapper.count(vo));
 	}
@@ -101,7 +101,7 @@ public class OrderTest {
 		vo.setOrderBy("주문금액적은순");
 //		vo.setFilter(1);
 //		vo.setStart_date(convertStringToTimestamp("2024-06-04 00:00:00", "yyyy-MM-dd HH:mm:ss"));
-		vo.setEnd_date(convertStringToTimestamp("2024-06-08 00:00:00", "yyyy-MM-dd HH:mm:ss"));
+		vo.setEnd_date(convertStringToTimestamp("2024-06-08", "yyyy-MM-dd HH:mm:ss") + "");
 //		vo.setEnd_date(convertStringToTimestamp("2024-06-06 00:00:00", "yyyy-MM-dd HH:mm:ss"));
 //		vo.setSearchWord("블렌더");
 		log.info(mapper.list(vo));
