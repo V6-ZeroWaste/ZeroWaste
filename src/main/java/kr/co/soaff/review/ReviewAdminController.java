@@ -63,7 +63,7 @@ public class ReviewAdminController {
 		return "/admin/review/detail";
 	}
 	
-	@PostMapping(value="/update", produces = "application/tex; charset=utf8")
+	@PostMapping(value="/update", produces = "application/text; charset=utf8")
 	@ResponseBody()
 	public String update(@RequestBody ReviewVO vo) {
 		
