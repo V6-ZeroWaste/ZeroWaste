@@ -2,5 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.statistics.sales.SalesMapper">
 
+    <sql id="orderBySql">
+        <choose>
+            <when test="orderBy == '최근날짜순'">
+                ORDER BY date DESC
+            </when>
+            <when test="orderBy == '오래된날짜순'">
+                ORDER BY date ASC
+            </when>
+            <when test="orderBy == '매출량많은순'">
+                ORDER BY sales DESC
+            </when>
+            <when test="orderBy == '매출량적은순'">
+                ORDER BY sales ASC
+            </when>
+            <otherwise>
+                ORDER BY date DESC
+            </otherwise>
+        </choose>
+    </sql>
+    
+    <sql id="searchSql">
+        <where>
+            <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+                AND DATE(payment_date) BETWEEN #{start_date} AND #{end_date}
+            </if>
+            <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+                AND DATE(payment_date) BETWEEN #{start_date} AND NOW()
+            </if>
+            <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+                <![CDATA[
+                    AND date <= #{end_date}
+                ]]>
+            </if>
+        </where>
+    </sql>
+    
+    <select id="list" parameterType="kr.co.soaff.statistics.sales.SalesVO" resultType="kr.co.soaff.statistics.sales.SalesVO">
+        SELECT DATE(payment_date) AS date, SUM(payment_price) AS sales 
+        FROM soaff.order 
+        <include refid="searchSql"/>
+        GROUP BY DATE(payment_date)
+        <include refid="orderBySql"/>
+        LIMIT #{startIdx}, 20;
+    </select>
 
 </mapper>

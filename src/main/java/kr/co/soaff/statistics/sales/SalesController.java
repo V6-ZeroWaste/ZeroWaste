@@ -6,14 +6,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/statistics/sales")
+@RequestMapping("/admin/statistics/sales")
 public class SalesController {
 	@Autowired
 	private SalesService service;
 
 	@GetMapping("/index")
-	public String login() {
-		return "/admin/login";
+	public String list() {
+		return "/admin/statistics/sales";
+	}
+
+	@GetMapping("/getList")
+	public String getList() {
+		return "/admin/statistics/sales";
 	}
 
 }
