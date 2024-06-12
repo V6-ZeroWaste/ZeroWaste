@@ -22,23 +22,20 @@
 </head>
 	<script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the charts
+            // 차트 초기화
             var myAreaChart;
             var myBarChart;
 
-            // Function to apply condition and reload data
             function applyCondition() {
                 page = 1;
                 getList();
             }
 
-            // Function to change page and reload data
             function changePage(obj) {
                 page = parseInt(obj.getAttribute("data-page"), 10);
                 getList();
             }
 
-            // Function to get data and update charts
             function getList() {
                 var data = {
                     orderBy: $('#orderBy').val(),
@@ -56,10 +53,8 @@
                     success: function(resp) {
                         console.log("AJAX 응답:", resp);
 
-                        // Update table
                         $("#printList").html(resp.printList);
 
-                        // Update pagination
                         $(".datatable-info").html("Showing " + resp.page + " to " + resp.totalPage + " of " + resp.count + " entries");
 
                         var printPage = "";
@@ -80,8 +75,7 @@
                             printPage += '<a data-page="' + resp.totalPage + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
                         }
                         $(".datatable-pagination-list").html(printPage);
-
-                        // Update charts
+						
                         drawCharts(resp.list);
                     },
                     error: function(data, textStatus) {
@@ -91,7 +85,7 @@
                 });
             }
 
-            // Function to draw charts
+            // 차트 업데이트
             function drawCharts(salesList) {
                 var labels = [];
                 var data = [];
@@ -129,7 +123,7 @@
                         scales: {
                             x: {
                                 time: {
-                                    unit: 'month'
+                                    unit: 'date'
                                 },
                                 grid: {
                                     display: false
@@ -205,6 +199,25 @@
                     }
                 });
             }
+            
+         // 필터 값 변경 시 입력 필드 유형 변경
+            $('#filter').on('change', function() {
+                var filter = $(this).val();
+                var startDateInput = $('#start_date');
+                var endDateInput = $('#end_date');
+                
+                if (filter === '일별') {
+                    startDateInput.attr('type', 'date');
+                    endDateInput.attr('type', 'date');
+                } else if (filter === '주별') {
+                    startDateInput.attr('type', 'week');
+                    endDateInput.attr('type', 'week');
+                } else if (filter === '월별') {
+                    startDateInput.attr('type', 'month');
+                    endDateInput.attr('type', 'month');
+                }
+                applyCondition();
+            });
 
             // Initialize data
             var page = 1;
@@ -212,7 +225,7 @@
             
             $('.dateInput').on('change', applyCondition);
             $('.applyButton').on('click', applyCondition);
-            $('.orderBy').on('click', applyCondition);
+            $('.orderBy').on('change', applyCondition);
         });
     </script>
 <body>
@@ -258,10 +271,17 @@
                                     <option value="매출량적은순" <c:if test="${param.orderBy == '매출량적은순'}">selected</c:if>>매출량적은순</option>
                                 </select>
                             </label>
+                            <label>
+					            <select name="filter" id="filter" class="datatable-selector filter" onchange="applyCondition();">
+					                <option value="일별" <c:if test="${param.filter == '일별'}">selected</c:if>>일별</option>
+                                    <option value="주별" <c:if test="${param.filter == '주별'}">selected</c:if>>주별</option>
+                                    <option value="월별" <c:if test="${param.filter == '월별'}">selected</c:if>>월별</option>
+					            </select>
+					        </label>
                         </div>
                         <div class="col-md-8">
                             <div class="datatable-dropdown" style="margin-bottom: 20px">
-                                <input id="start_date" name="start_date" type="date" class="datatable-selector dateInput">-<input id="end_date" name="end_date" type="date" class="datatable-selector dateInput">
+                               	<input id="start_date" name="start_date" type="date" class="datatable-selector dateInput">-<input id="end_date" name="end_date" type="date" class="datatable-selector dateInput">
                             </div>
                         </div>
                         <div class="col-md-3"></div>

@@ -10,7 +10,7 @@ public class SalesVO {
 	// 사용자로부터 전송되어지는 값(검색, 페이징, 필터링(조건))
 	private String searchWord;
 	private String orderBy;
-	private Integer filter;
+	private String filter;
 	private String start_date;
 	private String end_date;
 	private int page; // 사용자가 요청한 페이지 번호
