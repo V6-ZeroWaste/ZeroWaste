@@ -1,6 +1,89 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.statistics.items.ItemsMapper">
-
-
+	<sql id="orderBySql">
+        <if test="orderBy == '주문량높은순'">
+            ORDER BY
+                `order` DESC
+        </if>    
+        <if test="orderBy == '주문량낮은순'">
+            ORDER BY
+                `order` ASC
+        </if> 
+        <if test="orderBy == '판매량높은순'">
+            ORDER BY
+                sales DESC
+        </if> 
+        <if test="orderBy == '판매량낮은순'">
+            ORDER BY
+                sales ASC
+        </if>
+        <if test="orderBy == '반품률높은순'">
+            ORDER BY
+                cancel_rate DESC
+        </if>
+        <if test="orderBy == '반품률낮은순'">
+            ORDER BY
+                cancel_rate ASC
+        </if>
+        <if test="orderBy == '매출액높은순'">
+            ORDER BY
+                revenue DESC
+        </if>
+        <if test="orderBy == '매출액낮은순'">
+            ORDER BY
+                revenue ASC
+        </if>
+    </sql>
+    
+    <sql id="searchAndCal">
+        <where>
+        	1=1 
+        	<if test="searchWord != null and searchWord != ''">
+				and CONCAT_WS('-', i.item_no, i.name) LIKE '%${searchWord}%'
+			</if>
+            <if test="startDate != null and startDate != ''">
+               and o.payment_date >= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+            	<![CDATA[
+                and o.payment_date < DATE_ADD(STR_TO_DATE(#{endDate}, '%Y-%m-%d'), INTERVAL 1 DAY)
+                ]]>
+            </if>
+        </where>
+    </sql>
+    
+    <!--상품 통계 데이터-->
+    <select id="list" parameterType="kr.co.soaff.statistics.items.ItemsVO">
+        select 
+			i.item_no, i.name,
+		    sum(od.amount) as `order`,
+			sum(if(od.cancel_status is null or od.cancel_status not in(1,2), od.amount, 0)) as sales, 
+		    sum(if(od.cancel_status in(1,2), od.amount, 0)) as cancel,
+		    sum(if(od.cancel_status in(1,2), od.amount, 0))/sum(od.amount)*100 as cancel_rate,
+		    sum(if(od.cancel_status is null or od.cancel_status not in(1,2), od.price*od.amount, 0)) as revenue
+		from order_detail od
+			inner join item i
+		    on od.item_no = i.item_no
+		    inner join `order` o
+		    on od.order_no = o.order_no
+		<include refid="searchAndCal"/>
+		group by i.item_no, i.name
+        <include refid="orderBySql"/>
+        <if test="entries != 0">
+        	LIMIT #{startIdx}, #{entries}
+        </if>
+        
+    </select>
+    
+    
+    <select id="count" parameterType="kr.co.soaff.statistics.items.ItemsVO">
+        select count(distinct(od.item_no))
+		from order_detail od
+			inner join item i
+		    on od.item_no = i.item_no
+		    inner join `order` o
+		    on od.order_no = o.order_no
+		<include refid="searchAndCal"/>
+    </select>
 </mapper>
