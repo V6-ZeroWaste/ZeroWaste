@@ -269,14 +269,14 @@
                                     <tbody id="printList"></tbody>
                                 </table>
                             </div>
+	                        <div class="datatable-bottom">
+	                            <div class="datatable-info">Showing ${usersVO.page} to ${map.totalPage } of ${map.total} entries</div>
+	                            <nav class="datatable-pagination">
+	                                <ul class="datatable-pagination-list"></ul>
+	                            </nav>
+	                        </div>
                         </div>
                         <!-- 페이지네이션-->
-                        <div class="datatable-bottom">
-                            <div class="datatable-info">Showing ${vo.page} to ${map.totalPage } of ${map.total} entries</div>
-                            <nav class="datatable-pagination">
-                                <ul class="datatable-pagination-list"></ul>
-                            </nav>
-                        </div>
                     </div>
                 </div>
             </main>
