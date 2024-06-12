@@ -18,12 +18,14 @@ public class QnaVO {
 	private String reply;
 	private Timestamp reply_date;
 	private int item_no;
-
+	private String item_name;
+	
+	private String replyState;
 	private String searchWord;
 	private String orderBy;
 	private String filter;
-	private Timestamp startDate;
-	private Timestamp endDate;
+	private String start_date;
+	private String end_date;
 	private int page;
 	private int startIdx; // limit 앞에 들어갈 시작인덱스값
 
