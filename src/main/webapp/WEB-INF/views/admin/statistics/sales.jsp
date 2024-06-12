@@ -159,6 +159,62 @@
                     }
                 });
 
+                if (myAreaChart) {
+                    myAreaChart.destroy();
+                }
+
+                var ctx = document.getElementById("myAreaChart").getContext('2d');
+                myAreaChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "매출액",
+                            data: data,
+                            backgroundColor: "rgba(2,117,216,0.2)",
+                            borderColor: "rgba(2,117,216,1)",
+                            pointRadius: 5,
+                            pointBackgroundColor: "rgba(2,117,216,1)",
+                            pointBorderColor: "rgba(255,255,255,0.8)",
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                            pointHitRadius: 20,
+                            pointBorderWidth: 2,
+                            lineTension: 0.3,
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                time: {
+                                    unit: 'date'
+                                },
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    /* maxTicksLimit: data.length */
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    min: 0,
+                                    max: 100,
+                                    maxTicksLimit: 5
+                                },
+                                grid: {
+                                    color: "rgba(0, 0, 0, .125)",
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+
                 if (myBarChart) {
                     myBarChart.destroy();
                 }
@@ -212,7 +268,7 @@
                 var filter = $('#filter').val();
                 var startDateInput = $('#start_date');
                 var endDateInput = $('#end_date');
-
+				var smallTitle = $('.smallTitle');
                 // 현재 날짜 생성
                 var currentDate = new Date();
                 
@@ -255,12 +311,17 @@
                 if (filter === '일별') {
                     startDateInput.val(formatDate(startDate));
                     endDateInput.val(formatDate(currentDate));
+                    smallTitle.html('일별 매출');
                 } else if (filter === '주별') {
                     startDateInput.val(formatWeek(startWeek));
                     endDateInput.val(formatWeek(currentDate));
+                    smallTitle.html('주별 매출');
                 } else if (filter === '월별') {
                     startDateInput.val(formatMonth(startMonth));
                     endDateInput.val(formatMonth(currentDate));
+                    smallTitle.html('월별 매출');
+                } else{
+                	smallTitle.html('일별 매출');
                 }
             }
             
@@ -311,7 +372,7 @@
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-area me-1"></i>
-                                    Area Chart Example
+                                    <i class="smallTitle"></i>
                                 </div>
                                 <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
                             </div>
@@ -320,7 +381,7 @@
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-bar me-1"></i>
-                                    Bar Chart Example
+                                    <i class="smallTitle"></i>
                                 </div>
                                 <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
                             </div>
@@ -339,7 +400,7 @@
                                 </select>
                             </label>
                             <label>
-					            <select name="filter" id="filter" class="datatable-selector filter" onchange="applyCondition();">
+					            <select name="filter" id="filter" class="datatable-selector filter">
 					                <option value="일별" <c:if test="${param.filter == '일별'}">selected</c:if>>일별</option>
                                     <option value="주별" <c:if test="${param.filter == '주별'}">selected</c:if>>주별</option>
                                     <option value="월별" <c:if test="${param.filter == '월별'}">selected</c:if>>월별</option>
@@ -378,13 +439,13 @@
                                     <tbody id="printList"></tbody>
                                 </table>
                             </div>
-                        </div>
-                        <!-- 페이지네이션-->
-                        <div class="datatable-bottom">
-                            <div class="datatable-info">Showing ${vo.page} to ${map.totalPage } of ${map.total} entries</div>
-                            <nav class="datatable-pagination">
-                                <ul class="datatable-pagination-list"></ul>
-                            </nav>
+                        	<!-- 페이지네이션-->
+	                        <div class="datatable-bottom">
+	                            <div class="datatable-info">Showing ${vo.page} to ${map.totalPage } of ${map.total} entries</div>
+	                            <nav class="datatable-pagination">
+	                                <ul class="datatable-pagination-list"></ul>
+	                            </nav>
+	                        </div>
                         </div>
                     </div>
                 </div>
