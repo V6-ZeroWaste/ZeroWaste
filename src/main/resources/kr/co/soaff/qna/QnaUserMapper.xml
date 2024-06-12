@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.qna.QnaUserMapper">
+	<sql id="orderBySql">
+		<if test="orderBy == null or orderBy == ''">
+			ORDER BY reply_date ASC, question_date ASC
+		</if>
+		<if test="orderBy == '최신순'">
+			<choose>
+				<when test="start_date != null and end_date != null">
+					ORDER BY question_date DESC
+				</when>
+				<otherwise>
+					ORDER BY qna.question_date DESC
+				</otherwise>
+			</choose>
+		</if>
+		<if test="orderBy == '오래된순'">
+			<choose>
+				<when test="start_date != null and end_date != null">
+					ORDER BY question_date ASC
+				</when>
+				<otherwise>
+					ORDER BY qna.question_date ASC
+				</otherwise>
+			</choose>
+		</if>
+	</sql>
+
+	<sql id="filter">
+		<where>
+			<choose>
+				<when test="filter == '답변대기'">
+					qna.reply IS NULL
+					<include refid="searchAndCal" />
+				</when>
+				<when test="filter == '답변완료'">
+					qna.reply IS NOT NULL
+					<include refid="searchAndCal" />
+				</when>
+				<otherwise>
+					1=1
+					<include refid="searchAndCal" />
+				</otherwise>
+			</choose>
+		</where>
+	</sql>
+
+	<!-- 검색어, 달력 처리 -->
+	<sql id="searchAndCal">
+		<if test="searchWord != null and searchWord != ''">
+			AND concat_ws("-", item.name, qna.title, qna.user_id) LIKE CONCAT('%',
+			#{searchWord}, '%')
+		</if>
+		<if test="(start_date != null and start_date != '')">
+                <![CDATA[
+                AND qna.question_date >= #{start_date}
+                ]]>
+		</if>
+		<if test="(end_date != null and end_date != '')">
+                <![CDATA[
+                AND qna.question_date < DATE_ADD(STR_TO_DATE(#{end_date}, '%Y-%m-%d'), INTERVAL 1 DAY)
+                ]]>
+		</if>
+
+	</sql>
+	
+	
+    <select id="list" parameterType="kr.co.soaff.qna.QnaVO" resultType="kr.co.soaff.qna.QnaVO">
+        SELECT 
+            qna.qna_no, 
+            qna.qna_img,
+            item.name AS item_name, 
+            qna.title,
+            qna.type,
+            user.id AS user_id, 
+            qna.question_date,
+            qna.reply_date,
+            qna.replyState
+        FROM
+            qna JOIN item ON qna.item_no = item.item_no
+			JOIN user ON qna.user_no = user.user_no
+        <include refid="filter"/>
+        <include refid="orderBySql"/>
+        LIMIT #{startIdx}, 20
+    </select>
+	
+	<select id="count" parameterType="kr.co.soaff.qna.QnaVO" resultType="int">
+        SELECT count(*)
+        FROM qna  
+        JOIN item
+        ON qna.item_no = item.item_no
+        <include refid="filter"/>
+    </select>
+</mapper>

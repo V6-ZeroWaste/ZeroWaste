@@ -22,8 +22,7 @@ public class QnaUserController {
 		return "/user/qna/list";
 	}
 
-	// 회원 상세 페이지 - 리스트 불러오기 (ajax)
-	@GetMapping("/getList") // Do: 회원가입 id 중복 체크
+	@GetMapping("/getList") // 
 	@ResponseBody
 	public Map<String, Object> listAjax(QnaVO vo) {
 		Map<String, Object> map = service.list(vo);
@@ -41,10 +40,16 @@ public class QnaUserController {
 			printList += "<td>" + qnaVO.getItem_name() + "</td>";
 			printList += "<td>" + qnaVO.getTitle() + "</td>";
 			printList += "<td>" + qnaVO.getUser_id() + "</td>";
+			printList += "<td>" + qnaVO.getQuestion_date() + "</td>";
 			
-			printList += "<td>" + (qnaVO.getQuestion_date() + "").substring(0, 10) + "<br>"
-					+ (qnaVO.getQuestion_date() + "").substring(11, 19) + "</td>";
-			printList += "<td>" + qnaVO.getReplyState() + "</td>";
+			if(QnaVO.getReply_date() != null) {
+       			QnaVO.setReplyState("답변 완료"); 
+       			printList += "<td>" + QnaVO.getReplyState() + "</td>";
+       		}
+       		else {
+       			QnaVO.setReplyState("답변 대기");
+       			printList += "<td>" + QnaVO.getReplyState() + "</td>";
+       		}
 			printList += "</tr>";
 		}
 		map.put("printList", printList);

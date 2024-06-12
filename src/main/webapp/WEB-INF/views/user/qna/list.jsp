@@ -117,22 +117,46 @@ tr {
 <body>
 	<main>
 		<div class="container-fluid px-4">
-			<h1 class="mt-4">상품 리뷰 관리</h1>
+			<h1 class="mt-4">문의 관리</h1>
 			<div class="card mb-4">
-				<!-- <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
-                            </div> -->
-
 				<div class="card-body">
 					<!-- 리스트 정렬, 필터 검색 영역  -->
-					<div>
-						<div class="datatable-dropdown" style="margin-bottom: 20px">
-							<span>작성 날짜</span> <input id="start_Date" name="start_Date"
-								type="date" class="datatable-selector"
-								onchange="applyCondition();">- <input id="endDate"
-								name="endDate" type="date" class="datatable-selector"
+					<div class="datatable-dropdown" style="margin-bottom: 20px">
+						<span>문의 일자</span> <input id="start_date" name="start_date"
+							type="date" class="datatable-selector"
+							onchange="applyCondition();">-<input id="end_date"
+							name="end_date" type="date" class="datatable-selector"
+							onchange="applyCondition();">
+
+					</div>
+					<div class="datatable-top">
+						<div class="datatable-dropdown">
+							<label> <select id="orderBy" class="datatable-selector"
 								onchange="applyCondition();">
+									<option value="" selected="">===정렬===</option>
+									<option value="최신순">최신순</option>
+									<option value="오래된순">오래된순</option>
+							</select>
+							</label> <label> <select id="filter" name="filter"
+								class="datatable-selector" onchange="applyCondition();">
+									<option value="">==필터==</option>
+									<option value="답변대기">답변대기</option>
+									<option value="답변완료">답변완료</option>
+							</select>
+							</label>
+						</div>
+						<div class="row align-items-center">
+							<div class="col-md-9">
+								<input id="searchWord" name="searchWord" class="datatable-input"
+									type="search" placeholder="상품명/주문한 아이디/문의 제목"
+									<c:if test="${qnaVO.searchWord} != null">value=${qnaVO.searchWord}</c:if>
+									onkeyup="if(window.event.keyCode==13){applyCondition();}"
+									style="width: 280px">
+							</div>
+							<div class="col-md-1">
+								<input type="button" value="검색" class="btn btn-primary"
+									onclick="applyCondition()">
+							</div>
 						</div>
 					</div>
 					<p>
@@ -154,17 +178,16 @@ tr {
 							</thead>
 							<tbody id="printList">
 								<c:forEach var="list" items="${map.list}">
-										<tr
-											style="cursor: pointer;">
-											<td>${list.qna_img)}</td>
-											<td>${list.item_name}</td>
-											<td>${list.title}</td>
-											<td>${list.user_id}</td>
-											<td><fmt:formatDate value="${list.question_date}"
-													pattern="yyyy-MM-dd" /></td>
-											<td>${list.replyState}</td>
-										</tr>
-									</c:forEach>
+									<tr style="cursor: pointer;">
+										<td>${list.qna_img}</td>
+										<td>${list.item_name}</td>
+										<td>${list.title}</td>
+										<td>${list.user_id}</td>
+										<td><fmt:formatDate value="${list.question_date}"
+												pattern="yyyy-MM-dd" /></td>
+										<td>${list.replyState}</td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
