@@ -21,12 +21,35 @@ public class usersTest {
 	UsersMapper mapper;
 
 	@Test
+	public void leaveList() {
+
+		UsersVO vo = new UsersVO();
+		vo.setStart_date("2024-05-01");
+		vo.setEnd_date("2024-09-01");
+		vo.setFilter("일별");
+		log.info(mapper.leave_list(vo).toString());
+
+	}
+
+	@Test
 	public void usersList() {
 
 		UsersVO vo = new UsersVO();
 		vo.setStart_date("2024-05-01");
 		vo.setEnd_date("2024-09-01");
-		System.out.println(mapper.users_list(vo).toString());
+		vo.setFilter("일별");
+		log.info(mapper.users_list(vo).toString());
+
+	}
+
+	@Test
+	public void count() {
+
+		UsersVO vo = new UsersVO();
+		vo.setStart_date("2024-05-01");
+		vo.setEnd_date("2024-09-01");
+		vo.setFilter("일별");
+		log.info(mapper.count(vo));
 
 	}
 }

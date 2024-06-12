@@ -9,6 +9,8 @@ public class UsersVO {
 
 	private Timestamp date;
 	private int user_cnt;
+	private int leave_cnt;
+
 	private String start_date;
 	private String end_date;
 	private String filter;
