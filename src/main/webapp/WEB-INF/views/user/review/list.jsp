@@ -10,6 +10,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
+
 <title>soaff</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
@@ -32,6 +33,10 @@ img {
 
 tr {
 	height: 65px;
+}
+
+.rating i {
+	color: #FFD700;
 }
 </style>
 <script type="text/javascript">
@@ -115,71 +120,107 @@ tr {
 </script>
 </head>
 <body>
-	<main>
-		<div class="container-fluid px-4">
-			<h1 class="mt-4">상품 리뷰 관리</h1>
-			<div class="card mb-4">
-				<!-- <div class="card-header">
+	<%@ include file="/WEB-INF/views/user/include/header.jsp"%>
+	<%@ include file="/WEB-INF/views/user/include/mypageInfo.jsp"%>
+	<section class="pt-5">
+		<div class="container">
+			<div class="row gutter-4 justify-content-between">
+				<%@ include file="/WEB-INF/views/user/include/mypageNav.jsp"%>
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col">
+
+
+							<div class="container-fluid px-4">
+								<h1 class="mt-4">상품 리뷰 관리</h1>
+								<div class="card mb-4">
+									<!-- <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 DataTable Example
                             </div> -->
 
-				<div class="card-body">
-					<!-- 리스트 정렬, 필터 검색 영역  -->
-					<div>
-						<div class="datatable-dropdown" style="margin-bottom: 20px">
-							<span>작성 날짜</span> <input id="startDate" name="startDate"
-								type="date" class="datatable-selector"
-								onchange="applyCondition();">- <input id="endDate"
-								name="endDate" type="date" class="datatable-selector"
-								onchange="applyCondition();">
+									<div class="card-body">
+										<!-- 리스트 정렬, 필터 검색 영역  -->
+										<div>
+											<div class="datatable-dropdown" style="margin-bottom: 20px">
+												<span>작성 날짜</span> <input id="startDate" name="startDate"
+													type="date" class="datatable-selector"
+													onchange="applyCondition();">- <input id="endDate"
+													name="endDate" type="date" class="datatable-selector"
+													onchange="applyCondition();">
+											</div>
+										</div>
+										<p>
+											<span><strong>총 ${map.total}개</strong> |
+												${reviewVO.page}/${map.totalPage}페이지</span>
+										</p>
+										<!-- 리스트 영역 -->
+										<div class="datatable-container">
+											<table class="datatable-table">
+												<thead>
+													<tr>
+														<th>상품이미지</th>
+														<th>상품명</th>
+														<th>제목</th>
+														<th>작성자</th>
+														<th>리뷰일자</th>
+														<th>평점</th>
+													</tr>
+												</thead>
+												<tbody id="printList">
+													<c:forEach var="list" items="${map.list}">
+														<tr style="cursor: pointer;">
+															<td>${list.review_img}</td>
+															<td>${list.item_name}</td>
+															<td>${list.title}</td>
+															<td>${list.user_id}</td>
+															<td><fmt:formatDate value="${list.regist_date}"
+																	pattern="yyyy-MM-dd" /></td>
+															<td>
+																<p class="rating">
+																	<c:forEach var="i" begin="1" end="${list.score}">
+																		<i class="fas fa-star"></i>
+																	</c:forEach>
+																</p>
+															</td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+										</div>
+										<!-- 페이지네이션 영역 -->
+										<div class="datatable-bottom">
+											<div class="datatable-info"></div>
+											<nav class="datatable-pagination">
+												<ul class="datatable-pagination-list">
+												</ul>
+											</nav>
+										</div>
+									</div>
+								</div>
+							</div>
+
 						</div>
-					</div>
-					<p>
-						<span><strong>총 ${map.total}개</strong> |
-							${reviewVO.page}/${map.totalPage}페이지</span>
-					</p>
-					<!-- 리스트 영역 -->
-					<div class="datatable-container">
-						<table class="datatable-table">
-							<thead>
-								<tr>
-									<th>상품이미지</th>
-									<th>상품명</th>
-									<th>제목</th>
-									<th>작성자</th>
-									<th>리뷰일자</th>
-									<th>평점</th>
-								</tr>
-							</thead>
-							<tbody id="printList">
-								<c:forEach var="list" items="${map.list}">
-										<tr
-											style="cursor: pointer;">
-											<td>${list.review_img}</td>
-											<td>${list.item_name}</td>
-											<td>${list.title}</td>
-											<td>${list.user_id}</td>
-											<td><fmt:formatDate value="${list.regist_date}"
-													pattern="yyyy-MM-dd" /></td>
-											<td>${list.score}</td>
-										</tr>
-									</c:forEach>
-							</tbody>
-						</table>
-					</div>
-					<!-- 페이지네이션 영역 -->
-					<div class="datatable-bottom">
-						<div class="datatable-info"></div>
-						<nav class="datatable-pagination">
-							<ul class="datatable-pagination-list">
-							</ul>
-						</nav>
 					</div>
 				</div>
 			</div>
 		</div>
-	</main>
-
+	</section>
+	<%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

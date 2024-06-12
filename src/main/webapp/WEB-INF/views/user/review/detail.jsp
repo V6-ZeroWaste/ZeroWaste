@@ -10,7 +10,8 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
-<title>리뷰 상세 페이지</title>
+
+<title>soaff</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
 	rel="stylesheet" />
@@ -106,48 +107,95 @@
 	font-size: 18px;
 }
 </style>
-
-	
-	
 </head>
 <body>
-	<div class="detail-container">
-		<div class="detail-header">
-			<img src="${vo.review_img}" alt="작성자 이미지">
-			<div class="detail-info">
-				<p style="font-size: 20px;">
-					<fmt:formatDate value="${vo.regist_date}" pattern="yyyy-MM-dd" />
-				</p>
-				<div class="title-user-container">
-					<h2>${vo.title}</h2>
-					<p>작성자: ${vo.user_id}</p>
-				</div>
-				<div class="detail-content">
-					<p>${vo.content}</p>
-				</div>
-				<p class="rating">
-					평점:
-					<c:forEach var="i" begin="1" end="${vo.score}">
-						<i class="fas fa-star"></i>
-					</c:forEach>
-				</p>
-				<div class="detail-footer">
-					<div class="product-name">상품명: ${vo.item_name}</div>
-					<div class="buttons">
-						<form action="/user/review/update" method="post"
-							style="display: inline;">
-							<input type="hidden" name="review_no" value="${vo.review_no}">
-							<button type="submit" class="btn btn-primary">수정</button>
-						</form>
-						<form action="/user/review/delete" method="post"
-							style="display: inline;">
-							<input type="hidden" name="review_no" value="${vo.review_no}">
-							<button type="submit" class="btn btn-danger">삭제</button>
-						</form>
+	<%@ include file="/WEB-INF/views/user/include/header.jsp"%>
+	<%@ include file="/WEB-INF/views/user/include/mypageInfo.jsp"%>
+	<section class="pt-5">
+		<div class="container">
+			<div class="row gutter-4 justify-content-between">
+				<%@ include file="/WEB-INF/views/user/include/mypageNav.jsp"%>
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col">
+
+
+							<!-- content -->
+							<div class="detail-container">
+								<div class="detail-header">
+									<img src="${vo.review_img}" alt="작성자 이미지">
+									<div class="detail-info">
+										<p style="font-size: 20px;">
+											<fmt:formatDate value="${vo.regist_date}"
+												pattern="yyyy-MM-dd" />
+										</p>
+										<div class="title-user-container">
+											<h2>${vo.title}</h2>
+											<p>작성자: ${vo.user_id}</p>
+										</div>
+										<div class="detail-content">
+											<p>${vo.content}</p>
+										</div>
+										<p class="rating">
+											평점:
+											<c:forEach var="i" begin="1" end="${vo.score}">
+												<i class="fas fa-star"></i>
+											</c:forEach>
+										</p>
+										<div class="detail-footer">
+											<div class="product-name">상품명: ${vo.item_name}</div>
+											<div class="buttons">
+												<form action="/user/review/update" method="post"
+													style="display: inline;">
+													<input type="hidden" name="review_no"
+														value="${vo.review_no}">
+													<button type="submit" class="btn btn-primary">수정</button>
+												</form>
+												<form action="/user/review/delete" method="post"
+													style="display: inline;">
+													<input type="hidden" name="review_no"
+														value="${vo.review_no}">
+													<button type="submit" class="btn btn-danger">삭제</button>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
+	<%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

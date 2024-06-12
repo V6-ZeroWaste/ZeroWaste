@@ -26,7 +26,7 @@
 </sql>
 
 	<sql id="orderBySql">
-    <if test="orderBy == null">
+    <if test="orderBy == null or orderBy == '취소상태'">
         ORDER BY
         CASE
             WHEN od.cancel_status = 0 THEN 1
