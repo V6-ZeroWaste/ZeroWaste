@@ -24,6 +24,10 @@ public class SalesTest {
 	@Test
 	public void list() {
 		SalesVO vo = new SalesVO();
+		vo.setStart_date("2024-06-03");
+		vo.setEnd_date("2024-06-11");
+		vo.setOrderBy("최근날짜순");
+		vo.setFilter("일별");
 		List<SalesVO> vos = mapper.list(vo);
 		for (SalesVO voTmp : vos) {
 			System.out.println(voTmp);

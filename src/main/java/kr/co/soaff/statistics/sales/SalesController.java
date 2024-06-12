@@ -28,8 +28,6 @@ public class SalesController {
 	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(SalesVO vo, Model model) {
-		System.out.println(vo.getStart_date());
-		System.out.println(vo.getEnd_date());
 		Map<String, Object> map = service.list(vo);
 		String printList = "";
 		List<SalesVO> list = (List<SalesVO>) map.get("list");

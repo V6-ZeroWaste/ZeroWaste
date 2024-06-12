@@ -21,7 +21,13 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 	<script>
+		var isDateChanged = false;
+	
         document.addEventListener('DOMContentLoaded', function() {
+        	if(!isDateChanged){
+				changeDefaultDate();
+				isDateChanged = true;				
+			}
             // 차트 초기화
             var myAreaChart;
             var myBarChart;
@@ -37,6 +43,7 @@
             }
 
             function getList() {
+            	
                 var data = {
                     orderBy: $('#orderBy').val(),
                     filter: $('#filter').val(),
@@ -83,6 +90,7 @@
                         console.log('error', data, textStatus);
                     }
                 });
+                
             }
 
             // 차트 업데이트
@@ -105,7 +113,7 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: "Dataset",
+                            label: "매출액",
                             data: data,
                             backgroundColor: "rgba(2,117,216,0.2)",
                             borderColor: "rgba(2,117,216,1)",
@@ -129,7 +137,7 @@
                                     display: false
                                 },
                                 ticks: {
-                                    maxTicksLimit: 6
+                                    /* maxTicksLimit: data.length */
                                 }
                             },
                             y: {
@@ -200,11 +208,69 @@
                 });
             }
             
-         // 필터 값 변경 시 입력 필드 유형 변경
+            function changeDefaultDate() {
+                var filter = $('#filter').val();
+                var startDateInput = $('#start_date');
+                var endDateInput = $('#end_date');
+
+                // 현재 날짜 생성
+                var currentDate = new Date();
+                
+                // 현재 날짜에서 10일, 10주, 10개월을 빼기 위한 변수들
+                var startDate = new Date(currentDate);
+                var startWeek = new Date(currentDate);
+                var startMonth = new Date(currentDate);
+                
+                startDate.setDate(currentDate.getDate() - 10); // 10일 빼기
+                startWeek.setDate(currentDate.getDate() - (10 * 7)); // 10주 빼기
+                startMonth.setMonth(currentDate.getMonth() - 10); // 10개월 빼기
+                
+                // 날짜를 포맷에 맞게 문자열로 변환하는 함수
+                function formatDate(date) {
+                    var year = date.getFullYear();
+                    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                    var day = ('0' + date.getDate()).slice(-2);
+                    return year + '-' + month + '-' + day;
+                }
+                
+                // 주를 포맷에 맞게 문자열로 변환하는 함수 (ISO 8601 주 형식)
+                function formatWeek(date) {
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var day = date.getDate();
+                    // 주 번호 계산
+                    var oneJan = new Date(date.getFullYear(), 0, 1);
+                    var numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000));
+                    var week = Math.ceil((numberOfDays + oneJan.getDay() + 1) / 7);
+                    return year + '-W' + ('0' + week).slice(-2);
+                }
+                
+                // 월을 포맷에 맞게 문자열로 변환하는 함수
+                function formatMonth(date) {
+                    var year = date.getFullYear();
+                    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                    return year + '-' + month;
+                }
+                
+                if (filter === '일별') {
+                    startDateInput.val(formatDate(startDate));
+                    endDateInput.val(formatDate(currentDate));
+                } else if (filter === '주별') {
+                    startDateInput.val(formatWeek(startWeek));
+                    endDateInput.val(formatWeek(currentDate));
+                } else if (filter === '월별') {
+                    startDateInput.val(formatMonth(startMonth));
+                    endDateInput.val(formatMonth(currentDate));
+                }
+            }
+            
+         	// 필터 값 변경 시 입력 필드 유형 변경
             $('#filter').on('change', function() {
+				
                 var filter = $(this).val();
                 var startDateInput = $('#start_date');
                 var endDateInput = $('#end_date');
+                
                 
                 if (filter === '일별') {
                     startDateInput.attr('type', 'date');
@@ -216,6 +282,7 @@
                     startDateInput.attr('type', 'month');
                     endDateInput.attr('type', 'month');
                 }
+                changeDefaultDate();
                 applyCondition();
             });
 
@@ -280,8 +347,12 @@
 					        </label>
                         </div>
                         <div class="col-md-8">
+                        
+						                        
                             <div class="datatable-dropdown" style="margin-bottom: 20px">
-                               	<input id="start_date" name="start_date" type="date" class="datatable-selector dateInput">-<input id="end_date" name="end_date" type="date" class="datatable-selector dateInput">
+                               	<input id="start_date" name="start_date" type="date" class="datatable-selector dateInput">
+                               	-
+                               	<input id="end_date" name="end_date" type="date" class="datatable-selector dateInput">
                             </div>
                         </div>
                         <div class="col-md-3"></div>
