@@ -42,8 +42,8 @@ public class QnaUserController {
 			printList += "<td>" + qnaVO.getTitle() + "</td>";
 			printList += "<td>" + qnaVO.getUser_id() + "</td>";
 			
-			printList += "<td>" + (qnaVO.getReply_date() + "").substring(0, 10) + "<br>"
-					+ (qnaVO.getReply_date() + "").substring(11, 19) + "</td>";
+			printList += "<td>" + (qnaVO.getQuestion_date() + "").substring(0, 10) + "<br>"
+					+ (qnaVO.getQuestion_date() + "").substring(11, 19) + "</td>";
 			printList += "<td>" + qnaVO.getReplyState() + "</td>";
 			printList += "</tr>";
 		}

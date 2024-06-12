@@ -137,7 +137,7 @@ tr {
 					</div>
 					<p>
 						<span><strong>총 ${map.total}개</strong> |
-							${reviewVO.page}/${map.totalPage}페이지</span>
+							${qnaVO.page}/${map.totalPage}페이지</span>
 					</p>
 					<!-- 리스트 영역 -->
 					<div class="datatable-container">
@@ -148,21 +148,21 @@ tr {
 									<th>상품명</th>
 									<th>제목</th>
 									<th>작성자</th>
-									<th>리뷰일자</th>
-									<th>평점</th>
+									<th>문의일자</th>
+									<th>답변상태</th>
 								</tr>
 							</thead>
 							<tbody id="printList">
 								<c:forEach var="list" items="${map.list}">
 										<tr
 											style="cursor: pointer;">
-											<td>${list.review_img}</td>
+											<td>${list.qna_img)}</td>
 											<td>${list.item_name}</td>
 											<td>${list.title}</td>
 											<td>${list.user_id}</td>
-											<td><fmt:formatDate value="${list.regist_date}"
+											<td><fmt:formatDate value="${list.question_date}"
 													pattern="yyyy-MM-dd" /></td>
-											<td>${list.score}</td>
+											<td>${list.replyState}</td>
 										</tr>
 									</c:forEach>
 							</tbody>
