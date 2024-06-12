@@ -20,342 +20,6 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-	<script>
-		var isDateChanged = false;
-	
-        document.addEventListener('DOMContentLoaded', function() {
-        	if(!isDateChanged){
-				changeDefaultDate();
-				isDateChanged = true;				
-			}
-            // 차트 초기화
-            var myAreaChart;
-            var myBarChart;
-
-            function applyCondition() {
-                page = 1;
-                getList();
-            }
-
-            function changePage(obj) {
-                page = parseInt(obj.getAttribute("data-page"), 10);
-                getList();
-            }
-
-            function getList() {
-            	
-                var data = {
-                    orderBy: $('#orderBy').val(),
-                    filter: $('#filter').val(),
-                    start_date: $('#start_date').val(),
-                    end_date: $('#end_date').val(),
-                    page: page,
-                };
-
-                $.ajax({
-                    type: "GET",
-                    url: "/admin/statistics/sales/getList",
-                    data: data,
-                    dataType: "json",
-                    success: function(resp) {
-                        console.log("AJAX 응답:", resp);
-
-                        $("#printList").html(resp.printList);
-
-                        $(".datatable-info").html("Showing " + resp.page + " to " + resp.totalPage + " of " + resp.count + " entries");
-
-                        var printPage = "";
-                        if (resp.isPrev) {
-                            printPage += '<li class="datatable-pagination-list-item">';
-                            printPage += '<a data-page="1" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
-                            printPage += '<li class="datatable-pagination-list-item">';
-                            printPage += '<a data-page="' + (resp.startPage - 1) + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
-                        }
-                        for (let i = resp.startPage; i <= resp.endPage; i++) {
-                            printPage += '<li class="datatable-pagination-list-item' + (i == page ? ' datatable-active' : '') + '">';
-                            printPage += '<a data-page="' + i + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">' + i + '</a></li>';
-                        }
-                        if (resp.isNext) {
-                            printPage += '<li class="datatable-pagination-list-item">';
-                            printPage += '<a data-page="' + (resp.endPage + 1) + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
-                            printPage += '<li class="datatable-pagination-list-item">';
-                            printPage += '<a data-page="' + resp.totalPage + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
-                        }
-                        $(".datatable-pagination-list").html(printPage);
-						
-                        drawCharts(resp.list);
-                    },
-                    error: function(data, textStatus) {
-                        $('#fail').html("관리자에게 문의하세요.");
-                        console.log('error', data, textStatus);
-                    }
-                });
-                
-            }
-
-            // 차트 업데이트
-            function drawCharts(salesList) {
-                var labels = [];
-                var data = [];
-
-                salesList.reverse().forEach(function(item) {
-                    labels.push(item.date);
-                    data.push(item.sales);
-                });
-
-                if (myAreaChart) {
-                    myAreaChart.destroy();
-                }
-
-                var ctx = document.getElementById("myAreaChart").getContext('2d');
-                myAreaChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: "매출액",
-                            data: data,
-                            backgroundColor: "rgba(2,117,216,0.2)",
-                            borderColor: "rgba(2,117,216,1)",
-                            pointRadius: 5,
-                            pointBackgroundColor: "rgba(2,117,216,1)",
-                            pointBorderColor: "rgba(255,255,255,0.8)",
-                            pointHoverRadius: 5,
-                            pointHoverBackgroundColor: "rgba(2,117,216,1)",
-                            pointHitRadius: 20,
-                            pointBorderWidth: 2,
-                            lineTension: 0.3,
-                        }],
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                time: {
-                                    unit: 'date'
-                                },
-                                grid: {
-                                    display: false
-                                },
-                                ticks: {
-                                    /* maxTicksLimit: data.length */
-                                }
-                            },
-                            y: {
-                                ticks: {
-                                    min: 0,
-                                    max: 100,
-                                    maxTicksLimit: 5
-                                },
-                                grid: {
-                                    color: "rgba(0, 0, 0, .125)",
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        }
-                    }
-                });
-
-                if (myAreaChart) {
-                    myAreaChart.destroy();
-                }
-
-                var ctx = document.getElementById("myAreaChart").getContext('2d');
-                myAreaChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: "매출액",
-                            data: data,
-                            backgroundColor: "rgba(2,117,216,0.2)",
-                            borderColor: "rgba(2,117,216,1)",
-                            pointRadius: 5,
-                            pointBackgroundColor: "rgba(2,117,216,1)",
-                            pointBorderColor: "rgba(255,255,255,0.8)",
-                            pointHoverRadius: 5,
-                            pointHoverBackgroundColor: "rgba(2,117,216,1)",
-                            pointHitRadius: 20,
-                            pointBorderWidth: 2,
-                            lineTension: 0.3,
-                        }],
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                time: {
-                                    unit: 'date'
-                                },
-                                grid: {
-                                    display: false
-                                },
-                                ticks: {
-                                    /* maxTicksLimit: data.length */
-                                }
-                            },
-                            y: {
-                                ticks: {
-                                    min: 0,
-                                    max: 100,
-                                    maxTicksLimit: 5
-                                },
-                                grid: {
-                                    color: "rgba(0, 0, 0, .125)",
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        }
-                    }
-                });
-
-                if (myBarChart) {
-                    myBarChart.destroy();
-                }
-
-                var ctx = document.getElementById("myBarChart").getContext('2d');
-                myBarChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: "Dataset",
-                            data: data,
-                            backgroundColor: "rgba(2,117,216,1)",
-                            borderColor: "rgba(2,117,216,1)",
-                        }],
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                time: {
-                                    unit: 'month'
-                                },
-                                grid: {
-                                    display: false
-                                },
-                                ticks: {
-                                    maxTicksLimit: 6
-                                }
-                            },
-                            y: {
-                                ticks: {
-                                    min: 0,
-                                    max: 100,
-                                    maxTicksLimit: 5
-                                },
-                                grid: {
-                                    color: "rgba(0, 0, 0, .125)",
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        }
-                    }
-                });
-            }
-            
-            function changeDefaultDate() {
-                var filter = $('#filter').val();
-                var startDateInput = $('#start_date');
-                var endDateInput = $('#end_date');
-				var smallTitle = $('.smallTitle');
-                // 현재 날짜 생성
-                var currentDate = new Date();
-                
-                // 현재 날짜에서 10일, 10주, 10개월을 빼기 위한 변수들
-                var startDate = new Date(currentDate);
-                var startWeek = new Date(currentDate);
-                var startMonth = new Date(currentDate);
-                
-                startDate.setDate(currentDate.getDate() - 10); // 10일 빼기
-                startWeek.setDate(currentDate.getDate() - (10 * 7)); // 10주 빼기
-                startMonth.setMonth(currentDate.getMonth() - 10); // 10개월 빼기
-                
-                // 날짜를 포맷에 맞게 문자열로 변환하는 함수
-                function formatDate(date) {
-                    var year = date.getFullYear();
-                    var month = ('0' + (date.getMonth() + 1)).slice(-2);
-                    var day = ('0' + date.getDate()).slice(-2);
-                    return year + '-' + month + '-' + day;
-                }
-                
-                // 주를 포맷에 맞게 문자열로 변환하는 함수 (ISO 8601 주 형식)
-                function formatWeek(date) {
-                    var year = date.getFullYear();
-                    var month = date.getMonth() + 1;
-                    var day = date.getDate();
-                    // 주 번호 계산
-                    var oneJan = new Date(date.getFullYear(), 0, 1);
-                    var numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000));
-                    var week = Math.ceil((numberOfDays + oneJan.getDay() + 1) / 7);
-                    return year + '-W' + ('0' + week).slice(-2);
-                }
-                
-                // 월을 포맷에 맞게 문자열로 변환하는 함수
-                function formatMonth(date) {
-                    var year = date.getFullYear();
-                    var month = ('0' + (date.getMonth() + 1)).slice(-2);
-                    return year + '-' + month;
-                }
-                
-                if (filter === '일별') {
-                    startDateInput.val(formatDate(startDate));
-                    endDateInput.val(formatDate(currentDate));
-                    smallTitle.html('일별 매출');
-                } else if (filter === '주별') {
-                    startDateInput.val(formatWeek(startWeek));
-                    endDateInput.val(formatWeek(currentDate));
-                    smallTitle.html('주별 매출');
-                } else if (filter === '월별') {
-                    startDateInput.val(formatMonth(startMonth));
-                    endDateInput.val(formatMonth(currentDate));
-                    smallTitle.html('월별 매출');
-                } else{
-                	smallTitle.html('일별 매출');
-                }
-            }
-            
-         	// 필터 값 변경 시 입력 필드 유형 변경
-            $('#filter').on('change', function() {
-				
-                var filter = $(this).val();
-                var startDateInput = $('#start_date');
-                var endDateInput = $('#end_date');
-                
-                
-                if (filter === '일별') {
-                    startDateInput.attr('type', 'date');
-                    endDateInput.attr('type', 'date');
-                } else if (filter === '주별') {
-                    startDateInput.attr('type', 'week');
-                    endDateInput.attr('type', 'week');
-                } else if (filter === '월별') {
-                    startDateInput.attr('type', 'month');
-                    endDateInput.attr('type', 'month');
-                }
-                changeDefaultDate();
-                applyCondition();
-            });
-
-            // Initialize data
-            var page = 1;
-            getList();
-            
-            $('.dateInput').on('change', applyCondition);
-            $('.applyButton').on('click', applyCondition);
-            $('.orderBy').on('change', applyCondition);
-        });
-    </script>
 <body>
     <%@ include file="/WEB-INF/views/admin/include/header.jsp" %>
     <div id="layoutSidenav">
@@ -408,8 +72,6 @@
 					        </label>
                         </div>
                         <div class="col-md-8">
-                        
-						                        
                             <div class="datatable-dropdown" style="margin-bottom: 20px">
                                	<input id="start_date" name="start_date" type="date" class="datatable-selector dateInput">
                                	-
@@ -441,7 +103,7 @@
                             </div>
                         	<!-- 페이지네이션-->
 	                        <div class="datatable-bottom">
-	                            <div class="datatable-info">Showing ${vo.page} to ${map.totalPage } of ${map.total} entries</div>
+	                            <div class="datatable-info"></div>
 	                            <nav class="datatable-pagination">
 	                                <ul class="datatable-pagination-list"></ul>
 	                            </nav>
@@ -450,9 +112,271 @@
                     </div>
                 </div>
             </main>
-            <%@ include file="/WEB-INF/views/admin//include/footer.jsp" %>
+            <%@ include file="/WEB-INF/views/admin/include/footer.jsp" %>
         </div>
     </div>
 
+    <script>
+    	var page = 1;
+        var isDateChanged = false;
+        
+        if (!isDateChanged) {
+            changeDefaultDate();
+            isDateChanged = true;
+        }
+
+        // 차트 초기화
+        var myAreaChart;
+        var myBarChart;
+
+        window.onload = function () {
+            getList();
+        }
+
+        function changePage(obj) {
+            page = parseInt(obj.getAttribute("data-page"), 10);
+            getList();
+        }
+
+        function applyCondition() {
+            page = 1;
+            getList();
+        }
+
+        function getList() {
+            var data = {
+                orderBy: $('#orderBy').val(),
+                filter: $('#filter').val(),
+                start_date: $('#start_date').val(),
+                end_date: $('#end_date').val(),
+                page: page,
+            };
+
+            $.ajax({
+                type: "GET",
+                url: "/admin/statistics/sales/getList",
+                data: data,
+                dataType: "json",
+                success: function (resp) {
+                    console.log("AJAX 응답:", resp);
+
+                    $("#printList").html(resp.printList);
+
+                    $(".datatable-info").html("Showing " + resp.page + " to " + resp.totalPage + " of " + resp.total + " entries");
+
+                    var printPage = "";
+                    if (resp.isPrev) {
+                        printPage += '<li class="datatable-pagination-list-item">';
+                        printPage += '<a data-page="1" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+                        printPage += '<li class="datatable-pagination-list-item">';
+                        printPage += '<a data-page="' + (resp.startPage - 1) + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+                    }
+                    for (let i = resp.startPage; i <= resp.endPage; i++) {
+                        printPage += '<li class="datatable-pagination-list-item' + (i == page ? ' datatable-active' : '') + '">';
+                        printPage += '<a data-page="' + i + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">' + i + '</a></li>';
+                    }
+                    if (resp.isNext) {
+                        printPage += '<li class="datatable-pagination-list-item">';
+                        printPage += '<a data-page="' + (resp.endPage + 1) + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
+                        printPage += '<li class="datatable-pagination-list-item">';
+                        printPage += '<a data-page="' + resp.totalPage + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
+                    }
+
+                    $(".datatable-pagination-list").html(printPage);
+
+                    /* var labels = resp.salesData.map(data => data.date);
+                    var salesData = resp.salesData.map(data => data.sales); */
+					
+                    var labels = [];
+                    var data = [];
+                    resp.list.reverse().forEach(function(item){
+                    	labels.push(item.date);
+                    	data.push(item.sales);
+                    })
+                    
+                    // Destroy existing charts if they exist
+                    if (myAreaChart) myAreaChart.destroy();
+                    if (myBarChart) myBarChart.destroy();
+
+                    // Create the Area Chart
+                    var ctxArea = document.getElementById("myAreaChart").getContext('2d');
+                    myAreaChart = new Chart(ctxArea, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: "Sales",
+                                lineTension: 0.3,
+                                backgroundColor: "rgba(2,117,216,0.2)",
+                                borderColor: "rgba(2,117,216,1)",
+                                pointRadius: 5,
+                                pointBackgroundColor: "rgba(2,117,216,1)",
+                                pointBorderColor: "rgba(255,255,255,0.8)",
+                                pointHoverRadius: 5,
+                                pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                                pointHitRadius: 50,
+                                pointBorderWidth: 2,
+                                data: data,
+                            }],
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    time: {
+                                        unit: 'date'
+                                    },
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        maxTicksLimit: 7
+                                    }
+                                },
+                                y: {
+                                    ticks: {
+                                        maxTicksLimit: 5
+                                    },
+                                    grid: {
+                                        color: "rgba(0, 0, 0, .125)",
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            }
+                        }
+                    });
+
+                    // Create the Bar Chart
+                    var ctxBar = document.getElementById("myBarChart").getContext('2d');
+                    myBarChart = new Chart(ctxBar, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: "Sales",
+                                backgroundColor: "rgba(2,117,216,1)",
+                                borderColor: "rgba(2,117,216,1)",
+                                data: data,
+                            }],
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        maxTicksLimit: 6
+                                    }
+                                },
+                                y: {
+                                    ticks: {
+                                        maxTicksLimit: 5
+                                    },
+                                    grid: {
+                                        color: "rgba(0, 0, 0, .125)",
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        
+        function changeDefaultDate() {
+            var filter = $('#filter').val();
+            var startDateInput = $('#start_date');
+            var endDateInput = $('#end_date');
+			var smallTitle = $('.smallTitle');
+            // 현재 날짜 생성
+            var currentDate = new Date();
+            
+            // 현재 날짜에서 10일, 10주, 10개월을 빼기 위한 변수들
+            var startDate = new Date(currentDate);
+            var startWeek = new Date(currentDate);
+            var startMonth = new Date(currentDate);
+            
+            startDate.setDate(currentDate.getDate() - 10); // 10일 빼기
+            startWeek.setDate(currentDate.getDate() - (10 * 7)); // 10주 빼기
+            startMonth.setMonth(currentDate.getMonth() - 10); // 10개월 빼기
+            
+            // 날짜를 포맷에 맞게 문자열로 변환하는 함수
+            function formatDate(date) {
+                var year = date.getFullYear();
+                var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                var day = ('0' + date.getDate()).slice(-2);
+                return year + '-' + month + '-' + day;
+            }
+            
+            // 주를 포맷에 맞게 문자열로 변환하는 함수 (ISO 8601 주 형식)
+            function formatWeek(date) {
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                // 주 번호 계산
+                var oneJan = new Date(date.getFullYear(), 0, 1);
+                var numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000));
+                var week = Math.ceil((numberOfDays + oneJan.getDay() + 1) / 7);
+                return year + '-W' + ('0' + week).slice(-2);
+            }
+            
+            // 월을 포맷에 맞게 문자열로 변환하는 함수
+            function formatMonth(date) {
+                var year = date.getFullYear();
+                var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                return year + '-' + month;
+            }
+            
+            if (filter === '일별') {
+                startDateInput.val(formatDate(startDate));
+                endDateInput.val(formatDate(currentDate));
+                smallTitle.html('일별 매출');
+            } else if (filter === '주별') {
+                startDateInput.val(formatWeek(startWeek));
+                endDateInput.val(formatWeek(currentDate));
+                smallTitle.html('주별 매출');
+            } else if (filter === '월별') {
+                startDateInput.val(formatMonth(startMonth));
+                endDateInput.val(formatMonth(currentDate));
+                smallTitle.html('월별 매출');
+            } else{
+            	smallTitle.html('일별 매출');
+            }
+        }
+        
+        $('#filter').on('change', function() {
+			
+            var filter = $(this).val();
+            var startDateInput = $('#start_date');
+            var endDateInput = $('#end_date');
+            
+            
+            if (filter === '일별') {
+                startDateInput.attr('type', 'date');
+                endDateInput.attr('type', 'date');
+            } else if (filter === '주별') {
+                startDateInput.attr('type', 'week');
+                endDateInput.attr('type', 'week');
+            } else if (filter === '월별') {
+                startDateInput.attr('type', 'month');
+                endDateInput.attr('type', 'month');
+            }
+            changeDefaultDate();
+            applyCondition();
+        });
+
+        $('.dateInput').on('change', applyCondition);
+        $('.applyButton').on('click', applyCondition);
+        $('.orderBy').on('change', applyCondition);
+    </script>
 </body>
 </html>

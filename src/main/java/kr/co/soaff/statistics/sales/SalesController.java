@@ -38,6 +38,7 @@ public class SalesController {
 			printList += "</tr>";
 		}
 		map.put("printList", printList);
+		map.put("page", vo.getPage());
 		model.addAttribute("map", service.list(vo));
 		return map;
 	}
