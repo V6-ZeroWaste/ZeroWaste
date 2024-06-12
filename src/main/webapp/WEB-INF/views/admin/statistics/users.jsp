@@ -64,7 +64,7 @@
 
                         
                         <!-- 테이블 -->
-                        
+                    <div class="container-fluid px-4">
                         <div class="card mb-4">
                         	<div class="card-header">
                                 table
@@ -108,7 +108,7 @@
                 <%@ include file="/WEB-INF/views/admin//include/footer.jsp" %>
             </div>
         </div>
-	
+	</div>
 	
 	
 	
@@ -185,7 +185,7 @@
 
         	// 차트 객체 생성
         	var myChart = new Chart(ctx, {
-        	    type: "horizontalBar", // 가로막대 그래프 타입 설정
+        	    type: "bar", // 가로막대 그래프 타입 설정
         	    data: {
         	        labels: labels,
         	        datasets: datasets

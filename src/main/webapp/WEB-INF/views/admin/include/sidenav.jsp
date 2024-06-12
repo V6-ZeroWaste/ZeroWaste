@@ -43,7 +43,7 @@
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="#">매출 통계</a>
                         <a class="nav-link" href="#">상품 통계</a>
-                        <a class="nav-link" href="#">회원 통계</a>
+                        <a class="nav-link" href="/admin/statistics/users/index">회원 통계</a>
                     </nav>
                 </div>
             </div>
