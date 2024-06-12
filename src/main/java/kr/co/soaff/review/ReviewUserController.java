@@ -49,4 +49,19 @@ public class ReviewUserController {
 		map.put("printList", printList);
 		return map;
 	}
+	
+	@GetMapping("/detail")
+	public String reply(Model model, ReviewVO vo) {
+		model.addAttribute("vo", service.detail(vo));
+		return "/user/review/detail";
+	}
+	
+	// 리뷰등록페이지 입장하는 버튼
+	@GetMapping("write")
+	public String write() {
+		return "user/review/write";
+	}
+	
+	
+	
 }

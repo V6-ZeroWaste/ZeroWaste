@@ -1,4 +1,4 @@
-package kr.co.soaff.review;
+package kr.co.soaff.qna;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ReviewUserServiceImpl implements ReviewUserService {
+public class QnaUserServiceImpl implements QnaUserService {
 	@Autowired
-	ReviewUserMapper mapper;
+	QnaUserMapper mapper;
 
 	@Override
-	public Map<String, Object> list(ReviewVO vo) {
+	public Map<String, Object> list(QnaVO vo) {
 		Map<String, Object> map = new HashMap();
 
 		// 총개수
@@ -41,7 +41,7 @@ public class ReviewUserServiceImpl implements ReviewUserService {
 		map.put("isPrev", isPrev);
 		map.put("isNext", isNext);
 
-		List<ReviewVO> list = mapper.list(vo);
+		List<QnaVO> list = mapper.list(vo);
 		map.put("list", list);
 
 		System.out.println("조회된 리뷰 개수: " + list.size());
@@ -51,9 +51,8 @@ public class ReviewUserServiceImpl implements ReviewUserService {
 	}
 	
 	@Override
-	public ReviewVO detail(ReviewVO vo) {
-		ReviewVO data = mapper.detail(vo);
+	public QnaVO detail(QnaVO vo) {
+		QnaVO data = mapper.detail(vo);
 		return data;
 	}
-
 }

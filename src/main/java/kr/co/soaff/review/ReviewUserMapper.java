@@ -6,5 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ReviewUserMapper {
 	List<ReviewVO> list(ReviewVO vo);
+	ReviewVO detail(ReviewVO vo);
 	int count (ReviewVO vo);
 }
