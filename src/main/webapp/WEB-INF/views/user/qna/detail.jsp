@@ -10,7 +10,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
-<title>리뷰 상세 페이지</title>
+<title>문의 상세 페이지</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
 	rel="stylesheet" />
@@ -33,6 +33,20 @@
 	border: 1px solid #ddd;
 	border-radius: 10px;
 	background-color: #f9f9f9;
+}
+
+.reply-container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 50px auto;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	background-color: #f9f9f9;
+}
+
+.reply-content {
+	height: 200px;
 }
 
 .detail-header {
@@ -63,12 +77,11 @@
 }
 
 .detail-content {
+	margin-top: 30px;
 	margin-bottom: 20px;
-	padding: 20px;
-	height: 300px;
-	background-color: #fff;
 	border: 1px solid #ddd;
 	border-radius: 10px;
+	margin-bottom: 20px;
 }
 
 .detail-content h3 {
@@ -83,6 +96,7 @@
 }
 
 .detail-footer .product-name {
+	margin-bottom: 15px;
 	font-size: 18px;
 	font-weight: bold;
 }
@@ -106,47 +120,95 @@
 	font-size: 18px;
 }
 </style>
+<script type="text/javascript">
+var qna_no = ${vo.qna_no};
+function deleteQna() {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        $.ajax({
+            type: "POST",
+            url: "/user/qna/delete",
+            data: { qna_no: ${vo.qna_no} },
+            success: function(response) {
+                if (response === 1) {
+                    alert("문의가 삭제되었습니다.");
+                    location.href = "/user/qna/list";
+                } else {
+                    alert("문의 삭제에 실패했습니다.");
+                }
+            },
+            error: function() {
+                alert("서버와의 통신 중 오류가 발생했습니다.");
+            }
+        });
+    }
+}
 
-	
-	
+
+
+function updateQna(qna_no,title,content){
+	 var title = $('#title').val();
+	    var content = $('#content').val();
+	if(confirm("정말 수정하시겠습니까?")){
+		$.ajax({
+			type: "POST",
+			url: "/user/qna/update",
+			data: {
+				title: title,
+				content: content,
+				qna_no: qna_no
+			},
+			success: function(response){
+				if(response===1){
+					alert("문의가 수정되었습니다.");
+				}else{
+					alert("문의 수정에 실패하였습니다.");
+				}
+			},
+			error: function(){
+				alert("서버와의 통신 중 오류가 발생했습니다.");
+			}
+		});
+	}
+}
+
+function handleUpdate() {
+    var title = document.getElementById('title').value;
+    var content = document.getElementById('content').value;
+    updateQna(${vo.qna_no}, title, content);
+}
+	</script>
 </head>
 <body>
 	<div class="detail-container">
 		<div class="detail-header">
-			<img src="${vo.review_img}" alt="작성자 이미지">
+			<img src="${vo.qna_img}" alt="작성자 이미지">
 			<div class="detail-info">
 				<p style="font-size: 20px;">
-					<fmt:formatDate value="${vo.regist_date}" pattern="yyyy-MM-dd" />
+					<fmt:formatDate value="${vo.question_date}" pattern="yyyy-MM-dd" />
 				</p>
 				<div class="title-user-container">
-					<h2>${vo.title}</h2>
+					<input type="text" id="title" class="form-control"
+						value="${vo.title}">
 					<p>작성자: ${vo.user_id}</p>
 				</div>
 				<div class="detail-content">
-					<p>${vo.content}</p>
+					<textarea id="content" class="form-control" rows="10">${vo.content}</textarea>
 				</div>
-				<p class="rating">
-					평점:
-					<c:forEach var="i" begin="1" end="${vo.score}">
-						<i class="fas fa-star"></i>
-					</c:forEach>
-				</p>
 				<div class="detail-footer">
 					<div class="product-name">상품명: ${vo.item_name}</div>
 					<div class="buttons">
-						<form action="/user/review/update" method="post"
-							style="display: inline;">
-							<input type="hidden" name="review_no" value="${vo.review_no}">
-							<button type="submit" class="btn btn-primary">수정</button>
-						</form>
-						<form action="/user/review/delete" method="post"
-							style="display: inline;">
-							<input type="hidden" name="review_no" value="${vo.review_no}">
-							<button type="submit" class="btn btn-danger">삭제</button>
-						</form>
+						<button id="update" class="btn btn-primary" onclick="handleUpdate();"
+							style="height: 55px">수정</button>
+						<button id="delete" class="btn btn-danger" onclick="deleteQna();"
+							style="height: 55px">삭제</button>
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="reply-container">
+		<div class="reply-content">
+			<p>내용: ${vo.reply }</p>
 		</div>
 	</div>
 </body>

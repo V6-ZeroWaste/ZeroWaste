@@ -49,8 +49,8 @@ tr {
 	}
 	function getList() {
 		var data = {
-			startDate : $('#start_Date').val().trim(),
-			endDate : $('#end_Date').val().trim(),
+			start_date : $('#start_date').val().trim(),
+			end_date : $('#end_date').val().trim(),
 			page : page,
 		}
 

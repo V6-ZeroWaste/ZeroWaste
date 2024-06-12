@@ -55,4 +55,15 @@ public class QnaUserServiceImpl implements QnaUserService {
 		QnaVO data = mapper.detail(vo);
 		return data;
 	}
+	
+	@Override
+	public int update(QnaVO vo) {
+		return mapper.update(vo);
+	}
+	
+	@Override
+	public int delete(int qna_no) {
+		return mapper.delete(qna_no);
+	}
+	
 }

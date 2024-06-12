@@ -92,4 +92,36 @@
         ON qna.item_no = item.item_no
         <include refid="filter"/>
     </select>
+    
+      <select id="detail" parameterType="int" resultType="kr.co.soaff.qna.QnaVO">
+        SELECT
+            qna.qna_no,
+            qna.qna_img,
+            qna.question_date, 
+            qna.title, 
+            qna.user_id, 
+            qna.content, 
+            item.name AS item_name,
+            qna.reply, 
+            qna.reply_date
+        FROM
+            qna JOIN item ON qna.item_no = item.item_no
+        WHERE
+            qna.qna_no = #{qna_no}
+    </select>
+    
+     <delete id="delete" parameterType="int">
+        DELETE FROM qna
+        WHERE qna_no = #{qna_no};
+    </delete>
+
+    <update id="update" parameterType="kr.co.soaff.qna.QnaVO">
+    UPDATE qna
+    SET 
+        title = #{title}, 
+        content = #{content}
+    WHERE
+        qna_no = #{qna_no};
+</update>
+    
 </mapper>

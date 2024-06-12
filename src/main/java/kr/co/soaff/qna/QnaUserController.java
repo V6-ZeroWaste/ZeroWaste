@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -42,14 +45,14 @@ public class QnaUserController {
 			printList += "<td>" + qnaVO.getUser_id() + "</td>";
 			printList += "<td>" + qnaVO.getQuestion_date() + "</td>";
 			
-			if(QnaVO.getReply_date() != null) {
-       			QnaVO.setReplyState("답변 완료"); 
-       			printList += "<td>" + QnaVO.getReplyState() + "</td>";
-       		}
-       		else {
-       			QnaVO.setReplyState("답변 대기");
-       			printList += "<td>" + QnaVO.getReplyState() + "</td>";
-       		}
+			if(qnaVO.getReply_date() != null) {
+				qnaVO.setReplyState("답변 완료"); 
+				printList += "<td>" + qnaVO.getReplyState() + "</td>";
+			} else {
+				qnaVO.setReplyState("답변 대기");
+				printList += "<td>" + qnaVO.getReplyState() + "</td>";
+			}
+
 			printList += "</tr>";
 		}
 		map.put("printList", printList);
@@ -57,8 +60,26 @@ public class QnaUserController {
 	}
 	
 	@GetMapping("/detail")
-	public String reply(Model model, QnaVO vo) {
+	public String detail(Model model, QnaVO vo) {
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/qna/detail";
+	}
+	
+	@PostMapping("/update")
+	@ResponseBody
+	public int update(@RequestParam int qna_no, String title, String content) {
+		QnaVO vo = new QnaVO();
+		vo.setQna_no(qna_no);
+		vo.setTitle(title);
+		vo.setContent(content);
+		int result = service.update(vo);
+		return result > 0 ? 1 : 0;
+	}
+	
+	@PostMapping("/delete")
+	@ResponseBody
+	public int delete(@RequestParam int qna_no  ) {
+		int result = service.delete(qna_no);
+		return result;
 	}
 }

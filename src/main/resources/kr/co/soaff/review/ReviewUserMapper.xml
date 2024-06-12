@@ -69,5 +69,11 @@
 		JOIN user ON review.user_no = user.user_no
 		WHERE review.review_no = #{review_no}
 	</select>
+	
+	<!-- 리뷰 삭제 -->
+	 <delete id="delete" parameterType="int">
+        DELETE FROM review
+        WHERE review_no = #{review_no};
+    </delete>
 
 </mapper>

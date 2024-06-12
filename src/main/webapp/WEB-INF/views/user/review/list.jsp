@@ -49,15 +49,15 @@ tr {
 	}
 	function getList() {
 		var data = {
-			startDate : $('#start_Date').val().trim(),
-			endDate : $('#end_Date').val().trim(),
+			startDate : $('#startDate').val().trim(),
+			endDate : $('#endDate').val().trim(),
 			page : page,
 		}
 
 		$
 				.ajax({
 					type : "GET", // method type
-					url : "/user/qna/getList", // 요청할 url
+					url : "/user/review/getList", // 요청할 url
 					data : data, // 전송할 데이터
 					dataType : "json", // 응답 받을 데이터 type
 					success : function(resp) {
@@ -128,7 +128,7 @@ tr {
 					<!-- 리스트 정렬, 필터 검색 영역  -->
 					<div>
 						<div class="datatable-dropdown" style="margin-bottom: 20px">
-							<span>작성 날짜</span> <input id="start_Date" name="start_Date"
+							<span>작성 날짜</span> <input id="startDate" name="startDate"
 								type="date" class="datatable-selector"
 								onchange="applyCondition();">- <input id="endDate"
 								name="endDate" type="date" class="datatable-selector"
