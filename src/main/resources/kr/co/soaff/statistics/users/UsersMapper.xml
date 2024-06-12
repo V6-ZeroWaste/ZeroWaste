@@ -2,5 +2,186 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.statistics.users.UsersMapper">
 
+    <sql id="orderBySql">
+        <choose>
+            <when test="orderBy == '최근순'">
+                ORDER BY date DESC
+            </when>
+            <when test="orderBy == '오래된순'">
+                ORDER BY date ASC
+            </when>
+            
+            <otherwise>
+                ORDER BY date DESC
+            </otherwise>
+        </choose>
+    </sql>
+    
+    <sql id="searchSql">
+	    <if test="filter == '일별'">
+	        <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+	            AND DATE(date) BETWEEN #{start_date} AND #{end_date}
+	        </if>
+	        <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+	            AND DATE(date) BETWEEN #{start_date} AND NOW()
+	        </if>
+	        <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+	            <![CDATA[
+	                AND DATE(date) <= #{end_date}
+	            ]]>
+	        </if>
+	    </if>
+	    <if test="filter == '주별'">
+            <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+                AND YEARWEEK(date, 1) BETWEEN 
+                    YEARWEEK(STR_TO_DATE(CONCAT(SUBSTRING(#{start_date}, 1, 4), '-', SUBSTRING(#{start_date}, 6)), '%Y-%u'), 1) 
+                    AND YEARWEEK(STR_TO_DATE(CONCAT(SUBSTRING(#{end_date}, 1, 4), '-', SUBSTRING(#{end_date}, 6)), '%Y-%u'), 1)
+            </if>
+            <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+	            <![CDATA[
+	                AND YEARWEEK(date, 1) >= 
+	                    YEARWEEK(STR_TO_DATE(CONCAT(SUBSTRING(#{start_date}, 1, 4), '-', SUBSTRING(#{start_date}, 6)), '%Y-%u'), 1)
+	            ]]>
+            </if>
+            <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+	            <![CDATA[
+	                AND YEARWEEK(date, 1) <= 
+	                    YEARWEEK(STR_TO_DATE(CONCAT(SUBSTRING(#{end_date}, 1, 4), '-', SUBSTRING(#{end_date}, 6)), '%Y-%u'), 1)
+	            ]]>
+            </if>
+        </if>
+	    <if test="filter == '월별'">
+	        <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+	            AND DATE_FORMAT(date, '%Y-%m') BETWEEN #{start_date} AND #{end_date}
+	        </if>
+	        <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+	        	<![CDATA[
+	            	AND DATE_FORMAT(date, '%Y-%m') >= #{start_date}
+	            ]]>
+	        </if>
+	        <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+	        	<![CDATA[
+	            	AND DATE_FORMAT(date, '%Y-%m') <= #{end_date}
+            	]]>
+	        </if>
+	    </if>
+	</sql>
+    
+    <!-- 회원수 -->
+    <select id="users_list" parameterType="kr.co.soaff.statistics.users.UsersVO" resultType="kr.co.soaff.statistics.users.UsersVO">
+       WITH RECURSIVE date_range AS (
+		    SELECT #{start_date} AS date
+		    UNION ALL
+		    SELECT DATE_ADD(date, INTERVAL 1 DAY)
+		    FROM date_range
+		    <![CDATA[
+		    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
+		    ]]>
+		)
+        SELECT 
+            <choose>
+                <when test="filter == '일별'">
+                    dr.DATE(date) AS date
+                </when>
+                <when test="filter == '주별'">
+                    dr.DATE_FORMAT(date, '%Y-%u') AS date
+                </when>
+                <when test="filter == '월별'">
+                    dr.DATE_FORMAT(date, '%Y-%m') AS date
+                </when>
+                <otherwise>
+                    dr.DATE(date) AS date
+                </otherwise>
+            </choose>,
+            COUNT(*) AS user_cnt
+        FROM date_range dr
+        LEFT JOIN  user ON dr.date = user.date
+        <where>
+            <include refid="searchSql"/>
+            `delete` is null
+        </where>
+        GROUP BY date
+        <include refid="orderBySql"/>
+        LIMIT #{startIdx}, 20;
+    </select>
+    
+    <!-- 탈퇴한 회원수 -->
+    #{start_date} AND #{end_date}
+    <select id="leave_list" parameterType="kr.co.soaff.statistics.users.UsersVO" resultType="kr.co.soaff.statistics.users.UsersVO">
+        WITH RECURSIVE date_range AS (
+		    SELECT #{start_date} AS date
+		    UNION ALL
+		    SELECT DATE_ADD(date, INTERVAL 1 DAY)
+		    FROM date_range
+		    <![CDATA[
+		    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
+		    ]]>
+		)
+        SELECT 
+            <choose>
+                <when test="filter == '일별'">
+                    DATE(date) AS date
+                </when>
+                <when test="filter == '주별'">
+                    DATE_FORMAT(date, '%Y-%u') AS date
+                </when>
+                <when test="filter == '월별'">
+                    DATE_FORMAT(date, '%Y-%m') AS date
+                </when>
+                <otherwise>
+                    DATE(date) AS date
+                </otherwise>
+            </choose>,
+            COUNT(*) AS user_cnt
+        FROM soaff.order
+        <where>
+            <include refid="searchSql"/>
+            `delete` is not null
+        </where>
+        GROUP BY date
+        <include refid="orderBySql"/>
+        LIMIT #{startIdx}, 20;
+    </select>
+    
+    <!-- list 총 개수 -->
+    <select id="count" parameterType="kr.co.soaff.statistics.sales.SalesVO" resultType="int">
+    SELECT COUNT(*)
+	    FROM (
+	        SELECT 
+	            <choose>
+	                <when test="filter == '일별'">
+	                    DATE(date) AS date
+	                </when>
+	                <when test="filter == '주별'">
+	                    DATE_FORMAT(date, '%Y-%u') AS date
+	                </when>
+	                <when test="filter == '월별'">
+	                    DATE_FORMAT(date, '%Y-%m') AS date
+	                </when>
+	                <otherwise>
+	                    DATE(date) AS date
+	                </otherwise>
+	            </choose>
+	        FROM soaff.order 
+	        <where>
+	            <include refid="searchSql"/>
+	        </where>
+	        GROUP BY 
+	            <choose>
+	                <when test="filter == '일별'">
+	                    DATE(date)
+	                </when>
+	                <when test="filter == '주별'">
+	                    DATE_FORMAT(date, '%Y-%u')
+	                </when>
+	                <when test="filter == '월별'">
+	                    DATE_FORMAT(date, '%Y-%m')
+	                </when>
+	                <otherwise>
+	                    DATE(date)
+	                </otherwise>
+	            </choose>
+	    ) AS grouped_dates;
+	</select>
 
 </mapper>

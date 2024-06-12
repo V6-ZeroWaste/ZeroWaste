@@ -7,12 +7,10 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UsersMapper {
 
-	List<UsersVO> day_user();
+	List<UsersVO> users_list(UsersVO vo);
 
-	List<UsersVO> day_user_delete();
+	List<UsersVO> leave_list(UsersVO vo);
 
-	List<UsersVO> month_user();
-
-	List<UsersVO> month_user_delete();
+	int count(UsersVO vo);
 
 }
