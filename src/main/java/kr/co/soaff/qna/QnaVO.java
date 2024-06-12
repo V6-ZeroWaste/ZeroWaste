@@ -18,7 +18,7 @@ public class QnaVO {
 	private String reply;
 	private Timestamp reply_date;
 	private int item_no;
-
+	private String item_name;
 	
 	private String replyState;
 	private String searchWord;
