@@ -12,19 +12,14 @@
 <link rel="stylesheet" href="/user/css/style.css" />
 
 <title>soaff</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
-	rel="stylesheet" />
-<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-	crossorigin="anonymous"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+<link href="${pageContext.request.contextPath}/admin/css/styles.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="/admin/js/datatables-simple-demo.js"></script>
+<script src="${pageContext.request.contextPath}/admin/js/scripts.js"></script>
 <style>
 img {
 	max-height: 50px;
@@ -132,12 +127,8 @@ tr {
 
 
 							<div class="container-fluid px-4">
-								<h1 class="mt-4">상품 리뷰 관리</h1>
+								<h1 class="mt-4">리뷰</h1>
 								<div class="card mb-4">
-									<!-- <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
-                            </div> -->
 
 									<div class="card-body">
 										<!-- 리스트 정렬, 필터 검색 영역  -->
