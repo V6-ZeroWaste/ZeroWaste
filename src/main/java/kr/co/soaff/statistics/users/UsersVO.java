@@ -1,13 +1,11 @@
 package kr.co.soaff.statistics.users;
 
-import java.sql.Timestamp;
-
 import lombok.Data;
 
 @Data
 public class UsersVO {
 
-	private Timestamp date;
+	private String date;
 	private int user_cnt;
 	private int leave_cnt;
 

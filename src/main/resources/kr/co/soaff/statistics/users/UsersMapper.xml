@@ -18,7 +18,7 @@
     </sql>
     
     <sql id="searchSql">
-	    <if test="filter == '일별'">
+	    <if test="filter == '일별' or '주별'">
 	        <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
 	            AND DATE(dr.date) BETWEEN #{start_date} AND #{end_date}
 	        </if>
@@ -31,25 +31,7 @@
 	            ]]>
 	        </if>
 	    </if>
-	    <if test="filter == '주별'">
-            <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
-                AND YEARWEEK(dr.date, 1) BETWEEN 
-                    YEARWEEK(STR_TO_DATE(CONCAT(SUBSTRING(#{start_date}, 1, 4), '-', SUBSTRING(#{start_date}, 6)), '%Y-%u'), 1) 
-                    AND YEARWEEK(STR_TO_DATE(CONCAT(SUBSTRING(#{end_date}, 1, 4), '-', SUBSTRING(#{end_date}, 6)), '%Y-%u'), 1)
-            </if>
-            <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
-	            <![CDATA[
-	                AND YEARWEEK(dr.date, 1) >= 
-	                    YEARWEEK(STR_TO_DATE(CONCAT(SUBSTRING(#{start_date}, 1, 4), '-', SUBSTRING(#{start_date}, 6)), '%Y-%u'), 1)
-	            ]]>
-            </if>
-            <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
-	            <![CDATA[
-	                AND YEARWEEK(dr.date, 1) <= 
-	                    YEARWEEK(STR_TO_DATE(CONCAT(SUBSTRING(#{end_date}, 1, 4), '-', SUBSTRING(#{end_date}, 6)), '%Y-%u'), 1)
-	            ]]>
-            </if>
-        </if>
+	    
 	    <if test="filter == '월별'">
 	        <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
 	            AND DATE_FORMAT(dr.date, '%Y-%m') BETWEEN #{start_date} AND #{end_date}

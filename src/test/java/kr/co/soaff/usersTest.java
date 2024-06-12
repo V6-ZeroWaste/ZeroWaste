@@ -26,7 +26,7 @@ public class usersTest {
 		UsersVO vo = new UsersVO();
 		vo.setStart_date("2024-05-01");
 		vo.setEnd_date("2024-09-01");
-		vo.setFilter("일별");
+		vo.setFilter("주별");
 		log.info(mapper.leave_list(vo).toString());
 
 	}

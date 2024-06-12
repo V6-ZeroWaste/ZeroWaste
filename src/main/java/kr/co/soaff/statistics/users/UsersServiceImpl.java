@@ -14,35 +14,31 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Map<String, Object> list(UsersVO vo) {
-		int totalCount = mapper.count(vo);
-
-		int totalPage = totalCount / 20;
-		if (totalCount % 20 > 0)
+		int count = mapper.count(vo); // 총 개수
+		int totalPage = count / 20; // 총 페이지수
+		if (count % 20 > 0)
 			totalPage++;
-		// 시작인덱스
-		int startIdx = (vo.getPage() - 1) * 10;
-		vo.setStartIdx(startIdx); // sql문에 파라미터로 넣어줌
+
 		List<UsersVO> usersList = mapper.users_list(vo);
 		List<UsersVO> leaveList = mapper.leave_list(vo);
 
-		// 페이징처리
-		int endPage = (int) (Math.ceil(vo.getPage() / 10.0) * 10); // 끝페이지
-		int startPage = endPage - 9; // 시작페이지
-
+		// 페이지네이션(1-10)
+		int endPage = (int) (Math.ceil(vo.getPage() / 10.0) * 10);
+		int startPage = endPage - 9;
 		if (endPage > totalPage)
 			endPage = totalPage;
-		boolean prev = startPage > 1 ? true : false;
-		boolean next = endPage < totalPage ? true : false;
+		boolean isPrev = startPage > 1;
+		boolean isNext = endPage < totalPage;
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("total", totalCount);
+		map.put("count", count);
 		map.put("totalPage", totalPage);
 		map.put("usersList", usersList);
 		map.put("leaveList", leaveList);
 		map.put("endPage", endPage);
 		map.put("startPage", startPage);
-		map.put("prev", prev);
-		map.put("next", next);
+		map.put("isPrev", isPrev);
+		map.put("isNext", isNext);
 		return map;
 
 	};
