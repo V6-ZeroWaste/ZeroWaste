@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.statistics.sales.SalesMapper">
+
+    <sql id="orderBySql">
+        <choose>
+            <when test="orderBy == '최근날짜순'">
+                ORDER BY date DESC
+            </when>
+            <when test="orderBy == '오래된순'">
+                ORDER BY date ASC
+            </when>
+            <when test="orderBy == '매출량많은순'">
+                ORDER BY sales DESC
+            </when>
+            <when test="orderBy == '매출량적은순'">
+                ORDER BY sales ASC
+            </when>
+            <otherwise>
+                ORDER BY date DESC
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="searchSql">
+        <if test="filter == '일별'">
+            <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+                AND DATE(date_range.date) BETWEEN #{start_date} AND #{end_date}
+            </if>
+            <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+                AND DATE(date_range.date) BETWEEN #{start_date} AND NOW()
+            </if>
+            <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+                <![CDATA[
+                AND DATE(date_range.date) <= #{end_date}
+                ]]>
+            </if>
+        </if>
+        <if test="filter == '주별'">
+            <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+                AND date_range.date BETWEEN 
+                    DATE_ADD(STR_TO_DATE(CONCAT(LEFT(#{start_date}, 4), '-01-01'), '%Y-%m-%d'), INTERVAL (RIGHT(#{start_date}, 2) - 1) WEEK)
+                    AND DATE_ADD(STR_TO_DATE(CONCAT(LEFT(#{end_date}, 4), '-01-01'), '%Y-%m-%d'), INTERVAL (RIGHT(#{end_date}, 2) - 1) WEEK)
+            </if>
+            <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+                <![CDATA[
+                AND date_range.date >= 
+                    DATE_ADD(STR_TO_DATE(CONCAT(LEFT(#{start_date}, 4), '-01-01'), '%Y-%m-%d'), INTERVAL (RIGHT(#{start_date}, 2) - 1) WEEK)
+                ]]>
+            </if>
+            <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+                <![CDATA[
+                AND date_range.date <= 
+                    DATE_ADD(STR_TO_DATE(CONCAT(LEFT(#{end_date}, 4), '-01-01'), '%Y-%m-%d'), INTERVAL (RIGHT(#{end_date}, 2)) WEEK)
+                ]]>
+            </if>
+        </if>
+        <if test="filter == '월별'">
+            <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+                AND DATE_FORMAT(date_range.date, '%Y-%m') BETWEEN #{start_date} AND #{end_date}
+            </if>
+            <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+                <![CDATA[
+                AND DATE_FORMAT(date_range.date, '%Y-%m') >= #{start_date}
+                ]]>
+            </if>
+            <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+                <![CDATA[
+                AND DATE_FORMAT(date_range.date, '%Y-%m') <= #{end_date}
+                ]]>
+            </if>
+        </if>
+    </sql>
+
+    <select id="list" parameterType="kr.co.soaff.statistics.sales.SalesVO" resultType="kr.co.soaff.statistics.sales.SalesVO">
+        <choose>
+            <when test="filter == '주별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT DATE_FORMAT(CONCAT(LEFT(#{start_date}, 4), '-01-01'), '%Y-%m-%d') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 WEEK)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 WEEK) < #{end_date}
+			        ]]>
+			    )
+			</when>
+            <when test="filter == '월별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT CONCAT(LEFT(#{start_date}, 7), '-01') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 MONTH)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 MONTH) <= DATE_ADD(CONCAT(LEFT(#{end_date}, 7), '-01'), INTERVAL 1 MONTH)
+			        ]]>
+			    )
+			</when>
+            <otherwise>
+                WITH RECURSIVE date_range AS (
+                    SELECT #{start_date} AS date
+                    UNION ALL
+                    SELECT DATE_ADD(date, INTERVAL 1 DAY)
+                    FROM date_range
+                    <![CDATA[
+                    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
+                    ]]>
+                )
+            </otherwise>
+        </choose>
+        SELECT
+            date_range.date AS date,
+            COALESCE(SUM(o.payment_price), 0) AS sales
+        FROM date_range
+        LEFT JOIN soaff.order o ON 
+            <choose>
+                <when test="filter == '일별'">
+                    DATE(o.payment_date) = date_range.date
+                </when>
+                <when test="filter == '주별'">
+                    DATE_FORMAT(o.payment_date, '%Y-%u') = DATE_FORMAT(date_range.date, '%Y-%u')
+                </when>
+                <when test="filter == '월별'">
+                    DATE_FORMAT(o.payment_date, '%Y-%m') = DATE_FORMAT(date_range.date, '%Y-%m')
+                </when>
+                <otherwise>
+                    DATE(o.payment_date) = date_range.date
+                </otherwise>
+            </choose>
+        <where>
+            <include refid="searchSql"/>
+        </where>
+        GROUP BY date_range.date
+        <include refid="orderBySql"/>
+        LIMIT #{startIdx}, 20;
+    </select>
+
+    <select id="count" parameterType="kr.co.soaff.statistics.sales.SalesVO" resultType="int">
+        <choose>
+            <when test="filter == '주별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT DATE_FORMAT(CONCAT(LEFT(#{start_date}, 4), '-01-01'), '%Y-%m-%d') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 WEEK)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 WEEK) < #{end_date}
+			        ]]>
+			    )
+			</when>
+			<when test="filter == '월별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT CONCAT(LEFT(#{start_date}, 7), '-01') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 MONTH)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 MONTH) <= DATE_ADD(CONCAT(LEFT(#{end_date}, 7), '-01'), INTERVAL 1 MONTH)
+			        ]]>
+			    )
+			</when>
+            <!-- <when test="filter == '월별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT CONCAT(LEFT(#{start_date}, 7), '-01') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 MONTH)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 MONTH) <= #{end_date}
+			        ]]>
+			    )
+			</when> -->
+            <otherwise>
+                WITH RECURSIVE date_range AS (
+                    SELECT #{start_date} AS date
+                    UNION ALL
+                    SELECT DATE_ADD(date, INTERVAL 1 DAY)
+                    FROM date_range
+                    <![CDATA[
+                    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
+                    ]]>
+                )
+            </otherwise>
+        </choose>
+        SELECT COUNT(*)
+        FROM (
+            SELECT 
+                date_range.date
+            FROM date_range
+            LEFT JOIN soaff.order o ON 
+                <choose>
+                    <when test="filter == '일별'">
+                        DATE(o.payment_date) = date_range.date
+                    </when>
+                    <when test="filter == '주별'">
+                        DATE_FORMAT(o.payment_date, '%Y-%u') = DATE_FORMAT(date_range.date, '%Y-%u')
+                    </when>
+                    <when test="filter == '월별'">
+                        DATE_FORMAT(o.payment_date, '%Y-%m') = DATE_FORMAT(date_range.date, '%Y-%m')
+                    </when>
+                    <otherwise>
+                        DATE(o.payment_date) = date_range.date
+                    </otherwise>
+                </choose>
+            <where>
+                <include refid="searchSql"/>
+            </where>
+            GROUP BY date_range.date
+        ) AS grouped_dates;
+    </select>
+
+</mapper>
