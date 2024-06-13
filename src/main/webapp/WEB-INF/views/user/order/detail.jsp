@@ -21,8 +21,8 @@
 		  display: none;
 		}
 		.order-itemImg{
-			max-width: 180px;
-			max-height: 180px;
+			max-width: 80px;
+			max-height: 80px;
 			margin:auto;
 		}
 		.order-itemImgBox{
@@ -39,6 +39,12 @@
 		}
 		.search-filter>div{
 			margin:10px 0px 10px 0px;
+		}
+		.area{
+			padding-top:50px
+		}
+		.order-status.shipping::before {
+			background: #F5BE17; 
 		}
     	
     </style>
@@ -59,127 +65,203 @@
     	<div class="col-12">
     		<!-- title -->
    			<h3 class="mb-0">Order Detail</h3>
+   			<!-- /title -->
+   			<!-- Order Info -->
    			<div class="order-head">
 						<span>Order No.165342</span>
 				     	<span>2021-12-19 12:11:11</span>
 			</div>
-   			<!-- /title -->
-   			<!-- search filter -->
-   			<div class="search-filter">
-		   		<div>
-		   			<input type="date" class="btn btn-outline-secondary btn-sm">
-		   			&nbsp;-&nbsp; 
-		   			<input type="date" class="btn btn-outline-secondary btn-sm"/>
-		   		</div>
-                <div class="dorpdown">
-					<select id="orderBy" name="orderBy" class="btn btn-outline-secondary btn-sm dropdown-toggle" onchange="applyCondition();">
-						<option value="">주문상태</option>
-						<option value="상품준비중">상품준비중</option>
-						<option value="배송중">배송중</option>
-						<option value="배송완료">배송완료</option>
-						<option value="구매확정">구매확정</option>
-						<option value="취소요청/완료">취소요청/완료</option>
-					</select>
-				</div>
-				<div><span class="eyebrow">8 entries</span></div>
-   			</div>
-   			<!-- /search filter -->
+			<!-- Order Info -->
    		</div>
-   		<!-- list -->
-	   	<div class="orderList row gutter-2">
-	   		
-	   		
-	   		<div class="col-12">
-				<div class="order">
-					<div class="order-head">
-						<span>Order No.165342</span>
-				     	<span>2021-12-19 12:11:11</span>
-					</div>
-					<div class="row align-items-center">
-						<div class="order-itemImgBox col-lg-3">
-							<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
-						</div>
-						
-				        <div class="col-lg-6">
-				        	<h3 class="order-number">황새픽비누 외 3개</h3>
-				        	<br>
-				        	<p>9,500 원</p>
-				     		<p>총 8개</p>	
-				        	
-				   		</div>
-	
-				        <div class="col-lg-3">
-				        	
-				        	<span class="order-status ">상품준비중<br></span>
-				        		<!-- <span class="order-status sent">배송완료</span> -->
-				     		<span class="order-status canceled">취소요청</span>
-				        	<br><br><br>
-				        	
-				        	<a href="#!" class="action eyebrow underline">View Order</a>
-				   		</div>
-					</div>
-				</div>
-			</div>
-				
-			<div class="col-12">	
-				<div class="order">
-					<div class="order-head">
-						<span>Order No.165342</span>
-				     	<span>2021-12-19 12:11:11</span>
-					</div>
-					<div class="row align-items-center">
-						<div class="order-itemImgBox col-lg-3">
-							<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
-						</div>
-						
-				        <div class="col-lg-6">
-				        	<h3 class="order-number">황새픽비누 외 3개</h3>
-				        	<br>
-				        	<p>9,500 원</p>
-				     		<p>총 8개</p>	
-				        	
-				   		</div>
-	
-				        <div class="col-lg-3">
-				        	
-				        	
-				        	<span class="order-status sent">배송완료</span>
-				     		<br>
-				        	<br><br><br>
-				        	
-				        	<a href="#!" class="action eyebrow underline">View Order</a>
-				   		</div>
-					</div>
-				</div>
+   		<!-- item info area -->
+   		<div class="col-12">
+   		<div class="itemInfo area">
+   			<h4 class="mb-0">Item Info</h4>
+	   		<table class="table table-borderless">
+	                      <tbody>
+	                      	<tr>
+	                          <td>
+	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
+	                          </td>
+	                          <td>
+	                          	<strong>황새 추천 비누</strong><br>
+	                          	<span>3 개</span>
+	                          </td>
+	                          <td>30,000 원</td>
+	                          <td><span class="order-status canceled">취소요청</span></td>
+	                          <td><button type="button" class="btn btn-outline-danger">취소상세</button></td>
+	                        </tr>
+	                        
+	                        
+	                        
+	                      	<tr>
+	                          <td>
+	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
+	                          </td>
+	                          <td>
+	                          	<strong>황새 추천 비누</strong><br>
+	                          	<span>3 개</span>
+	                          </td>
+	                          <td>30,000 원</td>
+	                          <td><span class="order-status canceled">취소승인</span></td>
+	                          <td><button type="button" class="btn btn-outline-danger">취소상세</button></td>
+	                        </tr>
+	                        
+	                        
+	                        
+	                        
+	                      	<tr>
+	                          <td>
+	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
+	                          </td>
+	                          <td>
+	                          	<strong>황새 추천 비누</strong><br>
+	                          	<span>3 개</span>
+	                          </td>
+	                          <td>30,000 원</td>
+	                          <td><span class="order-status">상품준비중</span></td>
+	                          <td><button type="button" class="btn btn-danger">주문취소</button></td>
+	                        </tr>	                        
+	                        
+	                        
+	                        
+	                      	<tr>
+	                          <td>
+	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
+	                          </td>
+	                          <td>
+	                          	<strong>황새 추천 비누</strong><br>
+	                          	<span>3 개</span>
+	                          </td>
+	                          <td>30,000 원</td>
+	                          <td><span class="order-status shipping">배송중</span></td>
+	                          <td><button type="button" class="btn btn-primary">구매확정</button></td>
+	                        </tr>	                        
+	                        
+	                        
+	                        
+	                      	<tr>
+	                          <td>
+	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
+	                          </td>
+	                          <td>
+	                          	<strong>황새 추천 비누</strong><br>
+	                          	<span>3 개</span>
+	                          </td>
+	                          <td>30,000 원</td>
+	                          <td><span class="order-status sent">배송완료</span></td>
+	                          <td><button type="button" class="btn btn-primary">구매확정</button></td>
+	                        </tr>	                        
+	                        
+	                        
+	                        
+	                      	<tr>
+	                          <td>
+	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
+	                          </td>
+	                          <td>
+	                          	<strong>황새 추천 비누</strong><br>
+	                          	<span>3 개</span>
+	                          </td>
+	                          <td>30,000 원</td>
+	                          <td><span class="order-status sent">구매확정</span></td>
+	                          <td><button type="button" class="btn btn-primary">리뷰작성</button></td>
+	                        </tr>	                        
+	                        
+	                        
+	                        
+	                      	<tr>
+	                          <td>
+	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
+	                          </td>
+	                          <td>
+	                          	<strong>황새 추천 비누</strong><br>
+	                          	<span>3 개</span>
+	                          </td>
+	                          <td>30,000 원</td>
+	                          <td><span class="order-status sent">구매확정</span></td>
+	                          <td><button type="button" class="btn btn-outline-primary">리뷰상세</button></td>
+	                        </tr>
+	                      </tbody>
+	                    </table>
 	   		</div>
-	   		
-	   		
-	   		
-	   		
-	   		
-				
-	   		
-	   		
-   		</div>
-   		<!-- /list -->
+	   	</div>
+   		<!-- /item info area -->
+   		
+   		<!--  Delivery info area -->
+   		<div class="col-12">
+   		<div class="itemInfo area">
+   			<h4 class="mb-0">Delivery Info</h4>
+	   		<table class="table table-borderless">
+	                      <tbody>
+	                      	<tr>
+	                      		<th>이름</th>
+	                      		<td>user name</td>
+	                        </tr>
+	                      	<tr>
+	                      		<th>연락처</th>
+	                      		<td>010-1234-1234<td>
+	                        </tr>
+	                      	<tr>
+	                      		<th>배송지 주소</th>
+	                      		<td>
+	                      			000-000
+	                      			<br>서울특별시 마포구 양화로 180
+	                      			<br>123동 1234호
+	                      		</td>
+	                        </tr>
+	                      	<tr>
+	                      		<th>배송 메시지</th>
+	                      		<td>부재중이면 문 앞에 놔주세여</td>
+	                        </tr>
+	                      </tbody>
+	                    </table>
+	   		</div>
+	   	</div>
+   		<!-- /Delivery info area -->
+   		
+   		<!--  payment info area -->
+   		<div class="col-12">
+   		<div class="itemInfo area">
+   			<h4 class="mb-0">Payment Info</h4>
+	   		<table class="table table-borderless">
+	                      <tbody>
+	                      	<tr>
+	                      		<th>상품 합계</th>
+	                      		<td>180,000 원</td>
+	                        </tr>
+	                      	<tr>
+	                      		<th>배송비</th>
+	                      		<td>3,000 원<td>
+	                        </tr>
+	                      	<tr>
+	                      		<th>적립금 사용</th>
+	                      		<td>1,000 원</td>
+	                        </tr>
+	                      	<tr>
+	                      		<th>최종 결제 금액</th>
+	                      		<td>
+	                      			<strong>182,000 원</strong>
+	                      			<br><span>예상 적립금 182원</span>
+	                      		</td>
+	                        </tr>
+	                      	<tr>
+	                      		<th>결제 수단</th>
+	                      		<td>카카오페이</td>
+	                        </tr>
+	                      </tbody>
+	                    </table>
+	   		</div>
+	   	</div>
+   		<!-- /payment info area -->
+   		
+   		
+   		
    	</div>
 	<!-- /content -->
-							
 						
-					
-					
-					<!-- pagination -->
-			   		<div class="row">
-			        	<div class="col">
-			            	<ul class="pagination">
-			                	<li class="page-item active"><a class="page-link" href="#!">1 <span class="sr-only">(current)</span></a></li>
-			                    <li class="page-item" aria-current="page"><a class="page-link" href="#!">2</a></li>
-			                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-			                    <li class="page-item"><a class="page-link" href="#!">4</a></li>
-			                </ul>
-			            </div>
-			        </div>
-			        <!-- /pagination -->
+						
+						
 				</div>
 			</div>
 		</div>
