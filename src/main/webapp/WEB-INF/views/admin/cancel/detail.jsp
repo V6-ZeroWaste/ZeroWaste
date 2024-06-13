@@ -57,16 +57,13 @@
 .cancelReasonOptions {
 	align-items: center;
 	margin-bottom: 20px;
-
 }
 
 .cancelReasonOptions label {
-	    border: 2px solid #b3b3b3;
 	text-align: left;
 	padding: 10px;
 	margin-right: 15px;
 	border-radius: 7px;
-	
 }
 
 .cancelReasonOptions input {
@@ -90,7 +87,7 @@
 					<h1>
 						<b>취소 상세
 							<button class="btn btn-dark my-3 returnButton"
-								onclick="history.back()">돌아가기</button>
+								onclick="window.location.href='/admin/cancel/list'">돌아가기</button>
 					</h1>
 					<div class="cancelStatus">
 						<p>
@@ -103,19 +100,23 @@
 							</span>
 						</p>
 						<div class="cancelReasonOptions">
-							<label><b> <input type="radio" name="cancel_reason"
-									value="1"
-									<c:if test="${cancelDetail.cancel_reason_type == 1}">checked disabled</c:if>>배송
-									지연 </label> <label> <input type="radio" name="cancel_reason"
-								value="2"
-								<c:if test="${cancelDetail.cancel_reason_type == 2}">checked disabled</c:if>>제품
+							<label class="btn btn-primary"> <input
+									type="radio" name="cancel_reason" value="1"
+									<c:if test="${cancelDetail.cancel_reason_type == 1}">checked disabled</c:if>
+									<c:if test="${cancelDetail.cancel_reason_type != 1}">disabled</c:if>>배송
+									지연 </label> <label class="btn btn-primary"> <input type="radio"
+								name="cancel_reason" value="2"
+								<c:if test="${cancelDetail.cancel_reason_type == 2}">checked disabled</c:if>
+								<c:if test="${cancelDetail.cancel_reason_type != 2}">disabled</c:if>>제품
 								불량
-							</label> <label> <input type="radio" name="cancel_reason"
-								value="3"
-								<c:if test="${cancelDetail.cancel_reason_type == 3}">checked disabled</c:if>>
-								단순 변심
+							</label> <label class="btn btn-primary"> <input type="radio"
+								name="cancel_reason" value="3"
+								<c:if test="${cancelDetail.cancel_reason_type == 3}">checked disabled</c:if>
+								<c:if test="${cancelDetail.cancel_reason_type != 3}">disabled</c:if>>단순
+								변심
 							</label>
 						</div>
+
 						<div>
 							<input type="text" value="${cancelDetail.cancel_reason_detail}"
 								readonly
@@ -159,10 +160,7 @@
 								<button id="approveBtn" class="btn btn-primary"
 									onclick="confirmApproveCancel(${cancelDetail.order_detail_no})">승인</button>
 							</c:when>
-							<c:otherwise>
-								<button id="confirmBtn" class="btn btn-primary"
-									onclick="goToList()">확인</button>
-							</c:otherwise>
+
 						</c:choose>
 					</div>
 				</div>
@@ -204,7 +202,7 @@ function updateCancelStatus(order_detail_no, action) {
                 }
                 $('#rejectBtn').remove();
                 $('#approveBtn').remove();
-                $('.actionButtons').append('<button id="confirmBtn" class="btn btn-primary" onclick="goToList()">확인</button>');
+                
             } else {
                 alert('관리자에게 문의하세요.');
             }
