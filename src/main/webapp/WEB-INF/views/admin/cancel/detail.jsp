@@ -24,6 +24,18 @@
 	crossorigin="anonymous"></script>
 <script src="${pageContext.request.contextPath}/admin/js/scripts.js"></script>
 <style>
+.title {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.behavior {
+	padding-bottom: 30px;
+	display: flex;
+	justify-content: space-around;
+}
+
 .cancelDetailPage {
 	width: 100%;
 	margin: auto;
@@ -76,99 +88,7 @@
 	top: 20px;
 }
 </style>
-</head>
-<body>
-	<%@ include file="/WEB-INF/views/admin/include/header.jsp"%>
-	<div id="layoutSidenav">
-		<%@ include file="/WEB-INF/views/admin/include/sidenav.jsp"%>
-		<div id="layoutSidenav_content">
-			<main>
-				<div class="cancelDetailPage">
-					<h1>
-						<b>취소 상세
-							<button class="btn btn-dark my-3 returnButton"
-								onclick="window.location.href='/admin/cancel/list'">돌아가기</button>
-					</h1>
-					<div class="cancelStatus">
-						<p>
-							<span id="cancelStatus"> <c:choose>
-									<c:when test="${cancelDetail.cancel_status == 0}">취소 요청</c:when>
-									<c:when test="${cancelDetail.cancel_status == 1}">취소 승인</c:when>
-									<c:when test="${cancelDetail.cancel_status == 3}">취소 거절</c:when>
-									<c:when test="${cancelDetail.cancel_status == 2}">취소 확정</c:when>
-								</c:choose>
-							</span>
-						</p>
-						<div class="cancelReasonOptions">
-							<label class="btn btn-primary"> <input
-									type="radio" name="cancel_reason" value="1"
-									<c:if test="${cancelDetail.cancel_reason_type == 1}">checked disabled</c:if>
-									<c:if test="${cancelDetail.cancel_reason_type != 1}">disabled</c:if>>배송
-									지연 </label> <label class="btn btn-primary"> <input type="radio"
-								name="cancel_reason" value="2"
-								<c:if test="${cancelDetail.cancel_reason_type == 2}">checked disabled</c:if>
-								<c:if test="${cancelDetail.cancel_reason_type != 2}">disabled</c:if>>제품
-								불량
-							</label> <label class="btn btn-primary"> <input type="radio"
-								name="cancel_reason" value="3"
-								<c:if test="${cancelDetail.cancel_reason_type == 3}">checked disabled</c:if>
-								<c:if test="${cancelDetail.cancel_reason_type != 3}">disabled</c:if>>단순
-								변심
-							</label>
-						</div>
-
-						<div>
-							<input type="text" value="${cancelDetail.cancel_reason_detail}"
-								readonly
-								style="width: 100%; background-color: #f0f0f0; border: 1px solid #ddd;">
-						</div>
-
-						<h3 style="margin-top: 30px;">
-							<b>최종 결제 정보 
-						</h3>
-						<p>
-							<b>총 주문 금액: ${cancelDetail.total_price}원 
-						</p>
-						<p>
-							<b>적립금 사용: ${cancelDetail.point}원 
-						</p>
-						<p>
-							<b>배송비 : ${cancelDetail.delivery_price}원 
-						</p>
-						<p>
-							<b>최종 결제금액: ${cancelDetail.payment_price}원 
-						</p>
-
-						<h3 style="margin-top: 80px;">
-							<b>환불정보 확인 
-						</h3>
-						<p>
-							<b>환불수단: ${cancelDetail.payment_method} 
-						</p>
-						<p>
-							<b>환불금액: ${cancelDetail.refund_price}원 
-						</p>
-						<p>
-							<b>환불 적립금: ${cancelDetail.refund_point}원 
-						</p>
-					</div>
-					<div class="actionButtons">
-						<c:choose>
-							<c:when test="${cancelDetail.cancel_status == 0}">
-								<button id="rejectBtn" class="btn btn-danger"
-									onclick="confirmRefuseCancel(${cancelDetail.order_detail_no})">거절</button>
-								<button id="approveBtn" class="btn btn-primary"
-									onclick="confirmApproveCancel(${cancelDetail.order_detail_no})">승인</button>
-							</c:when>
-
-						</c:choose>
-					</div>
-				</div>
-			</main>
-			<%@ include file="/WEB-INF/views/admin/include/footer.jsp"%>
-		</div>
-	</div>
-	<script>
+<script>
 function confirmApproveCancel(order_detail_no) {
     if (confirm("승인 하시겠습니까?")) {
         updateCancelStatus(order_detail_no, 'approve');
@@ -219,5 +139,119 @@ function goToList() {
     window.location.href = "${pageContext.request.contextPath}/admin/cancel/list";
 }
 </script>
+</head>
+<body>
+	<%@ include file="/WEB-INF/views/admin/include/header.jsp"%>
+	<div id="layoutSidenav">
+		<%@ include file="/WEB-INF/views/admin/include/sidenav.jsp"%>
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid px-4">
+					<div class="title">
+						<h1 class="mt-4">취소 상세</h1>
+						<button class="btn btn-dark my-3 returnButton"
+							onclick="window.location.href='/admin/cancel/list'">돌아가기</button>
+					</div>
+					<div class="card mb-4">
+						<div class="card-header">
+							<h4 class="mt-4">
+								상태 :
+								<c:choose>
+									<c:when test="${cancelDetail.cancel_status == 0}">취소 요청</c:when>
+									<c:when test="${cancelDetail.cancel_status == 1}">취소 승인</c:when>
+									<c:when test="${cancelDetail.cancel_status == 3}">취소 거절</c:when>
+									<c:when test="${cancelDetail.cancel_status == 2}">취소 확정</c:when>
+								</c:choose>
+							</h4>
+						</div>
+						<div class="card-body">
+							<div class="datatable-container">
+								<p>주문번호: ${cancelDetail.order_no}</p>
+								<p>주문상세번호: ${cancelDetail.order_detail_no }</p>
+								<label class="btn btn-primary"> <input type="radio"
+									name="cancel_reason" value="1"
+									<c:if test="${cancelDetail.cancel_reason_type == 1}">checked disabled</c:if>
+									<c:if test="${cancelDetail.cancel_reason_type != 1}">disabled</c:if>>배송
+									지연
+								</label> <label class="btn btn-primary"> <input type="radio"
+									name="cancel_reason" value="2"
+									<c:if test="${cancelDetail.cancel_reason_type == 2}">checked disabled</c:if>
+									<c:if test="${cancelDetail.cancel_reason_type != 2}">disabled</c:if>>제품
+									불량
+								</label> <label class="btn btn-primary"> <input type="radio"
+									name="cancel_reason" value="3"
+									<c:if test="${cancelDetail.cancel_reason_type == 3}">checked disabled</c:if>
+									<c:if test="${cancelDetail.cancel_reason_type != 3}">disabled</c:if>>단순
+									변심
+								</label>
+								<div>
+									<input type="text" value="${cancelDetail.cancel_reason_detail}"
+										readonly
+										style="width: 100%; margin-top: 10px; background-color: #f0f0f0; border: 1px solid #ddd;">
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<h4 class="mt-4">최종 결제 정보</h4>
+						</div>
+						<div class="card-body">
+							<div class="datatable-container">
+								<b>총 주문 금액: ${cancelDetail.total_price}원
+									</p>
+									<p>
+										<b>적립금 사용: ${cancelDetail.point}원 
+									</p>
+									<p>
+										<b>배송비 : ${cancelDetail.delivery_price}원 
+									</p>
+									<p>
+										<b>최종 결제금액: ${cancelDetail.payment_price}원 
+									</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<h4 class="mt-4">환불정보 확인</h4>
+						</div>
+						<div class="card-body">
+							<div class="datatable-container">
+
+								<b>환불수단: ${cancelDetail.payment_method}
+									</p>
+									<p>
+										<b>환불금액: ${cancelDetail.refund_price}원 
+									</p>
+									<p>
+										<b>환불 적립금: ${cancelDetail.refund_point}원 
+									</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="list-group-item d-flex justify-content-center">
+					<c:choose>
+						<c:when test="${cancelDetail.cancel_status == 0}">
+							<button id="rejectBtn" class="btn btn-danger"
+								style="height: 38px"
+								onclick="confirmRefuseCancel(${cancelDetail.order_detail_no})">거절</button>
+							<button id="approveBtn" class="btn btn-primary"
+								style="height: 38px"
+								onclick="confirmApproveCancel(${cancelDetail.order_detail_no})">승인</button>
+						</c:when>
+					</c:choose>
+				</div>
+			</main>
+			<%@ include file="/WEB-INF/views/admin/include/footer.jsp"%>
+		</div>
+	</div>
+
 </body>
 </html>

@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class CancelAdminOrderVO {
+	private int orderDetail_no;
 	private int order_no;
 	private int user_no;
 	private Timestamp payment_date;

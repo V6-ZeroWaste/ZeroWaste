@@ -61,6 +61,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		}
 
 		// VO에 필요한 데이터 설정
+		orderDetail.setOrder_no(order.getOrder_no());
+		orderDetail.setOrder_detail_no(order_detail_no);
 		orderDetail.setRefund_price(refundPrice);
 		orderDetail.setRefund_point(refundPoint);
 		orderDetail.setTotal_price(total_price);
