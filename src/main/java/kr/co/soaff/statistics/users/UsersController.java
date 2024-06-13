@@ -40,6 +40,7 @@ public class UsersController {
 
 		}
 		map.put("printList", printList);
+		model.addAttribute("vo", vo);
 		model.addAttribute("map", service.list(vo));
 		return map;
 	}

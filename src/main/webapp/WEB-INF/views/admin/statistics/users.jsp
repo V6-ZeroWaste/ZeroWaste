@@ -22,9 +22,14 @@
 </head>
 	<script>
 	window.onload=function(){
+		
+		
 		let start_date = $('#start_date').val().trim();
 		let end_date = $('#end_date').val().trim();
 		let page = ${usersVO.page}
+		
+		getList();
+		
 		
 		if(!start_date){
 			var today = new Date();
@@ -132,43 +137,40 @@
 	        	]
 	        	
 	        	// 차트 옵션 객체 생성
-	        	var options = {
-	        			plugins: {    
-	        				legend: { // 범례 스타일링      
-	        					labels: {        
-	        						usePointStyle: true,        // 범례 도형 모양과 관련된 속성으로, false일 경우엔 기본 직사각형 도형으로 표시됩니다.        
-	        						padding: 10,        // 범례 간 가로 간격을 조정할 수 있습니다. 범례의 상하 padding을 지정하는 기능은 따로 지원되지 않아요. ㅠㅠ
-	        					}
-	        				}
-	        			},
-	        	    scales: {
-	        	        xAxes: [{
-	        	            stacked: true, // x축을 STACKED 모드로 설정
-	        	        }],
-	        	        yAxes: [{
-	        	            stacked: true, // y축을 STACKED 모드로 설정
-	        	            barThickness: 15,
-	            	        maxBarThickness: 15,
-	            	        
-	        	            
-	        	        }],
-	        			
-	        	    },
-	        	    tooltips: {
-	        	        callbacks: {
-	        	            label: function (tooltipItem, data) {
-	        	                var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
-	        	                var value = tooltipItem.xLabel;
-	        	                if (value === 0) {
-		        	                // Hide tooltip for 0 values
-		        	                return '';
-		        	            }
-		        	           	return datasetLabel + ': ' + value;
-	        	            },
-	        	        },
-	        	    },
-	        	    
-	        	};
+		        	var options = {
+			    plugins: {
+			        legend: { // 범례 스타일링
+			            labels: {
+			                usePointStyle: true, // 범례 도형 모양과 관련된 속성으로, false일 경우엔 기본 직사각형 도형으로 표시됩니다.
+			                padding: 10 // 범례 간 가로 간격을 조정할 수 있습니다. 범례의 상하 padding을 지정하는 기능은 따로 지원되지 않아요. ㅠㅠ
+			            }
+			        },
+			        tooltip: {
+			            callbacks: {
+			                label: function (tooltipItem) {
+			                    var datasetLabel = tooltipItem.dataset.label || '';
+			                    var value = tooltipItem.raw;
+			                    if (value === 0) {
+			                        // Hide tooltip for 0 values
+			                        return '';
+			                    }
+			                    return datasetLabel + ': ' + value;
+			                }
+			            }
+			        }
+			    },
+			    scales: {
+			        x: {
+			            stacked: true // x축을 STACKED 모드로 설정
+			        },
+			        y: {
+			            stacked: true, // y축을 STACKED 모드로 설정
+			            barThickness: 15,
+			            maxBarThickness: 15
+			        }
+			    }
+			};
+
 	        	
 	        	// 캔버스 요소 선택
 	        	$('#myAreaChart').remove(); // this is my <canvas> element
@@ -270,7 +272,7 @@
                                 </table>
                             </div>
 	                        <div class="datatable-bottom">
-	                            <div class="datatable-info">Showing ${usersVO.page} to ${map.totalPage } of ${map.total} entries</div>
+	                            <div class="datatable-info">Showing ${vo.page} to ${map.totalPage } of ${map.total} entries</div>
 	                            <nav class="datatable-pagination">
 	                                <ul class="datatable-pagination-list"></ul>
 	                            </nav>
