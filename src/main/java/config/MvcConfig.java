@@ -66,6 +66,8 @@ public class MvcConfig implements WebMvcConfigurer {
 		reg.addViewController("/user/main/index");
 		reg.addViewController("/user/include/header");
 		reg.addViewController("/user/basic");
+		reg.addViewController("/user/login/login");
+		
 	}
 
 	// HikariCP
