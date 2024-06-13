@@ -14,7 +14,7 @@ public class CancelAdminListVO {
     private int price;
     private Timestamp cancel_request_date;
     private Timestamp cancel_approve_date;
-    private int cancel_status;
+    private Integer cancel_status;
 	private String startRequestDate;
 	private String endRequestDate;
 	private String startApproveDate;

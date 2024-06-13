@@ -62,14 +62,14 @@ public class CancelAdminController {
 	        printList += "<td>" + cancelRequestDate + "</td>";
 	        printList += "<td>" + (cancelApproveDate.isEmpty() ? "" : cancelApproveDate) + "</td>";
 	        String cancel_status = "";
-	        if (vo.getCancel_status() == 0) {
-	            cancel_status = "취소 요청";
+	        if (vo.getCancel_status() ==  null && vo.getCancel_request_date() != null) {
+	            cancel_status = "취소 거절";
 	        } else if (vo.getCancel_status() == 1) {
 	            cancel_status = "취소 승인";
 	        } else if (vo.getCancel_status() == 2) {
 	            cancel_status = "취소 완료";
-	        } else if (vo.getCancel_status() == 3) {
-	            cancel_status = "취소 거절";
+	        } else if (vo.getCancel_status() == 0) {
+	            cancel_status = "취소 요청";
 	        }
 	        printList += "<td>" + cancel_status + "</td>";
 	        printList += "</tr>";
