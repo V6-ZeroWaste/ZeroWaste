@@ -18,10 +18,10 @@
 		FROM user
 		<include refid="searchSql"/>
 		<if test="orderBy == '가입일자오래된순'">
-			ORDER BY date ASC
+			ORDER BY date ASC, user_no ASC
 		</if>
 		<if test="orderBy != '가입일자오래된순'">
-			ORDER BY date DESC
+			ORDER BY date DESC, user_no DESC
 		</if>
 		LIMIT #{startIdx}, 20
 	</select>
