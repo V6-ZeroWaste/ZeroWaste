@@ -37,6 +37,7 @@
         	    if (orderByValue === "") {
         	        orderByValue = null;
         	    }
+        	    
         	var data = {
         			searchWord: $('#searchWord').val(),
         			orderBy: orderByValue,
