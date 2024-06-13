@@ -37,7 +37,6 @@
         	    if (orderByValue === "") {
         	        orderByValue = null;
         	    }
-        	    
         	var data = {
         			searchWord: $('#searchWord').val(),
         			orderBy: orderByValue,
@@ -96,7 +95,7 @@
            	})
         	
 		}
-        </script>
+        	</script>
     </head>
     <body>
         <%@ include file="/WEB-INF/views/admin/include/header.jsp" %>
@@ -118,22 +117,24 @@
                             		<div class="datatable-dropdown">
 							            <label>
 							                <select id="orderBy" class="datatable-selector" onchange="applyCondition();">
-								                <option value="" selected="">===정렬===</option>
+								                <option value="" selected="">기본정렬</option>
 								                <option value="최신순">최신순</option>
 								                <option value="오래된순">오래된순</option>
 							                </select>
 							            </label>
 							            <label>
                                           <select id="filter" name="filter" class="datatable-selector" onchange="applyCondition();">
-                                             <option value="" >==필터==</option>
+                                             <option value="전체" >전체</option>
                                              <option value="답변대기" >답변대기</option>
                                              <option value="답변완료" >답변완료</option>
+                                             <option value="교환/환불문의" >교환/환불 문의</option>
+                                             <option value="상품상세문의" >상품 상세 문의</option>
                                           </select>
                                        </label>
 							        </div>
 							     <div class="row align-items-center">
                             	 <div class="col-md-9">
-                                        <input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="상품명/주문한 아이디/문의 제목" <c:if test="${qnaVO.searchWord} != null">value=${qnaVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width:280px">
+                                        <input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="상품명/작성자/문의 제목" <c:if test="${qnaVO.searchWord} != null">value=${qnaVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width:280px">
                                  </div>                                    
                                  <div class="col-md-1">
                                        	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition()"> 
