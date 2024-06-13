@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.soaff.qna.QnaVO;
+
 @Service
 public class ReviewUserServiceImpl implements ReviewUserService {
 	@Autowired
@@ -55,5 +57,17 @@ public class ReviewUserServiceImpl implements ReviewUserService {
 		ReviewVO data = mapper.detail(vo);
 		return data;
 	}
+	
+	@Override
+	public int update(ReviewVO vo) {
+		return mapper.update(vo);
+	}
+	
+	@Override
+	public int delete(int review_no) {
+		return mapper.delete(review_no);
+	}
+	
+
 
 }
