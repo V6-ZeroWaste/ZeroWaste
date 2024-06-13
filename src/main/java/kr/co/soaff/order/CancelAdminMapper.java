@@ -1,10 +1,8 @@
 package kr.co.soaff.order;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface CancelAdminMapper {

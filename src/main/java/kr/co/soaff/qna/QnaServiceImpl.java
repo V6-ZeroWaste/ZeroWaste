@@ -20,7 +20,7 @@ public class QnaServiceImpl implements QnaService {
         if (count % 20 > 0) totalPage++;
         
         Map<String, Object> map = new HashMap<>();
-        map.put("count", count);
+        map.put("total", count);
         map.put("totalPage", totalPage);
         map.put("list", list);
 
@@ -38,8 +38,8 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
-    public QnaVO detail(QnaVO vo) {
-        return mapper.detail(vo);
+    public QnaVO detail(int qna_no) {
+        return mapper.detail(qna_no);
     }
 
     @Override
