@@ -64,6 +64,12 @@ public class QnaUserController {
 		return "/user/qna/detail";
 	}
 	
+	@GetMapping("/detail2")
+	public String detail2(Model model, QnaVO vo) {
+		model.addAttribute("vo", service.detail(vo));
+		return "/user/qna/update";
+	}
+	
 	@PostMapping("/update")
 	@ResponseBody
 	public int update(@RequestParam int qna_no, String title, String content) {
