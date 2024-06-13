@@ -29,64 +29,6 @@
 	justify-content: space-between;
 	align-items: center;
 }
-
-.behavior {
-	padding-bottom: 30px;
-	display: flex;
-	justify-content: space-around;
-}
-
-.cancelDetailPage {
-	width: 100%;
-	margin: auto;
-	margin-top: 30px;
-}
-
-.cancelStatus {
-	border: 1px solid #ddd;
-	padding: 20px;
-	margin-top: 20px;
-}
-
-.cancelStatus h2 {
-	margin-bottom: 20px;
-}
-
-.cancelStatus p {
-	margin-top: 30px;
-}
-
-.actionButtons {
-	margin-top: 20px;
-	text-align: center;
-}
-
-.actionButtons button {
-	width: 100px;
-	margin: 0 10px;
-}
-
-.cancelReasonOptions {
-	align-items: center;
-	margin-bottom: 20px;
-}
-
-.cancelReasonOptions label {
-	text-align: left;
-	padding: 10px;
-	margin-right: 15px;
-	border-radius: 7px;
-}
-
-.cancelReasonOptions input {
-	margin-right: 5px;
-}
-
-.returnButton {
-	position: absolute;
-	right: 20px;
-	top: 20px;
-}
 </style>
 <script>
 function confirmApproveCancel(order_detail_no) {
@@ -117,8 +59,11 @@ function updateCancelStatus(order_detail_no, action) {
                 alert(resp.message);
                 if (resp.message === "승인 완료") {
                     $('#cancelStatus').text('취소 승인');
+                    $('#statusText').text('취소 승인');
                 } else if (resp.message === "거절 완료") {
                     $('#cancelStatus').text('취소 거절');
+                    $('#statusText').text('취소 거절');
+                    
                 }
                 $('#rejectBtn').remove();
                 $('#approveBtn').remove();
@@ -154,7 +99,7 @@ function goToList() {
 					</div>
 					<div class="card mb-4">
 						<div class="card-header">
-							<h4 class="mt-4">
+							<h4 id="statusText" class="mt-4">
 								상태 :
 								<c:choose>
 									<c:when test="${cancelDetail.cancel_status == 0}">취소 요청</c:when>
