@@ -7,9 +7,14 @@
 		SELECT
 			substr(#{start_date},1, 10) join_date, COUNT(*) user_cnt
 		FROM user
-		WHERE `delete` is not null
-		GROUP BY join_date
-		ORDER BY join_date;
+		<include refid="searchSql"/>
+		<if test="orderBy == '가입일자오래된순'">
+			ORDER BY date ASC, user_no ASC
+		</if>
+		<if test="orderBy != '가입일자오래된순'">
+			ORDER BY date DESC, user_no DESC
+		</if>
+		LIMIT #{startIdx}, 20
 	</select>
 	
 	<select id="day_user_delete" parameterType="kr.co.soaff.user.UserVO">

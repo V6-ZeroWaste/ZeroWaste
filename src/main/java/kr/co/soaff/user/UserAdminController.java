@@ -48,7 +48,7 @@ public class UserAdminController {
 		return map;
 	}
 
-	@GetMapping("detail")
+	@GetMapping("/detail")
 	public String detail(Model model, UserVO vo) {
 		model.addAttribute("user", service.detail(vo));
 		return "admin/user/detail";
