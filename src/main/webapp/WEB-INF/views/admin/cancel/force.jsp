@@ -61,9 +61,10 @@
 }
 
 .cancelReasonOptions label {
-	border: 1px solid black;
+	border: 2px solid #b3b3b3;
 	text-align: left;
-	padding: 5px;
+	padding: 10px;
+	    border-radius: 7px
 }
 
 .cancelReasonOptions input {

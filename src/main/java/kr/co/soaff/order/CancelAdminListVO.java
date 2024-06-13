@@ -30,6 +30,7 @@ public class CancelAdminListVO {
     public CancelAdminListVO() {
         this.page = 1;
         this.orderBy = "오래된순";
+        this.filter = 0;
     }
 
     public int getStartIdx() {

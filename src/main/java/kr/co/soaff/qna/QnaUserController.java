@@ -25,14 +25,14 @@ public class QnaUserController {
 		return "/user/qna/list";
 	}
 
-	@GetMapping("/getList") // 
+	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(QnaVO vo) {
 		Map<String, Object> map = service.list(vo);
 		String printList = "";
 		List<QnaVO> qnaList = (List<QnaVO>) map.get("list");
 		if (qnaList.size() == 0) {
-			printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
+			printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
 		}
 		for (QnaVO qnaVO : qnaList) {
 			printList += "<tr onclick=\"location.href='/user/qna/detail?qna_no=" + qnaVO.getQna_no()
