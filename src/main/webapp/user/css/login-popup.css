@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+
+#loginPopup {
+    display: none;
+    position: fixed;
+    z-index: 99;
+    width: 30%;
+    height: 63%;
+    overflow: auto;
+    background-color: white;
+    right: 0;
+    top: 80px;
+}

@@ -15,24 +15,19 @@
               <div class="collapse navbar-collapse order-3 order-lg-1" id="navbarMenu">
                 <ul class="navbar-nav mr-auto">
                   <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                  <li class="nav-item dropdown megamenu">
+
+                  <!-- store 토글 -->
+                  <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown-4" role="button"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       STORE
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown-4">
-                      <div class="row">
-                        <ul class="col-6 col-md-3 col-lg-2">
-                          <li><span class="megamenu-title">HOME & LIVING</span></li>
-                          <li><span class="megamenu-title">HAIR</span></li>
-                          <li><span class="megamenu-title">FACE & BODY</span></li>
-                          <li><span class="megamenu-title">FOR PET</span></li>
-
-                        </ul>
-
-                      </div>
-                    </div>
-
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <li><a class="dropdown-item" href="#!">HOME & LIVING</a></li>
+                      <li><a class="dropdown-item" href="#!">HAIR</a></li>
+                      <li><a class="dropdown-item" href="#!">FACE & BODY</a></li>
+                      <li><a class="dropdown-item" href="#!">FOR PET</a></li>
+                    </ul>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="documentation/index.html">
@@ -44,22 +39,24 @@
 
               <div class="collapse navbar-collapse order-4 order-lg-3" id="navbarMenu2">
                 <ul class="navbar-nav ml-auto">
-                  <c:if test="${empty login }">
-                    <li class="nav-item">
-                      <a class="nav-link" href="portal.html">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="portal.html">JOIN</a>
-                    </li>
-                  </c:if>
-                  <c:if test="${!empty login }">
-                    <li class="nav-item">
-                      <a class="nav-link" href="portal.html">Log Out</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="portal.html">My Page</a>
-                    </li>
-                  </c:if>
+                  <!-- 로그인 토글 -->
+                  <li class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown-4" role="button"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Log In
+                    </a>
+                    <ul class="dropdown-menu col-12" aria-labelledby="dropdownMenuButton">
+                      <li class="form-group"><label for="exampleInputEmail1">ID</label></li>
+                      <li class="form-group"><input type="email" class="form-control" id="exampleInputEmail1"></li>
+                      <li class="form-group"><label for="exampleInputPassword1">Password</label></li>
+                      <li class="form-group"><input type="password" class="form-control" id="exampleInputPassword1"></li>
+                      <li class="form-group"><input type="checkbox" class="custom-control-input" id="customSwitch1"><label class="custom-control-label" for="customSwitch1">Save ID</label></li>
+                      
+                      <li class="form-group"><a href="#!" class="btn btn-block btn-primary">Log In</a></li>
+                    </ul>
+                  </li>
+
+
                   <li class="nav-item">
                     <a data-toggle="modal" data-target="#search" class="nav-link"><i class="icon-search"></i></a>
                   </li>
@@ -71,4 +68,6 @@
             </nav>
           </div>
         </div>
+
+
       </header>
