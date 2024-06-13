@@ -107,6 +107,34 @@
 	font-size: 18px;
 }
 </style>
+<script type="text/javascript">
+function redirectToUpdate() {
+    var reviewNo = document.querySelector('input[name="review_no"]').value;
+    window.location.href = '/user/review/detail2?review_no=' + reviewNo;
+}
+
+	var review_no = ${vo.review_no};
+	function deleteReview() {
+	    if (confirm("정말 삭제하시겠습니까?")) {
+	        $.ajax({
+	            type: "POST",
+	            url: "/user/review/delete",
+	            data: { review_no: ${vo.review_no} },
+	            success: function(response) {
+	                if (response === 1) {
+	                    alert("리뷰가 삭제되었습니다.");
+	                    location.href = "/user/review/list";
+	                } else {
+	                    alert("리뷰 삭제에 실패했습니다.");
+	                }
+	            },
+	            error: function() {
+	                alert("서버와의 통신 중 오류가 발생했습니다.");
+	            }
+	        });
+	    }
+	}
+</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/user/include/header.jsp"%>
@@ -145,17 +173,18 @@
 										<div class="detail-footer">
 											<div class="product-name">상품명: ${vo.item_name}</div>
 											<div class="buttons">
-												<form action="/user/review/update" method="post"
-													style="display: inline;">
+												<form style="display: inline;">
 													<input type="hidden" name="review_no"
 														value="${vo.review_no}">
-													<button type="submit" class="btn btn-primary">수정</button>
+													<button type="button" class="btn btn-primary"
+														onclick="redirectToUpdate()">수정</button>
 												</form>
 												<form action="/user/review/delete" method="post"
 													style="display: inline;">
 													<input type="hidden" name="review_no"
 														value="${vo.review_no}">
-													<button type="submit" class="btn btn-danger">삭제</button>
+													<button type="submit" class="btn btn-danger"
+														onclick="deleteReview()">삭제</button>
 												</form>
 											</div>
 										</div>
