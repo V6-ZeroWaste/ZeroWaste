@@ -90,7 +90,8 @@
 			delivery_price,
 		    point,
 		    payment_method,
-		    payment_price
+		    payment_price,
+		    user_no
    		FROM `order`
 		WHERE order_no = #{order_no}
 	</select>
@@ -102,7 +103,8 @@
 			item.name as item_name,
 			order_detail.price,
 			order_detail.cancel_status,
-			order_detail.amount			
+			order_detail.amount,
+			confirm_date			
 		FROM order_detail 
 		JOIN item ON order_detail.item_no = item.item_no
 		WHERE order_detail.order_no = #{order_no};

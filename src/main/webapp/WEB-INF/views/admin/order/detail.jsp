@@ -107,7 +107,7 @@
 	                                          <td>
 	                                          <fmt:formatDate value="${detailMap.detailFromOrderVO.payment_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
 	                                          </td>
-	                                          <td>${orderVO.id}</td>
+	                                          <td onclick="location.href='/admin/user/detail?id=${detailMap.detailFromOrderVO.user_no}'">${orderVO.id}</td>
 	                                          
 	                                       </tr>
 	                                   </thead>
@@ -133,9 +133,11 @@
                             			   <tr>
                             			   	  <th>주문 상세 번호</th>
 	                                      	  <th colspan="2">상품 정보</th>
-	                                          <th>상품별 주문 금액(수량)</th>
+	                                          <th>상품별 주문 금액</th>
+	                                          <th>상품별 주문 수량</th>
 	                                          <th>취소 상태</th>
 	                                          <th>취소 상세</th>
+	                                          <th>구매 확정</th>
 	                                       </tr>
 	                                       		<c:forEach var="vo" items="${detailMap.detailFromOrderDetailVO}">
 		                                       		  <tr>
@@ -143,8 +145,12 @@
 			                                       		  <td>${vo.item_name} </td>
 			                                       		  <td><img src="${vo.item_img}" ></img></td>
 				                                          <td>${vo.price*vo.amount}(${vo.amount}) </td>
+				                                          <td>${vo.amount} </td>
 		                                                  <td id="cancel_status">
 												            <c:choose>
+												                <c:when test="${empty vo.cancel_status}">
+												                    
+												                </c:when>
 												                <c:when test="${vo.cancel_status == 0}">
 												                    취소요청
 												                </c:when>
@@ -156,7 +162,27 @@
 												                </c:when>
 												            </c:choose>
 												          </td>
-				                                          <td><a href=#;>취소 상세</a></td>
+				                                          <td>
+					                                          <c:choose>
+													                <c:when test="${empty vo.cancel_status}">
+													                    
+													                </c:when>
+													                <c:when test="${!empty vo.cancel_status}">
+													                    <a href=#;>취소 상세</a>
+													                </c:when>
+													            </c:choose>
+				                                          </td>
+				                                          <td>
+					                                          <c:choose>
+													                <c:when test="${empty vo.confirm_date}">
+													                    X
+													                </c:when>
+													                <c:when test="${!empty vo.confirm_date}">
+													                    O
+													                </c:when>
+													            </c:choose>
+				                                          </td>
+				                                          
 	                                       			  </tr>
 	                                       		</c:forEach>
 	                                   </thead>

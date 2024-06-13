@@ -40,13 +40,14 @@ public class OrderAdminController {
 			printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
 		}
 		for (OrderVO vo : orderList) {
-			printList += "<tr>";
-			printList += "<td onclick=location.href='/admin/order/detail?order_no=" + vo.getOrder_no() + "&id="
-					+ vo.getId() + "'>" + vo.getOrder_no() + "</td>";
+			printList += "<tr onclick=location.href='/admin/order/detail?order_no=" + vo.getOrder_no() + "&id="
+					+ vo.getId() + "'>";
+			printList += "<td>" + vo.getOrder_no() + "</td>";
 			printList += "<td>" + (vo.getPayment_date() + "").substring(0, 19) + "</td>";
 
 			printList += "<td>" + vo.getId() + "</td>";
-			printList += "<td>" + vo.getPayment_price() + "(" + vo.getTotal_amount() + ")</td>";
+			printList += "<td>" + vo.getPayment_price() + "</td>";
+			printList += "<td>" + vo.getTotal_amount() + "</td>";
 			String delivery_status = "";
 			if (vo.getDelivery_status() == 0) {
 				delivery_status = "상품준비중";
