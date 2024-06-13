@@ -27,6 +27,10 @@ public class OrderController {
 	@GetMapping("/mypage/order/detail")
 	public String detail(Model model, OrderVO orderVO) {
 		return "/user/order/detail";
+	}	
+	@GetMapping("/mypage/cancelForm")
+	public String cancel(Model model, OrderVO orderVO) {
+		return "/user/order/cancelForm";
 	}
 
 
