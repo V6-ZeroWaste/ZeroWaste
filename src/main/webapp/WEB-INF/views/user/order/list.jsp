@@ -115,7 +115,7 @@
 				     		<span class="order-status canceled">취소요청</span>
 				        	<br><br><br>
 				        	
-				        	<a href="#!" class="action eyebrow underline">View Order</a>
+				        	<a href="/mypage/order/detail" class="action eyebrow underline">View Order</a>
 				   		</div>
 					</div>
 				</div>
@@ -147,7 +147,7 @@
 				     		<br>
 				        	<br><br><br>
 				        	
-				        	<a href="#!" class="action eyebrow underline">View Order</a>
+				        	<a href="/mypage/order/detail" class="action eyebrow underline">View Order</a>
 				   		</div>
 					</div>
 				</div>

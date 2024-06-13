@@ -35,7 +35,8 @@
 			display:flex;
 			justify-content: space-between;
 			border-bottom:1px solid #dddddd;
-			padding:10px
+			padding:10px;
+			margin-top:20px;
 		}
 		.search-filter>div{
 			margin:10px 0px 10px 0px;
@@ -64,7 +65,10 @@
 	<div class="row">
     	<div class="col-12">
     		<!-- title -->
-   			<h3 class="mb-0">Order Detail</h3>
+    		<div  style="display:flex;justify-content: space-between;">
+	   			<h3 class="mb-0">Order Detail</h3>
+	   			<button class="btn btn-primary" onclick="history.back()">go list</button>
+   			</div>
    			<!-- /title -->
    			<!-- Order Info -->
    			<div class="order-head">
