@@ -168,10 +168,10 @@
 													                    
 													                </c:when>
 													                <c:when test="${!empty vo.cancel_status}">
-													                    <a href="/admin/cancel/${vo.order_detail_no}";>취소 상세</a>
+													                    <a href="/admin/cancel/${vo.order_detail_no}">취소 상세</a>
 													                </c:when>
 													                <c:when test="${!empty vo.confirm_date && detailMap.detailFromOrderVO.delivery_status == 2}">
-													                    <a href="/admin/cancel/${vo.order_detail_no}";>강제 취소</a>
+													                    <a href="/admin/cancel/force/${order_detail_no}">강제 취소</a>
 													                </c:when>
 													            </c:choose>
 				                                          </td>
