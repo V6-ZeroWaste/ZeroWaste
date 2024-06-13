@@ -109,7 +109,7 @@
 				        	
 				        	<span class="order-status ">상품준비중<br></span>
 				        		<!-- <span class="order-status sent">배송완료</span> -->
-				     		<span class="order-status canceled">최소요청</span>
+				     		<span class="order-status canceled">취소요청</span>
 				        	<br><br><br>
 				        	
 				        	<a href="#!" class="action eyebrow underline">View Order</a>
