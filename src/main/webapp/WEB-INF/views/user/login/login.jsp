@@ -15,17 +15,128 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   </head>
   <script type="text/javascript">
-  $(function(){
+    var dupCheck = false;
+    function goSave() {
+      //아이디를 입력 안 했을떄
+      if ($("#id").val() == '') {
+        alert('아이디를 입력하세요');
+        $("#id").focus();
+        return;
+      }
+      /*
+      if (!dupCheck) {
+          alert('이메일 중복여부를 체크해주세요');
+          return;
+      }
+      */
+      // var con = true;
+      // $.ajax({
+      //   url:'/member/idCheck.do',
+      //   data : {id:$("#id").val()},
+      //   async : false,
+      //   success : function(res) {
+      //     console.log(res);
+      //     if (res == '1') {
+      //       alert('중복된 이메일입니다.\r\n다른 이메일을 입력해 주세요');
+      //       con = false;
+      //       return;
+      //     }
+      //   }
+      // });
+
+      // if (!con) return;
+      //비밀번호를 입력 안 했을떄
+      if ($("#pw").val() == '') {
+        alert('비밀번호를 입력하세요');
+        $("#pw").focus();
+        return;
+      }
+      //비밀번호가 같은지
+      if ($("#pw").val() != $("#pw_check").val()) {
+        alert('비밀번호를 확인하세요');
+        return;
+      }
+      var reg = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/;
+      if ($("#pwd").val().match(reg) == null) {
+        alert('비밀번호는 영문+숫자 조합으로 8자이상 입력하세요');
+        $("#pwd").val('');
+        $("#pwd_check").val('');
+        return;
+      }
+      if ($("#name").val() == '') {
+        alert('이름을 입력하세요');
+        $("#name").focus();
+        return;
+      }
+
+      if ($("#email_id").val() == '') {
+        alert('이메일을 입력하세요');
+        $("#email").focus();
+        return;
+      }
+      if ($("#email_domain").val() == '') {
+        alert('도메인을 입력하세요');
+        $("#email").focus();
+        return;
+      }
+
+      $("#email_domain").val($("#setEmailDomain").val());
+
+      var mail = $("#email_id").val()+"@" +$("#email_domain").val();
+      console.log(mail);
+
+
+
+
+      if ($("#tel1").val() == '') {
+        alert('번호를 입력하세요 ');
+        $("#email").focus();
+        return;
+      }
+
+
+
+      // 전송
+      // $("#frm").submit();
+    }
+
+    $(function(){
       
       $('#adr_btn').on('click', () => {
           zipcode();
       });
 
-      var checkMailBtn = document.getElementById('checkMail');
-      checkMailBtn.addEventListener('click', () => {
-          handleCheckMail();
-      });
+     $('#checkMail').on('click',function(event){
+        $.ajax({
+          type:"POST",
+          url:"/user/",
+          data: {
 
+          }
+        })
+     })
+
+     // $('#checkId').on('click',function (event){
+     //   $.ajax({
+     //     type: "POST",
+     //     url: "/qna/updateReply",
+     //     data: {
+     //       qna_no: qna_no,
+     //       reply: reply
+     //     },
+     //     success: function(response) {
+     //       if (response === 1) {
+     //         alert("답변이 등록/수정되었습니다.");
+     //         location.reload();
+     //       } else {
+     //         alert("답변 등록/수정에 실패했습니다.");
+     //       }
+     //     },
+     //     error: function() {
+     //       alert("서버와의 통신 중 오류가 발생했습니다.");
+     //     }
+     //   });
+     // });
       //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
       function zipcode() {
           new daum.Postcode({
@@ -55,9 +166,9 @@
           }).open();
       }
 
-      function handleCheckMail() {
-          // Add your mail checking logic here
-      }
+
+
+
   });
   </script>
   <body>
@@ -100,40 +211,40 @@
             <div class="row">
               <div class="col">
                 <div class="tab-content" id="myTabContent">
-                  <form>
+                  <form action="/admin/user/resgist" method="GET" name="frm" id="frm">
                     <div class="row mb-3">
-                      <label for="inputEmail" class="col-sm-2 col-form-label">아이디</label>
+                      <label for="inputId" class="col-sm-2 col-form-label">아이디</label>
                       <div class="col-sm-4">
-                        <input type="email" class="form-control" id="inputEmail">
+                        <input type="text" class="form-control" id="id">
                       </div>
                       <div class="col-sm-2">
-                     <button type="button" class="btn btn-primary btn-rounded">중복확인</button>
+                     <button type="button" class="btn btn-primary btn-rounded" id="checkId">중복확인</button>
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="inputPassword" class="col-sm-2 col-form-label">비밀번호</label>
+                      <label for="pwd" class="col-sm-2 col-form-label" >비밀번호</label>
                       <div class="col-sm-6">
-                        <input type="password" class="form-control" id="inputPassword">
+                        <input type="password" class="form-control" id="pwd">
                       </div>
                     </div>
                     
                     <div class="row mb-3">
-                      <label for="inputPasswordConfirm" class="col-sm-2 col-form-label">비밀번호 확인</label>
+                      <label for="pwd_check" class="col-sm-2 col-form-label">비밀번호 확인</label>
                       <div class="col-sm-6">
-                        <input type="password" class="form-control" id="inputPasswordConfirm">
+                        <input type="password" class="form-control" id="pwd_check">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="inputName" class="col-sm-2 col-form-label">이름</label>
+                      <label for="name" class="col-sm-2 col-form-label">이름</label>
                       <div class="col-sm-6">
-                        <input type="text" class="form-control" id="inputName">
+                        <input type="text" class="form-control" id="name">
                       </div>
                     </div>
 
                     <div class="row mb-3">
-                      <label for="inputTel" class="col-sm-2 col-form-label">전화번호</label>
+                      <label class="col-sm-2 col-form-label">전화번호</label>
                       <div class="col-sm-2">
                         <input type="text" class="form-control" id="tel1" placeholder="010">
                       </div>
@@ -146,44 +257,52 @@
                     </div>
 
                     <div class="row mb-3">
-                      <label for="inputEmail2" class="col-sm-2 col-form-label">이메일</label>
-                      <div class="col-sm-2" style="padding-left: 15px; padding-right: 0px;">
-                        <input type="text" class="form-control" id="inputEmail2" placeholder="Username" aria-label="Username">
+                      <label for="email_id" class="col-sm-2 col-form-label">이메일</label>
+                      <div class="col-sm-2" style="padding-right: 0">
+                        <input type="email" class="form-control" id="email_id" placeholder="Username" aria-label="Username">
                       </div>
                       <span class="col-form-label">@</span>
-                      <div class="col-sm-2" style="padding-right: 0px;">
-                        <div class="form-group mb-1" style="padding-left: 0px; padding-right: 30px;">
-	                      <select id="exampleInput-5" class="custom-select">
-	                        <option selected>선택 사항</option>
-	                        <option value="1">One</option>
-	                        <option value="2">Two</option>
-	                        <option value="3">Three</option>
+                      <div class="col-sm-2" style="padding-right: 0">
+                        <input type="email" class="form-control" id="email_domain" placeholder="Username" aria-label="Username" readonly>
+                      </div>
+                      <div class="col-sm-2" style="padding-right: 30px; padding-left: 0" id="setEmailDomain">
+                        <div class="form-group mb-1">
+	                      <select id="emailSel" class="custom-select">
+                            <option value="">-선택-</option>
+                            <option value="직접입력">직접입력</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="hanmail.net">hanmail.net</option>
+                            <option value="hotmail.com">hotmail.com</option>
+                            <option value="korea.com">korea.com</option>
+                            <option value="nate.com">nate.com</option>
+                            <option value="yahoo.com">yahoo.com</option>
 	                      </select>
                    		 </div>
                       </div>
           
                       <div class="col-sm-2" style="padding-left: 0px">
-                     	<button type="button" class="btn btn-primary btn-rounded" id="checkMail" onclick="handleCheckMail()">인증코드 발송</button>
+                     	<button type="button" class="btn btn-primary btn-rounded" id="checkMail">인증코드 발송</button>
                       </div>
 
                     </div>
                     <div class="row mb-3">
-                      <label for="inputAddress1" class="col-sm-2 col-form-label">주소</label>
+                      <label for="zipcode" class="col-sm-2 col-form-label">주소</label>
                       <div class="col-sm-4">
-                        <input type="text" class="form-control" id="zipcode">
+                        <input type="text" class="form-control" id="zipcode" readonly>
                       </div>
                       <div class="col-sm-2">
                      <button type="button" class="btn btn-primary btn-rounded" id="adr_btn">우편번호</button>
                       </div>
                     </div>
-                         <div class="row mb-3">
-                      <label for="inputAddress1" class="col-sm-2 col-form-label"></label>
+                    <div class="row mb-3">
+                      <label for="addr1" class="col-sm-2 col-form-label"></label>
                       <div class="col-sm-6">
-                        <input type="text" class="form-control" id="addr1">
+                        <input type="text" class="form-control" id="addr1" readonly>
                       </div>
                     </div>
                          <div class="row mb-3">
-                      <label for="inputAddress1" class="col-sm-2 col-form-label"></label>
+                      <label for="addr2" class="col-sm-2 col-form-label"></label>
                       <div class="col-sm-6">
                         <input type="text" class="form-control" id="addr2">
                       </div>
@@ -192,12 +311,14 @@
                     	<div class="col-sm-3"> 
 		                </div>
 		                <div class="col-sm-2">
-		                    <button type="submit" class="btn btn-primary">취소</button>
+		                    <button type="button" class="btn btn-primary" onclick="history.back();">취소</button>
 		                </div>
 		                <div class="col-sm-2">
-		                    <button type="submit" class="btn btn-primary">확인</button>
+		                    <button type="button" class="btn btn-primary" onclick="goSave()">확인</button>
 		                </div>
 	          		 </div>
+                    <input type="hidden" id="relEmail" name="relEmail">
+                    <input type="hidden" id="tel" name="tel">
                   </form>
                 </div>
               </div>
