@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.user.UserAdminMapper">
-	<!-- 검색 조건 -->
-	<sql id="searchSql">
-		<where>
-			'delete' IS NOT NULL
-			<if test="searchWord != null and searchWord != ''">
-				and CONCAT_WS('-', id, name) LIKE '%${searchWord}%'
-			</if>
-		</where>
-	</sql>
 	
-	<!-- 회원관리 리스트 -->
-	<select id="list" parameterType="kr.co.soaff.user.UserVO">
+	<!-- 일별 통계 -->
+	<select id="day_user" parameterType="kr.co.soaff.user.UserVO">
 		SELECT
-			user_no, id, name, email, zipcode, addr, addr_detail, tel, date
+			substr(#{start_date},1, 10) join_date, COUNT(*) user_cnt
 		FROM user
 		<include refid="searchSql"/>
 		<if test="orderBy == '가입일자오래된순'">
@@ -26,29 +17,33 @@
 		LIMIT #{startIdx}, 20
 	</select>
 	
-	<!-- 회원관리 리스트 건수 -->
-	<select id="count" parameterType="kr.co.soaff.user.UserVO" resultType="int">
-		SELECT COUNT(*) FROM user
-		<include refid="searchSql"/>
+	<select id="day_user_delete" parameterType="kr.co.soaff.user.UserVO">
+		SELECT
+			substr(#{start_date},1, 10) leave_date, COUNT(*) user_cnt
+		FROM user
+		WHERE `delete` is null
+		GROUP BY leave_date
+		ORDER BY leave_date;
+	</select>
+	
+	<!-- 월별 통계 -->
+	<select id="month_user" parameterType="kr.co.soaff.user.UserVO">
+		SELECT
+			substr(#{start_date},1, 7) join_date, COUNT(*) user_cnt
+		FROM user
+		WHERE `delete` is not null
+		GROUP BY join_date
+		ORDER BY join_date;
+	</select>
+	
+	<select id="month_user_delete" parameterType="kr.co.soaff.user.UserVO">
+		SELECT
+			substr(#{start_date},1, 7) leave_date, COUNT(*) user_cnt
+		FROM user
+		WHERE `delete` is null
+		GROUP BY leave_date
+		ORDER BY leave_date;
 	</select>
 		
-	<!--  회원관리 - 상세 -->
-	<select id="detail" parameterType="kr.co.soaff.user.UserVO">
-		SELECT
-			user_no, id, name, email, zipcode, addr, addr_detail, tel, date
-		FROM user WHERE user_no = #{user_no} 
-	</select>
-			
-	<!--  회원관리 - 상세 수정 -->
-	<update id="update" parameterType="kr.co.soaff.user.UserVO">
-		UPDATE user
-		SET zipcode = #{zipcode}, addr = #{addr}, tel = #{tel}
-		<if test="addr_detail == ''">
-			, addr_detail = null
-		</if>
-		<if test="addr_detail != ''">
-			, addr_detail = #{addr_detail}
-		</if>
-		WHERE user_no = #{user_no} 
-	</update>
+	
 </mapper>
