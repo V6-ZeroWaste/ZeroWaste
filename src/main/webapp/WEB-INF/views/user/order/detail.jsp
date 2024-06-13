@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/user/css/vendor.css" />
     <link rel="stylesheet" href="/user/css/style.css" />
 
-    <title>Order</title>
+    <title>Order Detail</title>
     <style>
     	input[type='date']::before {
 		  content: attr(data-placeholder);
@@ -40,9 +40,6 @@
 		.search-filter>div{
 			margin:10px 0px 10px 0px;
 		}
-		.order-status.shipping::before {
-			background: #F5BE17; 
-		}
     	
     </style>
   </head>
@@ -55,14 +52,17 @@
 				<%@ include file="/WEB-INF/views/user/include/mypageNav.jsp" %>
 				<div class="col-lg-9">
 		            
-		              <!-- <div class="col"> -->
 		                
     
     <!-- content -->
 	<div class="row">
     	<div class="col-12">
     		<!-- title -->
-   			<h3 class="mb-0">Order</h3>
+   			<h3 class="mb-0">Order Detail</h3>
+   			<div class="order-head">
+						<span>Order No.165342</span>
+				     	<span>2021-12-19 12:11:11</span>
+			</div>
    			<!-- /title -->
    			<!-- search filter -->
    			<div class="search-filter">
