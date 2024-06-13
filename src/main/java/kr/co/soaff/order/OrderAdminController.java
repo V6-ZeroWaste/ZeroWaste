@@ -47,21 +47,15 @@ public class OrderAdminController {
 
 			printList += "<td>" + vo.getId() + "</td>";
 			printList += "<td>" + vo.getPayment_price() + "(" + vo.getTotal_amount() + ")</td>";
-			String order_status = "";
-			if (vo.getOrder_status() == 0) {
-				order_status = "취소 완료";
-			} else if (vo.getOrder_status() == 1) {
-				order_status = "취소 요청";
-			} else if (vo.getOrder_status() == 2) {
-				order_status = "상품준비중";
-			} else if (vo.getOrder_status() == 3) {
-				order_status = "배송중";
-			} else if (vo.getOrder_status() == 4) {
-				order_status = "배송완료";
-			} else if (vo.getOrder_status() == 5) {
-				order_status = "구매확정";
+			String delivery_status = "";
+			if (vo.getDelivery_status() == 0) {
+				delivery_status = "상품준비중";
+			} else if (vo.getDelivery_status() == 1) {
+				delivery_status = "배송중";
+			} else if (vo.getDelivery_status() == 2) {
+				delivery_status = "배송완료";
 			}
-			printList += "<td>" + order_status + "</td>";
+			printList += "<td>" + delivery_status + "</td>";
 			printList += "</tr>";
 		}
 		map.put("printList", printList);

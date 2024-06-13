@@ -161,8 +161,8 @@
                                        	   <th>주문 번호</th>
                                            <th>주문 일자</th>
                                            <th>주문한 유저ID</th>
-                                           <th>주문 금액(수량)</th>
-                                           <th>주문 상태</th>
+                                           <th>결제 금액(수량)</th>
+                                           <th>배송 상태</th>
                                         </tr>
                                     </thead>
 		                        	<tbody id="printList">
