@@ -39,14 +39,6 @@
                     qna.reply IS NOT NULL
                     <include refid="searchAndCal"/>
                 </when>
-                <when test="filter == '교환/환불문의'">
-               		qna.type = 0
-                    <include refid="searchAndCal"/>
-                </when>
-                 <when test="filter == '상품상세문의'">
-               		qna.type = 1
-                    <include refid="searchAndCal"/>
-                </when>
                 <otherwise>
                     1=1
                     <include refid="searchAndCal"/>
