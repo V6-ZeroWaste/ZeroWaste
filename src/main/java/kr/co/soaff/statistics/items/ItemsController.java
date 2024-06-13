@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.soaff.review.ReviewVO;
 
 @Controller
-@RequestMapping("/admin/statistics")
+@RequestMapping("/admin/statistics/items")
 public class ItemsController {
 	@Autowired
 	private ItemsService service;
 
-	@GetMapping("/items")
+	@GetMapping("/index")
 	public String index() {
 		return "/admin/statistics/items";
 	}
 	
-	@GetMapping("/items/getList")
+	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(ItemsVO vo){
 		System.out.println(vo);
