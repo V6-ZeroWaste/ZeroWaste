@@ -21,6 +21,15 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script type="text/javascript">
         let page = 1;
+        let filter = ${qnaVO.filter};
+        window.onload=function(){
+        	if (filter) {
+        		getList();
+        	} else {
+        		filter = $('#filter').val();
+	        	getList();
+        	}
+        	}
         window.onload=function(){
         	  getList();
         	}
@@ -44,7 +53,7 @@
         			page: page,
                     start_date: $('#start_date').val(),
                     end_date: $('#end_date').val(),
-                    filter: $('#filter').val()
+                    filter: filter
         		
         	}
             console.log(data);
@@ -58,7 +67,7 @@
                    	// 데이터 리스트 출력
                    	let printList = "";
                    	if(resp.list.length == 0){
-                   		printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
+                   		printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
                    	}
                    	
                		$("#printList").html(resp.printList);
@@ -126,7 +135,7 @@
 							            <label>
                                           <select id="filter" name="filter" class="datatable-selector" onchange="applyCondition();">
                                              <option value="" >==필터==</option>
-                                             <option value="답변대기" >답변대기</option>
+                                             <option value="답변대기" <c:if test="${qnaVO.filter == '답변대기'}">selected</c:if>>답변대기</option>
                                              <option value="답변완료" >답변완료</option>
                                           </select>
                                        </label>

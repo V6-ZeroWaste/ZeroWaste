@@ -41,9 +41,15 @@
                 </a>
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
+<<<<<<< HEAD
                         <a class="nav-link" href="/admin/statistics/sales">매출 통계</a>
                         <a class="nav-link" href="/admin/statistics/items">상품 통계</a>
                         <a class="nav-link" href="/admin/statistics/users">회원 통계</a>
+=======
+                        <a class="nav-link" href="#">매출 통계</a>
+                        <a class="nav-link" href="#">상품 통계</a>
+                        <a class="nav-link" href="/admin/statistics/users/index">회원 통계</a>
+>>>>>>> 31c6d92dce530f9c2022b4b72472f2fb4ac9d91d
                     </nav>
                 </div>
             </div>
