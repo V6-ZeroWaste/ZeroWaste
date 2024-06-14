@@ -49,8 +49,10 @@
 		    `order`.payment_date,
 		    user.id,
 		    `order`.payment_price,
-		    COUNT(*) as total_amount,
-		    `order`.order_status
+		    sum(order_detail.amount) as total_amount,
+		    `order`.order_status,
+		    `order`.delivery_status,
+		    `order`.delivery_price
 		    
 		FROM `order` 
 		JOIN user ON `order`.user_no = user.user_no
@@ -88,18 +90,22 @@
 			delivery_price,
 		    point,
 		    payment_method,
-		    payment_price
+		    payment_price,
+		    user_no
    		FROM `order`
 		WHERE order_no = #{order_no}
 	</select>
 	<!-- OrderDetailVO에 담는 정보 -->
 	<select id="detailFromOrderDetailVO" parameterType="kr.co.soaff.order.OrderDetailVO">
-		SELECT 
+		SELECT
+			order_detail_no,
 			item.item_img,
 			item.name as item_name,
 			order_detail.price,
-			order_detail.cancel_status
-			
+			order_detail.cancel_status,
+			order_detail.amount,
+			confirm_date,
+			cancel_approve_date		
 		FROM order_detail 
 		JOIN item ON order_detail.item_no = item.item_no
 		WHERE order_detail.order_no = #{order_no};

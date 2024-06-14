@@ -157,7 +157,7 @@ function updateCancelStatus(order_detail_no, reasonDetail) {
 }
 
 function goToList() {
-    window.location.href = "${pageContext.request.contextPath}/admin/cancel/list";
+    window.location.href = "${pageContext.request.contextPath}/admin/order/detail";
 }
 </script>
 </body>
