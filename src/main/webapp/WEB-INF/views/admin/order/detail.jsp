@@ -39,6 +39,7 @@
         function applyCondition(){
             if (confirm("배송 상태를 변경 하시겠습니까?")) {
             	updateDeliveryStatus();
+            	
 	            }
 	    }
 
@@ -62,6 +63,7 @@
         	            alert('배송 상태 수정 실패');
         	        } else {
         	            alert('변경완료');
+        	            location.reload();
         	        }
         	    },
         	    error: function(data, textStatus) {
@@ -164,14 +166,15 @@
 												          </td>
 				                                          <td>
 					                                          <c:choose>
+													                <c:when test="${empty vo.cancel_status  && empty vo.confirm_date && detailMap.detailFromOrderVO.delivery_status == 2}">
+													                    <button class ="btn btn-danger" onclick="location.href='/admin/cancel/force/${vo.order_detail_no}'">강제 취소</button>
+													                </c:when>
+													                
 													                <c:when test="${empty vo.cancel_status}">
 													                    
 													                </c:when>
 													                <c:when test="${!empty vo.cancel_status}">
-													                    <a href="/admin/cancel/${vo.order_detail_no}">취소 상세</a>
-													                </c:when>
-													                <c:when test="${!empty vo.confirm_date && detailMap.detailFromOrderVO.delivery_status == 2}">
-													                    <a href="/admin/cancel/force/${order_detail_no}">강제 취소</a>
+													                    <button class ="btn btn-primary" onclick="location.href='/admin/cancel/${vo.order_detail_no}'">취소 상세</button>
 													                </c:when>
 													            </c:choose>
 				                                          </td>
