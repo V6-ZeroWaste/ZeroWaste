@@ -30,7 +30,7 @@
                     </ul>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="documentation/index.html">
+                    <a class="nav-link" href="/index">
                       SOAFF STORY
                     </a>
                   </li>
@@ -40,22 +40,9 @@
               <div class="collapse navbar-collapse order-4 order-lg-3" id="navbarMenu2">
                 <ul class="navbar-nav ml-auto">
                   <!-- 로그인 토글 -->
-                  <li class="nav-item dropdown ">
-                    <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown-4" role="button"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Log In
-                    </a>
-                    <ul class="dropdown-menu col-12" aria-labelledby="dropdownMenuButton">
-                      <li class="form-group"><label for="exampleInputEmail1">ID</label></li>
-                      <li class="form-group"><input type="email" class="form-control" id="exampleInputEmail1"></li>
-                      <li class="form-group"><label for="exampleInputPassword1">Password</label></li>
-                      <li class="form-group"><input type="password" class="form-control" id="exampleInputPassword1"></li>
-                      <li class="form-group"><input type="checkbox" class="custom-control-input" id="customSwitch1"><label class="custom-control-label" for="customSwitch1">Save ID</label></li>
-                      
-                      <li class="form-group"><a href="#!" class="btn btn-block btn-primary">Log In</a></li>
-                    </ul>
-                  </li>
-
+	                <li class="nav-item">
+	                  <a class="nav-link" href="/login">Log In</a>
+	                </li>
 
                   <li class="nav-item">
                     <a data-toggle="modal" data-target="#search" class="nav-link"><i class="icon-search"></i></a>

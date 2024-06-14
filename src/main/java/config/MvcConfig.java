@@ -63,8 +63,6 @@ public class MvcConfig implements WebMvcConfigurer {
 	// 비즈니스 로직이 필요없는 URL 매핑
 	@Override
 	public void addViewControllers(ViewControllerRegistry reg) {
-		reg.addViewController("/user/main/index");
-		reg.addViewController("/user/include/header");
 		reg.addViewController("/user/basic");
 		reg.addViewController("/user/basic-mypage");
 	}

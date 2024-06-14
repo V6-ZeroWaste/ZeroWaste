@@ -24,12 +24,8 @@
 								<div class="accordion accordion-portal" id="accordionExample">
 									<div id="loginPopup" class="card active">
 										<div class="card-header" id="headingOne">
-											<h2 class="mb-0">
-												<button class="btn btn-link" type="button" data-toggle="collapse"
-													data-target="#collapseOne" aria-expanded="true"
-													aria-controls="collapseOne">
-													Sign In
-												</button>
+											<h2 style="padding: 15px 30px;">
+													LOG IN
 											</h2>
 										</div>
 
@@ -38,7 +34,7 @@
 											<div class="card-body">
 												<div class="row mt-2">
 													<div class="form-group col-12">
-														<label for="exampleInputEmail1">Email address</label>
+														<label for="exampleInputEmail1">ID</label>
 														<input type="email" class="form-control"
 															id="exampleInputEmail1">
 													</div>
@@ -52,52 +48,24 @@
 															<input type="checkbox" class="custom-control-input"
 																id="customSwitch1">
 															<label class="custom-control-label"
-																for="customSwitch1">Toggle this switch element</label>
+																for="customSwitch1">Remeber ID</label>
 														</div>
+													</div>
+													<div class="form-group col-12 mt-1">
+														<a href="아이디찾기" style="color: #555555;">아이디 찾기 | </a>
+														<a href="비밀번호찾기" style="color: #555555;">비밀번호 찾기</a>
 													</div>
 													<div class="col-12 mt-2">
 														<a href="#!" class="btn btn-block btn-primary">Log In</a>
 													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="card">
-										<div class="card-header" id="headingTwo">
-											<h2 class="mb-0">
-												<button class="btn btn-link collapsed" type="button"
-													data-toggle="collapse" data-target="#collapseTwo"
-													aria-expanded="false" aria-controls="collapseTwo">
-													Create Account
-												</button>
-											</h2>
-										</div>
-										<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-											data-parent="#accordionExample">
-											<div class="card-body">
-												<div class="row mt-2">
-													<div class="form-group col-12">
-														<label for="exampleInputEmail2">Email address</label>
-														<input type="email" class="form-control"
-															id="exampleInputEmail2">
-													</div>
-													<div class="form-group col-12 mt-1">
-														<label for="exampleInputPassword3">Password</label>
-														<input type="password" class="form-control"
-															id="exampleInputPassword3">
-													</div>
-													<div class="form-group col-12 mt-1">
-														<label for="exampleInputPassword4">Repeat Password</label>
-														<input type="password" class="form-control"
-															id="exampleInputPassword4">
-													</div>
 													<div class="col-12 mt-2">
-														<a href="#!" class="btn btn-block btn-primary">Register</a>
+														<a href="#!" class="btn btn-block btn-primary" style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;  ">계정 생성</a>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
+									
 								</div>
 							</div>
 						</div>

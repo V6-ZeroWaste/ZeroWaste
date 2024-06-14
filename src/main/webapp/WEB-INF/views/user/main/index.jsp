@@ -9,7 +9,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
         <link rel="stylesheet" href="/user/css/vendor.css" />
         <link rel="stylesheet" href="/user/css/style.css" />
-        <link rel="stylesheet" href="/user/css/login-popup.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <title>soaff</title>
       </head>
@@ -18,41 +17,7 @@
 
 
         <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
-          <!-- 로그인 팝업 -->
-          <div id="loginPopup" class="card active">
-            <div class="card-header" id="headingOne">
-              <h2 class="mb-0">
-                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
-                  aria-expanded="true" aria-controls="collapseOne">
-                  Log In
-                </button>
-              </h2>
-            </div>
 
-            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-              <div class="card-body">
-                <div class="row mt-2">
-                  <div class="form-group col-12">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1">
-                  </div>
-                  <div class="form-group col-12 mt-1">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
-                  </div>
-                  <div class="col-12 mt-1">
-                    <div class="custom-control custom-switch mb-2">
-                      <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                      <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
-                    </div>
-                  </div>
-                  <div class="col-12 mt-2">
-                    <a href="#!" class="btn btn-block btn-primary">Log In</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           <!-- hero -->
           <div class="swiper-container">
