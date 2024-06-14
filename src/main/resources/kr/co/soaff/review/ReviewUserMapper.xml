@@ -75,5 +75,15 @@
         DELETE FROM review
         WHERE review_no = #{review_no};
     </delete>
+    
+    <update id="update" parameterType="kr.co.soaff.review.ReviewVO">
+		UPDATE review
+		SET
+		title = #{title},
+		content = #{content}
+		WHERE
+		review_no = #{review_no};
+	</update>
+    
 
 </mapper>
