@@ -104,7 +104,8 @@
 			order_detail.price,
 			order_detail.cancel_status,
 			order_detail.amount,
-			confirm_date			
+			confirm_date,
+			cancel_approve_date		
 		FROM order_detail 
 		JOIN item ON order_detail.item_no = item.item_no
 		WHERE order_detail.order_no = #{order_no};
