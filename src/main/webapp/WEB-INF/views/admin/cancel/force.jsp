@@ -41,7 +41,7 @@
 					<div class="title">
 						<h1 class="mt-4">주문 취소</h1>
 						<button class="btn btn-primary my-3 returnButton"
-							onclick="window.location.href='/admin/order/list'">돌아가기</button>
+							onclick="window.location.href='/admin/order/detail?order_no=' + order_no + '&id=' + id">돌아가기</button>
 					</div>
 					<div class="card mb-4"">
 						<div class="card-header">

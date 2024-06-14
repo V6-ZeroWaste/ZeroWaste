@@ -143,5 +143,5 @@ public class CancelAdminController {
 		model.addAttribute("forceDetail", forceDetail.get("forceDetail"));
 		return "admin/cancel/force"; // JSP 파일 이름
 	}
-	//asdasdasdasdasd
+	
 }

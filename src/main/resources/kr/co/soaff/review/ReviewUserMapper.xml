@@ -69,7 +69,7 @@
 		VALUES (
 		#{review_no},
 		#{user_no},
-		#{user_id),
+		#{user_id},
 		#{item_no},
 		#{item_name},
 		#{title},
