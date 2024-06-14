@@ -16,11 +16,11 @@
 	
 	<sql id="orderBySql">
 		<choose>
-	        <when test="orderBy == '등록일자순'">
-	            ORDER BY i.item_regist_date ASC
+	        <when test="orderBy == '오래된순'">
+	            ORDER BY i.item_no ASC
 	        </when>
-	        <when test="orderBy == '등록일자역순'">
-	            ORDER BY i.item_regist_date DESC
+	        <when test="orderBy == '최신순'">
+	            ORDER BY i.item_no DESC
 	        </when>
 	        <when test="orderBy == '재고량많은순'">
 	            ORDER BY i.amount DESC
@@ -45,8 +45,9 @@
 	    SELECT i.*, IFNULL(od.sales_amount, 0) AS sales_amount, c.name AS category_name
 	    FROM item i
 	    LEFT JOIN (
-	        SELECT item_no, COUNT(*) AS sales_amount
+	        SELECT item_no, sum(amount) AS sales_amount
 	        FROM order_detail
+	        WHERE cancel_status is null
 	        GROUP BY item_no
 	    ) od ON i.item_no = od.item_no
 	    LEFT JOIN category c ON i.category_no = c.category_no
