@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/admin/statistics")
+@RequestMapping("/admin/statistics/sales")
 public class SalesController {
 	@Autowired
 	private SalesService service;
 
-	@GetMapping("/sales")
+	@GetMapping("/index")
 	public String list(Model model, HttpServletRequest request, SalesVO vo) {
 		model.addAttribute("map", service.list(vo));
 		model.addAttribute("vo", vo);
 		return "/admin/statistics/sales";
 	}
 
-	@GetMapping("/sales/getList")
+	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(SalesVO vo, Model model) {
 		Map<String, Object> map = service.list(vo);
