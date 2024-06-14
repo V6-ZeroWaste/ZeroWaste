@@ -27,12 +27,27 @@
         }
 
         .review-title,
+        .reply-status,
+        .reply-type,
+        .reply-title,
         .user-id,
         .date {
             font-size: 14px; /* 텍스트 크기 조정 */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        .reply-status-line,
+        .reply-type-line,
+        .reply-title-line,
+        .user-id-line,
+        .date-line{
+            font-size: 14px; /* 텍스트 크기 조정 */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 15px;
         }
 
         .rating,
@@ -45,30 +60,48 @@
         .photo-status {
             margin-left: 5px; /* 별점과 사진 상태 사이의 간격 조정 */
         }
+
+        .content-box{
+            /*padding: 50px;*/
+            margin: 50px;
+        }
+        .user-id{
+            padding: 0 30px;
+        }
+        .date{
+            padding: 0 25px;
+        }
     </style>
 
     <title>soaff</title>
     <script>
-        function activateTab(tabName) {
-        // 모든 버튼의 active-border 클래스 제거
-        document.getElementById('detailBtn').classList.remove('active-border');
-        document.getElementById('reviewBtn').classList.remove('active-border');
-        document.getElementById('qnaBtn').classList.remove('active-border');
+        function scrollToSection(sectionId) {
+            // 모든 버튼의 active-border 클래스 제거
+            document.getElementById('detailBtn').classList.remove('active-border');
+            document.getElementById('reviewBtn').classList.remove('active-border');
+            document.getElementById('qnaBtn').classList.remove('active-border');
+            // 클릭된 버튼에 active-border 클래스 추가
 
-        // 클릭된 버튼에 active-border 클래스 추가
-        if (tabName === 'detail') {
+            document.getElementById(sectionId + 'Btn').classList.add('active-border');
+            document.getElementById(sectionId + 'Section').scrollIntoView({ behavior: 'smooth' });
+
+
+            setTimeout(function (){
+                document.getElementById('qnaBtn').classList.remove('active-border');
+                document.getElementById(sectionId + 'Btn').classList.add('active-border');
+                document.getElementById(sectionId + 'Section').scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        }
+
+        // 기본적으로 첫 번째 버튼에 active-border 클래스 추가
+        document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('detailBtn').classList.add('active-border');
-        } else if (tabName === 'review') {
-            document.getElementById('reviewBtn').classList.add('active-border');
-        } else if (tabName === 'qna') {
-            document.getElementById('qnaBtn').classList.add('active-border');
-        }
-
-            // 원하는 데이터를 로드하는 함수 호출
-        }
-
-            // 기본적으로 첫 번째 탭에 active-border 클래스 추가
-        document.getElementById('detailBtn').classList.add('active-border');
+        });
+        /*
+        먼저, 각 섹션을 관찰하기 위한 IntersectionObserver를 설정합니다.
+        각 섹션이 뷰포트에 들어오면 해당 버튼에 active-border 클래스를 추가하고, 다른 버튼에서 제거합니다.
+        추가하기 !!
+        * */
 
         function increaseValue(){
 
@@ -79,7 +112,6 @@
         }
     </script>
 
-    </script>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
 <body>
@@ -87,7 +119,7 @@
 <br>
 <br>
 <br>
-<!-- product -->
+<!-- 상품 영역 -->
 <section class="hero bg-light pt-5">
     <div class="container">
         <div class="row gutter-2 gutter-md-4 justify-content-between">
@@ -188,63 +220,101 @@
         <div class="container">
             <div class="row gutter-2 gutter-lg-4 border-bottom">
                 <div class="col-md-4 d-flex justify-content-center align-items-center text-center ">
-                    <button id="detailBtn" class="btn btn-link text-dark" onclick="activateTab('detail')">Detail</button>
+                    <button id="detailBtn" class="btn btn-link text-dark" onclick="scrollToSection('detail'); ">Detail</button>
                 </div>
                 <div class="col-md-4 d-flex justify-content-center align-items-center text-center ">
-                    <button id="reviewBtn" class="btn btn-link text-dark" onclick="activateTab('review')">Review</button>
+                    <button id="reviewBtn" class="btn btn-link text-dark" onclick="scrollToSection('review')">Review</button>
                 </div>
                 <div class="col-md-4 d-flex justify-content-center align-items-center text-center">
-                    <button id="qnaBtn" class="btn btn-link text-dark" onclick="activateTab('qna')">Q&A</button>
+                    <button id="qnaBtn" class="btn btn-link text-dark" onclick="scrollToSection('qna')">Q&A</button>
                 </div>
             </div>
         </div>
     </section>
 
-
-    <section class="separator item-detail">
+    <!-- 상품 상세 영역 -->
+    <section class="separator item-detail" id="detailSection">
         <div class="container">
             <div class="row gutter-2 gutter-lg-4">
                 <div class="col-md-12 d-flex justify-content-center align-items-center text-center">
-                    123 123 123 123 123
-                    123 123 123 123 123
-                    123 123 123 123 123
-                    123 123 123 123 123
-                    123 123 123 123 123
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    제품 상세 긁어오기 넓이
+<%--                    <div></div>80~90% 마진 auto--%>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="separator item-review ">
+    <!-- 리뷰 영역 -->
+    <section class="separator item-review" id="reviewSection">
         <div class="container border-top">
             <br>
             <br>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div>평점(6,404 개)</div>
+                <div>후기(6,404 개)</div>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
                 <h2><b>4.3</b> / 5</h2>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
+                <div class="col-md-8">
+                </div>
+                <div class="col-md-3 d-flex align-items-center justify-content-end">
+                    <input type="checkbox" value="photo-review-check" class="form-control-sm">
+                    <label class="mb-0 ml-1">포토리뷰만 보기</label>
+                </div>
+                <div class="col-1">
+                    <select name="orderBy" class="form-control-sm">
+                        <option value="" disabled selected>정렬</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row gutter-2 gutter-lg-4 mb-0">
                 <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
-                    <div class="accordion accordion-minimal" id="accordion-1" style="width: 100%; margin: 0;">
+                    <div class="accordion accordion-minimal" id="review-1" style="width: 100%; margin: 0;">
                         <div class="card">
-                            <div class="card-header" id="heading-1-1">
+                            <div class="card-header" id="review-heading-1">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-1-1" aria-expanded="false" aria-controls="collapse-1-1" style="padding-bottom: 0;">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#review-detail-1" aria-expanded="false" aria-controls="review-detail-1" style="padding-bottom: 0;">
                                         <div class="row w-100 align-items-center">
                                             <div class="col-2">
                                                 <span class="rating">⭐⭐⭐⭐⭐</span>
-                                                <span class="photo-status">🖼️</span>
+                                                <span class="photo-status">🖼️️</span>
                                             </div>
-                                            <div class="col-6">
-                                                <div class="review-title">상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.</div>
+                                            <div class="col-6 review-title" >
+                                                상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.
                                             </div>
-                                            <div class="col-2">
-                                                <span class="user-id">User123</span>
+                                            <div class="col-2 user-id">
+                                                User123
                                             </div>
-                                            <div class="col-2">
-                                                <span class="date">2024-06-13</span>
+                                            <div class="col-2 date">
+                                                2024-06-13
                                             </div>
                                         </div>
                                     </button>
@@ -252,8 +322,8 @@
                             </div>
 
                             <!-- class에서 show의 유무에 따라 열리고 닫힘 -->
-                            <div id="collapse-1-1" class="collapse" aria-labelledby="heading-1-1" data-parent="#accordion-1" style="background: #fafafa ">
-                                <div class="card-body text-left">
+                            <div id="review-detail-1" class="collapse" aria-labelledby="review-heading-1" data-parent="#review-1" style="background: #fafafa;">
+                                <div class="card-body text-left content-box">
                                     <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1685510644/noticon/zlnodb9oj9icejaqiytd.png">
                                     <p>리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글</p>
                                 </div>
@@ -264,24 +334,24 @@
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
                 <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
-                    <div class="accordion accordion-minimal" id="accordion-2" style="width: 100%; margin:0;">
+                    <div class="accordion accordion-minimal" id="review-2" style="width: 100%; margin:0;">
                         <div class="card">
-                            <div class="card-header" id="heading-2-1">
+                            <div class="card-header" id="review-heading-2">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-2-1" aria-expanded="false" aria-controls="collapse-2-1" style="padding-bottom: 0;">
-                                        <div class="row w-100">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#review-detail-2" aria-expanded="false" aria-controls="review-detail-2" style="padding-bottom: 0;">
+                                        <div class="row w-100 align-items-center">
                                             <div class="col-2">
                                                 <span class="rating">⭐⭐⭐⭐⭐</span>
                                                 <span class="photo-status">️</span>
                                             </div>
-                                            <div class="col-6">
-                                                <div class="review-title">상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.</div>
+                                            <div class="col-6 review-title" >
+                                                상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.
                                             </div>
-                                            <div class="col-2">
-                                                <span class="user-id">User123</span>
+                                            <div class="col-2 user-id">
+                                                User123
                                             </div>
-                                            <div class="col-2">
-                                                <span class="date">2024-06-13</span>
+                                            <div class="col-2 date">
+                                                2024-06-13
                                             </div>
                                         </div>
                                     </button>
@@ -289,8 +359,8 @@
                             </div>
 
                             <!-- class에서 show의 유무에 따라 열리고 닫힘 -->
-                            <div id="collapse-2-1" class="collapse" aria-labelledby="heading-2-1" data-parent="#accordion-2" style="background: #fafafa ">
-                                <div class="card-body text-left">
+                            <div id="review-detail-2" class="collapse" aria-labelledby="review-heading-2" data-parent="#review-2" style="background: #fafafa ">
+                                <div class="card-body text-left content-box">
                                      <p>리뷰 상세 text 글</p>
                                 </div>
                             </div>
@@ -311,15 +381,142 @@
         </div>
     </section>
 
-    <section class="separator item-qna">
+    <!-- QnA 영역 -->
+    <section class="separator item-qna" id="qnaSection">
         <div class="container border-top">
-            <div class="row gutter-2 gutter-lg-4">
-                <div class="col-md-12 d-flex justify-content-center align-items-center text-center">
-                    123 123 123 123 123
-                    123 123 123 123 123
-                    123 123 123 123 123
-                    123 123 123 123 123
-                    123 123 123 123 123
+            <br>
+            <br>
+            <div class="row gutter-2 gutter-lg-4 mb-0">
+                <div class="col-md-9 text-left">
+                    상품 문의(6,404 개)
+                </div>
+                <div class="col-md-3 d-flex align-items-center justify-content-end">
+                    <input type="button" value="문의하기" class="btn btn-primary btn-sm">
+                </div>
+            </div>
+<%--            <div class="row gutter-2 gutter-lg-4 mb-0 w-100" style="font-size: 14px;">--%>
+            <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center border-bottom" style="font-size: 14px;">
+                <div class="col-md-1 reply-status-line">
+                    답변상태
+                </div>
+                <div class="col-md-2 reply-type-line text-left">
+                    질문유형
+                </div>
+                <div class="col-md-5 reply-title-line">
+                    제목
+                </div>
+                <div class="col-md-2 user-id-line text-left">
+                    작성자
+                </div>
+                <div class="col-md-2 date-line text-left">
+                    작성일
+                </div>
+            </div>
+            <br>
+            <div class="row gutter-2 gutter-lg-4 mb-0">
+                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
+                    <div class="accordion accordion-minimal" id="qna-1" style="width: 100%; margin: 0;"> <!-- accordion-1 -> qna-1 -->
+                        <!-- -->
+                        <div class="card">                  <!-- heading-1-1 -> qna-heading-1 -->
+                            <div class="card-header" id="qna-heading-1">
+                                <!-- -->
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#qna-detail-1" aria-expanded="false" aria-controls="qna-detail-1" style="padding-bottom: 0;">
+                                        <!-- -->
+                                        <div class="row w-100 align-items-center">
+                                            <div class="col-1 reply-status">
+                                                답변 대기
+                                            </div>
+                                            <div class="col-2 reply-type">
+                                                상품 상세 문의
+                                            </div>
+                                            <div class="col-5 reply-title">
+                                                상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다
+                                            </div>
+                                            <div class="col-2 user-id" style="padding: 0 30px;">
+                                                User123
+                                            </div>
+                                            <div class="col-2 date" style="padding: 0 25px;">
+                                                2024-06-13
+                                            </div>
+                                        </div>
+                                    </button>
+                                </h5>
+                            </div>
+
+                            <!-- class에서 show의 유무에 따라 열리고 닫힘 -->
+                            <!-- collapse-1-1 -> qna-detail-1 -->
+                            <div id="qna-detail-1" class="collapse" aria-labelledby="qna-heading-1" data-parent="#qna-1" style="background: #fafafa ">
+                                <div class="card-body text-left content-box"> <!-- container 만져보기 -->
+                                    <h4>Q</h4>
+                                    <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1685510644/noticon/zlnodb9oj9icejaqiytd.png">
+                                    <p> 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
+                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
+                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row gutter-2 gutter-lg-4 mb-0">
+                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
+                    <div class="accordion accordion-minimal" id="qna-2" style="width: 100%; margin:0;">
+                        <div class="card">
+                            <div class="card-header" id="qna-heading-2">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#qna-detail-2" aria-expanded="false" aria-controls="qna-detail-2" style="padding-bottom: 0;">
+                                        <div class="row w-100 align-items-center">
+                                            <div class="col-1 reply-status">
+                                                답변 완료
+                                            </div>
+                                            <div class="col-2 reply-type">
+                                                교환/환불 문의
+                                            </div>
+                                            <div class="col-5 reply-title">
+                                                상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다
+                                            </div>
+                                            <div class="col-2 user-id">
+                                                User123
+                                            </div>
+                                            <div class="col-2 date">
+                                                2024-06-13
+                                            </div>
+                                        </div>
+                                    </button>
+                                </h5>
+                            </div>
+
+                            <!-- class에서 show의 유무에 따라 열리고 닫힘 -->
+                            <div id="qna-detail-2" class="collapse" aria-labelledby="qna-heading-2" data-parent="#qna-2" style="background: #fafafa ">
+                                <div class="card-body text-left content-box">
+                                    <h4>Q</h4>
+                                    <p> 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
+                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
+                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
+                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t </p>
+                                </div>
+                                <div class="card-body text-left content-box border-top">
+                                    <br>
+                                    <h4>A</h4>
+                                    <p> 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t
+                                        문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t
+                                        문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t
+                                        문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <!-- 페이지 네이션 영역 -->
+                    <nav class="item-pagination">
+                        <ul class="item-pagination-list">
+                            <li>1</li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
