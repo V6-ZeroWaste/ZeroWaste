@@ -94,7 +94,7 @@ function goToList() {
 				<div class="container-fluid px-4">
 					<div class="title">
 						<h1 class="mt-4">취소 상세</h1>
-						<button class="btn btn-dark my-3 returnButton"
+						<button class="btn btn-primary my-3 returnButton"
 							onclick="window.location.href='/admin/cancel/list'">돌아가기</button>
 					</div>
 					<div class="card mb-4">
