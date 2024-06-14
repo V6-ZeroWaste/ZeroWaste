@@ -24,57 +24,10 @@
 	crossorigin="anonymous"></script>
 <script src="${pageContext.request.contextPath}/admin/js/scripts.js"></script>
 <style>
-.forceDetailPage {
-	width: 100%;
-	margin: auto;
-	margin-top: 30px;
-}
-
-.cancelStatus {
-	border: 1px solid #ddd;
-	padding: 20px;
-	margin-top: 20px;
-}
-
-.cancelStatus h2 {
-	margin-bottom: 20px;
-}
-
-.cancelStatus p {
-	margin-top: 30px;
-}
-
-.actionButtons {
-	margin-top: 20px;
-	text-align: center;
-}
-
-.actionButtons button {
-	width: 100px;
-	margin: 0 10px;
-}
-
-.cancelReasonOptions {
+.title {
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 20px;
-}
-
-.cancelReasonOptions label {
-	border: 2px solid #b3b3b3;
-	text-align: left;
-	padding: 10px;
-	    border-radius: 7px
-}
-
-.cancelReasonOptions input {
-	margin-right: 5px;
-}
-
-.returnButton {
-	position: absolute;
-	right: 20px;
-	top: 20px;
 }
 </style>
 </head>
@@ -84,65 +37,89 @@
 		<%@ include file="/WEB-INF/views/admin/include/sidenav.jsp"%>
 		<div id="layoutSidenav_content">
 			<main>
-				<div class="forceDetailPage">
-					<h1>
-						<b>주문 취소
-							<button class="btn btn-dark my-3 returnButton"
-								onclick="history.back()">돌아가기</button>
-					</h1>
-					<div class="cancelStatus">
-						<p>
-							<b>${forceDetail.item_name}</b>에 대한 주문을 취소하시겠습니까?
-						</p>
-						<div class="cancelReasonOptions">
-							<label><b> <input type="radio" name="cancel_reason"
-									value="1" checked disabled> 제품 불량 </label>
-						</div>
-						<div>
-							<input type="text" id="cancel_reason_detail"
-								placeholder="상세 사유 입력 (선택사항)"
-								style="width: 100%; background-color: #f0f0f0; border: 1px solid #ddd;">
-						</div>
-
-						<h3 style="margin-top: 30px;">
-							<b>최종 결제 정보
-						</h3>
-						<p>
-							<b>총 주문 금액: ${forceDetail.total_price}원
-						</p>
-						<p>
-							<b>적립금 사용: ${forceDetail.point}원
-						</p>
-						<p>
-							<b>배송비 : ${forceDetail.delivery_price}원
-						</p>
-						<p>
-							<b>최종 결제금액: ${forceDetail.payment_price}원
-						</p>
-
-						<h3 style="margin-top: 80px;">
-							<b>환불정보 확인
-						</h3>
-						<p>
-							<b>환불수단: ${forceDetail.payment_method}
-						</p>
-						<p>
-							<b>환불금액: ${forceDetail.refund_price}원
-						</p>
-						<p>
-							<b>환불 적립금: ${forceDetail.refund_point}원
-						</p>
+				<div class="container-fluid px-4">
+					<div class="title">
+						<h1 class="mt-4">주문 취소</h1>
+						<button class="btn btn-primary my-3 returnButton"
+							onclick="window.location.href='/admin/order/list'">돌아가기</button>
 					</div>
-					<div class="actionButtons">
-						<button id="forceCancelBtn" class="btn btn-primary"
-							onclick="confirmForceCancel(${forceDetail.order_detail_no})">취소
-							신청</button>
-						
+					<div class="card mb-4"">
+						<div class="card-header">
+							<h4 class="mt-4">
+								<b>${forceDetail.item_name}</b>에 대한 주문을 취소하시겠습니까?
+							</h4>
+						</div>
+						<div class="card-body">
+							<div class="datatable-container">
+								<p>
+									<b>주문번호: ${forceDetail.order_no}
+								</p>
+								<p>
+									<b>주문상세번호: ${forceDetail.order_detail_no }
+								</p>
+								<label class="btn btn-primary"><input type="radio"
+									name="cancel_reason" value="1" checked disabled> 제품 불량
+								</label>
+
+								<div>
+									<input type="text" id="cancel_reason_detail"
+										placeholder="상세 사유 입력 (선택사항)"
+										style="width: 100%; margin-top: 10px; background-color: #f0f0f0; border: 1px solid #ddd;">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card mb-4">
+						<div class="card-header">
+							<h4 class="mt-4">최종 결제 정보</h4>
+						</div>
+						<div class="card-body">
+							<div class="datatable-container">
+								<p>
+									<b>총 주문 금액: ${forceDetail.total_price}원 
+								</p>
+								<p>
+									<b>적립금 사용: ${forceDetail.point}원 
+								</p>
+								<p>
+									<b>배송비 : ${forceDetail.delivery_price}원 
+								</p>
+								<p>
+									<b>최종 결제금액: ${forceDetail.payment_price}원 
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<h4 class="mt-4">환불정보 확인</h4>
+						</div>
+						<div class="card-body">
+							<div class="datatable-container">
+								<p>
+									<b>환불수단: ${forceDetail.payment_method} 
+								</p>
+								<p>
+									<b>환불금액: ${forceDetail.refund_price}원 
+								</p>
+								<p>
+									<b>환불 적립금: ${forceDetail.refund_point}원 
+								</p>
+							</div>
+						</div>
 					</div>
 				</div>
-			</main>
-			<%@ include file="/WEB-INF/views/admin/include/footer.jsp"%>
+				<div class="list-group-item d-flex justify-content-center">
+					<button id="forceCancelBtn" class="btn btn-primary"
+						onclick="confirmForceCancel(${forceDetail.order_detail_no})">취소
+						신청</button>
+
+				</div>
 		</div>
+		</main>
+		<%@ include file="/WEB-INF/views/admin/include/footer.jsp"%>
+	</div>
 	</div>
 	<script>
 function confirmForceCancel(order_detail_no) {
