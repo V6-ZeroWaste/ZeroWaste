@@ -103,6 +103,11 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                 });
             }
         }
+
+
+		function goBack(){
+			location.href = "list";
+		}
     </script>
 
     <script>
@@ -126,7 +131,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
         <main>
         <div class="container-fluid px-4">
         	<div class="container-fluid px-4 d-flex justify-content-end">
-            <button class="btn btn-primary my-3" onclick="history.back()">돌아가기</button>
+            <button class="btn btn-primary my-3" onclick="goBack()">돌아가기</button>
             </div>
             <div class="card mb-4">
             	<div class="list-group">
@@ -210,7 +215,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                 			<div class="col-md-1 text-center">
                 				<b>상품설명</b>
                 			</div>
-                			<div class="col-md-2">
+                			<div class="col-md-6">
                 				<input type="text" class="form-control" name="description" value="${item.description}">
                 			</div>
                     	</div>
@@ -313,7 +318,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
             </div>
            	</div>
         </main>
-        <%@ include file="/WEB-INF/views/admin//include/footer.jsp" %>
+        <%@ include file="/WEB-INF/views/admin/include/footer.jsp" %>
     </div>
 </div>
 
