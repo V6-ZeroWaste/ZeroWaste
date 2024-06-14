@@ -55,15 +55,18 @@
 }
 
 .cancelReasonOptions {
-	display: flex;
 	align-items: center;
 	margin-bottom: 20px;
+
 }
 
 .cancelReasonOptions label {
-	border: 1px solid black;
+	    border: 2px solid #b3b3b3;
 	text-align: left;
-	padding: 5px;
+	padding: 10px;
+	margin-right: 15px;
+	border-radius: 7px;
+	
 }
 
 .cancelReasonOptions input {
@@ -102,11 +105,11 @@
 						<div class="cancelReasonOptions">
 							<label><b> <input type="radio" name="cancel_reason"
 									value="1"
-									<c:if test="${cancelDetail.cancel_reason_type == 1}">checked disabled</c:if>>
-									배송 지연 </label> <label> <input type="radio" name="cancel_reason"
+									<c:if test="${cancelDetail.cancel_reason_type == 1}">checked disabled</c:if>>배송
+									지연 </label> <label> <input type="radio" name="cancel_reason"
 								value="2"
-								<c:if test="${cancelDetail.cancel_reason_type == 2}">checked disabled</c:if>>
-								제품 불량
+								<c:if test="${cancelDetail.cancel_reason_type == 2}">checked disabled</c:if>>제품
+								불량
 							</label> <label> <input type="radio" name="cancel_reason"
 								value="3"
 								<c:if test="${cancelDetail.cancel_reason_type == 3}">checked disabled</c:if>>

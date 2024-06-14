@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface QnaAdminMapper {
 	List<QnaVO> list(QnaVO vo);
 
-	QnaVO detail(QnaVO vo);
+	QnaVO detail(int qna_no);
 
 	int deleteContent(int qna_no);
 

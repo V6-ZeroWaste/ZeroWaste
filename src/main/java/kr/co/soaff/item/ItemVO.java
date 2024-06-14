@@ -20,6 +20,7 @@ public class ItemVO {
 	private boolean packable_option;
 	private int packing_price;
 	private Timestamp item_regist_date;
+	private int category_no;
 
 	// 검색 키워드
 	public String searchWord;
