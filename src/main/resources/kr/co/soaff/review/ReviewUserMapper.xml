@@ -35,7 +35,8 @@
 		FROM
 		review
 		JOIN item ON review.item_no = item.item_no
-		JOIN user ON review.user_no = user.user_no
+		JOIN user ON
+		review.user_no = user.user_no
 		<include refid="calendar" />
 		<include refid="orderBySql" />
 		LIMIT #{startIdx}, 20
@@ -52,38 +53,71 @@
 		<include refid="calendar" />
 	</select>
 
+	<insert id="post" parameterType="kr.co.soaff.review.ReviewVO">
+		INSERT INTO review (
+		review_no,
+		user_no,
+		user_id,
+		item_no,
+		item_name,
+		title,
+		content,
+		score,
+		review_img,
+		regist_date
+		)
+		VALUES (
+		#{review_no},
+		#{user_no},
+		#{user_id),
+		#{item_no},
+		#{item_name},
+		#{title},
+		#{content},
+		#{score},
+		#{review_img},
+		CURRENT_TIMESTAMP
+		)
+	</insert>
+
 	<!-- 리뷰 상세 조회 -->
 	<select id="detail" parameterType="kr.co.soaff.review.ReviewVO"
 		resultType="kr.co.soaff.review.ReviewVO">
 		SELECT
-		review.review_no, 
+		review.review_no,
 		review.review_img,
-		review.title, 
+		review.title,
 		review.content,
 		review.score,
-		review.regist_date, 
-		item.name as item_name, 
+		review.regist_date,
+		item.name as item_name,
 		user.id as user_id
 		FROM
-		review JOIN item ON review.item_no = item.item_no
-		JOIN user ON review.user_no = user.user_no
-		WHERE review.review_no = #{review_no}
+		review JOIN item ON review.item_no =
+		item.item_no
+		JOIN
+		user ON review.user_no = user.user_no
+		WHERE
+		review.review_no =
+		#{review_no}
 	</select>
-	
+
 	<!-- 리뷰 삭제 -->
-	 <delete id="delete" parameterType="int">
-        DELETE FROM review
-        WHERE review_no = #{review_no};
-    </delete>
-    
-    <update id="update" parameterType="kr.co.soaff.review.ReviewVO">
+	<delete id="delete" parameterType="int">
+		DELETE FROM review
+		WHERE
+		review_no = #{review_no};
+	</delete>
+
+	<update id="update" parameterType="kr.co.soaff.review.ReviewVO">
 		UPDATE review
 		SET
-		title = #{title},
+		title =
+		#{title},
 		content = #{content}
 		WHERE
 		review_no = #{review_no};
 	</update>
-    
+
 
 </mapper>
