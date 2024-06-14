@@ -21,7 +21,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script type="text/javascript">
         let page = 1;
-        let filter = ${orderVO.filter};
+        let filter = "${orderVO.filter}";
         window.onload=function(){
         	if (filter) {
         		getList();
@@ -132,12 +132,9 @@
 													<label>
 														<select id="filter" name="filter" class="datatable-selector" onchange="applyCondition();">
 															<option value="" <c:if test="${empty orderVO.filter}">selected</c:if>>전체보기</option>
-															<option value="0" <c:if test="${orderVO.filter}== 0">selected</c:if>>취소 완료</option>
-															<option value="1" <c:if test="${orderVO.filter}== 1">selected</c:if>>취소 요청</option>
 															<option value="2" <c:if test="${orderVO.filter}== 2">selected</c:if>>상품준비중</option>
 															<option value="3" <c:if test="${orderVO.filter}== 3">selected</c:if>>배송중</option>
 															<option value="4" <c:if test="${orderVO.filter}== 4">selected</c:if>>배송완료</option>
-															<option value="5" <c:if test="${orderVO.filter}== 5">selected</c:if>>구매확정</option>
 														</select>
 													</label>
 												</div>
