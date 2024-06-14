@@ -68,6 +68,11 @@ public class ReviewUserServiceImpl implements ReviewUserService {
 		return mapper.delete(review_no);
 	}
 	
+	 @Override
+	    public int post(ReviewVO vo) {
+	        return mapper.post(vo);
+	    }
+	
 
 
 }
