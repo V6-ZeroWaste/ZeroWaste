@@ -12,9 +12,6 @@
 
     <title>Review Detail</title>
     <style>
-		.search-filter>div{
-			margin:10px 0px 10px 0px;
-		}
 		.review-info{
 			position: relative;
 		    padding-left: 1.25rem;
@@ -27,8 +24,8 @@
 		th{
 			width: 120px;
 		}
-		img{
-			max-width: 50%;
+		.review-img{
+			max-width: 70%;
 		}
     	
     </style>
@@ -54,10 +51,10 @@
    		<!-- /title -->
    		
 	   	
-	   		<!-- review info card -->
+	   		<!-- item info card -->
 	   		<div class="col-12">
               <div class="order">
-                <div class="row align-items-center">
+                <div class="row align-items-center" style="height:100px">
                   <div class="col-lg-2 order-preview justify-content-center">
                   	<!-- 상품이미지 -->
                   	<a href="product-1.html" title="Fawn Wool / Natural Mammoth Chair" data-toggle="tooltip" data-placement="top">
@@ -68,14 +65,10 @@
                     <h3 class="order-number">Item name</h3>
                   </div>
                   <div class="col-lg-4">
-                    <span class="review-info">2023-11-11 12:00:12</span>
-                    <br>
-                    <span class="review-info">review title</span>
-                    <br>
-                    <span class="review-info">⭐️⭐️⭐️⭐️</span>
                   </div>
                   <div class="col-lg-2">
-                    <a href="#!" class="action eyebrow underline">Modify</a>
+                  	<!-- 상품 바로가기 링크 -->
+                    <a href="#!" class="action eyebrow underline">View Item</a>
                   </div>
                 </div>
               </div>
@@ -87,13 +80,20 @@
          		<div  style="border: 1px solid #dddddd;">
                     <table class="table table-borderless">
                       <tbody>
+                      	<tr>
+                          <th scope="row">Date</th>
+                          <td>2023-11-11 00:12:45 </td>
+                          <td style="text-align: right">
+                          	⭐️⭐️⭐️⭐️⭐️
+                          </td>
+                        </tr>
                         <tr>
                           <th scope="row">Title</th>
-                          <td>review title 아무거나 대충 </td>
+                          <td colspan="2">review title 아무거나 대충 </td>
                         </tr>
                         <tr>
                           <th>Content</th>
-                          <td>
+                          <td colspan="2">
                           	<div>
                           		여기는 그냥 리뷰 내용영역이다<br>
                           		adlkfjalksdjflakjsdfklajsl
@@ -102,18 +102,21 @@
                         </tr>
                         <tr>
                           <th>Image</th>
-                          <td>
-                          	<img src="https://cdn.imweb.me/thumbnail/20230824/20e7077f9429c.png"></img>
+                          <td colspan="2">
+                          	<img class="review-img" src="https://cdn.imweb.me/thumbnail/20230824/20e7077f9429c.png"></img>
                           </td>
                         </tr>
                       </tbody>
                     </table>
             	</div>
          	</div>
-         
-         
-         
-  
+         	<div class="col-12" style="text-align: center">
+         		<button class="btn btn-primary">수정</button>
+         		<button class="btn btn-danger">삭제</button>
+         	</div>
+         	
+         	
+         	
 				</div>
 				<!-- /content -->
 			</div>
