@@ -30,6 +30,51 @@
 	align-items: center;
 }
 </style>
+<script>
+function redirectToDetail() {
+    var orderNo = document.querySelector('input[name="order_no"]').value;
+    var userId = document.querySelector('input[name="user_id"]').value;
+    window.location.href = '/admin/order/detail?order_no=' + orderNo + '&id=' + userId;
+}
+function confirmForceCancel(order_detail_no) {
+    const reasonDetail = $('#cancel_reason_detail').val();
+    if (confirm("정말 주문을 강제 취소하시겠습니까?")) {
+        updateCancelStatus(order_detail_no, reasonDetail);
+    }
+}
+
+function updateCancelStatus(order_detail_no, reasonDetail) {
+    const url = "${pageContext.request.contextPath}/admin/cancel/force/" + order_detail_no;
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            cancel_reason_type: 1,
+            cancel_reason_detail: reasonDetail
+        },
+        success: function(resp) {
+            if (resp.status === "success") {
+                alert(resp.message);
+                if (resp.message === "강제 취소 완료.") {
+                    $('#cancelStatus').text('강제 취소 완료');
+                }
+                $('#forceCancelBtn').remove();
+                $('.actionButtons').append('<button id="confirmBtn" class="btn btn-primary" onclick="goToList()">확인</button>');
+            } else {
+                alert('관리자에게 문의하세요.');
+            }
+        },
+        error: function() {
+            alert('관리자에게 문의하세요.');
+        }
+    });
+}
+
+function goToList() {
+    window.location.href = "${pageContext.request.contextPath}/admin/order/detail";
+}
+</script>
+
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/admin/include/header.jsp"%>
@@ -39,9 +84,12 @@
 			<main>
 				<div class="container-fluid px-4">
 					<div class="title">
-						<h1 class="mt-4">주문 취소</h1>
-						<button class="btn btn-primary my-3 returnButton"
-							onclick="window.location.href='/admin/order/detail?order_no=' + order_no + '&id=' + id">돌아가기</button>
+						<h1 class="mt-4">강제 취소</h1>
+						<input type="hidden" name="order_no" value="${forceDetail.order_no}">
+<input type="hidden" name="user_id" value="${forceDetail.user_id}">
+<button class="btn btn-primary my-3 returnButton" onclick="redirectToDetail()">돌아가기</button>
+						
+
 					</div>
 					<div class="card mb-4"">
 						<div class="card-header">
@@ -52,10 +100,10 @@
 						<div class="card-body">
 							<div class="datatable-container">
 								<p>
-									<b>주문번호: ${forceDetail.order_no}
+									<b>주문번호: ${forceDetail.order_no} 
 								</p>
 								<p>
-									<b>주문상세번호: ${forceDetail.order_detail_no }
+									<b>주문상세번호: ${forceDetail.order_detail_no } 
 								</p>
 								<label class="btn btn-primary"><input type="radio"
 									name="cancel_reason" value="1" checked disabled> 제품 불량
@@ -116,49 +164,11 @@
 						신청</button>
 
 				</div>
-		</div>
 		</main>
+		
 		<%@ include file="/WEB-INF/views/admin/include/footer.jsp"%>
 	</div>
 	</div>
-	<script>
-function confirmForceCancel(order_detail_no) {
-    const reasonDetail = $('#cancel_reason_detail').val();
-    if (confirm("정말 주문을 강제 취소하시겠습니까?")) {
-        updateCancelStatus(order_detail_no, reasonDetail);
-    }
-}
 
-function updateCancelStatus(order_detail_no, reasonDetail) {
-    const url = "${pageContext.request.contextPath}/admin/cancel/force/" + order_detail_no;
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: {
-            cancel_reason_type: 1,
-            cancel_reason_detail: reasonDetail
-        },
-        success: function(resp) {
-            if (resp.status === "success") {
-                alert(resp.message);
-                if (resp.message === "강제 취소 완료.") {
-                    $('#cancelStatus').text('강제 취소 완료');
-                }
-                $('#forceCancelBtn').remove();
-                $('.actionButtons').append('<button id="confirmBtn" class="btn btn-primary" onclick="goToList()">확인</button>');
-            } else {
-                alert('관리자에게 문의하세요.');
-            }
-        },
-        error: function() {
-            alert('관리자에게 문의하세요.');
-        }
-    });
-}
-
-function goToList() {
-    window.location.href = "${pageContext.request.contextPath}/admin/order/detail";
-}
-</script>
 </body>
 </html>

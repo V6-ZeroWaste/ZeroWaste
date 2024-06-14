@@ -16,5 +16,6 @@ public class CancelAdminOrderVO {
 	private int payment_price;
 	private String payment_method;
 	private int delivery_price;
+	private String user_id;
 
 }

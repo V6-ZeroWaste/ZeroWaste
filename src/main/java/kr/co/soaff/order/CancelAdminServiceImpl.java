@@ -140,6 +140,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		orderDetail.setPayment_price(order.getPayment_price());
 		orderDetail.setPoint(order.getPoint());
 		orderDetail.setUser_no(order.getUser_no());
+		orderDetail.setUser_id(order.getUser_id());
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("forceDetail", orderDetail);
