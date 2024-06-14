@@ -64,6 +64,11 @@ public class ItemAdminController {
 			printList += "<td class=\"col-item-exposed\">";
 			printList += item.isExposed_status() ? "O" : "X";
 			printList += "</td>";
+
+			printList += "<td class=\"col-item-exposed\">";
+			printList += item.getSales_amount();
+			printList += "</td>";
+
 			printList += "</tr>";
 		}
 

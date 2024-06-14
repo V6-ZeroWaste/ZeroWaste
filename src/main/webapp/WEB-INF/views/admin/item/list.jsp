@@ -42,14 +42,16 @@
 			.col-item-discount,
 			.col-item-category,
 			.col-item-amount,
+			.col-item-salesAmount,
 			.col-item-exposed {
-			    width: 12.85%;
+			    width: 11.25%;
 			}
+
 			.button-container {
-			    display: flex;
-			    justify-content: flex-end;
+				display: flex;
+				justify-content: flex-end;
 			}
-        </style>
+		</style>
         <script>
         
 	        function regist(){
@@ -142,8 +144,8 @@
 								    <div class="col-md-8">
 								        <label>
 								            <select name="orderBy" id="orderBy" class="datatable-selector" onchange="applyCondition();">
-								                <option value="등록일자역순" <c:if test="${param.orderBy == '등록일자역순'}">selected</c:if>>등록일자역순</option>
-								                <option value="등록일자순" <c:if test="${param.orderBy == '등록일자순'}">selected</c:if>>등록일자순</option>
+								                <option value="최신순" <c:if test="${param.orderBy == '최신순'}">selected</c:if>>최신순</option>
+								                <option value="오래된순" <c:if test="${param.orderBy == '오래된순'}">selected</c:if>>오래된순</option>
 								                <option value="재고량많은순" <c:if test="${param.orderBy == '재고량많은순'}">selected</c:if>>재고량많은순</option>
 								                <option value="재고량적은순" <c:if test="${param.orderBy == '재고량적은순'}">selected</c:if>>재고량적은순</option>
 								                <option value="판매수량많은순" <c:if test="${param.orderBy == '판매수량많은순'}">selected</c:if>>판매수량많은순</option>
@@ -174,6 +176,7 @@
 								    	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition();">
 								    </div>
 								</div>
+								<br>
 								
                             	
                             	<!-- 리스트 영역 -->
@@ -189,6 +192,7 @@
 								                <th class="col-item-category">카테고리</th>
 								                <th class="col-item-amount">상품 재고</th>
 								                <th class="col-item-exposed">노출 여부</th>
+								                <th class="col-item-salesAmount">판매 수량</th>
 								            </tr>
 								        </thead>
 								        <tbody id="printList">

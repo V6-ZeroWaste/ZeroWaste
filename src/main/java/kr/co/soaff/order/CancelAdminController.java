@@ -55,6 +55,7 @@ public class CancelAdminController {
 	        String cancelRequestDate = (vo.getCancel_request_date() != null) ? (vo.getCancel_request_date() + "").substring(0, 19) : "";
 	        String cancelApproveDate = (vo.getCancel_approve_date() != null) ? (vo.getCancel_approve_date() + "").substring(0, 19) : "";
 	        
+	        printList +="<td>" +vo.getOrder_detail_no() + "</td>";
 	        printList += "<td>" + vo.getItem_name() + "</td>";
 	        printList += "<td>" + vo.getUser_id() + "</td>";
 	        printList += "<td>" + vo.getAmount() + "</td>";

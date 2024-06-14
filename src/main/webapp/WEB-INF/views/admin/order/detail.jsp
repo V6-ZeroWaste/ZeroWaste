@@ -97,16 +97,18 @@
 	                               <table class="datatable-table">
 	                                   <thead>
 	                                       <tr>
-	                                      	  <th>주문번호</th>
+	                                      	  <th>주문 번호</th>
 	                                          <th>주문 일자</th>
 	                                          <th>유저 id</th>
+	                                          
 	                                       </tr>
 	                                       <tr>
 	                                      	  <td id="order_no">${detailMap.detailFromOrderVO.order_no}</td>
 	                                          <td>
 	                                          <fmt:formatDate value="${detailMap.detailFromOrderVO.payment_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
+	                                          </td>
+	                                          <td onclick="location.href='/admin/user/detail?id=${detailMap.detailFromOrderVO.user_no}'">${orderVO.id}</td>
 	                                          
-	                                          <td>${orderVO.id}</td>
 	                                       </tr>
 	                                   </thead>
 		                        	<tbody id="printList">
@@ -129,18 +131,26 @@
                             		<table class="datatable-table">
 	                                   <thead>
                             			   <tr>
+                            			   	  <th>주문 상세 번호</th>
 	                                      	  <th colspan="2">상품 정보</th>
-	                                          <th>주문 금액(수량)</th>
+	                                          <th>상품별 주문 금액</th>
+	                                          <th>상품별 주문 수량</th>
 	                                          <th>취소 상태</th>
 	                                          <th>취소 상세</th>
+	                                          <th>구매 확정</th>
 	                                       </tr>
 	                                       		<c:forEach var="vo" items="${detailMap.detailFromOrderDetailVO}">
 		                                       		  <tr>
+		                                       		  	  <td>${vo.order_detail_no }</td>
 			                                       		  <td>${vo.item_name} </td>
-			                                       		  <td>${vo.item_img} </td>
-				                                          <td>${vo.price}(${vo.amount}) </td>
+			                                       		  <td><img src="${vo.item_img}" ></img></td>
+				                                          <td>${vo.price*vo.amount}(${vo.amount}) </td>
+				                                          <td>${vo.amount} </td>
 		                                                  <td id="cancel_status">
 												            <c:choose>
+												                <c:when test="${empty vo.cancel_status}">
+												                    
+												                </c:when>
 												                <c:when test="${vo.cancel_status == 0}">
 												                    취소요청
 												                </c:when>
@@ -152,7 +162,30 @@
 												                </c:when>
 												            </c:choose>
 												          </td>
-				                                          <td><a href=#;>취소 상세</a></td>
+				                                          <td>
+					                                          <c:choose>
+													                <c:when test="${empty vo.cancel_status}">
+													                    
+													                </c:when>
+													                <c:when test="${!empty vo.cancel_status}">
+													                    <a href="/admin/cancel/${vo.order_detail_no}">취소 상세</a>
+													                </c:when>
+													                <c:when test="${!empty vo.confirm_date && detailMap.detailFromOrderVO.delivery_status == 2}">
+													                    <a href="/admin/cancel/force/${order_detail_no}">강제 취소</a>
+													                </c:when>
+													            </c:choose>
+				                                          </td>
+				                                          <td>
+					                                          <c:choose>
+													                <c:when test="${empty vo.confirm_date}">
+													                    X
+													                </c:when>
+													                <c:when test="${!empty vo.confirm_date}">
+													                    O
+													                </c:when>
+													            </c:choose>
+				                                          </td>
+				                                          
 	                                       			  </tr>
 	                                       		</c:forEach>
 	                                   </thead>
@@ -195,13 +228,12 @@
 	                                    		<div class="datatable-dropdown">
 													<label>
 											            <select id="delivery_status" name="delivery_status" class="datatable-selector">
-											                <option value="" ${detailMap.detailFromOrderVO.delivery_status == null ? 'selected' : ''}>배송 상태를 설정해주세요</option>
 											                <option value="0" ${detailMap.detailFromOrderVO.delivery_status == '0' ? 'selected' : ''}>상품준비중</option>
 											                <option value="1" ${detailMap.detailFromOrderVO.delivery_status == '1' ? 'selected' : ''}>배송중</option>
 											                <option value="2" ${detailMap.detailFromOrderVO.delivery_status == '2' ? 'selected' : ''}>배송완료</option>
 											            </select>
-													</label>
 								                    	<button class="btn btn-primary" style="height:38px" onclick="applyCondition();">변경</button>
+													</label>
 												</div>
 	                                    	</td>
 										</tr>
@@ -221,9 +253,9 @@
                            		<table class="datatable-table">
                                    <thead>
                                        <tr>
-	                                    	<th>총 주문 금액</th>
+	                                    	<th>총 상품 금액</th>
 	                                    	<td>
-	                                    		${detailMap.detailFromOrderVO.payment_price+detailMap.detailFromOrderVO.delivery_price+detailMap.detailFromOrderVO.point}
+	                                    		${detailMap.detailFromOrderVO.payment_price-detailMap.detailFromOrderVO.delivery_price+detailMap.detailFromOrderVO.point}
 	                                    	</td>
 	                                    </tr>
                                        <tr>
@@ -251,10 +283,7 @@
                        	</div>
                      </div>
                   </div> 
-                    <!-- 수정/등록/취소.. 버튼 -->
-                    <div class="behavior">
-                    	<button class="btn btn-primary" style="height:38px">확인</button>
-                    </div>
+                    
         		</main>
                 <%@ include file="/WEB-INF/views/admin//include/footer.jsp" %>
             </div>
