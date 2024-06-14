@@ -111,8 +111,8 @@ function goToList() {
 						</div>
 						<div class="card-body">
 							<div class="datatable-container">
-								<p>주문번호: ${cancelDetail.order_no}</p>
-								<p>주문상세번호: ${cancelDetail.order_detail_no }</p>
+								<p><b>주문번호: ${cancelDetail.order_no}</p>
+								<p><b>주문상세번호: ${cancelDetail.order_detail_no }</p>
 								<label class="btn btn-primary"> <input type="radio"
 									name="cancel_reason" value="1"
 									<c:if test="${cancelDetail.cancel_reason_type == 1}">checked disabled</c:if>
