@@ -48,7 +48,7 @@
                     <a data-toggle="modal" data-target="#search" class="nav-link"><i class="icon-search"></i></a>
                   </li>
                   <li class="nav-item cart">
-                    <a data-toggle="modal" data-target="#cart" class="nav-link"><span>Cart</span><span>2</span></a>
+                    <a href="/cart" class="nav-link"><span>Cart</span><span>2</span></a>
                   </li>
                 </ul>
               </div>
