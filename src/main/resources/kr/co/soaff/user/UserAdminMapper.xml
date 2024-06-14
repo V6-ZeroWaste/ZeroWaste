@@ -16,7 +16,6 @@
 		SELECT
 			user_no, id, name, email, zipcode, addr, addr_detail, tel, date
 		FROM user
-		<include refid="searchSql"/>
 		<if test="orderBy == '가입일자오래된순'">
 			ORDER BY date ASC, user_no asc
 		</if>
