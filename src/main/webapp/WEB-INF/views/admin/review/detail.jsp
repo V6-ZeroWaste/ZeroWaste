@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
+
     pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -35,6 +36,7 @@
 		#review_img{
 			max-height: 300px;
 			max-width: 300px;
+			margin-bottom: 20px
 		}
 		.input-box{
 			width:100%;
@@ -147,7 +149,7 @@
                                     	<td colspan='3'>
                                     		<div>
                                     			<c:if test="${vo.review_img != null}">
-                                    				<img id="review_img" src="${vo.review_img}"/>
+                                    				<img id="review_img" src="/upload/item_img/${vo.review_img}"/>
                                     			</c:if>
                                     		</div>
                                     		<div>

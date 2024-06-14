@@ -21,8 +21,14 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script type="text/javascript">
         let page = 1;
+        let filter = ${orderVO.filter};
         window.onload=function(){
-        	  getList();
+        	if (filter) {
+        		getList();
+        	} else {
+        		filter = $('#filter').val();
+	        	getList();
+        	}
         	}
         function applyCondition(){
        		page = 1;
@@ -36,7 +42,7 @@
         	var data = {
         			searchWord: $('#searchWord').val(),
         			orderBy: $('#orderBy').val(),
-        			filter: $('#filter').val(),
+        			filter: filter,
         			start_date: $('#start_date').val(),
         			end_date: $('#end_date').val(),
         			page: page,
@@ -129,7 +135,7 @@
 															<option value="" >==필터==</option>
 															<option value="0" >취소 완료</option>
 															<option value="1" >취소 요청</option>
-															<option value="2" >상품준비중</option>
+															<option value="2" <c:if test="${orderVO.filter == 2}">selected</c:if>>상품준비중</option>
 															<option value="3" >배송중</option>
 															<option value="4" >배송완료</option>
 															<option value="5" >구매확정</option>
