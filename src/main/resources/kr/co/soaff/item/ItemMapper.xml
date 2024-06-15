@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.item.ItemMapper">
+
+	<sql id="filterSql">
+		<if test="filter != null and filter != ''">
+            AND i.category_no = #{filter}
+        </if>
+	</sql>
+	
+	<sql id="searchSql">
+		<if test="searchWord != null and searchWord != ''">
+            AND concat_ws("-", i.item_no, i.name)  LIKE CONCAT('%', #{searchWord},'%')
+        </if>	
+	</sql>
+	
+	<sql id="orderBySql">
+		<choose>
+	        <when test="orderBy == '오래된상품순'">
+	            ORDER BY i.item_no ASC
+	        </when>
+	        <when test="orderBy == '신규상품순'">
+	            ORDER BY i.item_no DESC
+	        </when>
+	        <when test="orderBy == '할인율높은순'">
+	            ORDER BY i.amount DESC <!-- to do -->
+	        </when>
+	        <when test="orderBy == '할인율낮은순'">
+	            ORDER BY i.amount ASC <!-- to do -->
+	        </when>
+	        <when test="orderBy == '높은가격순'">
+	            ORDER BY i.price DESC
+	        </when>
+	        <when test="orderBy == '낮은가격순'">
+	            ORDER BY i.price ASC
+	        </when>
+	        <otherwise>
+	            ORDER BY i.item_no DESC
+	        </otherwise>
+	    </choose>
+	</sql>
+	<!-- 상품 리스트 가져오기 -->
+	<select id="list" parameterType="kr.co.soaff.item.ItemVO"
+        resultType="kr.co.soaff.item.ItemVO">
+	    SELECT i.*, IFNULL(od.sales_amount, 0) AS sales_amount, c.name AS category_name
+	    FROM item i
+	    LEFT JOIN (
+	        SELECT item_no, sum(amount) AS sales_amount
+	        FROM order_detail
+	        WHERE cancel_status is null
+	        GROUP BY item_no
+	    ) od ON i.item_no = od.item_no
+	    LEFT JOIN category c ON i.category_no = c.category_no
+	    <where>
+		    <include refid="filterSql"/>
+		    <include refid="searchSql"/>
+	    </where>
+	    <include refid="orderBySql"/>
+	    LIMIT #{startIdx}, 20
+	</select>
+
+	<!-- 상품 상세 정보 가져오기 -->
+	<select id="detail" parameterType="kr.co.soaff.item.ItemVO"
+			resultType="kr.co.soaff.item.ItemVO">
+		SELECT i.*, c.name as category_name FROM item i
+		LEFT JOIN category c ON i.category_no = c.category_no 
+		WHERE item_no = ${item_no}
+	</select>
+
+	<!-- 아이템 총 개수 -->
+	<select id="count"
+			parameterType="kr.co.soaff.item.ItemVO" resultType="int">
+		select
+			count(*) from item i
+		<where>
+		    <include refid="filterSql"/>
+		    <include refid="searchSql"/>
+	    </where>	
+	</select>
+	
+	<!-- 리뷰 리스트 -->
+
+	<!-- 리뷰 상세 -->
+
+
+
+</mapper>

@@ -111,13 +111,22 @@
             var itemPrice = $("#item-price").text();
             var selectedItems = [];
 
+
+            if(itemName.startsWith('포장')){
+                itemPrice=${item.packing_price};
+                itemPrice = itemPrice.toLocaleString();
+                itemPrice += '원';
+            }
+
+            console.log(itemPrice.toString().toLocaleString());
+
             $(".selected-item-name").each(function () {
                 selectedItems.push($(this).text());
             });
 
             var status = true;
 
-            selectedItems.forEach((selectedItem)=>{if(selectedItem==itemName){
+            selectedItems.forEach((selectedItem)=>{if(selectedItem===itemName){
                 alert("이미 선택된 옵션입니다.");
                 status = false;
             }})
@@ -131,7 +140,7 @@
             html+="<div class='row align-items-center mt-3' style='border-top: #dddddd 1px solid; '>";
             html+="<div class='col-md-7'>";
             html+="<h5 class='mt-3 selected-item-name'>"+itemName+"</h5>";
-            html+="<span class='selected-item-price'>"+itemPrice;+"</span>";
+            html+="<span class='selected-item-price' data-unit-price='"+itemPrice+"'>"+itemPrice.toString().toLocaleString()+"</span>";
             html+="</div>";
             html+="<div class='col-5 d-flex no-padding'>";
             html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
@@ -148,11 +157,10 @@
             html+="</div>"
             html+="</div>"
 
-
             $("#total-price").closest('.row').before(html);
             $("#select-product").val("");
 
-            calcPrice();
+            calcTotalPrice();
         }
 
         function increaseValue(button){
@@ -161,7 +169,8 @@
             if (currentValue < 9) {
                 input.val(currentValue + 1);
             }
-            calcPrice();
+            calcItemPrice(button);
+            calcTotalPrice();
         }
 
         function decreaseValue(button) {
@@ -170,29 +179,59 @@
             if (currentValue > 1) {
                 input.val(currentValue - 1);
             }
-            calcPrice();
+            calcItemPrice(button);
+            calcTotalPrice();
         }
 
         function removeItem(button) {
             $(button).closest('.row').remove();
-            calcPrice();
+            calcTotalPrice();
         }
 
-        function calcPrice(){
+        function calcTotalPrice() {
             var totalPrice = 0;
-            $(".selected-item-price").each(function (){
-                var priceText = $(this).text();
+            $(".selected-item-price").each(function () {
+                var priceText = $(this).data('unit-price');
+                if (typeof priceText !== 'string') {
+                    priceText = String(priceText); // 문자열로 변환
+                }
+                priceText = priceText.replace(/\D/g, '');
                 var price = parseInt(priceText);
-                if(!isNaN(price)){
+                if (!isNaN(price)) {
                     var quantityText = $(this).closest(".row").find("input[type=number]").val();
                     var quantity = parseInt(quantityText);
-                    totalPrice += price * quantityText;
+                    totalPrice += price * quantity;
                 }
             });
-            $('#total-price').html(totalPrice);
+            $('#total-price').html(totalPrice.toLocaleString()+'원');
+        }
+
+        function calcItemPrice(button) {
+            var row = $(button).closest('.row');
+            var priceText = row.find('.selected-item-price').data('unit-price');
+            if (typeof priceText !== 'string') {
+                priceText = String(priceText); // 문자열로 변환
+            }
+            priceText = priceText.replace(/\D/g, '');
+            var price = parseInt(priceText);
+            var quantity = parseInt(row.find('input[type=number]').val());
+
+            if (!isNaN(price) && !isNaN(quantity)) {
+                var totalPrice = price * quantity;
+                row.find('.selected-item-price').text(totalPrice.toLocaleString()+'원');
+            }
         }
     </script>
 
+    <!-- 리뷰 -->
+    <script>
+
+    </script>
+
+    <!-- 문의 -->
+    <script>
+
+    </script>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
 <body>
@@ -232,18 +271,22 @@
                 <div class="col-lg-5 mb-5 mb-lg-0" id="selected-item-list">
                     <div class="row">
                         <div class="col-12">
-                            <h1 class="item-title">Product name</h1>
-                            <h3 class="item-title text-muted">상품에 대한 간단한 설명</h3>
-                            <span class="item-price"><s class="text-muted">9500</s><span class="text-red">10%</span></span>
-                            <div class="item-price" id="item-price">8850원</div>
+                            <h1 class="item-title">${item.name}</h1>
+                            <h3 class="item-title text-muted">${item.description}</h3>
+                            <c:if test="${item.discount_rate!=0}">
+                                <span class="item-price"><s class="text-muted"><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.price}" /></s><span class="text-red">${item.discount_rate}%</span></span>
+                            </c:if>
+                            <div class="item-price" id="item-price"><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.discounted_price}" />원</div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <select name="select-product" id="select-product" class="form-control" onchange="addItem();">
                                 <option value="" disabled selected>상품 선택</option>
-                                <option value="product name"> product name </option>
-                                <option value="additional product name"> additional product name </option>
+                                <option value="${item.name}"> ${item.name} </option>
+                                <c:if test="${item.packable_option}">
+                                    <option value="포장(<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원)"> 포장(<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) </option>
+                                </c:if>
                             </select>
                         </div>
                     </div>
@@ -307,8 +350,9 @@
                     <br>
                     <br>
                     <br>
-                    제품 상세 긁어오기 넓이
-<%--                    <div></div>80~90% 마진 auto--%>
+                    <div style="width: 80%; margin: auto" >
+                        ${item.detail}
+                    </div>
                     <br>
                     <br>
                     <br>
