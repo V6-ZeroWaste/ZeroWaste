@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
     <link rel="stylesheet" href="/user/css/vendor.css" />
     <link rel="stylesheet" href="/user/css/style.css" />
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
     <style>
         /* input type = "number" 화살표 제거 */
         /* 크롬, 사파리, 엣지 */
@@ -75,6 +76,7 @@
 
     <title>soaff</title>
     <script>
+        // 스크롤 이동
         function scrollToSection(sectionId) {
             // 모든 버튼의 active-border 클래스 제거
             document.getElementById('detailBtn').classList.remove('active-border');
@@ -83,13 +85,13 @@
             // 클릭된 버튼에 active-border 클래스 추가
 
             document.getElementById(sectionId + 'Btn').classList.add('active-border');
-            document.getElementById(sectionId + 'Section').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById(sectionId + 'Section').scrollIntoView({behavior: 'smooth'});
 
 
-            setTimeout(function (){
+            setTimeout(function () {
                 document.getElementById('qnaBtn').classList.remove('active-border');
                 document.getElementById(sectionId + 'Btn').classList.add('active-border');
-                document.getElementById(sectionId + 'Section').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById(sectionId + 'Section').scrollIntoView({behavior: 'smooth'});
             }, 1500);
         }
 
@@ -103,12 +105,91 @@
         추가하기 !!
         * */
 
-        function increaseValue(){
+        function addItem() {
 
+            var itemName = $("#select-product").val();
+            var itemPrice = $("#item-price").text();
+            var selectedItems = [];
+
+            $(".selected-item-name").each(function () {
+                selectedItems.push($(this).text());
+            });
+
+            var status = true;
+
+            selectedItems.forEach((selectedItem)=>{if(selectedItem==itemName){
+                alert("이미 선택된 옵션입니다.");
+                status = false;
+            }})
+
+            if(!status){
+                $("#select-product").val("");
+                return;
+            }
+
+            var html = "";
+            html+="<div class='row align-items-center mt-3' style='border-top: #dddddd 1px solid; '>";
+            html+="<div class='col-md-7'>";
+            html+="<h5 class='mt-3 selected-item-name'>"+itemName+"</h5>";
+            html+="<span class='selected-item-price'>"+itemPrice;+"</span>";
+            html+="</div>";
+            html+="<div class='col-5 d-flex no-padding'>";
+            html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
+            html+="id='button-minus-0' onClick='decreaseValue(this)'>-";
+            html+="</button>";
+            html+="<input type='number' class='form-control form-control-sm input-full-width mt-3' min='1'";
+            html+="max='9' value='1'/>";
+            html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
+            html+="id='button-plus-0' onClick='increaseValue(this)'>+";
+            html+="</button>";
+            html+="<button class='btn btn-sm btn-full-width mt-3' type='button' id='button-delete-item-0'";
+            html+="onClick='removeItem(this)'>x"
+            html+="</button>"
+            html+="</div>"
+            html+="</div>"
+
+
+            $("#total-price").closest('.row').before(html);
+            $("#select-product").val("");
+
+            calcPrice();
         }
 
-        function decreaseValue(){
+        function increaseValue(button){
+            var input = $(button).siblings('input[type="number"]');
+            var currentValue = parseInt(input.val());
+            if (currentValue < 9) {
+                input.val(currentValue + 1);
+            }
+            calcPrice();
+        }
 
+        function decreaseValue(button) {
+            var input = $(button).siblings('input[type="number"]');
+            var currentValue = parseInt(input.val());
+            if (currentValue > 1) {
+                input.val(currentValue - 1);
+            }
+            calcPrice();
+        }
+
+        function removeItem(button) {
+            $(button).closest('.row').remove();
+            calcPrice();
+        }
+
+        function calcPrice(){
+            var totalPrice = 0;
+            $(".selected-item-price").each(function (){
+                var priceText = $(this).text();
+                var price = parseInt(priceText);
+                if(!isNaN(price)){
+                    var quantityText = $(this).closest(".row").find("input[type=number]").val();
+                    var quantity = parseInt(quantityText);
+                    totalPrice += price * quantityText;
+                }
+            });
+            $('#total-price').html(totalPrice);
         }
     </script>
 
@@ -148,18 +229,18 @@
                     </div>
                 </div>
 
-                <div class="col-lg-5 mb-5 mb-lg-0">
+                <div class="col-lg-5 mb-5 mb-lg-0" id="selected-item-list">
                     <div class="row">
                         <div class="col-12">
                             <h1 class="item-title">Product name</h1>
                             <h3 class="item-title text-muted">상품에 대한 간단한 설명</h3>
                             <span class="item-price"><s class="text-muted">9500</s><span class="text-red">10%</span></span>
-                            <div class="item-price"> 8850원</div>
+                            <div class="item-price" id="item-price">8850원</div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <select name="select-product" id="select-product" class="form-control" onchange="applyCondition();">
+                            <select name="select-product" id="select-product" class="form-control" onchange="addItem();">
                                 <option value="" disabled selected>상품 선택</option>
                                 <option value="product name"> product name </option>
                                 <option value="additional product name"> additional product name </option>
@@ -175,39 +256,15 @@
                             <input type="button" class="btn btn-block btn-lg btn-primary" value="바로 구매">
                         </div>
                     </div>
-                    <!-- 상품 선택 시 아래의 영역에 추가 -->
-                    <div class="row align-items-center mt-3" style="border-top: #dddddd 1px solid; ">
-                        <div class="col-md-7">
-                            <!-- 상품 영역 -->
-                            <h5 class="mt-3">Product name</h5>
-                            8,850원
-                        </div>
-                        <div class="col-5 d-flex no-padding">
-                            <button class="btn btn-outline-secondary btn-sm btn-full-width mt-3" type="button" id="button-minus-0" onclick="decreaseValue()">-</button>
-                            <input type="number" class="form-control form-control-sm input-full-width mt-3" min="1" max="9" value="1">
-                            <button class="btn btn-outline-secondary btn-sm btn-full-width mt-3" type="button" id="button-plus-0" onclick="increaseValue()">+</button>
-                            <button class="btn btn-sm btn-full-width mt-3" type="button" id="button-delete-item-0" onclick="increaseValue()">x</button>
-                        </div>
-                    </div>
-                    <div class="row align-items-center mt-3" style="border-top: #dddddd 1px solid; ">
-                        <div class="col-md-7">
-                            <!-- 상품 영역 -->
-                            <h5 class="mt-3">Product name - 포장</h5>
-                            8,850원
-                        </div>
-                        <div class="col-5 d-flex no-padding">
-                            <button class="btn btn-outline-secondary btn-sm btn-full-width mt-3" type="button" id="button-minus" onclick="decreaseValue()">-</button>
-                            <input type="number" class="form-control form-control-sm input-full-width mt-3" min="1" max="9" value="1" >
-                            <button class="btn btn-outline-secondary btn-sm btn-full-width mt-3" type="button" id="button-plus" onclick="increaseValue()">+</button>
-                            <button class="btn btn-sm btn-full-width mt-3" type="button" id="button-delete-item" onclick="increaseValue()">x</button>
-                        </div>
-                    </div>
+
+                    <!-- 상품 추가 영역 -->
+
                     <div class="row align-items-center mt-3" style="border-top: #dddddd 1px solid; ">
                         <div class="col-md-8">
                             <h3 class="mt-3">총 가격</h3>
                         </div>
                         <div class="col-md-4">
-                            <h3 class="mt-3">18,700</h3>
+                            <h3 class="mt-3" id="total-price">0</h3>
                         </div>
 
                     </div>
