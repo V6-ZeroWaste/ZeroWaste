@@ -11,5 +11,10 @@ public class OrderController {
         return "/user/order/order";
     }
 
+    @GetMapping("/order/success")
+    public String success() {
+        return "/user/order/success";
+    }
+
 
 }

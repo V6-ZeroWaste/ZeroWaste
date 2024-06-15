@@ -61,13 +61,16 @@
 
                                     <a href="#!"><img src="/user/images/demo/product-4.jpg" alt="Image"></a>
                                     <div class="media-body">
-                                        <h5 class="media-title">Analog Magazine Rack</h5>
-                                        <span class="small">Red</span>
+                                        <h5 class="media-title">Product Name1</h5>
+                                        <span class="small">포장O (+3,000원)</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-4 col-lg-2 text-center">
-                                <span class="cart-item-price">$120</span>
+                                <p class="cart-item-price">
+                                    <del>9,500원</del>
+                                </p>
+                                8,500원
                             </div>
                             <div class="col-4 col-lg-2 text-center">
                                 <div class="counter">
@@ -77,43 +80,7 @@
                                 </div>
                             </div>
                             <div class="col-4 col-lg-2 text-center">
-                                <span class="cart-item-price">$240</span>
-                            </div>
-                            <a href="#!" class="cart-item-close"><i class="icon-x"></i></a>
-                        </div>
-                    </div>
-
-                    <!-- cart item -->
-                    <div class="cart-item">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-lg-6">
-                                <div class="media media-product">
-                                    <!-- id, for 가 일치해야 토글이 됩니다 -->
-                                    <div class="custom-control custom-checkbox mb-2">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck2"
-                                               checked="">
-                                        <label class="custom-control-label" for="customCheck2"></label>
-                                    </div>
-
-                                    <a href="#!"><img src="/user/images/demo/product-4.jpg" alt="Image"></a>
-                                    <div class="media-body">
-                                        <h5 class="media-title">Analog Magazine Rack</h5>
-                                        <span class="small">Red</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4 col-lg-2 text-center">
-                                <span class="cart-item-price">$120</span>
-                            </div>
-                            <div class="col-4 col-lg-2 text-center">
-                                <div class="counter">
-                                    <span class="counter-minus icon-minus" field='qty-1'></span>
-                                    <input type='text' name='qty-1' class="counter-value" value="2" min="1" max="10">
-                                    <span class="counter-plus icon-plus" field='qty-1'></span>
-                                </div>
-                            </div>
-                            <div class="col-4 col-lg-2 text-center">
-                                <span class="cart-item-price">$240</span>
+                                <span class="cart-item-price">11,850원</span>
                             </div>
                             <a href="#!" class="cart-item-close"><i class="icon-x"></i></a>
                         </div>
@@ -137,7 +104,7 @@
                         <ul class="list-group list-group-minimal">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 총 n개의 상품 금액
-                                <span>50000원</span>
+                                <span>11,850원</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 배송비
@@ -154,12 +121,12 @@
                         <ul class="list-group list-group-minimal">
                             <li class="list-group-item d-flex justify-content-between align-items-center text-dark fs-18">
                                 합계
-                                <span>53000원</span>
+                                <span>14,850원</span>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <a href="checkout.html" class="btn btn-lg btn-primary btn-block mt-1"
+                <a href="/order" class="btn btn-lg btn-primary btn-block mt-1"
                    style="background-color:#79AC78;border-color: #79AC78;">주문하기</a>
             </div>
 
