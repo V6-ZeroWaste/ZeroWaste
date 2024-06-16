@@ -18,10 +18,10 @@
 <script>
 
     function loginCheck() {
-        const userId = $("#userId");
-        const pwd = $("#pwd");
-        const idCheckMsg = $("#idCheckMsg");
-        const pwdCheckMsg = $("#pwdCheckMsg");
+        let userId = $("#userId");
+        let pwd = $("#pwd");
+        let idCheckMsg = $("#idCheckMsg");
+        let pwdCheckMsg = $("#pwdCheckMsg");
 
         idCheckMsg.css("display", "none");
         pwdCheckMsg.css("display", "none");
