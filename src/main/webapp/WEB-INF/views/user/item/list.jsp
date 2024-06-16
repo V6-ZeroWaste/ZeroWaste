@@ -9,7 +9,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
     <link rel="stylesheet" href="/user/css/vendor.css" />
     <link rel="stylesheet" href="/user/css/style.css" />
+	  <script>
 
+		  function regist(){
+			  window.location.href = "regist";
+		  }
+
+		  let page = 1;
+		  window.onload=function(){
+			  getList();
+		  }
+		  function applyCondition(){
+			  page = 1;
+			  getList();
+		  }
+		  function changePage(obj){
+			  page = obj.getAttribute("data-page");
+			  getList();
+		  }
+
+		  function getList(){
+			  var data = {
+				  searchWord: $('#searchWord').val(),
+				  orderBy: $('#orderBy').val(),
+				  filter: $('#filter').val(),
+				  page: page,
+
+			  }
+
+			  $.ajax({
+				  type: "GET", // method type
+				  url: "/item/getItemList", // 요청할 url
+				  data: data, // 전송할 데이터
+				  dataType: "json", // 응답 받을 데이터 type
+				  success : function(resp){
+					  console.log("성공");
+					  // 데이터 리스트 출력
+					  $("#printList").html(resp.printList);
+
+					  // 페이지네이션 출력
+					  // 총 개수
+					  $(".datatable-info").html("("+resp.total+"개)");
+					  // 페이지네이션
+					  let printPage = "";
+					  if(resp.isPrev){
+						  printPage += '<li class="datatable-pagination-list-item page-item">';
+						  printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹‹</a></li>';
+						  printPage += '<li class="datatable-pagination-list-item page-item">';
+						  printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹</a></li>';
+					  }
+					  for(i = resp.startPage; i<=resp.endPage; i++){
+						  printPage += '<li class="datatable-pagination-list-item page-item'+(i==page? ' datatable-active' : '')+'">';
+						  printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">'+i+'</a></li>';
+					  }
+					  if(resp.isNext){
+						  printPage += '<li class="datatable-pagination-list-item page-item">';
+						  printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹‹</a></li>';
+						  printPage += '<li class="datatable-pagination-list-item page-item">';
+						  printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹</a></li>';
+					  }
+					  console.log(printPage);
+					  $(".datatable-pagination-list").html(printPage);
+
+
+
+				  },
+				  error:function (data, textStatus) {
+					  console.log("실패");
+					  $('#fail').html("관리자에게 문의하세요.") // 서버오류
+					  console.log('error', data, textStatus);
+				  }
+			  })
+
+		  }
+	  </script>
     <title>soaff</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
   </head>
@@ -48,7 +121,7 @@
                             </c:forEach>
                         </select>
                     </label>
-                    <label class="text-sm-center">
+                    <label class="text-sm-center datatable-info">
                          &nbsp; (총 개수) <!-- 리스트에 보이는 부분 말고 검색된 상품의 모든 개수 -->
                     </label>
                 </div>
@@ -62,261 +135,13 @@
                     </div>
                 </div>
             </div>
-			<div class="row gutter-2 gutter-md-3">
-
-				<div class="col-6 col-lg-3">
-					<div class="product">
-						<figure class="product-image">
-							<a href="#!">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-							</a>
-						</figure>
-						<div class="product-meta">
-							<h3 class="product-title"><a href="#!">Moss Green T-Four BT Earphones</a></h3>
-							<div class="product-price">
-								<span>$50</span>
-								<span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-6 col-lg-3">
-					<div class="product">
-						<figure class="product-image">
-							<span class="product-promo bg-red">sale</span>
-							<a href="#!">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-							</a>
-						</figure>
-						<div class="product-meta">
-							<h3 class="product-title"><a href="#!">Black Closca Helmet</a></h3>
-							<div class="product-price">
-								<span>$132</span>
-								<span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-6 col-lg-3">
-					<div class="product">
-						<figure class="product-image">
-							<a href="#!">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-							</a>
-						</figure>
-						<div class="product-meta">
-							<h3 class="product-title"><a href="#!">Gravel Black Sigg Water Bottle</a></h3>
-							<div class="product-price">
-								<span>$23</span>
-								<span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-6 col-lg-3">
-					<div class="product">
-						<figure class="product-image">
-							<a href="#!">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="image">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="image">
-							</a>
-						</figure>
-						<div class="product-meta">
-							<h3 class="product-title"><a href="#!">Black Low Curve Iceman Trimix Sneakers</a></h3>
-							<div class="product-price">
-								<span>$271</span>
-								<span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-6 col-lg-3">
-					<div class="product">
-						<figure class="product-image">
-							<a href="#!">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-							</a>
-						</figure>
-						<div class="product-meta">
-							<h3 class="product-title"><a href="#!">Black / Black V03D Watch</a></h3>
-							<div class="product-price">
-								<span>$213</span>
-								<span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-6 col-lg-3">
-					<div class="product">
-						<figure class="product-image">
-							<a href="#!">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-							</a>
-						</figure>
-						<div class="product-meta">
-							<h3 class="product-title"><a href="#!">Dark Navy Stealth Till Bag</a></h3>
-							<div class="product-price">
-								<span>$57</span>
-								<span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-6 col-lg-3">
-					<div class="product">
-						<figure class="product-image">
-							<span class="product-promo">-10%</span>
-							<a href="#!">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-							</a>
-						</figure>
-						<div class="product-meta">
-							<h3 class="product-title"><a href="#!">Black Denim Jacket</a></h3>
-							<div class="product-price">
-								<span>$183</span>
-								<span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-6 col-lg-3">
-					<div class="product">
-						<figure class="product-image">
-							<a href="#!">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-								<img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-							</a>
-						</figure>
-						<div class="product-meta">
-							<h3 class="product-title"><a href="#!">Tan Dellow Cord Sneakers</a></h3>
-							<div class="product-price">
-								<span>$95</span>
-								<span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-                <div class="col-6 col-lg-3">
-                    <div class="product">
-                        <figure class="product-image">
-                            <a href="#!">
-                                <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-                                <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-                            </a>
-                        </figure>
-                        <div class="product-meta">
-                            <h3 class="product-title"><a href="#!">Tan Dellow Cord Sneakers</a></h3>
-                            <div class="product-price">
-                                <span>$95</span>
-                                <span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-lg-3">
-                    <div class="product">
-                        <figure class="product-image">
-                            <a href="#!">
-                                <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-                                <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-                            </a>
-                        </figure>
-                        <div class="product-meta">
-                            <h3 class="product-title"><a href="#!">Tan Dellow Cord Sneakers</a></h3>
-                            <div class="product-price">
-                                <span>$95</span>
-                                <span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-lg-3">
-                    <div class="product">
-                        <figure class="product-image">
-                            <a href="#!">
-                                <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-                                <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-                            </a>
-                        </figure>
-                        <div class="product-meta">
-                            <h3 class="product-title"><a href="#!">Tan Dellow Cord Sneakers</a></h3>
-                            <div class="product-price">
-                                <span>$95</span>
-                                <span class="product-action">
-                    <a href="#!">Add to cart</a>
-                  </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-lg-3">
-                    <div class="product">
-                        <figure class="product-image">
-                            <a href="#!">
-                                <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-                                <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567661387/noticon/zujqqm5y9jxcculmf2fe.gif" alt="Image">
-                            </a>
-                        </figure>
-                        <div class="product-meta">
-                            <h3 class="product-title"><a href="#!">Tan Dellow Cord Sneakers</a></h3>
-                            <div class="product-price">
-                                <span>$95</span>
-                                <span class="product-action">
-									<a href="#!">Add to cart</a>
-								</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+			<div class="row gutter-2 gutter-md-3" id="printList"> <!-- printList -->
 			</div>
 			<div class="row">
 				<div class="col text-center">
-<%--					<a href="#!" class="btn btn-outline-secondary">Load More</a>--%>
                     <!-- 페이지 네이션 영역 -->
-                    <nav class="item-pagination">
-                        <ul class="item-pagination-list">
-                            <li>1</li>
+                    <nav class="datatable-pagination">
+                        <ul class="datatable-pagination-list pagination justify-content-center">
                         </ul>
                     </nav>
 				</div>

@@ -23,12 +23,12 @@ public class ItemServiceImpl implements ItemService{
         Map<String, Object> map = new HashMap<String, Object>();
 
         int totalCount = itemMapper.count(vo); // 총 게시물 수
-        int totalPage = totalCount / 20;
-        if (totalCount % 20 > 0)
+        int totalPage = totalCount / 12;
+        if (totalCount % 12 > 0)
             totalPage++;
 
         // 시작인덱스
-        int startIdx = (vo.getPage() - 1) * 10;
+        int startIdx = (vo.getPage() - 1) * 12;
         vo.setStartIdx(startIdx); // sql문에 파라미터로 넣어줌
         List<ItemVO> list = itemMapper.list(vo); // 목록
 
@@ -60,5 +60,9 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public int count(ItemVO vo) {
         return itemMapper.count(vo);
+    }
+
+    public List<CategoryVO> categories() {
+        return itemMapper.categories();
     }
 }

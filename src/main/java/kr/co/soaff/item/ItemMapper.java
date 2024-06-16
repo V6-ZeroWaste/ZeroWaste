@@ -10,5 +10,5 @@ public interface ItemMapper {
     List<ItemVO> list(ItemVO vo);
     ItemVO detail(ItemVO vo);
     int count(ItemVO vo);
-
+    List<CategoryVO> categories();
 }

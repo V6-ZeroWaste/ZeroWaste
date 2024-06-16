@@ -31,7 +31,7 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 			totalPage++;
 
 		// 시작인덱스
-		int startIdx = (vo.getPage() - 1) * 10;
+		int startIdx = (vo.getPage() - 1) * 20;
 		vo.setStartIdx(startIdx); // sql문에 파라미터로 넣어줌
 		List<ItemVO> items = mapper.list(vo); // 목록
 

@@ -23,16 +23,16 @@
 	            ORDER BY i.item_no DESC
 	        </when>
 	        <when test="orderBy == '할인율높은순'">
-	            ORDER BY i.amount DESC <!-- to do -->
+	            ORDER BY i.discount_rate DESC
 	        </when>
 	        <when test="orderBy == '할인율낮은순'">
-	            ORDER BY i.amount ASC <!-- to do -->
+	            ORDER BY i.discount_rate ASC
 	        </when>
 	        <when test="orderBy == '높은가격순'">
-	            ORDER BY i.price DESC
+	            ORDER BY i.discounted_price DESC
 	        </when>
 	        <when test="orderBy == '낮은가격순'">
-	            ORDER BY i.price ASC
+	            ORDER BY i.discounted_price ASC
 	        </when>
 	        <otherwise>
 	            ORDER BY i.item_no DESC
@@ -52,11 +52,12 @@
 	    ) od ON i.item_no = od.item_no
 	    LEFT JOIN category c ON i.category_no = c.category_no
 	    <where>
+			exposed_status = 0
 		    <include refid="filterSql"/>
 		    <include refid="searchSql"/>
 	    </where>
 	    <include refid="orderBySql"/>
-	    LIMIT #{startIdx}, 20
+	    LIMIT #{startIdx}, 12
 	</select>
 
 	<!-- 상품 상세 정보 가져오기 -->
@@ -73,11 +74,20 @@
 		select
 			count(*) from item i
 		<where>
+			exposed_status = 0
 		    <include refid="filterSql"/>
 		    <include refid="searchSql"/>
 	    </where>	
 	</select>
-	
+
+	<!-- 카테고리 가져오기 -->
+	<select id="categories" resultType="kr.co.soaff.item.CategoryVO">
+		SELECT c.category_no , c.name, count(i.item_no) AS quantity
+		FROM category c LEFT OUTER JOIN item i
+										ON c.category_no = i.category_no
+		GROUP BY category_no, c.name;
+	</select>
+
 	<!-- 리뷰 리스트 -->
 
 	<!-- 리뷰 상세 -->
