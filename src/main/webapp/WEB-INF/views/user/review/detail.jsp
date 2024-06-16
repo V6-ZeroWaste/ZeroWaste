@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" isELIgnored="false"%>
+   pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
@@ -7,224 +7,149 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+   content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
 
-<title>soaff</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
-	rel="stylesheet" />
-<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-	crossorigin="anonymous"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<title>Review Detail</title>
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+<link href="${pageContext.request.contextPath}/admin/css/styles.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="/admin/js/datatables-simple-demo.js"></script>
+<script src="${pageContext.request.contextPath}/admin/js/scripts.js"></script>
+
 <style>
-.detail-container {
-	width: 100%;
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 20px;
-	border: 1px solid #ddd;
-	border-radius: 10px;
-	background-color: #f9f9f9;
+.review-info {
+   position: relative;
+   padding-left: 1.25rem;
+   font-size: 0.875rem;
 }
 
-.detail-header {
-	display: flex;
-	align-items: flex-start;
-	margin-bottom: 20px;
+.col-12 {
+   margin-bottom: 10px;
 }
 
-.detail-header img {
-	border-radius: 10px;
-	width: 200px;
-	height: 500px;
-	margin-right: 20px;
+th {
+   width: 120px;
 }
 
-.detail-header .detail-info {
-	flex-grow: 1;
-}
-
-.detail-header .detail-info h2 {
-	margin: 0;
-	font-size: 20px;
-}
-
-.detail-header .detail-info p {
-	margin: 5px 0;
-	font-size: 18px;
-}
-
-.detail-content {
-	margin-bottom: 20px;
-	padding: 20px;
-	height: 300px;
-	background-color: #fff;
-	border: 1px solid #ddd;
-	border-radius: 10px;
-}
-
-.detail-content h3 {
-	margin-top: 0;
-}
-
-.detail-footer {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-	width: 100%;
-}
-
-.detail-footer .product-name {
-	font-size: 18px;
-	font-weight: bold;
-}
-
-.detail-footer .buttons {
-	display: flex;
-}
-
-.detail-footer button {
-	margin-left: 10px;
-}
-
-.title-user-container {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.rating {
-	color: #FFD700;
-	font-size: 18px;
+.review-img {
+   max-width: 70%;
 }
 </style>
 <script type="text/javascript">
 function redirectToUpdate() {
-    var reviewNo = document.querySelector('input[name="review_no"]').value;
+    var reviewNo = document.getElementById('review_no').value;
     window.location.href = '/user/review/detail2?review_no=' + reviewNo;
 }
 
-	var review_no = ${vo.review_no};
-	function deleteReview() {
-	    if (confirm("정말 삭제하시겠습니까?")) {
-	        $.ajax({
-	            type: "POST",
-	            url: "/user/review/delete",
-	            data: { review_no: ${vo.review_no} },
-	            success: function(response) {
-	                if (response === 1) {
-	                    alert("리뷰가 삭제되었습니다.");
-	                    location.href = "/user/review/list";
-	                } else {
-	                    alert("리뷰 삭제에 실패했습니다.");
-	                }
-	            },
-	            error: function() {
-	                alert("서버와의 통신 중 오류가 발생했습니다.");
-	            }
-	        });
-	    }
-	}
+var review_no = ${vo.review_no};
+function deleteReview() {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        $.ajax({
+            type: "POST",
+            url: "/user/review/delete",
+            data: { review_no: ${vo.review_no} },
+            success: function(response) {
+                if (response === 1) {
+                    alert("리뷰가 삭제되었습니다.");
+                    location.href = "/user/review/list";
+                } else {
+                    alert("리뷰 삭제에 실패했습니다.");
+                }
+            },
+            error: function() {
+                alert("서버와의 통신 중 오류가 발생했습니다.");
+            }
+        });
+    }
+}
 </script>
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/user/include/header.jsp"%>
-	<%@ include file="/WEB-INF/views/user/include/mypageInfo.jsp"%>
-	<section class="pt-5">
-		<div class="container">
-			<div class="row gutter-4 justify-content-between">
-				<%@ include file="/WEB-INF/views/user/include/mypageNav.jsp"%>
-				<div class="col-lg-9">
-					<div class="row">
-						<div class="col">
+   <%@ include file="/WEB-INF/views/user/include/header.jsp"%>
+   <%@ include file="/WEB-INF/views/user/include/mypageInfo.jsp"%>
+   <section class="pt-5">
+      <div class="container">
+         <div class="row gutter-4 justify-content-between">
+            <%@ include file="/WEB-INF/views/user/include/mypageNav.jsp"%>
+            <div class="col-lg-9">
+               <div class="row">
+                  <div class="col-12">
+                     <!-- title -->
+                     <h3 class="mb-0">리뷰 상세</h3>
+                  </div>
+                  <!-- /title -->
 
+                  <!-- item info card -->
+                  <div class="col-12">
+                     <div class="order">
+                        <div class="row align-items-center" style="height:100px">
+                           <div class="col-lg-2 order-preview justify-content-center">
+                              <!-- 상품이미지 -->
+                              <a href="product-1.html" title="Fawn Wool / Natural Mammoth Chair"
+                                 data-toggle="tooltip" data-placement="top">
+                                 <img src="${vo.review_img}" alt="Fawn Wool / Natural Mammoth Chair">
+                              </a>
+                           </div>
+                           <div class="col-lg-4">
+                              <h3 class="order-number">${vo.item_name}</h3>
+                           </div>
+                           <div class="col-lg-4">
+                           </div>
+                           <div class="col-lg-2">
+                              <!-- 상품 바로가기 링크 -->
+                              <a href="#!" class="action eyebrow underline">View Item</a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- /review info card -->
 
-							<!-- content -->
-							<div class="detail-container">
-								<div class="detail-header">
-									<img src="${vo.review_img}" alt="작성자 이미지">
-									<div class="detail-info">
-										<p style="font-size: 20px;">
-											<fmt:formatDate value="${vo.regist_date}"
-												pattern="yyyy-MM-dd" />
-										</p>
-										<div class="title-user-container">
-											<h2>${vo.title}</h2>
-											<p>작성자: ${vo.user_id}</p>
-										</div>
-										<div class="detail-content">
-											<p>${vo.content}</p>
-										</div>
-										<p class="rating">
-											평점:
-											<c:forEach var="i" begin="1" end="${vo.score}">
-												<i class="fas fa-star"></i>
-											</c:forEach>
-										</p>
-										<div class="detail-footer">
-											<div class="product-name">상품명: ${vo.item_name}</div>
-											<div class="buttons">
-												<form style="display: inline;">
-													<input type="hidden" name="review_no"
-														value="${vo.review_no}">
-													<button type="button" class="btn btn-primary"
-														onclick="redirectToUpdate()">수정</button>
-												</form>
-												<form action="/user/review/delete" method="post"
-													style="display: inline;">
-													<input type="hidden" name="review_no"
-														value="${vo.review_no}">
-													<button type="submit" class="btn btn-danger"
-														onclick="deleteReview()">삭제</button>
-												</form>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-
-
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
+                  <!-- review detail card -->
+                  <div class="col-12">
+                     <div style="border: 1px solid #dddddd;">
+                        <table class="table table-borderless">
+                           <tbody>
+                              <tr>
+                                 <th scope="row">Date</th>
+                                 <td><fmt:formatDate value="${vo.regist_date}" pattern="yyyy-MM-dd" /></td>
+                                 <td style="text-align: right">⭐️⭐️⭐️⭐️⭐️</td>
+                              </tr>
+                              <tr>
+                                 <th scope="row">Title</th>
+                                 <td colspan="2">${vo.title}</td>
+                              </tr>
+                              <tr>
+                                 <th>Content</th>
+                                 <td colspan="2">
+                                    <div>${vo.content}</div>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <th>Image</th>
+                                 <td colspan="2">
+                                    <img class="review-img" src="${vo.review_img}" />
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                        <input type="hidden" id="review_no" value="${vo.review_no}">
+                     </div>
+                  </div>
+                  <div class="col-12" style="text-align: center">
+                     <button class="btn btn-primary" onclick="redirectToUpdate()">수정</button>
+                     <button class="btn btn-danger" onclick="deleteReview()">삭제</button>
+                  </div>
+               </div>
+               <!-- /content -->
+            </div>
+         </div>
+      </div>
+   </section>
+   <%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
