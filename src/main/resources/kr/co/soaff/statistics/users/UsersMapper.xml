@@ -18,105 +18,162 @@
     </sql>
     
     <sql id="searchSql">
-	    <if test="filter == '일별' or '주별'">
-	        <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
-	            AND DATE(dr.date) BETWEEN #{start_date} AND #{end_date}
-	        </if>
-	        <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
-	            AND DATE(dr.date) BETWEEN #{start_date} AND NOW()
-	        </if>
-	        <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
-	            <![CDATA[
-	                AND DATE(dr.date) <= #{end_date}
-	            ]]>
-	        </if>
-	    </if>
-	    
-	    <if test="filter == '월별'">
-	        <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
-	            AND DATE_FORMAT(dr.date, '%Y-%m') BETWEEN #{start_date} AND #{end_date}
-	        </if>
-	        <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
-	        	<![CDATA[
-	            	AND DATE_FORMAT(dr.date, '%Y-%m') >= #{start_date}
-	            ]]>
-	        </if>
-	        <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
-	        	<![CDATA[
-	            	AND DATE_FORMAT(dr.date, '%Y-%m') <= #{end_date}
-            	]]>
-	        </if>
-	    </if>
-	</sql>
+        <if test="filter == '일별'">
+            <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+                AND DATE(dr.date) BETWEEN #{start_date} AND #{end_date}
+            </if>
+            <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+                AND DATE(dr.date) BETWEEN #{start_date} AND NOW()
+            </if>
+            <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+                <![CDATA[
+                AND DATE(dr.date) <= #{end_date}
+                ]]>
+            </if>
+        </if>
+        <if test="filter == '주별'">
+            <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+                AND dr.date BETWEEN 
+                    DATE_ADD(STR_TO_DATE(CONCAT(LEFT(#{start_date}, 4), '-01-01'), '%Y-%m-%d'), INTERVAL (RIGHT(#{start_date}, 2) - 1) WEEK)
+                    AND DATE_ADD(STR_TO_DATE(CONCAT(LEFT(#{end_date}, 4), '-01-01'), '%Y-%m-%d'), INTERVAL (RIGHT(#{end_date}, 2) - 1) WEEK)
+            </if>
+            <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+                <![CDATA[
+                AND dr.date >= 
+                    DATE_ADD(STR_TO_DATE(CONCAT(LEFT(#{start_date}, 4), '-01-01'), '%Y-%m-%d'), INTERVAL (RIGHT(#{start_date}, 2) - 1) WEEK)
+                ]]>
+            </if>
+            <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+                <![CDATA[
+                AND dr.date <= 
+                    DATE_ADD(STR_TO_DATE(CONCAT(LEFT(#{end_date}, 4), '-01-01'), '%Y-%m-%d'), INTERVAL (RIGHT(#{end_date}, 2)) WEEK)
+                ]]>
+            </if>
+        </if>
+        <if test="filter == '월별'">
+            <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+                AND DATE_FORMAT(dr.date, '%Y-%m') BETWEEN #{start_date} AND #{end_date}
+            </if>
+            <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+                <![CDATA[
+                AND DATE_FORMAT(dr.date, '%Y-%m') >= #{start_date}
+                ]]>
+            </if>
+            <if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+                <![CDATA[
+                AND DATE_FORMAT(dr.date, '%Y-%m') <= #{end_date}
+                ]]>
+            </if>
+        </if>
+    </sql>
 	
 	
 	
 	<!-- 탈퇴한 회원수 -->
     <select id="leave_list" parameterType="kr.co.soaff.statistics.users.UsersVO" resultType="kr.co.soaff.statistics.users.UsersVO">
-       WITH RECURSIVE date_range AS (
-		    SELECT #{start_date} AS date
-		    UNION ALL
-		    SELECT DATE_ADD(date, INTERVAL 1 DAY)
-		    FROM date_range
-		    <![CDATA[
-		    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
-		    ]]>
-		)
+       <choose>
+            <when test="filter == '주별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT DATE_FORMAT(CONCAT(LEFT(#{start_date}, 4), '-01-01'), '%Y-%m-%d') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 WEEK)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 WEEK) < #{end_date}
+			        ]]>
+			    )
+			</when>
+            <when test="filter == '월별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT CONCAT(LEFT(#{start_date}, 7), '-01') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 MONTH)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 MONTH) <= DATE_ADD(CONCAT(LEFT(#{end_date}, 7), '-01'), INTERVAL 1 MONTH)
+			        ]]>
+			    )
+			</when>
+            <otherwise>
+                WITH RECURSIVE date_range AS (
+                    SELECT #{start_date} AS date
+                    UNION ALL
+                    SELECT DATE_ADD(date, INTERVAL 1 DAY)
+                    FROM date_range
+                    <![CDATA[
+                    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
+                    ]]>
+                )
+            </otherwise>
+        </choose>
         SELECT 
-            <choose>
-                <when test="filter == '일별'">
-                    DATE(dr.date) AS date
-                </when>
-                <when test="filter == '주별'">
-                    DATE_FORMAT(dr.date, '%Y-%u') AS date
-                </when>
-                <when test="filter == '월별'">
-                    DATE_FORMAT(dr.date, '%Y-%m') AS date
-                </when>
-                <otherwise>
-                    DATE(dr.date) AS date
-                </otherwise>
-            </choose>,
-            sum(IFNULL(user_status.cnt, 0)) leave_cnt
+            dr.date as date,
+            (CASE WHEN leave_cnt is null then 0 else leave_cnt end) as leave_cnt
         FROM date_range dr
             LEFT JOIN (
-		        SELECT 
-		            (CASE WHEN `delete` IS NULL THEN 0 ELSE 1 END) AS cnt, 
+		            SELECT COUNT(*) AS leave_cnt,  
 		            <choose>
 		                <when test="filter == '일별'">
-		                    substr(date, 1, 10)
+		                	DATE(date)
 		                </when>
 		                <when test="filter == '주별'">
 		                    DATE_FORMAT(date, '%Y-%u')
 		                </when>
 		                <when test="filter == '월별'">
-		                    substr(date, 1, 7)
+		                    DATE_FORMAT(date, '%Y-%m')
 		                </when>
 		                <otherwise>
 		                    date
 		                </otherwise>
-		            </choose> AS date
+		            </choose> AS fomated_date
 		        FROM user
+		        WHERE `delete` is not null
+		        GROUP BY fomated_date
 		    ) user_status 
-        ON dr.date = user_status.date
+        ON dr.date = user_status.fomated_date
         <where>
             <include refid="searchSql"/>
         </where>
-        GROUP BY dr.date
         <include refid="orderBySql"/>
         LIMIT #{startIdx}, 20;
     </select>
 	<!-- 회원수 -->
     <select id="users_list" parameterType="kr.co.soaff.statistics.users.UsersVO" resultType="kr.co.soaff.statistics.users.UsersVO">
-       WITH RECURSIVE date_range AS (
-		    SELECT #{start_date} AS date
-		    UNION ALL
-		    SELECT DATE_ADD(date, INTERVAL 1 DAY)
-		    FROM date_range
-		    <![CDATA[
-		    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
-		    ]]>
-		)
+       <choose>
+            <when test="filter == '주별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT DATE_FORMAT(CONCAT(LEFT(#{start_date}, 4), '-01-01'), '%Y-%m-%d') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 WEEK)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 WEEK) < #{end_date}
+			        ]]>
+			    )
+			</when>
+            <when test="filter == '월별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT CONCAT(LEFT(#{start_date}, 7), '-01') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 MONTH)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 MONTH) <= DATE_ADD(CONCAT(LEFT(#{end_date}, 7), '-01'), INTERVAL 1 MONTH)
+			        ]]>
+			    )
+			</when>
+            <otherwise>
+                WITH RECURSIVE date_range AS (
+                    SELECT #{start_date} AS date
+                    UNION ALL
+                    SELECT DATE_ADD(date, INTERVAL 1 DAY)
+                    FROM date_range
+                    <![CDATA[
+                    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
+                    ]]>
+                )
+            </otherwise>
+        </choose>
         SELECT 
             <choose>
                 <when test="filter == '일별'">
@@ -145,32 +202,45 @@
     
     <!-- list 총 개수 -->
     <select id="count" parameterType="kr.co.soaff.statistics.users.UsersVO" resultType="int">
-       WITH RECURSIVE date_range AS (
-		    SELECT #{start_date} AS date
-		    UNION ALL
-		    SELECT DATE_ADD(date, INTERVAL 1 DAY)
-		    FROM date_range
-		    <![CDATA[
-		    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
-		    ]]>
-		)
+       <choose>
+            <when test="filter == '주별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT DATE_FORMAT(CONCAT(LEFT(#{start_date}, 4), '-01-01'), '%Y-%m-%d') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 WEEK)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 WEEK) < #{end_date}
+			        ]]>
+			    )
+			</when>
+            <when test="filter == '월별'">
+			    WITH RECURSIVE date_range AS (
+			        SELECT CONCAT(LEFT(#{start_date}, 7), '-01') AS date
+			        UNION ALL
+			        SELECT DATE_ADD(date, INTERVAL 1 MONTH)
+			        FROM date_range
+			        <![CDATA[
+			        WHERE DATE_ADD(date, INTERVAL 1 MONTH) <= DATE_ADD(CONCAT(LEFT(#{end_date}, 7), '-01'), INTERVAL 1 MONTH)
+			        ]]>
+			    )
+			</when>
+            <otherwise>
+                WITH RECURSIVE date_range AS (
+                    SELECT #{start_date} AS date
+                    UNION ALL
+                    SELECT DATE_ADD(date, INTERVAL 1 DAY)
+                    FROM date_range
+                    <![CDATA[
+                    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
+                    ]]>
+                )
+            </otherwise>
+        </choose>
         SELECT  COUNT(*)
 	    FROM (
 	        SELECT 
-	            <choose>
-	               <when test="filter == '일별'">
-	                   DATE(dr.date) AS date
-	               </when>
-	               <when test="filter == '주별'">
-	                   DATE_FORMAT(dr.date, '%Y-%u') AS date
-	               </when>
-	               <when test="filter == '월별'">
-	                   DATE_FORMAT(dr.date, '%Y-%m') AS date
-	               </when>
-	               <otherwise>
-	                   DATE(dr.date) AS date
-	               </otherwise>
-            	</choose>
+	            dr.date as date
 	        FROM date_range dr
 	        <where>
 	            <include refid="searchSql"/>
