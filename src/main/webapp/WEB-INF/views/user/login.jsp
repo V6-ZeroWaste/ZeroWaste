@@ -18,27 +18,33 @@
 <script>
 
     function loginCheck() {
-        if ($("#userId").val() != '') {
-            $("#idCheckMsg").css("display", "none");
-        }
-        if ($("#pwd").val() != '') {
-            $("#pwdCheckMsg").css("display", "none");
+        const userId = $("#userId");
+        const pwd = $("#pwd");
+        const idCheckMsg = $("#idCheckMsg");
+        const pwdCheckMsg = $("#pwdCheckMsg");
+
+        idCheckMsg.css("display", "none");
+        pwdCheckMsg.css("display", "none");
+
+        let isValid = true;
+
+        if (!userId.val()) {
+            idCheckMsg.html("아이디를 입력해주세요");
+            idCheckMsg.css("display", "block");
+            userId.focus();
+            isValid = false;
         }
 
-        if ($("#userId").val() == '') {
-            // alert("아이디를 입력해 주세요");
-            $("#idCheckMsg").html("아이디를 입력해주세요")
-            $("#idCheckMsg").css("display", "block");
-            $("#userId").focus();
-            return false;
+        if (!pwd.val()) {
+            pwdCheckMsg.html("비밀번호를 입력해주세요");
+            pwdCheckMsg.css("display", "block");
+            if (isValid) {
+                pwd.focus();
+            }
+            isValid = false;
         }
-        if ($("#pwd").val() == '') {
-            // alert("비밀번호를 입력해 주세요");
-            $("#pwdCheckMsg").html("비밀번호를 입력해주세요")
-            $("#pwdCheckMsg").css("display", "block");
-            $("#pwd").focus();
-            return false;
-        }
+
+        return isValid;
     }
 
 
