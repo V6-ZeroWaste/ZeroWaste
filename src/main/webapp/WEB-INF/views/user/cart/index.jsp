@@ -9,10 +9,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
     <link rel="stylesheet" href="/user/css/vendor.css"/>
     <link rel="stylesheet" href="/user/css/style.css"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
     <title>soaff</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
+
+<script>
+
+    function goOrder() {
+        if (!con) {
+            location.href = "/order";
+        } else {
+            alert("상품을 선택해주세요")
+        }
+    }
+
+    let con = true;
+    $(document).ready(function () {
+
+        $("#checkAll").on('change', function () {
+            $(".cart-item .custom-control-input").prop('checked', $(this).prop('checked'));
+        });
+
+
+        $(".cart-item .custom-control-input").on('change', function () {
+            if ($(".cart-item .custom-control-input:checked").length === $(".cart-item .custom-control-input").length) {
+                $("#selectAll").prop('checked', true);
+            } else {
+                $("#selectAll").prop('checked', false);
+            }
+        });
+
+        $("#orderBtn").on('click', function () {
+            if ($(".cart-item .custom-control-input:checked").length === 0) {
+                con = false;
+            }
+        });
+    });
+
+</script>
+
 <body>
 
 <!-- hero -->
@@ -31,12 +69,22 @@
     <div class="container">
         <div class="row mb-1 d-none d-lg-flex">
             <div class="col-lg-8">
+                <!--전체선택-->
+                <div class="custom-control custom-checkbox col-lg-8">
+                    <input type="checkbox" class="custom-control-input" id="checkAll"
+                           checked="">
+                    <label class="custom-control-label" for="checkAll"></label>
+                </div>
+                <br>
                 <!-- 제목 -->
-                <div class="row pr-6">
-                    <div class="col-lg-6"><span class="eyebrow">Product</span></div>
+                <div class="row pr-8">
+
+                    <div class="col-lg-6 text-left"><span class="eyebrow">Product</span></div>
+
                     <div class="col-lg-2 text-center"><span class="eyebrow">Price</span></div>
                     <div class="col-lg-2 text-center"><span class="eyebrow">Quantity</span></div>
                     <div class="col-lg-2 text-center"><span class="eyebrow">Total</span></div>
+
                 </div>
 
             </div>
@@ -47,11 +95,13 @@
             <div class="col-lg-8 cart-item-list">
 
                 <form>
+
                     <!-- cart item -->
                     <div class="cart-item">
                         <div class="row align-items-center">
                             <div class="col-12 col-lg-6">
                                 <div class="media media-product">
+
                                     <!-- id, for 가 일치해야 토글이 됩니다 -->
                                     <div class="custom-control custom-checkbox mb-2">
                                         <input type="checkbox" class="custom-control-input" id="customCheck1"
@@ -126,8 +176,9 @@
                         </ul>
                     </div>
                 </div>
-                <a href="/order" class="btn btn-lg btn-primary btn-block mt-1"
-                   style="background-color:#79AC78;border-color: #79AC78;">주문하기</a>
+                <button class="btn btn-lg btn-primary btn-block mt-1"
+                        style="background-color:#79AC78;border-color: #79AC78;" id="orderBtn" onclick="goOrder();">주문하기
+                </button>
             </div>
 
         </div>
