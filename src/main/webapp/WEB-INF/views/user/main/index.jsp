@@ -15,9 +15,7 @@
 
       <body>
 
-
         <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
-
 
           <!-- hero -->
           <div class="swiper-container">

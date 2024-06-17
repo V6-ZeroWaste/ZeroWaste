@@ -77,8 +77,12 @@ public class MvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry reg) {
 		reg.addViewController("/user/basic");
+		reg.addViewController("/user/login/login");
+		reg.addViewController("/user/login/loginFind");
 		reg.addViewController("/user/basic-mypage");
 		reg.addViewController("/user/test");
+		reg.addViewController("/user/login/passwordFind");
+
 	}
 
 	// HikariCP
@@ -135,19 +139,16 @@ public class MvcConfig implements WebMvcConfigurer {
 	@Bean
 	public static PropertyPlaceholderConfigurer propreties() {
 		PropertyPlaceholderConfigurer config = new PropertyPlaceholderConfigurer();
-		config.setLocations( 
-				new ClassPathResource("db.properties"),
-	            new ClassPathResource("s3.properties"));
-		
+		config.setLocations(new ClassPathResource("db.properties"), new ClassPathResource("s3.properties"));
+
 		return config;
 	}
 
 	@Bean
-    public S3Client s3Client() {
-        return S3Client.builder()
-                .region(Region.of(region))
-                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
-                .build();
-    }
+	public S3Client s3Client() {
+		return S3Client.builder().region(Region.of(region))
+				.credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
+				.build();
+	}
 
 }
