@@ -32,6 +32,11 @@ public class OrderController {
 	public String cancel(Model model, OrderVO orderVO) {
 		return "/user/order/cancelForm";
 	}
+	
+	@GetMapping("/mypage/point")
+	public String point(Model model, OrderVO orderVO) {
+		return "/user/order/pointList";
+	}
 
 
 }
