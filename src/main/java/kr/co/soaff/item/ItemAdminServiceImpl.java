@@ -111,6 +111,9 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 				e.printStackTrace();
 			}
 			vo.setItem_img(real);
+		} else if (vo.getItem_img() != null && !vo.getItem_img().isEmpty()) {
+			// 새 파일이 없고 기존 파일이 있는 경우
+			vo.setItem_img(vo.getItem_img());
 		}
 		vo.setDiscount_rate((int) (((vo.getPrice() - vo.getDiscounted_price()) / (float) vo.getPrice()) * 100));
 
