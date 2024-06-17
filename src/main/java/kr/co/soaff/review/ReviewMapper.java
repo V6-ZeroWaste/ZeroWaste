@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.soaff.qna.QnaVO;
 @Mapper
-public interface ReviewUserMapper {
+public interface ReviewMapper {
 	List<ReviewVO> list(ReviewVO vo);
 	ReviewVO detail(ReviewVO vo);
 	int count (ReviewVO vo);

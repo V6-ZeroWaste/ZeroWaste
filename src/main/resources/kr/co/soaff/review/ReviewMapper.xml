@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.co.soaff.review.ReviewUserMapper">
+<mapper namespace="kr.co.soaff.review.ReviewMapper">
 	<sql id="orderBySql">
 		<if test="orderBy == null or orderBy == '최신순'">
 			ORDER BY review.regist_date DESC
@@ -59,7 +59,7 @@
 		user_no,
 		user_id,
 		item_no,
-		item_name,
+		item.name AS item_name,
 		title,
 		content,
 		score,
@@ -79,6 +79,11 @@
 		CURRENT_TIMESTAMP
 		)
 	</insert>
+
+	<select id="getItemName" parameterType="int"
+		resultType="String">
+		SELECT name FROM items WHERE item_no = #{item_no}
+	</select>
 
 	<!-- 리뷰 상세 조회 -->
 	<select id="detail" parameterType="kr.co.soaff.review.ReviewVO"

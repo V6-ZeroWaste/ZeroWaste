@@ -82,7 +82,13 @@ function handleUpdate() {
 </script>
 </head>
 <body>
-<div style="width:700px;margin: auto;">
+ <%@ include file="/WEB-INF/views/user/include/header.jsp"%>
+   <%@ include file="/WEB-INF/views/user/include/mypageInfo.jsp"%>
+<section class="pt-5">
+      <div class="container">
+         <div class="row gutter-4 justify-content-between">
+            <%@ include file="/WEB-INF/views/user/include/mypageNav.jsp"%>
+            <div class="col-lg-9">
     <!-- content -->
     <div class="row">
         <!-- title -->
@@ -152,7 +158,11 @@ function handleUpdate() {
             <button id ="update" class="btn btn-primary" onclick="handleUpdate();">수정</button>
         </div>
     </div>
+    </div>
+    </div>
+    </div>
+    </section>
+    <%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
     <!-- /content -->
-</div>
 </body>
 </html>

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import kr.co.soaff.qna.QnaVO;
 
 @Service
-public class ReviewUserServiceImpl implements ReviewUserService {
+public class ReviewServiceImpl implements ReviewService {
 	@Autowired
-	ReviewUserMapper mapper;
+	ReviewMapper mapper;
 
 	@Override
 	public Map<String, Object> list(ReviewVO vo) {
