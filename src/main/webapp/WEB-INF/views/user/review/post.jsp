@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
 
-<title>soaff</title>
+<title>Review</title>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -52,21 +52,25 @@
 function updateReview(review_no) {
     var title = document.getElementById('title').value;
     var content = document.getElementById('content').value;
-    if(confirm("정말 수정하시겠습니까?")) {
+    var review_img = document.getElementById('review_img').value;
+    var score = document.getElementById('score').value;
+    if(confirm("정말 등록하시겠습니까?")) {
         $.ajax({
             type: "POST",
             url: "/user/review/update",
             data: {
                 title: title,
                 content: content,
-                review_no: review_no
+                review_no: review_no,
+                score : score,
+                review_img : review_img
             },
             success: function(response) {
                 if(response === 1) {
-                    alert("리뷰가 수정되었습니다.");
+                    alert("리뷰가 등록되었습니다.");
                     window.location.href = '/user/review/list';
                 } else {
-                    alert("리뷰 수정에 실패하였습니다.");
+                    alert("리뷰 등록에 실패하였습니다.");
                 }
             },
             error: function() {
@@ -149,7 +153,7 @@ function handleUpdate() {
             </div>
         </div>
         <div class="col-12" style="text-align: center">
-            <button id ="update" class="btn btn-primary" onclick="handleUpdate();">수정</button>
+            <button id ="update" class="btn btn-primary" onclick="handleUpdate();">등록</button>
         </div>
     </div>
     <!-- /content -->

@@ -12,4 +12,5 @@ public interface ReviewUserMapper {
 	int count (ReviewVO vo);
 	int update(ReviewVO vo);
 	int delete(int review_no);
+	int post(ReviewVO vo);
 }
