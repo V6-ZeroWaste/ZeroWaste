@@ -39,7 +39,7 @@ th {
 <script type="text/javascript">
 function redirectToUpdate() {
 	var qnaNo = document.getElementById('qna_no').value;
-    window.location.href = '/user/qna/detail2?qna_no=' + qnaNo;
+    window.location.href = '/mypage/qna/update?qna_no=' + qnaNo;
 }
 
 var qna_no = ${vo.qna_no};
@@ -47,12 +47,12 @@ function deleteQna() {
     if (confirm("정말 삭제하시겠습니까?")) {
         $.ajax({
             type: "POST",
-            url: "/user/qna/delete",
+            url: "/mypage/qna/delete",
             data: { qna_no: ${vo.qna_no} },
             success: function(response) {
                 if (response === 1) {
                     alert("문의가 삭제되었습니다.");
-                    location.href = "/user/qna/list";
+                    location.href = "/mypage/qna/list";
                 } else {
                     alert("문의 삭제에 실패했습니다.");
                 }
@@ -76,7 +76,7 @@ function deleteQna() {
 				<div class="col-lg-9">
 					<div class="row">
 						<div class="col-12">
-							<h3 class="mb-0">문의 상세</h3>
+							<h3 class="mb-0">Qna Detail</h3>
 						</div>
 
 

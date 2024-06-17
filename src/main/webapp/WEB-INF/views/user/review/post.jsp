@@ -87,7 +87,7 @@ function postReview() {
     if(confirm("정말 등록하시겠습니까?")) {
         $.ajax({
             type: "POST",
-            url: "/user/review/post",
+            url: "/mypage/review/postReview",
             data: {
                 title: title,
                 content: content,
@@ -97,7 +97,7 @@ function postReview() {
             success: function(response) {
                 if(response === 1) {
                     alert("리뷰가 등록되었습니다.");
-                    window.location.href = '/user/review/list';
+                    window.location.href = '/mypage/review/list';
                 } else {
                     alert("리뷰 등록에 실패하였습니다.");
                 }

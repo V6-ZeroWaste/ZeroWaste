@@ -48,7 +48,7 @@
 	}
 	
 	function redirectToDetail(qnaNo){
-		window.location.href='/user/qna/detail?qna_no='+qnaNo;
+		window.location.href='/mypage/qna/detail?qna_no='+qnaNo;
 	}
 	
 	function applyCondition() {
@@ -72,7 +72,7 @@
 		$
 				.ajax({
 					type : "GET", // method type
-					url : "/user/qna/getList", // 요청할 url
+					url : "/mypage/qna/getList", // 요청할 url
 					data : data, // 전송할 데이터
 					dataType : "json", // 응답 받을 데이터 type
 					success : function(resp) {
@@ -140,7 +140,7 @@
 				<div class="col-lg-9">
 					<div class="row">
 						<div class="col-12">
-							<h3 class="mb-0">문의</h3>
+							<h3 class="mb-0">Qna</h3>
 							<!-- search filter -->
 							<div class="search-filter">
 								<div>

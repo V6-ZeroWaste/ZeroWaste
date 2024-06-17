@@ -62,7 +62,7 @@ function updateQna(qna_no,title,content){
 	if(confirm("정말 수정하시겠습니까?")){
 		$.ajax({
 			type: "POST",
-			url: "/user/qna/update",
+			url: "/mypage/qna/updateQna",
 			data: {
 				title: title,
 				content: content,
@@ -71,7 +71,7 @@ function updateQna(qna_no,title,content){
 			success: function(response){
 				if(response===1){
 					alert("문의가 수정되었습니다.");
-					window.location.href = '/user/qna/list';
+					window.location.href = '/mypage/qna/list';
 				}else{
 					alert("문의 수정에 실패하였습니다.");
 				}
@@ -96,7 +96,7 @@ function handleUpdate() {
 		<div class="row">
 			<!-- title -->
 			<div class="col-12">
-				<h3 class="mb-0">문의 수정</h3>
+				<h3 class="mb-0">Qna Update</h3>
 			</div>
 			<!-- /title -->
 

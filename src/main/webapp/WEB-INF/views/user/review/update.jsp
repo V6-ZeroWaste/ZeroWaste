@@ -55,7 +55,7 @@ function updateReview(review_no) {
     if(confirm("정말 수정하시겠습니까?")) {
         $.ajax({
             type: "POST",
-            url: "/user/review/update",
+            url: "/mypage/review/updateReview",
             data: {
                 title: title,
                 content: content,
@@ -64,7 +64,7 @@ function updateReview(review_no) {
             success: function(response) {
                 if(response === 1) {
                     alert("리뷰가 수정되었습니다.");
-                    window.location.href = '/user/review/list';
+                    window.location.href = '/mypage/review/list';
                 } else {
                     alert("리뷰 수정에 실패하였습니다.");
                 }
@@ -93,7 +93,7 @@ function handleUpdate() {
     <div class="row">
         <!-- title -->
         <div class="col-12">
-            <h3 class="mb-0">리뷰 수정</h3>
+            <h3 class="mb-0">Review Update</h3>
         </div>
         <!-- /title -->
 

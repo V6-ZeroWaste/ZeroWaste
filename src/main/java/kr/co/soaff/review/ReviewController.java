@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/user/review")
+@RequestMapping("/mypage/review")
 public class ReviewController {
 	@Autowired
 	private ReviewService service;
@@ -58,18 +58,18 @@ public class ReviewController {
 		return "/user/review/detail";
 	}
 
-	@GetMapping("/detail2")
+	@GetMapping("/update")
 	public String detail2(Model model, ReviewVO vo) {
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/review/update";
 	}
 	
-	@GetMapping("/write")
+	@GetMapping("/post")
 	public String write(Model model, ReviewVO vo) {
 		return "/user/review/post";
 	}
 
-	@PostMapping("/post")
+	@PostMapping("/postReview")
 	public String post(@RequestParam String title, String content, int score, @RequestParam(required = false) String review_img, Model model) {
 		ReviewVO vo = new ReviewVO();
 		vo.setTitle(title);
@@ -87,7 +87,7 @@ public class ReviewController {
 		}
 	}
 
-	@PostMapping("/update")
+	@PostMapping("/updateReview")
 	@ResponseBody
 	public int update(@RequestParam int review_no, String title, String content) {
 		ReviewVO vo = new ReviewVO();
