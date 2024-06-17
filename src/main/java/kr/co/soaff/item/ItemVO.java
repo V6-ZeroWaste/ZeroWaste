@@ -37,8 +37,4 @@ public class ItemVO {
 	public ItemVO() {
 		this.page = 1;
 	}
-
-	public int getStartIdx() {
-		return (page - 1) * 20;
-	};
 }

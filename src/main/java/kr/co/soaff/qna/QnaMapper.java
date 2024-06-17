@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface QnaUserMapper {
+public interface QnaMapper {
 	List<QnaVO> list(QnaVO vo);
 
 	QnaVO detail(QnaVO vo);

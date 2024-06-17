@@ -1,4 +1,4 @@
-package kr.co.soaff.order;
+package kr.co.soaff.cancel;
 
 import java.sql.Timestamp;
 

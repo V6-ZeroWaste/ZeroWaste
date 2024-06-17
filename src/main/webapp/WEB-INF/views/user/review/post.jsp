@@ -3,21 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport"
    content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
-
-<title>soaff</title>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="/admin/js/datatables-simple-demo.js"></script>
+
+<title>Review</title>
 
 <style>
    .review-info {
@@ -46,27 +46,60 @@
    .item-img {
       max-height: 99.98px;
    }
+
+   .star-rating {
+    display: flex;
+    direction: row;
+    font-size: 1.5em;
+}
+   
+
+   .star-rating input {
+      display: none;
+   }
+
+   .star-rating label {
+      cursor: pointer;
+      color: #ddd;
+   }
+
+   .star-rating input:checked ~ label,
+   .star-rating input:hover ~ label,
+   .star-rating label:hover ~ label {
+      color: #f2b600;
+   }
+}
+   
 </style>
 
 <script type="text/javascript">
-function updateReview(review_no) {
+function postReview() {
     var title = document.getElementById('title').value;
     var content = document.getElementById('content').value;
-    if(confirm("정말 수정하시겠습니까?")) {
+    var score = document.querySelector('input[name="rating"]:checked').value;
+    var review_img = document.getElementById('file').value;
+
+    if (!title || !content || !score) {
+        alert("모든 필수 항목을 입력해주세요.");
+        return;
+    }
+
+    if(confirm("정말 등록하시겠습니까?")) {
         $.ajax({
             type: "POST",
-            url: "/user/review/update",
+            url: "/user/review/post",
             data: {
                 title: title,
                 content: content,
-                review_no: review_no
+                score: score,
+                review_img: review_img
             },
             success: function(response) {
                 if(response === 1) {
-                    alert("리뷰가 수정되었습니다.");
+                    alert("리뷰가 등록되었습니다.");
                     window.location.href = '/user/review/list';
                 } else {
-                    alert("리뷰 수정에 실패하였습니다.");
+                    alert("리뷰 등록에 실패하였습니다.");
                 }
             },
             error: function() {
@@ -75,25 +108,15 @@ function updateReview(review_no) {
         });
     }
 }
-
-function handleUpdate() {
-    updateReview(${vo.review_no});
-}
 </script>
 </head>
 <body>
- <%@ include file="/WEB-INF/views/user/include/header.jsp"%>
-   <%@ include file="/WEB-INF/views/user/include/mypageInfo.jsp"%>
-<section class="pt-5">
-      <div class="container">
-         <div class="row gutter-4 justify-content-between">
-            <%@ include file="/WEB-INF/views/user/include/mypageNav.jsp"%>
-            <div class="col-lg-9">
+<div style="width:700px;margin: auto;">
     <!-- content -->
     <div class="row">
         <!-- title -->
         <div class="col-12">
-            <h3 class="mb-0">리뷰 수정</h3>
+            <h3 class="mb-0">리뷰 등록</h3>
         </div>
         <!-- /title -->
 
@@ -127,9 +150,15 @@ function handleUpdate() {
                         <tr>
                             <th scope="row">Rating</th>
                             <td colspan="2">
-                                <c:forEach var="i" begin="1" end="${vo.score}">
-                                    ⭐️
-                                </c:forEach>
+                               <div class="star-rating">
+    <input type="radio" id="5-stars" name="rating" value="5" /><label for="5-stars" class="star">&#9733;</label>
+    <input type="radio" id="4-stars" name="rating" value="4" /><label for="4-stars" class="star">&#9733;</label>
+    <input type="radio" id="3-stars" name="rating" value="3" /><label for="3-stars" class="star">&#9733;</label>
+    <input type="radio" id="2-stars" name="rating" value="2" /><label for="2-stars" class="star">&#9733;</label>
+    <input type="radio" id="1-stars" name="rating" value="1" /><label for="1-stars" class="star">&#9733;</label>
+</div>
+
+                               
                             </td>
                         </tr>
                         <tr>
@@ -155,14 +184,10 @@ function handleUpdate() {
             </div>
         </div>
         <div class="col-12" style="text-align: center">
-            <button id ="update" class="btn btn-primary" onclick="handleUpdate();">수정</button>
+            <button id="post" class="btn btn-primary" onclick="postReview()">등록</button>
         </div>
     </div>
-    </div>
-    </div>
-    </div>
-    </section>
-    <%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
     <!-- /content -->
+</div>
 </body>
 </html>
