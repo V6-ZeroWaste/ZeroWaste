@@ -78,7 +78,7 @@ function deleteReview() {
                <div class="row">
                   <div class="col-12">
                      <!-- title -->
-                     <h3 class="mb-0">리뷰 상세</h3>
+                     <h3 class="mb-0">Review Detail</h3>
                   </div>
                   <!-- /title -->
 
@@ -115,8 +115,12 @@ function deleteReview() {
                               <tr>
                                  <th scope="row">Date</th>
                                  <td><fmt:formatDate value="${vo.regist_date}" pattern="yyyy-MM-dd" /></td>
-                                 <td style="text-align: right">⭐️⭐️⭐️⭐️⭐️</td>
                               </tr>
+                              <tr>
+                              	<th scope="row">Score</th>
+                              	 <td colspan="2">⭐️⭐️⭐️⭐️⭐️</td>
+                              </tr>
+                              
                               <tr>
                                  <th scope="row">Title</th>
                                  <td colspan="2">${vo.title}</td>

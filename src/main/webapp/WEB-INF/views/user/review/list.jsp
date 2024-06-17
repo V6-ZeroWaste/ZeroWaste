@@ -132,7 +132,7 @@
                <div class="row">
                   <div class="col-12">
                      <!-- title -->
-                     <h3 class="mb-0">리뷰</h3>
+                     <h3 class="mb-0">Review</h3>
                      <!-- /title -->
                      <!-- search filter -->
                      <div class="search-filter">
