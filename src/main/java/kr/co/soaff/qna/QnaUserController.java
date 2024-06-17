@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,14 +24,14 @@ public class QnaUserController {
 		return "/user/qna/list";
 	}
 
-	@GetMapping("/getList") // 
+	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(QnaVO vo) {
 		Map<String, Object> map = service.list(vo);
 		String printList = "";
 		List<QnaVO> qnaList = (List<QnaVO>) map.get("list");
 		if (qnaList.size() == 0) {
-			printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
+			printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
 		}
 		for (QnaVO qnaVO : qnaList) {
 			printList += "<tr onclick=\"location.href='/user/qna/detail?qna_no=" + qnaVO.getQna_no()
@@ -65,6 +64,12 @@ public class QnaUserController {
 		return "/user/qna/detail";
 	}
 	
+	@GetMapping("/detail2")
+	public String detail2(Model model, QnaVO vo) {
+		model.addAttribute("vo", service.detail(vo));
+		return "/user/qna/update";
+	}
+	
 	@PostMapping("/update")
 	@ResponseBody
 	public int update(@RequestParam int qna_no, String title, String content) {
@@ -78,7 +83,7 @@ public class QnaUserController {
 	
 	@PostMapping("/delete")
 	@ResponseBody
-	public int delete(@RequestParam int qna_no  ) {
+	public int delete(@RequestParam int qna_no) {
 		int result = service.delete(qna_no);
 		return result;
 	}

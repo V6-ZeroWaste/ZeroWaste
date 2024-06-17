@@ -137,13 +137,20 @@
                                             <th>문의 번호</th>
                                             <td>${vo.qna_no}</td>
                                             <th>문의 등록 일자</th>
-                                            <td>${vo.question_date}</td>
+                                            <td> <fmt:formatDate value="${vo.question_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         </tr>
                                         <tr>
                                             <th>답변 상태</th>
                                             <td class="h5">${vo.replyState}</td>
                                             <th>문의 유형</th>
-                                            <td>${vo.type}</td>
+                                            <td>
+                                            	<c:if test="${vo.type == 0}">
+                                            		교환/환불 문의
+                                            	</c:if>
+                                            	<c:if test="${vo.type == 1}">
+                                            		상품 상세 문의
+                                            	</c:if>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>상품 번호</th>
@@ -216,15 +223,15 @@
                                 </table>
                             </div>
                         </div>
-
                         <!-- 수정/등록/취소.. 버튼 -->
-                        <div class="behavior">
+                        	<div class="list-group-item d-flex justify-content-center">
                             <c:if test="${empty vo.reply_date}">
                                 <button id="updateReply" class="btn btn-primary" onclick="handleUpdateReply();"style="height:38px">등록</button>     
                             </c:if>
+                    
                             <c:if test="${not empty vo.reply_date}">
-                                <button id="updateReply" class="btn btn-primary" onclick="handleUpdateReply();"style="height:38px">수정</button>       
-                                <button id="deleteReply" class="btn btn-danger" onclick="handleDeleteReply();" style="height:38px">삭제</button>        
+                                <button id="updateReply" class="btn btn-primary" onclick="handleUpdateReply();"style="height:38px; margin : 8px">수정</button>       
+                                <button id="deleteReply" class="btn btn-danger" onclick="handleDeleteReply();" style="height:38px; margin : 8px">삭제</button>        
                             </c:if>
                         </div>
                     </div>

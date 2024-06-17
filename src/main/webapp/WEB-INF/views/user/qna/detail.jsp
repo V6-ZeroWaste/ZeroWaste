@@ -10,7 +10,8 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
-<title>문의 상세 페이지</title>
+
+<title>soaff</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
 	rel="stylesheet" />
@@ -121,6 +122,11 @@
 }
 </style>
 <script type="text/javascript">
+function redirectToUpdate() {
+    var qnaNo = document.querySelector('input[name="qna_no"]').value;
+    window.location.href = '/user/qna/detail2?qna_no=' + qnaNo;
+}
+
 var qna_no = ${vo.qna_no};
 function deleteQna() {
     if (confirm("정말 삭제하시겠습니까?")) {
@@ -143,73 +149,82 @@ function deleteQna() {
     }
 }
 
-
-
-function updateQna(qna_no,title,content){
-	 var title = $('#title').val();
-	    var content = $('#content').val();
-	if(confirm("정말 수정하시겠습니까?")){
-		$.ajax({
-			type: "POST",
-			url: "/user/qna/update",
-			data: {
-				title: title,
-				content: content,
-				qna_no: qna_no
-			},
-			success: function(response){
-				if(response===1){
-					alert("문의가 수정되었습니다.");
-				}else{
-					alert("문의 수정에 실패하였습니다.");
-				}
-			},
-			error: function(){
-				alert("서버와의 통신 중 오류가 발생했습니다.");
-			}
-		});
-	}
-}
-
-function handleUpdate() {
-    var title = document.getElementById('title').value;
-    var content = document.getElementById('content').value;
-    updateQna(${vo.qna_no}, title, content);
-}
 	</script>
 </head>
 <body>
-	<div class="detail-container">
-		<div class="detail-header">
-			<img src="${vo.qna_img}" alt="작성자 이미지">
-			<div class="detail-info">
-				<p style="font-size: 20px;">
-					<fmt:formatDate value="${vo.question_date}" pattern="yyyy-MM-dd" />
-				</p>
-				<div class="title-user-container">
-					<input type="text" id="title" class="form-control"
-						value="${vo.title}">
-					<p>작성자: ${vo.user_id}</p>
-				</div>
-				<div class="detail-content">
-					<textarea id="content" class="form-control" rows="10">${vo.content}</textarea>
-				</div>
-				<div class="detail-footer">
-					<div class="product-name">상품명: ${vo.item_name}</div>
-					<div class="buttons">
-						<button id="update" class="btn btn-primary" onclick="handleUpdate();"
-							style="height: 55px">수정</button>
-						<button id="delete" class="btn btn-danger" onclick="deleteQna();"
-							style="height: 55px">삭제</button>
+	<%@ include file="/WEB-INF/views/user/include/header.jsp"%>
+	<%@ include file="/WEB-INF/views/user/include/mypageInfo.jsp"%>
+	<section class="pt-5">
+		<div class="container">
+			<div class="row gutter-4 justify-content-between">
+				<%@ include file="/WEB-INF/views/user/include/mypageNav.jsp"%>
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col">
+
+
+							<div class="detail-container">
+								<div class="detail-header">
+									<img src="${vo.qna_img}" alt="작성자 이미지">
+									<div class="detail-info">
+										<p style="font-size: 20px;">
+											<fmt:formatDate value="${vo.question_date}"
+												pattern="yyyy-MM-dd" />
+										</p>
+										<div class="title-user-container">
+											<input type="text" id="title" class="form-control"
+												value="${vo.title}">
+											<p>작성자: ${vo.user_id}</p>
+										</div>
+										<div class="detail-content">
+											<textarea id="content" class="form-control" rows="10">${vo.content}</textarea>
+										</div>
+										<div class="detail-footer">
+											<div class="product-name">상품명: ${vo.item_name}</div>
+											<div class="buttons">
+												<form style="display: inline;">
+													<input type="hidden" name="qna_no" value="${vo.qna_no}">
+													<button type="button" class="btn btn-primary"
+														onclick="redirectToUpdate()">수정</button>
+												</form>
+												<form action="/user/qna/delete" method="post"
+													style="display: inline;">
+													<input type="hidden" name="qna_no" value="${vo.qna_no}">
+													<button type="submit" class="btn btn-danger"
+														onclick="deleteQna()">삭제</button>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="reply-container">
+								<div class="reply-content">
+									<p>내용: ${vo.reply }</p>
+								</div>
+							</div>
+
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="reply-container">
-		<div class="reply-content">
-			<p>내용: ${vo.reply }</p>
-		</div>
-	</div>
+	</section>
+	<%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

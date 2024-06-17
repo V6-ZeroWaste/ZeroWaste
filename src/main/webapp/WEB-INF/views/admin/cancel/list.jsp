@@ -12,6 +12,9 @@
 <meta name="description" content="" />
 <meta name="author" content="" />
 <title>주문 취소 리스트</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
+	rel="stylesheet" />
 <link href="${pageContext.request.contextPath}/admin/css/styles.css"
 	rel="stylesheet" />
 <script
@@ -22,161 +25,158 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 	crossorigin="anonymous"></script>
+<script src="/admin/js/datatables-simple-demo.js"></script>
 <script src="${pageContext.request.contextPath}/admin/js/scripts.js"></script>
-<style>
-h1 {
-	margin-top: 25px;
-}
+<script type="text/javascript">
+	let page = 1;
+	window.onload = function() {
+		getList();
+	}
+	function applyCondition() {
+		page = 1;
+		getList();
+	}
+	function changePage(obj) {
+		page = obj.getAttribute("data-page");
+		getList();
+	}
+	function getList() {
+		var data = {
+			searchWord : $('#searchWord').val(),
+			orderBy : $('#orderBy').val(),
+			filter : $('#filter').val(),
+			startRequestDate : $('#startRequestDate').val(),
+			endRequestDate : $('#endRequestDate').val(),
+			startApproveDate : $('#startApproveDate').val(),
+			endApproveDate : $('#endApproveDate').val(),
+			page : page,
+		}
 
-.page_navigation {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 20px;
-}
+		$
+				.ajax({
+					method : "GET",
+					url : "/admin/cancel/getList",
+					data : data,
+					dataType : "json",
+					success : function(resp) {
+						let printList = "";
+						if (resp.list.length == 0) {
+							printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
+						}
 
-.pagination {
-	display: flex;
-	list-style: none;
-	padding: 0;
-}
+						$("#printList").html(resp.printList);
+						$(".datatable-info").html(
+								"Showing "
+										+ ((page - 1) * 20 + 1)
+										+ " to "
+										+ (page * 20 <= resp.count ? page * 20
+												: resp.count) + " of "
+										+ resp.count + " entries");
 
-.pagination li {
-	margin: 0 5px;
-}
+						// 페이지네이션
+						let printPage = "";
+						if (resp.isPrev) {
+							printPage += '<li class="datatable-pagination-list-item">';
+							printPage += '<a data-page="1" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+							printPage += '<li class="datatable-pagination-list-item">';
+							printPage += '<a data-page="'
+									+ (resp.startPage - 1)
+									+ '" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+						}
+						for (let i = resp.startPage; i <= resp.endPage; i++) {
+							printPage += '<li class="datatable-pagination-list-item'
+									+ (i == page ? ' datatable-active' : '')
+									+ '">';
+							printPage += '<a data-page="'
+									+ i
+									+ '" class="datatable-pagination-list-item-link" onclick="changePage(this);">'
+									+ i + '</a></li>';
+						}
+						if (resp.isNext) {
+							printPage += '<li class="datatable-pagination-list-item">';
+							printPage += '<a data-page="'
+									+ (resp.endPage + 1)
+									+ '" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
+							printPage += '<li class="datatable-pagination-list-item">';
+							printPage += '<a data-page="'
+									+ resp.totalPage
+									+ '" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
+						}
+						$(".datatable-pagination-list").html(printPage);
+					},
+					error : function(data, textStatus) {
+						$('#fail').html("관리자에게 문의하세요.");
+						console.log('error', data, textStatus);
+					}
+				})
+	}
+</script>
 
-.pagination a {
-	text-decoration: none;
-	color: #007bff;
-}
-
-.pagination .active a {
-	font-weight: bold;
-	color: #000;
-}
-
-.option {
-	display: flex;
-	align-items: center;
-	margin-bottom: 40px;
-	justify-content: space-between;
-}
-
-.option .calendar {
-	
-}
-
-.option .filter-group, .option .calendar {
-	display: flex;
-	align-items: center;
-}
-
-.option input[type="date"], .option .calendar-box {
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-	padding: 0.375rem 0.75rem;
-}
-
-.option .search {
-	display: flex;
-	align-items: center;
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-	padding: 0.375rem 0.75rem;
-}
-
-.option .search input {
-	border: none;
-}
-
-.filter-group input[type="submit"] {
-	background-color: #007bff;
-	color: white;
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-	padding: 0.375rem 0.75rem;
-	cursor: pointer;
-	font-size: 1rem;
-}
-
-.option .search i {
-	color: #6c757d;
-}
-
-.option .calendar .calendar-box {
-	background-color: #e9ecef;
-	text-align: center;
-}
-</style>
 </head>
-<body"sb-nav-fixed">
-	<!-- header -->
-	<%@ include file="/WEB-INF/views/admin/include/header.jsp"%>
-	<div id="layoutSidenav">
-		<%@ include file="/WEB-INF/views/admin/include/sidenav.jsp"%>
-		<div id="layoutSidenav_content">
-			<main>
-				<div class="cancelListPage">
-					<h1>
-						<b>취소 관리
-					</h1>
-					<div class="option">
-						<form method="get" name="searchForm" action="/admin/cancel/list">
-							<div class="filter-group">
-								<select name="orderBy" id="orderBySelect">
-									<option value="" hidden>정렬</option>
-									<option value="최신순"
-										<c:if test="${cancelAdminListVO.orderBy == '최신순'}">selected</c:if>>요청
-										날짜 최신순</option>
-									<option value="오래된순"
-										<c:if test="${cancelAdminListVO.orderBy == '오래된순'}">selected</c:if>>요청
-										날짜 오래된 순</option>
-								</select> <select name="filter" id="filterSelect">
-									<option value="" hidden>필터</option>
-									<option value="0"
-										<c:if test="${cancelAdminListVO.filter == 0}">selected</c:if>>취소
-										요청</option>
-									<option value="1"
-										<c:if test="${cancelAdminListVO.filter == 1}">selected</c:if>>취소
-										승인</option>
-									<option value="3"
-										<c:if test="${cancelAdminListVO.filter == 3}">selected</c:if>>취소
-										거절</option>
-									<option value="2"
-										<c:if test="${cancelAdminListVO.filter == 2}">selected</c:if>>취소
-										완료</option>
+<%@ include file="/WEB-INF/views/admin/include/header.jsp"%>
+<div id="layoutSidenav">
+	<%@ include file="/WEB-INF/views/admin/include/sidenav.jsp"%>
+	<div id="layoutSidenav_content">
+		<main>
+			<div class="container-fluid px-4">
+				<h1 class="mt-4">취소 관리</h1>
+				<div class="card mb-4">
+
+					<div class="card-body">
+						<!-- 리스트 정렬, 필터 검색 영역  -->
+						<div class="datatable-dropdown" style="margin-bottom: 20px">
+							<span>취소 날짜</span> <input type="date" name="startRequestDate"
+								id="startRequestDate" placeholder="YYYY-MM-DD"
+								value="${cancelAdminListVO.startRequestDate}"> <input
+								type="date" name="endRequestDate" id="endRequestDate"
+								placeholder="YYYY-MM-DD"
+								value="${cancelAdminListVO.endRequestDate}">
+						</div>
+						<div class="datatable-top">
+							<div class="datatable-dropdown">
+								<label> <select id="orderBy" name="orderBy"
+									class="datatable-selector" onchange="applyCondition();">
+										<option value="" hidden>정렬</option>
+										<option value="최신순"
+											<c:if test="${cancelAdminListVO.orderBy == '최신순'}">selected</c:if>>최신순</option>
+										<option value="오래된순"
+											<c:if test="${cancelAdminListVO.orderBy == '오래된순'}">selected</c:if>>오래된순</option>
 								</select>
-								<div class="search">
-									<i class="fas fa-search"></i> <input type="text"
-										name="searchWord" placeholder="주문no/유저ID/상품명"
-										value="${cancelAdminListVO.searchWord}">
-								</div>
-								<input type="submit" value="검색">
-								<div class="calendar">
-									<input type="date" name="startRequestDate"
-										id="startRequestDate" placeholder="YYYY-MM-DD"
-										value="${cancelAdminListVO.startRequestDate}">
-									<div class="calendar-box">-</div>
-									<input type="date" name="endRequestDate" id="endRequestDate"
-										placeholder="YYYY-MM-DD"
-										value="${cancelAdminListVO.endRequestDate}">
+								</label> <label> <select id="filter" name="filter"
+									class="datatable-selector" onchange="applyCondition();">
+										<option value="">전체보기</option>
+										<option value="0">취소 요청</option>
+										<option value="1">취소 승인</option>
+										<option value="3">취소 거절</option>
+										<option value="2">취소 완료</option>
+								</select>
+								</label>
+							</div>
+							<div class="row align-items-center">
+								<div class="col-md-9">
+									<input id="searchWord" name="searchWord"
+										class="datatable-input" type="search"
+										placeholder="주문번호/구매자명/상품명"
+										<c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if>
+										onkeyup="if(window.event.keyCode==13){applyCondition();}"
+										style="width: 250px">
 								</div>
 
-								<input type="hidden" name="page"
-									value="${cancelAdminListVO.page}">
+								<div class="col-md-1">
+									<input type="button" value="검색" class="btn btn-primary"
+										onclick="applyCondition()">
+								</div>
 							</div>
-						</form>
-					</div>
-					<p>
-						<span><strong>총 ${map.count}개</strong> |
-							${cancelAdminListVO.page}/${map.totalPage}페이지</span>
-					</p>
-					<div class="list_page">
-						<div class="list_content">
-							<table id="datatablesSimple" class="table table-striped">
+
+						</div>
+
+						<!-- 리스트 영역 -->
+						<div class="datatable-container">
+							<table class="datatable-table">
 								<thead>
 									<tr>
 										<th>주문 번호</th>
+										<th>주문 상세번호</th>
 										<th>상품명</th>
 										<th>구매자명</th>
 										<th>수량</th>
@@ -186,172 +186,28 @@ h1 {
 										<th>취소 상태</th>
 									</tr>
 								</thead>
-								<tbody>
-									<c:forEach var="list" items="${map.list}">
-										<tr
-											onclick="location.href='/admin/cancel/${list.order_detail_no}'"
-											style="cursor: pointer;">
-											<td>${list.order_no}</td>
-											<td>${list.item_name}</td>
-											<td>${list.user_id}</td>
-											<td>${list.amount}</td>
-											<td>${list.price}</td>
-											<td><fmt:formatDate value="${list.cancel_request_date}"
-													pattern="yyyy-MM-dd HH:mm:ss" /></td>
-											<td><fmt:formatDate value="${list.cancel_approve_date}"
-													pattern="yyyy-MM-dd HH:mm:ss" /></td>
-											<td><c:choose>
-													<c:when test="${list.cancel_status == 0}">취소 요청</c:when>
-													<c:when test="${list.cancel_status == 1}">취소 승인</c:when>
-													<c:when test="${list.cancel_status == 2}">취소 완료</c:when>
-													<c:when test="${list.cancel_status == 3}">취소 거절</c:when>
-												</c:choose></td>
-										</tr>
-									</c:forEach>
+								<tbody id="printList">
+
 								</tbody>
+
 							</table>
 						</div>
-					</div>
-					<div class="page_navigation">
-						<ul class="pagination">
-							<c:if test="${map.isPrev}">
-								<li><a
-									href="list?page=${map.startPage-1}&startRequestDate=${cancelAdminListVO.startRequestDate}&endRequestDate=${cancelAdminListVO.endRequestDate}&startApproveDate=${cancelAdminListVO.startApproveDate}&endApproveDate=${cancelAdminListVO.endApproveDate}&orderBy=${cancelAdminListVO.orderBy}&filter=${cancelAdminListVO.filter}&searchWord=${cancelAdminListVO.searchWord}">‹‹</a></li>
-							</c:if>
-							<c:forEach var="p" begin="${map.startPage}" end="${map.endPage}">
-								<c:choose>
-									<c:when test="${p == cancelAdminListVO.page}">
-										<li class="active"><a href='#;' class='current'>${p}</a></li>
-									</c:when>
-									<c:otherwise>
-										<li><a
-											href="list?page=${p}&startRequestDate=${cancelAdminListVO.startRequestDate}&endRequestDate=${cancelAdminListVO.endRequestDate}&startApproveDate=${cancelAdminListVO.startApproveDate}&endApproveDate=${cancelAdminListVO.endApproveDate}&orderBy=${cancelAdminListVO.orderBy}&filter=${cancelAdminListVO.filter}&searchWord=${cancelAdminListVO.searchWord}">${p}</a></li>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-							<c:if test="${map.isNext}">
-								<li><a
-									href="list?page=${map.endPage+1}&startRequestDate=${cancelAdminListVO.startRequestDate}&endRequestDate=${cancelAdminListVO.endRequestDate}&startApproveDate=${cancelAdminListVO.startApproveDate}&endApproveDate=${cancelAdminListVO.endApproveDate}&orderBy=${cancelAdminListVO.orderBy}&filter=${cancelAdminListVO.filter}&searchWord=${cancelAdminListVO.searchWord}">››</a></li>
-							</c:if>
-						</ul>
-					</div>
 
-
+						<!-- 페이지네이션-->
+						<div class="datatable-bottom">
+							<div class="datatable-info"></div>
+							<nav class="datatable-pagination">
+								<ul class="datatable-pagination-list">
+								</ul>
+							</nav>
+						</div>
+					</div>
 				</div>
-			</main>
-			<%@ include file="/WEB-INF/views/admin/include/footer.jsp"%>
-		</div>
+			</div>
+		</main>
+		<%@ include file="/WEB-INF/views/admin//include/footer.jsp"%>
 	</div>
-	<script>
-		$(document)
-				.ready(
-						function() {
-							$("#prevPage")
-									.on(
-											"click",
-											function(event) {
-												event.preventDefault();
-												let currentPage = $
-												{
-													cancelAdminListVO.page
-												}
-												;
-												if (currentPage > 1) {
-													window.location.href = '?page='
-															+ (currentPage - 1)
-															+ '&searchWord=${cancelAdminListVO.searchWord}&filter=${cancelAdminListVO.filter}&startRequestDate='
-															+ $(
-																	"#startRequestDate")
-																	.val()
-															+ '&endRequestDate='
-															+ $(
-																	"#endRequestDate")
-																	.val()
-															+ '&startApproveDate='
-															+ $(
-																	"#startApproveDate")
-																	.val()
-															+ '&endApproveDate='
-															+ $(
-																	"#endApproveDate")
-																	.val()
-															+ '&orderBy=${cancelAdminListVO.orderBy}';
-												}
-											});
+</div>
 
-							$("#nextPage")
-									.on(
-											"click",
-											function(event) {
-												event.preventDefault();
-												let currentPage = $
-												{
-													cancelAdminListVO.page
-												}
-												;
-												let totalPage = $
-												{
-													map.totalPage
-												}
-												;
-												if (currentPage < totalPage) {
-													window.location.href = '?page='
-															+ (currentPage + 1)
-															+ '&searchWord=${cancelAdminListVO.searchWord}&filter=${cancelAdminListVO.filter}&startRequestDate='
-															+ $(
-																	"#startRequestDate")
-																	.val()
-															+ '&endRequestDate='
-															+ $(
-																	"#endRequestDate")
-																	.val()
-															+ '&startApproveDate='
-															+ $(
-																	"#startApproveDate")
-																	.val()
-															+ '&endApproveDate='
-															+ $(
-																	"#endApproveDate")
-																	.val()
-															+ '&orderBy=${cancelAdminListVO.orderBy}';
-												}
-											});
-
-							$("#filterSelect")
-									.on(
-											"change",
-											function() {
-												var selectedFilter = $(this)
-														.val();
-												var startDateInput = $("#startRequestDate");
-												var endDateInput = $("#endRequestDate");
-												if (selectedFilter === "2") {
-													$(".calendar-box").text(
-															"취소 완료");
-													startDateInput.attr("name",
-															"startApproveDate");
-													endDateInput.attr("name",
-															"endApproveDate");
-													startDateInput
-															.val("${cancelAdminListVO.startApproveDate}");
-													endDateInput
-															.val("${cancelAdminListVO.endApproveDate}");
-												} else {
-													$(".calendar-box").text(
-															"취소 요청");
-													startDateInput.attr("name",
-															"startRequestDate");
-													endDateInput.attr("name",
-															"endRequestDate");
-													startDateInput
-															.val("${cancelAdminListVO.startRequestDate}");
-													endDateInput
-															.val("${cancelAdminListVO.endRequestDate}");
-												}
-											});
-
-							$("#filterSelect").trigger("change");
-						});
-	</script>
 </body>
 </html>
