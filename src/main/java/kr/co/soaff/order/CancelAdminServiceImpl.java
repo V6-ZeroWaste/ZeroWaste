@@ -14,29 +14,28 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 	@Override
 	public Map<String, Object> list(CancelAdminListVO vo) {
-		int count = mapper.count(vo);
-		int totalPage = count / 20;
-		if (count % 10 > 0)
-			totalPage++;
-		List<CancelAdminListVO> list = mapper.list(vo); // 목록
+	    int count = mapper.count(vo);
+	    int totalPage = count / 20;
+	    if (count % 20 > 0) totalPage++;
+	    List<CancelAdminListVO> list = mapper.list(vo); // 목록
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("count", count);
-		map.put("totalPage", totalPage);
-		map.put("list", list);
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("count", count);
+	    map.put("totalPage", totalPage);
+	    map.put("list", list);
 
-		int endPage = (int) (Math.ceil(vo.getPage() / 10.0) * 10);
-		int startPage = endPage - 9;
-		if (endPage > totalPage)
-			endPage = totalPage;
-		boolean isPrev = startPage > 1;
-		boolean isNext = endPage < totalPage;
-		map.put("endPage", endPage);
-		map.put("startPage", startPage);
-		map.put("isPrev", isPrev);
-		map.put("isNext", isNext);
-		return map;
+	    int endPage = (int) (Math.ceil(vo.getPage() / 10.0) * 10);
+	    int startPage = endPage - 9;
+	    if (endPage > totalPage) endPage = totalPage;
+	    boolean isPrev = startPage > 1;
+	    boolean isNext = endPage < totalPage;
+	    map.put("endPage", endPage);
+	    map.put("startPage", startPage);
+	    map.put("isPrev", isPrev);
+	    map.put("isNext", isNext);
+	    return map;
 	}
+
 
 	@Override
 	public Map<String, Object> cancelDetail(int order_detail_no) {
@@ -62,6 +61,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		}
 
 		// VO에 필요한 데이터 설정
+		orderDetail.setOrder_no(order.getOrder_no());
+		orderDetail.setOrder_detail_no(order_detail_no);
 		orderDetail.setRefund_price(refundPrice);
 		orderDetail.setRefund_point(refundPoint);
 		orderDetail.setTotal_price(total_price);
@@ -139,6 +140,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		orderDetail.setPayment_price(order.getPayment_price());
 		orderDetail.setPoint(order.getPoint());
 		orderDetail.setUser_no(order.getUser_no());
+		orderDetail.setUser_id(order.getUser_id());
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("forceDetail", orderDetail);

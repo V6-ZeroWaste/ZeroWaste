@@ -23,6 +23,7 @@ public class CancelAdminDetailVO {
     private String payment_method;
     private int payment_price;
     private String item_name;
+    private String user_id;
     
     // 환불 계산에 필요한 필드
     private int refund_price; // 환불금액
