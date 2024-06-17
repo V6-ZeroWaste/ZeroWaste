@@ -52,7 +52,7 @@
 	    ) od ON i.item_no = od.item_no
 	    LEFT JOIN category c ON i.category_no = c.category_no
 	    <where>
-			exposed_status = 0
+			exposed_status = 1
 		    <include refid="filterSql"/>
 		    <include refid="searchSql"/>
 	    </where>
@@ -74,7 +74,7 @@
 		select
 			count(*) from item i
 		<where>
-			exposed_status = 0
+			exposed_status = 1
 		    <include refid="filterSql"/>
 		    <include refid="searchSql"/>
 	    </where>	
