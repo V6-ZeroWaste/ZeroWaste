@@ -464,7 +464,6 @@
                     <!-- 리뷰 페이지 네이션 영역 -->
                     <nav class="review-pagination">
                         <ul class="review-pagination-list">
-                            <li>1</li>
                         </ul>
                     </nav>
                 </div>
@@ -605,7 +604,6 @@
                     <!-- 문의 페이지 네이션 영역 -->
                     <nav class="item-pagination">
                         <ul class="item-pagination-list">
-                            <li>1</li>
                         </ul>
                     </nav>
                 </div>
