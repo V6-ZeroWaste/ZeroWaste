@@ -23,6 +23,7 @@
 
     }
 
+
     function fieldCheck() {
         let receiverName = $("#receiverName");
         let zipcode = $("#zipcode");
@@ -120,6 +121,21 @@
 
     window.onload = function () {
         $("#receiverName, #zipcode, #addr, #addrDetail, #receiverTel1, #receiverTel2, #receiverTel3, #paymentMethod, #agree").on("change", fieldCheck);
+
+        $("#zipcode").on('click', function () {
+
+            if (!$("#zipcode").val()) {
+                zipcode();
+            }
+        });
+
+        $("#addr").on('click', function () {
+
+            if (!$("#addr").val()) {
+                zipcode();
+            }
+        });
+
     };
 
 </script>
@@ -157,7 +173,7 @@
                 document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
                 */
                 $('#zipcode').val(data.zonecode);
-                $('#addr1').val(roadAddr);
+                $('#addr').val(roadAddr);
             }
         }).open();
     }
@@ -352,7 +368,7 @@
                     <div class="form-group col-md-9">
                         <label for="zipcode">* 우편번호</label>
                         <input type="text" class="form-control" name="zipcode" id="zipcode" placeholder=""
-                               onclick="zipcode();" readonly>
+                               readonly>
                         <div id="zipcodeCheckMsg" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-3">
@@ -365,7 +381,7 @@
                     <div class="form-group col-md-6">
                         <label for="addr">* 주소</label>
                         <input type="text" class="form-control" name="addr" id="addr" placeholder=""
-                               onclick="zipcode();" readonly>
+                               readonly>
                         <div id="addrCheckMsg" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-6">

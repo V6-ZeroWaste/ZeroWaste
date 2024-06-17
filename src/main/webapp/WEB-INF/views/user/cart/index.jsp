@@ -19,34 +19,37 @@
 <script>
 
     function goOrder() {
-        if (!con) {
+        if (con) {
             location.href = "/order";
         } else {
             alert("상품을 선택해주세요")
         }
     }
 
-    let con = true;
+    let con = false;
     $(document).ready(function () {
-
         $("#checkAll").on('change', function () {
             $(".cart-item .custom-control-input").prop('checked', $(this).prop('checked'));
+            updateConState();
         });
-
 
         $(".cart-item .custom-control-input").on('change', function () {
             if ($(".cart-item .custom-control-input:checked").length === $(".cart-item .custom-control-input").length) {
-                $("#selectAll").prop('checked', true);
+                $("#checkAll").prop('checked', true);
             } else {
-                $("#selectAll").prop('checked', false);
+                $("#checkAll").prop('checked', false);
             }
+            updateConState();
         });
 
         $("#orderBtn").on('click', function () {
-            if ($(".cart-item .custom-control-input:checked").length === 0) {
-                con = false;
-            }
+        	updateConState();
+            goOrder();
         });
+
+        function updateConState() {
+            con = $(".cart-item .custom-control-input:checked").length > 0;
+        }
     });
 
 </script>
@@ -177,7 +180,7 @@
                     </div>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block mt-1"
-                        style="background-color:#79AC78;border-color: #79AC78;" id="orderBtn" onclick="goOrder();">주문하기
+                        style="background-color:#79AC78;border-color: #79AC78;" id="orderBtn">주문하기
                 </button>
             </div>
 
