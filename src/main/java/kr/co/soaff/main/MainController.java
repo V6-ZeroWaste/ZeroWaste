@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-	@GetMapping("/index")
+	@GetMapping("/")
 	public String index() {
 		return "/user/main/index";
 	}
@@ -18,7 +18,7 @@ public class MainController {
 
 	@GetMapping("/cart")
 	public String cart() {
-		return "/user/cart/index";
+		return "/user/order/cart";
 	}
 
 	@GetMapping("/about")

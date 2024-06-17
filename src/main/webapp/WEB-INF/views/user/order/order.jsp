@@ -462,8 +462,8 @@
                             <tr>
                                 <th><b>* 주소</b></th>
                                 <td><input type="text" class="form-control" name="addr" id="addr" placeholder=""
-                                           readonly></td
-                                <div id="addrCheckMsg" class="invalid-feedback"></div>
+                                           readonly>
+                                <div id="addrCheckMsg" class="invalid-feedback"></div></td>
 
                             </tr>
                             <tr>
