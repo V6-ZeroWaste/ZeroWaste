@@ -99,4 +99,8 @@ public class ItemServiceImpl implements ItemService {
 		map.put("avgScore", avgScore == null ? 0 : avgScore);
 		return map;
 	}
+
+	public String getCategoryName(int category_no){
+		return itemMapper.getCategoryName(category_no);
+	};
 }

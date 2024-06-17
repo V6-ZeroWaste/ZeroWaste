@@ -88,10 +88,12 @@
 		GROUP BY category_no, c.name;
 	</select>
 
-	<!-- 리뷰 리스트 -->
-
-	<!-- 리뷰 상세 -->
-
+	<!-- 카테고리 이름 가져오기 -->
+	<select id="getCategoryName" parameterType="int" resultType="java.lang.String">
+		SELECT name FROM category
+		WHERE category_no
+				  = #{category_no}
+	</select>
 
 
 </mapper>
