@@ -96,7 +96,7 @@ function handleUpdate() {
 		<div class="row">
 			<!-- title -->
 			<div class="col-12">
-				<h3 class="mb-0">리뷰 수정</h3>
+				<h3 class="mb-0">문의 수정</h3>
 			</div>
 			<!-- /title -->
 
@@ -122,9 +122,6 @@ function handleUpdate() {
 					</div>
 				</div>
 			</div>
-			<!-- /review info card -->
-
-			<!-- review detail card -->
 			<div class="col-12">
 				<div style="border: 1px solid #dddddd;">
 					<table class="table table-borderless">
