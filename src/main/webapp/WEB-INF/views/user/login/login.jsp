@@ -14,41 +14,130 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
-<script type="text/javascript">
-  $(function() {
+<script>
 
-    function timer() {
-      var time = 180; // 기준시간 작성 (3분 = 180초)
-      var min = ""; // 분
-      var sec = ""; // 초
-
-      // setInterval(함수, 시간) : 주기적인 실행
-      var x = setInterval(function () {
-        // parseInt() : 정수를 반환
-        min = parseInt(time / 60); // 몫을 계산
-        sec = time % 60; // 나머지를 계산
-
-        document.getElementById("timer").innerHTML = min + "분 " + sec + "초";
-        time--;
-
-        // 타임아웃 시
-        if (time < 0) {
-          clearInterval(x); // setInterval() 실행을 끝냄
-          document.getElementById("timer").innerHTML = "시간초과";
-        }
-      }, 1000);
+  function goPay() {
+    if (fieldCheck()) {
+      location.href = "/order/success";
     }
 
-    $('#email_btn').on('click', function() {
-      var email_btn = document.getElementById('email_btn');
-      email_btn.innerHTML='재전송';
-      $('#emailVerification').show();
-      timer();
-    });
+  }
 
-    $('#adr_btn').on('click', () => {
-      zipcode();
-    });
+
+  function fieldCheck() {
+    let id =$('#id');
+    let pwd =$('#pwd');
+    let pwd_check = $('#pwd_check');
+    let name =$('#name');
+    let tel1 =$('#tel1');
+    let tel2 =$('#tel2');
+    let tel3 =$('#tel3');
+    let email_id =$('#email_id');
+    let email_domain = $('#email_domain');
+    let zipcode =$('#zipcode');
+    let addr1 =$('#addr1');
+
+
+    let idErrorMsg = $('#idErrorMsg');
+    let pwdErrorMsg =$('#pwdErrorMsg');
+    let pwd_checkErrorMsg = $('#pwd_checkErrorMsg');
+    let nameErrorMsg = $('#nameErrorMsg');
+    let tel1ErrorMsg = $('#tel1ErrorMsg');
+    let tel2ErrorMsg = $('#tel2ErrorMsg');
+    let tel3ErrorMsg = $('#tel3ErrorMsg');
+    let email_idErrorMsg = $('#email_idErrorMsg');
+    let email_domainErrorMsg = $('#email_domainErrorMsg');
+    let zipcodeErrorMsg = $('#zipcodeErrorMsg');
+    let addr1ErrorMsg = $('#addr1ErrorMsg');
+
+    idErrorMsg.css("display", "none");
+    pwdErrorMsg.css("display", "none");
+    pwd_checkErrorMsg.css("display", "none");
+    nameErrorMsg.css("display", "none");
+    tel1ErrorMsg.css("display", "none");
+    tel2ErrorMsg.css("display", "none");
+    tel3ErrorMsg.css("display", "none");
+    email_idErrorMsg.css("display", "none");
+    email_domainErrorMsg.css("display", "none");
+    zipcodeErrorMsg.css("display", "none");
+    addr1ErrorMsg.css("display", "none");
+
+
+    let isValid = true;
+
+    if (!id.val()) {
+      idErrorMsg.html("아이디를 입력해주세요");
+      idErrorMsg.css("display", "block");
+      id.focus();
+      isValid = false;
+    }
+
+    if (!pwd.val()) {
+      pwdErrorMsg.html("비밀번호를 입력해주세요");
+      pwdErrorMsg.css("display", "block");
+      pwd.focus();
+      isValid = false;
+    }
+
+    if (!pwd_check.val()) {
+      pwd_checkErrorMsg.html("비밀번호를 입력해 주세요");
+      pwd_checkErrorMsg.css("display", "block");
+      pwd_check.focus();
+      isValid = false;
+    }
+    if (!name.val()) {
+      nameErrorMsg.html("이름을 입력해 주세요");
+      nameErrorMsg.css("display", "block");
+      name.focus();
+      isValid = false;
+    }
+    if (!tel1.val()) {
+      tel1ErrorMsg.html("전화번호를 입력해주세요");
+      tel1ErrorMsg.css("display", "block");
+      tel1.focus();
+      isValid = false;
+    }
+    if (!tel2.val()) {
+      tel2ErrorMsg.html("전화번호를 입력해주세요");
+      tel2ErrorMsg.css("display", "block");
+      tel2.focus();
+      isValid = false;
+    }
+    if (!tel3.val()) {
+      tel3ErrorMsg.html("전화번호를 입력해주세요");
+      tel3ErrorMsg.css("display", "block");
+      tel3.focus();
+      isValid = false;
+    }
+    if (!email_id.val()) {
+      email_idErrorMsg.html("이메일을 입력해주세요");
+      email_idErrorMsg.css("display", "block");
+      email_id.focus();
+      isValid = false;
+    }
+    if (!email_domain.val()) {
+      email_domainErrorMsg.html("이메일 도메인을 입력해주세요");
+      email_domainErrorMsg.css("display", "block");
+      email_domain.focus();
+      isValid = false;
+    }
+    if (!zipcode.val()) {
+      zipcodeErrorMsg.html("주소를 입력해주세요");
+      zipcodeErrorMsg.css("display", "block");
+      zipcode.focus();
+      isValid = false;
+    }
+    if (!addr1.val()) {
+      addr1ErrorMsg.html("주소를 입력해주세요");
+      addr1ErrorMsg.css("display", "block");
+      addr1.focus();
+      isValid = false;
+    }
+    return isValid;
+  }
+
+  window.onload = function () {
+    $("#id, #pwd, #pwd_check, #name, #tel1, #tel2, #tel3, #email_id, #email_domain,#zipcode,#addr1").on("change", fieldCheck);
 
     $('#emailSel').change(function () {
       var emailSel = $(this).val();
@@ -59,6 +148,39 @@
         email_domain.attr('readonly', false);
       }
       email_domain.val(emailSel);
+    });
+
+    $('#adr_btn').on('click', () => {
+      zipcode();
+    });
+
+    $('#email_btn').on('click', function() {
+      var email_btn = document.getElementById('email_btn');
+      email_btn.innerHTML='재전송';
+      $('#emailVerification').show();
+    });
+  };
+</script>
+<script type="text/javascript">
+  $(function() {
+    id_btn.addEventListener('click', function() {
+      console.log(con);
+      var idBtnError = document.getElementById('idBtnError');
+      // $.ajax({
+      //   url:'/user/join/idCheck.do',
+      //   data : {id:$("#id").val()},
+      //   async : false,
+      //   success : function(res) {
+      //     console.log(res);
+      //     if (res == '1') {
+      //       id.setCustomValidity(idBtnError.innerHTML='중복된 아이디입니다');
+      //     }
+      //     else{
+      //       idBtnError.setCustomValidity('');
+      //       con = false;
+      //     }
+      //   }
+      // });
     });
 
     $('#relEmail').val($('#email_id').val() + "@" + $('#email_domain').val());
@@ -94,91 +216,6 @@
       }).open();
     }
 
-    window.addEventListener('load', function () {
-      var forms = document.querySelectorAll('.needs-validation');
-      var idBtnError = document.getElementById('idBtnError');
-      var pwCheckError = document.getElementById('pwCheckError');
-      var addrError = document.getElementById('addrError');
-      var con = true;
-      (function () {
-        'use strict';
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                  console.log(form);
-                  var event = true;
-                  pwError();
-
-
-                  form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                      addrErrorCheck();
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-
-                    form.classList.add('was-validated');
-                  }, false);
-                });
-      })();
-
-      // 비밀번호와 비밀번호 확인 필드가 일치하는지 확인
-      function pwError(){
-        pwd_check.addEventListener('input',function () {
-          if (pwd.value !== pwd_check.value) {
-            pwd_check.setCustomValidity(pwCheckError.innerHTML='비밀번호와 일치하지 않습니다');
-          }
-          else {
-            pwd_check.setCustomValidity('');
-          }
-        });
-      }
-
-      // 주소 필드 유효성 검사 추가
-      function addrErrorCheck() {
-        var zipcode = document.getElementById('zipcode');
-        var addr1 = document.getElementById('addr1');
-        if (zipcode.value === '') {
-          $('#zipcode').addClass('is-invalid');
-        }else{
-          zipcodeChange();
-        }
-
-      }
-      function zipcodeChange() {
-        var zipcode = document.getElementById('zipcode');
-        zipcode.addEventListener('input', function() {
-          if (zipcode.value !== '') {
-            $('#zipcode').removeClass('is-invalid').addClass('is-valid');
-          } else {
-            $('#zipcode').removeClass('is-valid').addClass('is-invalid');
-          }
-        });
-      }
-
-      id_btn.addEventListener('click', function() {
-        console.log(con);
-        var idBtnError = document.getElementById('idBtnError');
-        // $.ajax({
-        //   url:'/user/join/idCheck.do',
-        //   data : {id:$("#id").val()},
-        //   async : false,
-        //   success : function(res) {
-        //     console.log(res);
-        //     if (res == '1') {
-        //       id.setCustomValidity(idBtnError.innerHTML='중복된 아이디입니다');
-        //     }
-        //     else{
-        //       idBtnError.setCustomValidity('');
-        //       con = false;
-        //     }
-        //   }
-        // });
-      });
-    });
   });
 </script>
 <body>
@@ -218,15 +255,15 @@
       </div>
       <!-- content -->
       <div class="col col-lg-10">
-        <form action="/user/join" method="POST" name="frm" id="frm" class="needs-validation" novalidate>
+        <form action="/user/join" method="POST" name="frm" id="frm">
 
           <%--아이디 기입을 하지 않은경우--%>
           <div class="row mb-3">
             <label for="id" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>아이디</strong></label>
             <div class="col-sm-4">
-              <input type="text" class="form-control" id="id" name="id" required>
-              <div class="valid-feedback">사용가능한 아이디입니다.</div>
-              <div class="invalid-feedback" id="idBtnError"></div>
+              <input type="text" class="form-control" id="id" name="id" >
+              <div class="valid-feedback"></div>
+              <div class="invalid-feedback" id="idErrorMsg"></div>
             </div>
             <div class="col-sm-2">
               <button type="button" class="btn btn-primary btn-rounded" id="id_btn">중복확인</button>
@@ -236,65 +273,65 @@
           <div class="row mb-3" style="margin-bottom: 0;">
             <label for="pwd" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>비밀번호</strong></label>
             <div class="col-sm-6">
-              <input type="password" class="form-control" id="pwd" required>
-              <div class="valid-feedback" id="pwError">사용가능한 비밀번호 입니다.</div>
-              <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+              <input type="password" class="form-control" id="pwd" >
+              <div class="valid-feedback" ></div>
+              <div class="invalid-feedback" id="pwdErrorMsg"></div>
             </div>
           </div>
 
           <div class="row mb-3">
             <label for="pwd_check" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>비밀번호 확인</strong></label>
             <div class="col-sm-6">
-              <input type="password" class="form-control" id="pwd_check" required>
-              <div class="valid-feedback">비밀번호가 일치합니다</div>
-              <div class="invalid-feedback" id="pwCheckError">비밀번호 확인을 입력해주세요.</div>
+              <input type="password" class="form-control" id="pwd_check" >
+              <div class="valid-feedback"></div>
+              <div class="invalid-feedback" id="pwd_checkErrorMsg"></div>
             </div>
           </div>
 
           <div class="row mb-3">
             <label for="name" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>이름</strong></label>
             <div class="col-sm-6">
-              <input type="text" class="form-control" id="name" required pattern="^[a-zA-Z가-힣]+$" >
+              <input type="text" class="form-control" id="name" >
               <div class="valid-feedback">사용가능한 이름입니다</div>
-              <div class="invalid-feedback" id="nameError">올바른 이름을 입력해주세요.</div>
+              <div class="invalid-feedback" id="nameErrorMsg"></div>
             </div>
           </div>
 
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label" style="color: #3d733d"><strong>전화번호</strong></label>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="tel1" placeholder="010" required pattern="\d{2,3}">
+              <input type="text" class="form-control" id="tel1" placeholder="010" >
               <div class="valid-feedback"></div>
-              <div class="invalid-feedback" id="tel1Error">전화번호를 입력해주세요.</div>
+              <div class="invalid-feedback" id="tel1ErrorMsg"></div>
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="tel2" placeholder="1234" required pattern="\d{3,4}">
+              <input type="text" class="form-control" id="tel2" placeholder="1234">
               <div class="valid-feedback"></div>
-              <div class="invalid-feedback" id="tel2Error"></div>
+              <div class="invalid-feedback" id="tel2ErrorMsg"></div>
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="tel3" placeholder="5678" required pattern="\d{3,4}">
+              <input type="text" class="form-control" id="tel3" placeholder="5678" >
               <div class="valid-feedback"></div>
-              <div class="invalid-feedback" id="tel3Error"></div>
+              <div class="invalid-feedback" id="tel3ErrorMsg"></div>
             </div>
           </div>
 
           <div class="row mb-3">
             <label for="email_id" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>이메일</strong></label>
             <div class="col-sm-2" style="padding-right: 0">
-              <input type="text" class="form-control" id="email_id" placeholder="이메일" aria-label="이메일입력" required pattern="^[a-zA-Z0-9._-]+$">
+              <input type="text" class="form-control" id="email_id" placeholder="이메일" aria-label="이메일입력">
               <div class="valid-feedback"></div>
-              <div class="invalid-feedback" id="emailIdError">이메일을 입력해주세요.</div>
+              <div class="invalid-feedback" id="email_idErrorMsg"></div>
             </div>
             <span class="col-form-label">@</span>
             <div class="col-sm-2" style="padding-right: 0; padding-left: 0">
-              <input type="text" class="form-control" id="email_domain" placeholder="도메인이름" aria-label="도메인이름" readonly required pattern="^[a-zA-Z0-9.-]+$">
+              <input type="text" class="form-control" id="email_domain" placeholder="도메인이름" aria-label="도메인이름" readonly >
               <div class="valid-feedback"></div>
-              <div class="invalid-feedback" id="emailDomainError">도메인을 입력해주세요.</div>
+              <div class="invalid-feedback" id="email_domainErrorMsg"></div>
             </div>
             <div class="col-sm-2" style="padding-right: 30px; padding-left: 0">
               <div class="form-group mb-1">
-                <select id="emailSel" class="custom-select" required>
+                <select id="emailSel" class="custom-select" >
                   <option value="">선택-</option>
                   <option value="직접입력">직접입력</option>
                   <option value="naver.com">naver.com</option>
@@ -305,8 +342,6 @@
                   <option value="nate.com">nate.com</option>
                   <option value="yahoo.com">yahoo.com</option>
                 </select>
-                <div class="valid-feedback"></div>
-                <div class="invalid-feedback"></div>
               </div>
             </div>
 
@@ -317,8 +352,8 @@
           <div class="row mb-3" id="emailVerification" style="display: none;">
             <label for="emailcheck_id" class="col-sm-2 col-form-label">인증코드 입력</label>
             <div class="col-sm-4">
-              <input type="text" class="form-control" id="emailcheck_id" required>
-              <div class="invalid-feedback">올바른 인증코드를 입력해주세요</div>
+              <input type="text" class="form-control" id="emailcheck_id" >
+              <div class="invalid-feedback"></div>
             </div>
             <div class="col-sm-2" >
               <span class='btn btn-block btn-secondary' id='timer'></span>
@@ -332,8 +367,8 @@
           <div class="row mb-3">
             <label for="zipcode" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>주소</strong></label>
             <div class="col-sm-4">
-              <input type="text" class="form-control" id="zipcode" readonly required>
-              <div class="invalid-feedback" id="addrSuccess">우편번호를 눌러주세요</div>
+              <input type="text" class="form-control" id="zipcode" readonly >
+              <div class="invalid-feedback" id="zipcodeErrorMsg"></div>
             </div>
             <div class="col-sm-2">
               <button type="button" class="btn btn-primary btn-rounded" id="adr_btn" >우편번호</button>
@@ -342,15 +377,15 @@
           <div class="row mb-3">
             <label for="addr1" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-6">
-              <input type="text" class="form-control" id="addr1" readonly required>
-              <div class="invalid-feedback" id="addrError"></div>
+              <input type="text" class="form-control" id="addr1" readonly >
+              <div class="invalid-feedback" id="addr1ErrorMSg"></div>
             </div>
           </div>
           <div class="row mb-3">
             <label for="addr2" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-6">
               <input type="text" class="form-control" id="addr2">
-              <div class="valid-feedback">선택사항입니다</div>
+              <div class="valid-feedback" ></div>
             </div>
           </div>
           <div class="row mb-3">
@@ -360,7 +395,7 @@
               <button type="button" class="btn btn-primary" onclick="history.back();">취소</button>
             </div>
             <div class="col-sm-2">
-              <button type="submit" class="btn btn-primary">확인</button>
+              <button type="submit" class="btn btn-primary" onclick="goPay()">확인</button>
             </div>
           </div>
           <input type="hidden" id="relEmail" name="relEmail">
