@@ -79,12 +79,14 @@ public class ItemAdminController {
 	}
 
 	@GetMapping("/admin/item/detail")
-	public String detail(HttpServletRequest request, ItemVO vo) {
+	public String detail(Model model, ItemVO vo) {
 		System.out.println(vo);
 		ItemVO item = service.detail(vo);
 		List<CategoryVO> categories = service.categories();
-		request.setAttribute("item", item);
-		request.setAttribute("categories", categories);
+//		request.setAttribute("item", item);
+//		request.setAttribute("categories", categories);
+		model.addAttribute("item", item);
+		model.addAttribute("categories", categories);
 		return "admin/item/detail";
 	}
 
@@ -108,7 +110,7 @@ public class ItemAdminController {
 	@PostMapping("/admin/item/update")
 	public String upadteItem(HttpServletRequest request, ItemVO vo, @RequestParam("file") MultipartFile detail)
 			throws IOException {
-		service.update(service.detail(vo), detail, request);
+		service.update(vo, detail, request);
 		return "redirect:detail?item_no=" + vo.getItem_no();
 	}
 
