@@ -17,12 +17,12 @@
 
 <!-- 주문 결제가 완료되었습니다 -->
 <section class="py-0 text-white">
-    <div class="image image-overlay" style="background-image:url(/user/images/background-3.jpg)"></div>
+    <div class="image image-overlay" style="background-image:url(/user/images/main_test1.png)"></div>
     <div class="container">
         <div class="row align-items-center justify-content-center vh-100">
             <div class="col-12 col-md-12 col-lg-12 text-center">
-                <h1 class="display-1 font-weight-bold">🎉 주문 결제가 완료되었습니다</h1>
-                <p class="lead">주문해주셔서 감사합니다</p>
+                <h1 class="display-1 font-weight-bold">Thank you for practicing zero waste!</h1>
+                <p class="lead"></p>
                 <p><a href="/index" class="btn btn-primary">메인페이지로 이동</a>
                     <a href="/mypage/order/detail?order_no=1" class="btn btn-primary">주문 내역 확인</a></p>
             </div>

@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <nav class="navbar navbar-expand-lg navbar-dark">
-                <a href="/index" class="navbar-brand order-1 order-lg-2">SOAFF</a>
+                <a href="/" class="navbar-brand order-1 order-lg-2">SOAFF</a>
                 <button class="navbar-toggler order-2" type="button" data-toggle="collapse"
                         data-target=".navbar-collapse"
                         aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,7 +15,7 @@
 
                 <div class="collapse navbar-collapse order-3 order-lg-1" id="navbarMenu">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"><a class="nav-link" href="/index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
 
                         <!-- store 토글 -->
                         <li class="nav-item dropdown">
@@ -24,6 +24,7 @@
                                 STORE
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            	<li><a class="dropdown-item" href="#!">All Items</a></li>
                                 <li><a class="dropdown-item" href="#!">HOME & LIVING</a></li>
                                 <li><a class="dropdown-item" href="#!">HAIR</a></li>
                                 <li><a class="dropdown-item" href="#!">FACE & BODY</a></li>
@@ -31,6 +32,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
+
                             <a class="nav-link" href="/about">
                                 SOAFF STORY
                             </a>
@@ -43,11 +45,6 @@
                         <!-- 로그인 토글 -->
                         <li class="nav-item">
                             <a class="nav-link" href="/login">Log In</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a data-toggle="modal" data-target="#search" class="nav-link"><i
-                                    class="icon-search"></i></a>
                         </li>
                         <li class="nav-item cart">
                             <a href="/cart" class="nav-link"><span>Cart</span><span>2</span></a>

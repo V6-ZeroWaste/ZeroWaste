@@ -100,8 +100,9 @@ s3.properties
 s3.properties
 .factorypath
 =======
-workspace.xml
-factorypath.xml
+s3.properties
+.factorypath
+>>>>>>> refs/heads/develop
 >>>>>>> refs/heads/develop
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
