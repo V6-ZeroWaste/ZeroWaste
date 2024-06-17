@@ -181,24 +181,12 @@
 
 
 <body>
-<!-- breadcrumbs -->
-<section class="breadcrumbs separator-bottom">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/index">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Invoice</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- hero -->
+<br>
+<br>
+<br>
 <section>
     <div class="container">
         <div class="row">
@@ -349,156 +337,161 @@
                     -->
                 </div>
 
-                <!-- delivery -->
-                <br>
-                <div class="row align-items-end mb-2">
-                    <div class="col-md-6">
-                        <h2 class="h3 mb-0"><span class="text-muted">03.</span> Delivery</h2>
+                <form>
+                    <!-- delivery -->
+                    <br>
+                    <div class="row align-items-end mb-2">
+                        <div class="col-md-6">
+                            <h2 class="h3 mb-0"><span class="text-muted">03.</span> Delivery Info</h2>
+                        </div>
+                        <div class="col-md-6 text-md-right">
+                            <a class="eyebrow underline">* 필수 입력값</a>
+                        </div>
                     </div>
-                    <div class="col-md-6 text-md-right">
-                        <a class="eyebrow underline">* 필수 입력값</a>
-                    </div>
-                </div>
-                <div class="row gutter-1 mb-2">
-                    <div class="form-group col-md-12">
-                        <label for="receiverName">* 받으실 분</label>
-                        <input type="text" class="form-control" name="receiverName" id="receiverName" placeholder="">
-                        <div id="receiverNameCheckMsg" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-9">
-                        <label for="zipcode">* 우편번호</label>
-                        <input type="text" class="form-control" name="zipcode" id="zipcode" placeholder=""
-                               readonly>
-                        <div id="zipcodeCheckMsg" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label></label>
-                        <button class="form-control btn btn-primary" style="background-color: #FFFFFF; color: #618264;"
-                                id="searchZipcode" onclick="zipcode();">
-                            우편번호 검색
-                        </button>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="addr">* 주소</label>
-                        <input type="text" class="form-control" name="addr" id="addr" placeholder=""
-                               readonly>
-                        <div id="addrCheckMsg" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="addrDetail">* 상세주소</label>
-                        <input type="text" class="form-control" name="addrDetail" id="addrDetail" placeholder="상세주소">
-                        <div id="addrDetailCheckMsg" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="receiverTel1">* 전화번호</label>
-                        <input type="text" class="form-control" name="receiverTel1" id="receiverTel1" placeholder="">
-                        <div id="receiverTel1CheckMsg" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="receiverTel2"></label>
-                        <input type="text" class="form-control" name="receiverTel2" id="receiverTel2"
-                               placeholder="">
-                        <div id="receiverTel2CheckMsg" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="receiverTel3"></label>
-                        <input type="text" class="form-control" name="receiverTel3" id="receiverTel3"
-                               placeholder="">
-                        <div id="receiverTel3CheckMsg" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label for="deliveryRequest">배송 요청사항</label>
-                        <input type="text" class="form-control" name="deliveryRequest" id="deliveryRequest"
-                               placeholder="">
-                    </div>
-                </div>
-
-                <!-- Payment Info -->
-                <br>
-                <div class="row align-items-end mb-2">
-                    <div class="col-md-6">
-                        <h2 class="h3 mb-0"><span class="text-muted">04.</span> Payment Info</h2>
-                    </div>
-                    <div class="col-md-6 text-md-right">
-                    </div>
-                </div>
-                <div class="tab-content" id="paymentInfoTable">
-                    <div class="tab-pane fade active show" id="paymentInfoTableComponent" role="tabpanel"
-                         aria-labelledby="paymentInfoTableComponent">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <th scope="row"><b>상품 합계 금액</b></th>
-                                <td>11,850원</td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><b>배송비</b></th>
-                                <td>3000원</td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><b>적립금 사용</b></th>
-                                <td>
-                                    <div class="d-inline-flex col-md-12" style="padding-left: 0px;">
-                                        <input type="text" class="form-control col-md-6" name="point"
-                                               placeholder="사용할 적립금을 입력해주세요">
-                                        <button class="form-control col-sm-3 btn btn-primary ml-4">사용하기</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><b>최종 결제 금액</b></th>
-                                <td>14,580원</td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><b>예상 적립 금액</b></th>
-                                <td>355원</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Payment method -->
-                <br>
-                <div class="row align-items-end mb-2">
-                    <div class="col-md-6">
-                        <h2 class="h3 mb-0"><span class="text-muted">05.</span> Payment Method</h2>
-                    </div>
-                </div>
-                <div class="tab-content" id="PaymentMethodTable">
-                    <div class="tab-pane fade active show" id="PaymentMethodTableComponent" role="tabpanel"
-                         aria-labelledby="PaymentMethodTableComponent">
-                        <table class="table table-bordered">
-                            <tbody>
-
-                            <tr>
-                                <th>결제 수단 선택</th>
-                                <td>
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" name="paymentMethod" class="custom-control-input"
-                                               id="paymentMethod" checked>
-                                        <label class="custom-control-label" for="paymentMethod">간편결제</label>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div div class="d-inline-flex col-md-12" style="padding-left: 0px;">
-                    <div class="custom-control custom-checkbox mb-2">
-                        <input type="checkbox" class="custom-control-input" id="agree" name="agree">
-                        <label class="custom-control-label" for="agree"></label>
-                    </div>
-                    <div class="form-group col-md-12" style="padding-left: 0px;">
-                        <h5>주문 결제에 동의합니다.</h5>
-                        <div id="agreeCheckMsg" class="invalid-feedback"></div>
-                        <br>
+                    <div class="row gutter-1 mb-2">
+                        <div class="form-group col-md-12">
+                            <label for="receiverName">* 받으실 분</label>
+                            <input type="text" class="form-control" name="receiverName" id="receiverName"
+                                   placeholder="">
+                            <div id="receiverNameCheckMsg" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-9">
+                            <label for="zipcode">* 우편번호</label>
+                            <input type="text" class="form-control" name="zipcode" id="zipcode" placeholder=""
+                                   readonly>
+                            <div id="zipcodeCheckMsg" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label></label>
+                            <button class="btn btn-primary"
+                                    style="background-color: #FFFFFF; color: #618264;"
+                                    id="searchZipcode" onclick="zipcode();">
+                                우편번호 검색
+                            </button>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="addr">* 주소</label>
+                            <input type="text" class="form-control" name="addr" id="addr" placeholder=""
+                                   readonly>
+                            <div id="addrCheckMsg" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="addrDetail">* 상세주소</label>
+                            <input type="text" class="form-control" name="addrDetail" id="addrDetail"
+                                   placeholder="상세주소">
+                            <div id="addrDetailCheckMsg" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="receiverTel1">* 전화번호</label>
+                            <input type="text" class="form-control" name="receiverTel1" id="receiverTel1"
+                                   placeholder="">
+                            <div id="receiverTel1CheckMsg" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="receiverTel2"></label>
+                            <input type="text" class="form-control" name="receiverTel2" id="receiverTel2"
+                                   placeholder="">
+                            <div id="receiverTel2CheckMsg" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="receiverTel3"></label>
+                            <input type="text" class="form-control" name="receiverTel3" id="receiverTel3"
+                                   placeholder="">
+                            <div id="receiverTel3CheckMsg" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="deliveryRequest">배송 요청사항</label>
+                            <input type="text" class="form-control" name="deliveryRequest" id="deliveryRequest"
+                                   placeholder="">
+                        </div>
                     </div>
 
-                </div>
+                    <!-- Payment Info -->
+                    <br>
+                    <div class="row align-items-end mb-2">
+                        <div class="col-md-6">
+                            <h2 class="h3 mb-0"><span class="text-muted">04.</span> Payment Info</h2>
+                        </div>
+                        <div class="col-md-6 text-md-right">
+                        </div>
+                    </div>
+                    <div class="tab-content" id="paymentInfoTable">
+                        <div class="tab-pane fade active show" id="paymentInfoTableComponent" role="tabpanel"
+                             aria-labelledby="paymentInfoTableComponent">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th scope="row"><b>상품 합계 금액</b></th>
+                                    <td>11,850원</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>배송비</b></th>
+                                    <td>3000원</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>적립금 사용</b></th>
+                                    <td>
+                                        <div class="d-inline-flex col-md-12" style="padding-left: 0px;">
+                                            <input type="text" class="form-control col-md-6" name="point"
+                                                   placeholder="사용가능한 적립금: 5000원">
+                                            <button class="form-control col-sm-3 btn btn-primary ml-4">사용하기</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>최종 결제 금액</b></th>
+                                    <td>14,580원</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>예상 적립 금액</b></th>
+                                    <td>355원</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Payment method -->
+                    <br>
+                    <div class="row align-items-end mb-2">
+                        <div class="col-md-6">
+                            <h2 class="h3 mb-0"><span class="text-muted">05.</span> Payment Method</h2>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="PaymentMethodTable">
+                        <div class="tab-pane fade active show" id="PaymentMethodTableComponent" role="tabpanel"
+                             aria-labelledby="PaymentMethodTableComponent">
+                            <table class="table table-bordered">
+                                <tbody>
+
+                                <tr>
+                                    <th>결제 수단 선택</th>
+                                    <td>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" name="paymentMethod" class="custom-control-input"
+                                                   id="paymentMethod" checked>
+                                            <label class="custom-control-label" for="paymentMethod">간편결제</label>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div div class="d-inline-flex col-md-12" style="padding-left: 0px;">
+                        <div class="custom-control custom-checkbox mb-2">
+                            <input type="checkbox" class="custom-control-input" id="agree" name="agree">
+                            <label class="custom-control-label" for="agree"></label>
+                        </div>
+                        <div class="form-group col-md-12" style="padding-left: 0px;">
+                            <h5>주문 결제에 동의합니다.</h5>
+                            <div id="agreeCheckMsg" class="invalid-feedback"></div>
+                            <br>
+                        </div>
+                    </div>
+                </form>
                 <br>
                 <button class="form-control btn btn-primary"
                         style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;"
