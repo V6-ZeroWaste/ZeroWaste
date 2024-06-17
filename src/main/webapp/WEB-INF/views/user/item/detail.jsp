@@ -24,7 +24,7 @@
         }
 
         .active-border {
-            border-bottom: 3px solid #000; /* 원하는 색상과 두께로 설정 */
+            border-bottom: 3px solid #618264; /* 원하는 색상과 두께로 설정 */
         }
 
         .review-title,
@@ -48,7 +48,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding: 15px;
+            /*padding: 15px;*/
         }
 
         .rating,
@@ -66,12 +66,12 @@
             /*padding: 50px;*/
             margin: 50px;
         }
-        .user-id{
-            padding: 0 30px;
-        }
-        .date{
-            padding: 0 25px;
-        }
+        /*.user-id{*/
+        /*    padding: 0 30px;*/
+        /*}*/
+        /*.date{*/
+        /*    padding: 0 25px;*/
+        /*}*/
     </style>
 
     <title>soaff</title>
@@ -360,10 +360,10 @@
                     <!-- 상품 추가 영역 -->
 
                     <div class="row align-items-center mt-3" style="border-top: #dddddd 1px solid; ">
-                        <div class="col-md-8">
+                        <div class="col-md-8 ">
                             <h3 class="mt-3">총 가격</h3>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 d-flex justify-content-end">
                             <h3 class="mt-3" id="total-price">0원</h3>
                         </div>
 
@@ -485,59 +485,78 @@
                 </div>
             </div>
 <%--            <div class="row gutter-2 gutter-lg-4 mb-0 w-100" style="font-size: 14px;">--%>
-            <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center border-bottom" style="font-size: 14px;">
-                <div class="col-md-1 reply-status-line">
-                    답변상태
-                </div>
-                <div class="col-md-2 reply-type-line text-left">
-                    질문유형
-                </div>
-                <div class="col-md-5 reply-title-line">
-                    제목
-                </div>
-                <div class="col-md-2 user-id-line text-left">
-                    작성자
-                </div>
-                <div class="col-md-2 date-line text-left">
-                    작성일
+<%--            <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center" style="font-size: 14px;">--%>
+<%--                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">--%>
+<%--                    <div class="row w-100 align-items-center mb-0 border-bottom" style="width: 100%; margin: 0;">--%>
+<%--                        <div class="col-md-1 reply-status-line">--%>
+<%--                            답변상태--%>
+<%--                        </div>--%>
+<%--                        <div class="col-md-2 reply-type-line">--%>
+<%--                            질문유형--%>
+<%--                        </div>--%>
+<%--                        <div class="col-md-5 reply-title-line">--%>
+<%--                            제목--%>
+<%--                        </div>--%>
+<%--                        <div class="col-md-2 user-id-line">--%>
+<%--                            작성자--%>
+<%--                        </div>--%>
+<%--                        <div class="col-md-2 date-line">--%>
+<%--                            작성일--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+            <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center" style="font-size: 14px;">
+                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="padding: 0; width: 100%;">
+                    <div class="row w-100 align-items-center mb-0 border-bottom" style="padding:20px; margin-right:18px; width:100%">
+                        <div class="col-md-1 reply-status-line">
+                            답변상태
+                        </div>
+                        <div class="col-md-2 reply-type-line">
+                            질문유형
+                        </div>
+                        <div class="col-md-5 reply-title-line">
+                            제목
+                        </div>
+                        <div class="col-md-2 user-id-line">
+                            작성자
+                        </div>
+                        <div class="col-md-2 date-line">
+                            작성일
+                        </div>
+                    </div>
                 </div>
             </div>
             <br>
             <div class="row gutter-2 gutter-lg-4 mb-0">
                 <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
-                    <div class="accordion accordion-minimal" id="qna-1" style="width: 100%; margin: 0;"> <!-- accordion-1 -> qna-1 -->
-                        <!-- -->
-                        <div class="card">                  <!-- heading-1-1 -> qna-heading-1 -->
+                    <div class="accordion accordion-minimal" id="qna-1" style="width: 100%; margin: 0;">
+                        <div class="card">
                             <div class="card-header" id="qna-heading-1">
-                                <!-- -->
                                 <h5 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#qna-detail-1" aria-expanded="false" aria-controls="qna-detail-1" style="padding-bottom: 0;">
-                                        <!-- -->
+                                    <button class="btn btn-link w-100" type="button" data-toggle="collapse" data-target="#qna-detail-1" aria-expanded="false" aria-controls="qna-detail-1" style="padding-bottom: 0;">
                                         <div class="row w-100 align-items-center">
-                                            <div class="col-1 reply-status">
+                                            <div class="col-1 reply-status text-center">
                                                 답변 대기
                                             </div>
-                                            <div class="col-2 reply-type">
+                                            <div class="col-2 reply-type text-center">
                                                 상품 상세 문의
                                             </div>
-                                            <div class="col-5 reply-title">
+                                            <div class="col-5 reply-title text-left">
                                                 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다
                                             </div>
-                                            <div class="col-2 user-id" style="padding: 0 30px;">
+                                            <div class="col-2 user-id text-center">
                                                 User123
                                             </div>
-                                            <div class="col-2 date" style="padding: 0 25px;">
+                                            <div class="col-2 date text-center">
                                                 2024-06-13
                                             </div>
                                         </div>
                                     </button>
                                 </h5>
                             </div>
-
-                            <!-- class에서 show의 유무에 따라 열리고 닫힘 -->
-                            <!-- collapse-1-1 -> qna-detail-1 -->
                             <div id="qna-detail-1" class="collapse" aria-labelledby="qna-heading-1" data-parent="#qna-1" style="background: #fafafa ">
-                                <div class="card-body text-left content-box"> <!-- container 만져보기 -->
+                                <div class="card-body text-left content-box">
                                     <h4>Q</h4>
                                     <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1685510644/noticon/zlnodb9oj9icejaqiytd.png">
                                     <p> 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
@@ -557,19 +576,19 @@
                                 <h5 class="mb-0">
                                     <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#qna-detail-2" aria-expanded="false" aria-controls="qna-detail-2" style="padding-bottom: 0;">
                                         <div class="row w-100 align-items-center">
-                                            <div class="col-1 reply-status">
+                                            <div class="col-1 reply-status text-center">
                                                 답변 완료
                                             </div>
-                                            <div class="col-2 reply-type">
+                                            <div class="col-2 reply-type text-center">
                                                 교환/환불 문의
                                             </div>
-                                            <div class="col-5 reply-title">
+                                            <div class="col-5 reply-title text-left">
                                                 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다
                                             </div>
-                                            <div class="col-2 user-id">
+                                            <div class="col-2 user-id text-center">
                                                 User123
                                             </div>
-                                            <div class="col-2 date">
+                                            <div class="col-2 date text-center">
                                                 2024-06-13
                                             </div>
                                         </div>
