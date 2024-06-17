@@ -225,7 +225,74 @@
 
     <!-- 리뷰 -->
     <script>
+        let page = 1;
+        window.onload=function(){
+            getReviewList();
+        }
+        function applyReviewCondition(){
+            page = 1;
+            getReviewList();
+        }
+        function changeReviewPage(obj){
+            page = obj.getAttribute("data-page");
+            getReviewList();
+        }
 
+        function getReviewList(){
+            var data = {
+                orderBy: $('#reviewOrderBy').val(),
+                item_no: ${item.item_no},
+                page: page,
+
+            }
+
+            $.ajax({
+                type: "GET", // method type
+                url: "/item/getReviewList", // 요청할 url
+                data: data, // 전송할 데이터
+                dataType: "json", // 응답 받을 데이터 type
+                success : function(resp){
+                    console.log("리뷰 성공");
+                    // 데이터 리스트 출력
+                    $("#reviewPrintList").html(resp.printList);
+                    $("#review-total").html("후기("+resp.total.toLocaleString()+"개)");
+                    $("#avgScore").html(resp.avgScore);
+                    //
+                    // // 페이지네이션 출력
+                    // // 총 개수
+                    // $(".datatable-info").html("("+resp.total+"개)");
+                    // // 페이지네이션
+                    // let printPage = "";
+                    // if(resp.isPrev){
+                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
+                    //     printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
+                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
+                    //     printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
+                    // }
+                    // for(i = resp.startPage; i<=resp.endPage; i++){
+                    //     printPage += '<li class="datatable-pagination-list-item page-item'+(i==page? ' datatable-active' : '')+'">';
+                    //     printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">'+i+'</a></li>';
+                    // }
+                    // if(resp.isNext){
+                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
+                    //     printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
+                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
+                    //     printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
+                    // }
+                    // console.log(printPage);
+                    // $(".datatable-pagination-list").html(printPage);
+
+
+
+                },
+                error:function (data, textStatus) {
+                    console.log("리뷰 실패");
+                    $('#fail').html("관리자에게 문의하세요.") // 서버오류
+                    console.log('error', data, textStatus);
+                }
+            })
+
+        }
     </script>
 
     <!-- 문의 -->
@@ -249,20 +316,10 @@
                     <div class="col-lg-10 order-lg-2">
                         <div class="owl-carousel gallery" data-slider-id="1" data-thumbs="true" data-nav="true">
                             <figure class="equal">
-                                <a class="image" href="assets/images/demo/product-8.jpg"
-                                   style="background-image: url(assets/images/demo/product-8.jpg);">
+                                <a class="image" href="/upload/item_img/${item.item_img}"
+                                   style="background-image: url(/upload/item_img/${item.item_img});">
                                 </a>
                             </figure>
-                                <figure class="equal">
-                                    <a class="image" href="assets/images/demo/product-8-2.jpg"
-                                       style="background-image: url(assets/images/demo/product-8-2.jpg);">
-                                    </a>
-                                </figure>
-                                <figure class="equal">
-                                    <a class="image" href="assets/images/demo/product-8-3.jpg"
-                                       style="background-image: url(assets/images/demo/product-8-3.jpg);">
-                                    </a>
-                                </figure>
                             </div>
                         </div>
                     </div>
@@ -307,7 +364,7 @@
                             <h3 class="mt-3">총 가격</h3>
                         </div>
                         <div class="col-md-4">
-                            <h3 class="mt-3" id="total-price">0</h3>
+                            <h3 class="mt-3" id="total-price">0원</h3>
                         </div>
 
                     </div>
@@ -378,10 +435,10 @@
             <br>
             <br>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div>후기(6,404 개)</div>
+                <div id="review-total">후기(6,404 개)</div>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <h2><b>4.3</b> / 5</h2>
+                <h2><b id="avgScore">4.3</b> / 5</h2>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
                 <div class="col-md-8">
@@ -391,89 +448,22 @@
                     <label class="mb-0 ml-1">포토리뷰만 보기</label>
                 </div>
                 <div class="col-1">
-                    <select name="orderBy" class="form-control-sm">
-                        <option value="" disabled selected>정렬</option>
+                    <select name="reviewOrderBy" id="reviewOrderBy" class="form-control-sm" onchange="applyReviewCondition();">
+                        <option value="최신순" selected>최신순</option>
+                        <option value="오래된순" >오래된순</option>
+                        <option value="높은평점순" >높은 평점 순</option>
+                        <option value="낮은평점순" >낮은 평점 순</option>
                     </select>
                 </div>
             </div>
-            <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
-                    <div class="accordion accordion-minimal" id="review-1" style="width: 100%; margin: 0;">
-                        <div class="card">
-                            <div class="card-header" id="review-heading-1">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#review-detail-1" aria-expanded="false" aria-controls="review-detail-1" style="padding-bottom: 0;">
-                                        <div class="row w-100 align-items-center">
-                                            <div class="col-2">
-                                                <span class="rating">⭐⭐⭐⭐⭐</span>
-                                                <span class="photo-status">🖼️️</span>
-                                            </div>
-                                            <div class="col-6 review-title" >
-                                                상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.
-                                            </div>
-                                            <div class="col-2 user-id">
-                                                User123
-                                            </div>
-                                            <div class="col-2 date">
-                                                2024-06-13
-                                            </div>
-                                        </div>
-                                    </button>
-                                </h5>
-                            </div>
 
-                            <!-- class에서 show의 유무에 따라 열리고 닫힘 -->
-                            <div id="review-detail-1" class="collapse" aria-labelledby="review-heading-1" data-parent="#review-1" style="background: #fafafa;">
-                                <div class="card-body text-left content-box">
-                                    <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1685510644/noticon/zlnodb9oj9icejaqiytd.png">
-                                    <p>리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글리뷰 상세 text 글</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
-                    <div class="accordion accordion-minimal" id="review-2" style="width: 100%; margin:0;">
-                        <div class="card">
-                            <div class="card-header" id="review-heading-2">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#review-detail-2" aria-expanded="false" aria-controls="review-detail-2" style="padding-bottom: 0;">
-                                        <div class="row w-100 align-items-center">
-                                            <div class="col-2">
-                                                <span class="rating">⭐⭐⭐⭐⭐</span>
-                                                <span class="photo-status">️</span>
-                                            </div>
-                                            <div class="col-6 review-title" >
-                                                상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.상품 후기 제목입니다.
-                                            </div>
-                                            <div class="col-2 user-id">
-                                                User123
-                                            </div>
-                                            <div class="col-2 date">
-                                                2024-06-13
-                                            </div>
-                                        </div>
-                                    </button>
-                                </h5>
-                            </div>
-
-                            <!-- class에서 show의 유무에 따라 열리고 닫힘 -->
-                            <div id="review-detail-2" class="collapse" aria-labelledby="review-heading-2" data-parent="#review-2" style="background: #fafafa ">
-                                <div class="card-body text-left content-box">
-                                     <p>리뷰 상세 text 글</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id="reviewPrintList"> <!-- 리뷰 리스트 -->
             </div>
             <div class="row">
                 <div class="col text-center">
-                    <!-- 페이지 네이션 영역 -->
-                    <nav class="item-pagination">
-                        <ul class="item-pagination-list">
+                    <!-- 리뷰 페이지 네이션 영역 -->
+                    <nav class="review-pagination">
+                        <ul class="review-pagination-list">
                             <li>1</li>
                         </ul>
                     </nav>
@@ -612,7 +602,7 @@
             </div>
             <div class="row">
                 <div class="col text-center">
-                    <!-- 페이지 네이션 영역 -->
+                    <!-- 문의 페이지 네이션 영역 -->
                     <nav class="item-pagination">
                         <ul class="item-pagination-list">
                             <li>1</li>

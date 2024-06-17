@@ -11,10 +11,6 @@
     <link rel="stylesheet" href="/user/css/style.css" />
 	  <script>
 
-		  function regist(){
-			  window.location.href = "regist";
-		  }
-
 		  let page = 1;
 		  window.onload=function(){
 			  getList();
@@ -122,7 +118,7 @@
                         </select>
                     </label>
                     <label class="text-sm-center datatable-info">
-                         &nbsp; (총 개수) <!-- 리스트에 보이는 부분 말고 검색된 상품의 모든 개수 -->
+                         <!-- 리스트에 보이는 부분 말고 검색된 상품의 모든 개수 -->
                     </label>
                 </div>
 				<div class="col-md-1"></div>

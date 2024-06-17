@@ -1,5 +1,7 @@
 package kr.co.soaff.item;
 
+import kr.co.soaff.review.ReviewVO;
+
 import java.util.List;
 import java.util.Map;
 
@@ -8,4 +10,5 @@ public interface ItemService {
     ItemVO detail(ItemVO vo);
     int count(ItemVO vo);
     List<CategoryVO> categories();
+    Map<String, Object> reviewList(ReviewVO vo);
 }
