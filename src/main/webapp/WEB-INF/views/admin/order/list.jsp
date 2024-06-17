@@ -21,8 +21,14 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script type="text/javascript">
         let page = 1;
+        let filter = "${orderVO.filter}";
         window.onload=function(){
-        	  getList();
+        	if (filter) {
+        		getList();
+        	} else {
+        		filter = $('#filter').val();
+	        	getList();
+        	}
         	}
         function applyCondition(){
        		page = 1;
@@ -36,7 +42,7 @@
         	var data = {
         			searchWord: $('#searchWord').val(),
         			orderBy: $('#orderBy').val(),
-        			filter: $('#filter').val(),
+        			filter: filter,
         			start_date: $('#start_date').val(),
         			end_date: $('#end_date').val(),
         			page: page,
@@ -117,7 +123,6 @@
 												<div class="datatable-dropdown">
 													<label>
 														<select id="orderBy" name="orderBy" class="datatable-selector" onchange="applyCondition();">
-															<option value="none">==정렬==</option>
 															<option value="최신순">최신순</option>
 															<option value="오래된순">오래된순</option>
 															<option value="주문금액많은순">주문금액 많은 순</option>
@@ -126,20 +131,17 @@
 													</label>
 													<label>
 														<select id="filter" name="filter" class="datatable-selector" onchange="applyCondition();">
-															<option value="" >==필터==</option>
-															<option value="0" >취소 완료</option>
-															<option value="1" >취소 요청</option>
-															<option value="2" >상품준비중</option>
-															<option value="3" >배송중</option>
-															<option value="4" >배송완료</option>
-															<option value="5" >구매확정</option>
+															<option value="" <c:if test="${empty orderVO.filter}">selected</c:if>>전체보기</option>
+															<option value="2" <c:if test="${orderVO.filter}== 2">selected</c:if>>상품준비중</option>
+															<option value="3" <c:if test="${orderVO.filter}== 3">selected</c:if>>배송중</option>
+															<option value="4" <c:if test="${orderVO.filter}== 4">selected</c:if>>배송완료</option>
 														</select>
 													</label>
 												</div>
 												
 												<div class="row align-items-center">
 				                                    <div class="col-md-9">
-				                                         <input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="주문no/주문한 아이디/상품명" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width:250px">
+				                                         <input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="주문번호/주문한 아이디/상품명" <c:if test="${orderVO.searchWord} != null">value=${orderVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width:300px">
 				                                    </div>
 				                                    
 			                                    	<div class="col-md-1">
@@ -161,8 +163,9 @@
                                        	   <th>주문 번호</th>
                                            <th>주문 일자</th>
                                            <th>주문한 유저ID</th>
-                                           <th>주문 금액(수량)</th>
-                                           <th>주문 상태</th>
+                                           <th>결제 금액</th>
+                                           <th>결제 수량</th>
+                                           <th>배송 상태</th>
                                         </tr>
                                     </thead>
 		                        	<tbody id="printList">

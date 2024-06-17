@@ -29,14 +29,15 @@ public class QnaController {
 		Map<String, Object> map = service.list(vo);
 		String printList = "";
 		List<QnaVO> qnaList = (List<QnaVO>) map.get("list");
+		System.out.println(qnaList.toString());
 		if (qnaList.size() == 0) {
-			printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
+			printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
 		} 
 		for(QnaVO QnaVO: qnaList) {
 			printList += "<tr onclick=\"location.href='/admin/qna/detail?qna_no="+ QnaVO.getQna_no() + "'\">";
        		printList += "<td>" + QnaVO.getQna_no() + "</td>";
        		printList += "<td>" + QnaVO.getName() + "</td>";
-       		printList += "<td>" + QnaVO.getType() + "</td>";
+       		printList += "<td>" + (QnaVO.getType() ==0 ? "교환/환불 문의" : "상품 상세 문의" ) + "</td>";
        		printList += "<td>" + QnaVO.getTitle() + "</td>";
        		printList += "<td>" + QnaVO.getUser_id() + "</td>";
        		printList += "<td>" + QnaVO.getQuestion_date() + "</td>";  
