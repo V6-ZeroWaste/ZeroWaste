@@ -14,6 +14,48 @@
     <title>soaff</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
+<style>
+    #orderInfo {
+        margin-left: 10px;
+        margin-top: 30px;
+    }
+
+
+    #orderInfo th {
+        width: 150px;
+    }
+
+
+    #deliveryInfo {
+        margin-left: 10px;
+        margin-top: 30px;
+    }
+
+    #deliveryInfo th {
+        width: 180px;
+    }
+
+    #deliveryInfo tr {
+        width: 500px;
+    }
+
+    #paymentMethodTable {
+        margin-left: 10px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    #paymentMethodTable th {
+        width: 180px;
+    }
+
+    #agreeContainer {
+        margin-top: 30px;
+        margin-bottom: 10px;
+    }
+
+</style>
+
 <script>
 
     function goPay() {
@@ -84,29 +126,17 @@
             addrDetail.focus();
             isValid = false;
         }
-        if (!receiverTel1.val()) {
+        if (!receiverTel1.val() || !receiverTel2.val() || !receiverTel3.val()) {
             receiverTel1CheckMsg.html("전화번호를 입력해주세요");
             receiverTel1CheckMsg.css("display", "block");
-            receiverTel1.focus();
-            isValid = false;
-        }
-        if (!receiverTel2.val()) {
-            receiverTel2CheckMsg.html("전화번호를 입력해주세요");
-            receiverTel2CheckMsg.css("display", "block");
-            receiverTel2.focus();
-            isValid = false;
-        }
-        if (!receiverTel3.val()) {
-            receiverTel3CheckMsg.html("전화번호를 입력해주세요");
-            receiverTel3CheckMsg.css("display", "block");
-            receiverTel3.focus();
-            isValid = false;
-        }
-        if (!paymentMethod.val()) {
-            paymentMethodCheckMsg.html("결제수단을 확인해주세요");
-            paymentMethodCheckMsg.css("display", "block");
-            paymentMethod.focus();
-            isValid = false;
+
+            if (!receiverTel2.val()) {
+                receiverTel2.focus();
+            }
+            if (!receiverTel3.val()) {
+                receiverTel3.focus();
+            }
+
         }
         if (!agree) {
             agreeCheckMsg.html("주문 동의가 필요합니다");
@@ -129,7 +159,16 @@
             }
         });
 
+
+
         $("#addr").on('click', function () {
+
+            if (!$("#addr").val()) {
+                zipcode();
+            }
+        });
+
+        $("#searchZipcode").on('click', function () {
 
             if (!$("#addr").val()) {
                 zipcode();
@@ -200,13 +239,97 @@
 <section class="no-overflow pt-0">
     <div class="container">
         <div class="row gutter-4 justify-content-between">
-            <!--제목 -->
-            <div class="col-lg-12">
+
+            <aside class="col-4">
+                <div class="row">
+
+                    <!-- order preview -->
+                    <div class="col-12">
+                        <div class="card card-data bg-light">
+                            <div class="card-header py-2 px-3">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h3 class="fs-18 mb-0">Your Cart</h3>
+                                    </div>
+                                    <div class="col text-right">
+                                        <a href="cart.html" class="underline eyebrow">Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-line">
+                                    <li class="list-group-item d-flex justify-content-between text-dark align-items-center">
+                                        Analog Magazine Rack x2
+                                        <span>$240</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between text-dark align-items-center">
+                                        Closca Helmet
+                                        <span>$132</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between text-dark align-items-center">
+                                        Sigg Water Bottle x2
+                                        <span>$46</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- order summary -->
+                    <div class="col-12 mt-1">
+                        <div class="card card-data bg-light">
+                            <div class="card-header py-2 px-3">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h3 class="fs-18 mb-0">Order Summary</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-minimal">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Subtotal
+                                        <span>$418</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Shipping
+                                        <span>Free</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Discount
+                                        <span>-25%</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-footer py-2">
+                                <ul class="list-group list-group-minimal">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center text-dark fs-18">
+                                        Total
+                                        <span>$313,5</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- place order -->
+                    <div class="col-12 mt-1">
+                        <a href="#!" class="btn btn-primary btn-lg btn-block">Place Order</a>
+                    </div>
+
+
+                </div>
+            </aside>
+
+
+            <div class="col-8">
+                <!--제목 -->
                 <div class="row align-items-end mb-2">
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <h2 class="h3 mb-0"><span class="text-muted">01.</span> Order Items</h2>
                     </div>
                 </div>
+
 
                 <!-- item list 담는 박스 -->
                 <div class="col-lg-12 cart-item-list mb-6">
@@ -253,24 +376,19 @@
                     <!-- 합계-->
                     <br>
                     <div class="row gutter-1 mb-12">
-                        <div class="form-group col-md-3">
-                            <div class="inline-block">
-
-                            </div>
-                        </div>
-                        <div class="form-group col-md-3">
+                        <div class="col-4">
                             <div class="inline-block">
                                 <h6 style="text-align: right">총 n개의 상품 금액</h6>
                                 <h4 style="text-align: right" class="h2">11,850원</h4>
                             </div>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class=" col-4">
                             <div class="inline-block">
                                 <h6 style="text-align: right">배송비</h6>
                                 <h4 style="text-align: right" class="h2">+ 3000원</h4>
                             </div>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class=" col-4">
                             <div class="inline-block">
                                 <h6 style="text-align: right">합계</h6>
                                 <h4 style="text-align: right" class="h2">= 14,850원</h4>
@@ -281,65 +399,34 @@
 
 
                 <!-- Order Info -->
+
                 <div class="row align-items-end mb-2">
                     <div class="col-md-6">
                         <h2 class="h3 mb-0"><span class="text-muted">02.</span> Order Info</h2>
                     </div>
+                    <table class="table table-borderless" id="orderInfo">
+                        <tbody>
+                        <tr>
+                            <th><b>주문자 이름</b></th>
+                            <td>V6</td>
+                        </tr>
+                        <tr>
+                            <th><b>전화번호</b></th>
+                            <td>010-1111-1111</td>
+                        </tr>
+                        <tr>
+                            <th><b>email</b></th>
+                            <td>v6@gmail.com</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="row gutter-1 mb-12">
-                    <div class="form-group col-md-12">
-                        <label for="buyerName">주문자 이름</label>
-                        <input type="text" class="form-control" name="buyerName" id="buyerName" placeholder=""
-                               value="V6"
-                               readonly>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label for="buyerTel">전화번호</label>
-                        <input type="text" class="form-control" name="buyerTel" id="buyerTel" placeholder=""
-                               value="010-1111-1111"
-                               readonly>
-                    </div>
-                    <!--
-                    <div class="form-group col-md-4">
-                        <label for="orderPhone2"></label>
-                        <input type="text" class="form-control" name="orderPhone2" id="orderPhone2" placeholder=""readonly>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="orderPhone3"></label>
-                        <input type="text" class="form-control" name="orderPhone3" id="orderPhone3" placeholder="" readonly>
-                    </div>
-                    -->
-                    <div class="form-group col-md-12">
-                        <label for="buyerEmail">e-mail</label>
-                        <input type="text" class="form-control" name="buyerEmail" id="buyerEmail" placeholder=""
-                               value="v6@gmail.com"
-                               readonly>
-                    </div>
-                    <!--
-                    <div class="form-group col-md-4">
-                        <label for="emailDomain"></label>
-                        <input type="text" class="form-control" name="emailDomain" id="emailDomain" placeholder="">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label></label>
-                        <select id="emailSel" class="custom-select" required>
-                            <option value="">선택</option>
-                            <option value="직접입력">직접입력</option>
-                            <option value="naver.com">naver.com</option>
-                            <option value="gmail.com">gmail.com</option>
-                            <option value="hanmail.net">hanmail.net</option>
-                            <option value="hotmail.com">hotmail.com</option>
-                            <option value="korea.com">korea.com</option>
-                            <option value="nate.com">nate.com</option>
-                            <option value="yahoo.com">yahoo.com</option>
-                        </select>
-                    </div>
-                    -->
-                </div>
+
 
                 <form>
                     <!-- delivery -->
-                    <br>
+
+
                     <div class="row align-items-end mb-2">
                         <div class="col-md-6">
                             <h2 class="h3 mb-0"><span class="text-muted">03.</span> Delivery Info</h2>
@@ -347,64 +434,83 @@
                         <div class="col-md-6 text-md-right">
                             <a class="eyebrow underline">* 필수 입력값</a>
                         </div>
+                        <table class="table table-borderless" id="deliveryInfo">
+                            <tbody>
+                            <tr>
+                                <th><b>* 받으실 분</b></th>
+                                <td><input type="text" class="form-control col-5 " name="receiverName" id="receiverName"
+                                           placeholder="">
+                                    <div id="receiverNameCheckMsg" class="invalid-feedback"></div>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <th><b>* 우편번호</b></th>
+                                <td>
+                                    <div class="d-inline-flex col-12" style="padding-left: 0px;">
+                                        <input type="text" class="form-control col-5" name="zipcode" id="zipcode"
+                                               placeholder="" readonly>
+                                        <input type="button" class="btn btn-primary form-control col-4 ml-2" value="우편번호 검색"
+                                               style="background-color: #FFFFFF; color: #618264;" id="searchZipcode"
+                                               >
+
+
+                                    </div>
+                                    <div id="zipcodeCheckMsg" class="invalid-feedback"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><b>* 주소</b></th>
+                                <td><input type="text" class="form-control" name="addr" id="addr" placeholder=""
+                                           readonly></td
+                                <div id="addrCheckMsg" class="invalid-feedback"></div>
+
+                            </tr>
+                            <tr>
+                                <th><b>* 상세주소</b></th>
+                                <td><input type="text" class="form-control" name="addrDetail" id="addrDetail"
+                                           placeholder="상세주소">
+                                    <div id="addrDetailCheckMsg" class="invalid-feedback"></div>
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <th><b>* 전화번호</b></th>
+                                <td>
+                                    <div>
+
+                                        <div class="d-inline-flex col-12" style="padding-left: 0px;">
+                                            <input type="text" class="form-control col-2" name="receiverTel1"
+                                                   id="receiverTel1"
+                                                   placeholder="">
+                                            <p class="d-flex justify-content-center align-items-center col-1"
+                                               style="margin: 0;">-</p>
+                                            <input type="text" class="form-control col-2" name="receiverTel2"
+                                                   id="receiverTel2"
+                                                   placeholder="">
+                                            <p class="d-flex justify-content-center align-items-center col-1"
+                                               style="margin: 0;">-</p>
+                                            <input type="text" class="form-control col-2" name="receiverTel3"
+                                                   id="receiverTel3"
+                                                   placeholder="">
+
+                                        </div>
+                                        <div id="receiverTel1CheckMsg" class="invalid-feedback"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><b>* 배송 요청사항</b></th>
+                                <td><input type="text" class="form-control" name="deliveryRequest" id="deliveryRequest"
+                                           placeholder=""></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+
                     </div>
-                    <div class="row gutter-1 mb-2">
-                        <div class="form-group col-md-12">
-                            <label for="receiverName">* 받으실 분</label>
-                            <input type="text" class="form-control" name="receiverName" id="receiverName"
-                                   placeholder="">
-                            <div id="receiverNameCheckMsg" class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group col-md-9">
-                            <label for="zipcode">* 우편번호</label>
-                            <input type="text" class="form-control" name="zipcode" id="zipcode" placeholder=""
-                                   readonly>
-                            <div id="zipcodeCheckMsg" class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label></label>
-                            <button class="btn btn-primary"
-                                    style="background-color: #FFFFFF; color: #618264;"
-                                    id="searchZipcode" onclick="zipcode();">
-                                우편번호 검색
-                            </button>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="addr">* 주소</label>
-                            <input type="text" class="form-control" name="addr" id="addr" placeholder=""
-                                   readonly>
-                            <div id="addrCheckMsg" class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="addrDetail">* 상세주소</label>
-                            <input type="text" class="form-control" name="addrDetail" id="addrDetail"
-                                   placeholder="상세주소">
-                            <div id="addrDetailCheckMsg" class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="receiverTel1">* 전화번호</label>
-                            <input type="text" class="form-control" name="receiverTel1" id="receiverTel1"
-                                   placeholder="">
-                            <div id="receiverTel1CheckMsg" class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="receiverTel2"></label>
-                            <input type="text" class="form-control" name="receiverTel2" id="receiverTel2"
-                                   placeholder="">
-                            <div id="receiverTel2CheckMsg" class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="receiverTel3"></label>
-                            <input type="text" class="form-control" name="receiverTel3" id="receiverTel3"
-                                   placeholder="">
-                            <div id="receiverTel3CheckMsg" class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="deliveryRequest">배송 요청사항</label>
-                            <input type="text" class="form-control" name="deliveryRequest" id="deliveryRequest"
-                                   placeholder="">
-                        </div>
-                    </div>
+
 
                     <!-- Payment Info -->
                     <br>
@@ -418,7 +524,7 @@
                     <div class="tab-content" id="paymentInfoTable">
                         <div class="tab-pane fade active show" id="paymentInfoTableComponent" role="tabpanel"
                              aria-labelledby="paymentInfoTableComponent">
-                            <table class="table table-bordered">
+                            <table class="table table-borderless">
                                 <tbody>
                                 <tr>
                                     <th scope="row"><b>상품 합계 금액</b></th>
@@ -431,10 +537,10 @@
                                 <tr>
                                     <th scope="row"><b>적립금 사용</b></th>
                                     <td>
-                                        <div class="d-inline-flex col-md-12" style="padding-left: 0px;">
+                                        <div class="d-inline-flex col-12" style="padding-left: 0px;">
                                             <input type="text" class="form-control col-md-6" name="point"
                                                    placeholder="사용가능한 적립금: 5000원">
-                                            <button class="form-control col-sm-3 btn btn-primary ml-4">사용하기</button>
+                                            <button class="form-control col-sm-3 btn btn-primary ml-2">사용</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -458,19 +564,40 @@
                             <h2 class="h3 mb-0"><span class="text-muted">05.</span> Payment Method</h2>
                         </div>
                     </div>
-                    <div class="tab-content" id="PaymentMethodTable">
+                    <div class="tab-content">
                         <div class="tab-pane fade active show" id="PaymentMethodTableComponent" role="tabpanel"
                              aria-labelledby="PaymentMethodTableComponent">
-                            <table class="table table-bordered">
+                            <table class="table table-borderless" id="paymentMethodTable">
                                 <tbody>
 
                                 <tr>
                                     <th>결제 수단 선택</th>
                                     <td>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" name="paymentMethod" class="custom-control-input"
-                                                   id="paymentMethod" checked>
-                                            <label class="custom-control-label" for="paymentMethod">간편결제</label>
+                                        <div class="d-inline-flex col-12" style="padding-left: 0px;">
+
+                                            <div class="d-inline-flex col-12" style="padding-left: 0px;">
+                                                <div class="custom-control custom-radio col-4">
+                                                    <input type="radio" name="paymentMethod"
+                                                           class="custom-control-input"
+                                                           id="paymentMethod1" checked>
+                                                    <label class="custom-control-label"
+                                                           for="paymentMethod1">간편결제</label>
+                                                </div>
+                                                <div class="custom-control custom-radio col-4">
+                                                    <input type="radio" name="paymentMethod"
+                                                           class="custom-control-input"
+                                                           id="paymentMethod2">
+                                                    <label class="custom-control-label"
+                                                           for="paymentMethod2">신용카드</label>
+                                                </div>
+                                                <div class="custom-control custom-radio col-4">
+                                                    <input type="radio" name="paymentMethod"
+                                                           class="custom-control-input"
+                                                           id="paymentMethod3">
+                                                    <label class="custom-control-label"
+                                                           for="paymentMethod3">무통장입금</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -480,15 +607,14 @@
                         </div>
                     </div>
 
-                    <div div class="d-inline-flex col-md-12" style="padding-left: 0px;">
+                    <div div class="d-inline-flex col-md-12" style="padding-left: 0px;" id="agreeContainer">
                         <div class="custom-control custom-checkbox mb-2">
                             <input type="checkbox" class="custom-control-input" id="agree" name="agree">
                             <label class="custom-control-label" for="agree"></label>
                         </div>
-                        <div class="form-group col-md-12" style="padding-left: 0px;">
+                        <div class=" col-md-12" style="padding-left: 0px;">
                             <h5>주문 결제에 동의합니다.</h5>
                             <div id="agreeCheckMsg" class="invalid-feedback"></div>
-                            <br>
                         </div>
                     </div>
                 </form>
@@ -498,8 +624,9 @@
                         onclick="goPay();">
                     14,850원 결제하기
                 </button>
-
             </div>
+
+
         </div>
     </div>
 </section>

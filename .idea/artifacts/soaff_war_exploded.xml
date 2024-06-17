@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="exploded-war" name="soaff:war exploded">
-    <output-path>$PROJECT_DIR$/target/soaff-1.0.0-BUILD-SNAPSHOT</output-path>
-    <root id="root" />
-  </artifact>
-</component>

@@ -32,6 +32,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
+
                             <a class="nav-link" href="/about">
                                 SOAFF STORY
                             </a>
