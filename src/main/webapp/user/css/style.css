@@ -19,7 +19,7 @@
   --white: #fff;
   --gray: #6c757d;
   --gray-dark: #101010;
-  --primary: #4F944F;
+  --primary: #79AC78;
   --secondary: #dddddd;
   --success: #4F944F;
   --info: #17a2b8;
@@ -4354,7 +4354,7 @@ a.close.disabled {
   vertical-align: text-top !important; }
 
 .bg-primary {
-  background-color: #4F944F !important; }
+  background-color: #79AC78 !important; }
 
 a.bg-primary:hover, a.bg-primary:focus,
 button.bg-primary:hover,
@@ -13898,7 +13898,7 @@ img {
     float: left;
     margin-top: 0;
     text-align: center;
-    background: #4F944F;
+    background: #79AC78;
     border-radius: 0;
     z-index: 20; }
     .owl-carousel-alt .owl-nav button.owl-prev::before,

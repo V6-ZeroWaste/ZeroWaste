@@ -70,6 +70,24 @@ public class ReviewUserController {
 		return "/user/review/write";
 	}
 	
+	 @PostMapping("/post")
+	    public String post(@RequestParam String title, String content, int score, String review_img, Model model) {
+	        ReviewVO vo = new ReviewVO();
+	        vo.setTitle(title);
+	        vo.setContent(content);
+	        vo.setScore(score);
+	        vo.setReview_img(review_img);
+
+	        int result = service.post(vo);
+
+	        if (result > 0) {
+	            return "redirect:/user/review/list";
+	        } else {
+	            model.addAttribute("error", "리뷰 작성에 실패했습니다.");
+	            return "/user/review/write";
+	        }
+	    }
+	
 	@PostMapping("/update")
 	@ResponseBody
 	public int update(@RequestParam int review_no, String title, String content) {
