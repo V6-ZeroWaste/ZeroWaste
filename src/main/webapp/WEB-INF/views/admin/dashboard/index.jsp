@@ -404,14 +404,14 @@ function drawUsersChart(usersList,leaveList) {
                             <div class="card-body fw-bold text-dark">🎉 오늘의 매출액은 <span
                                     class="text-primary"><fmt:formatNumber value="${vo.todaySalse}" type="number"
                                                                            pattern="#,###"/> 원
-</span>원 입니다
+</span>입니다
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="card bg-light text-white mb-4">
                             <div class="card-body fw-bold text-dark">📦 오늘의 주문건수는 <span
-                                    class="text-primary">${vo.todayOrderCount}</span>건 입니다
+                                    class="text-primary">${vo.todayOrderCount}건</span> 입니다
                             </div>
                         </div>
                     </div>
