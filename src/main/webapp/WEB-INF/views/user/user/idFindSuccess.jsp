@@ -13,51 +13,7 @@
   <title>soaff</title>
   <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
   <script>
-    window.addEventListener('load', function() {
-      var forms = document.querySelectorAll('.needs-validation');
-      (function() {
-        'use strict';
 
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-                .forEach(function(form) {
-                  console.log(form);
-                  form.addEventListener('submit', function(event) {
-                    if (!check()) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-                    if (!form.checkValidity()) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-
-                    form.classList.add('was-validated');
-                  }, false);
-                });
-      })();
-    });
-
-    function check() {
-      var con = true;
-      var name = $('#name').val();
-      var email = $('#relEmail').val($('#email_id').val() + "@" + $('#email_domain').val());
-      $.ajax({
-        type: 'POST',
-        url: '/user/login/loginFind',
-        data: { name: name,
-          email: email},
-        async: false,
-        success: function(res) {
-          console.log(res);
-          if (res == '1') {
-
-            con = false;
-          }
-        }
-      });
-      return con;
-    }
   </script>
 </head>
 <body>

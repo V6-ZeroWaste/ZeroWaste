@@ -12,7 +12,7 @@
   <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-</head>
+
 <script>
   let timerInterval;
   let emailbtnClickedCheck = false;
@@ -27,6 +27,7 @@
 
   function goLogin() {
     if (fieldCheck()) {
+      idbtnCheck();
       $('#frm').submit();
     }
   }
@@ -212,7 +213,7 @@
     }
 
     if (!emailbtnClickedCheck) {
-      email_btnErrorMsg.html("인증코드 버튼을 눌러주세요");
+      email_btnErrorMsg.html("버튼을 눌러주세요");
       email_btnErrorMsg.css("display", "block");
       emailcheck_id.focus();
       isValid = false;
@@ -237,7 +238,7 @@
     return isValid;
   }
 
-  // 아이디 중복 확인
+  // ajax로 확인 해야함
   function idbtnCheck() {
     let isValid = false;
     $.ajax({
@@ -297,7 +298,7 @@
     }, 1000);
   }
 
-  $(document).ready(function() {
+  $(function() {
     $("#id, #pwd, #pwd_check, #name, #tel1, #tel2, #tel3, #email_id, #email_domain, #zipcode, #addr1").on("change", fieldCheck);
 
     //이메일 도메인 값 선택 반영
@@ -370,6 +371,29 @@
     }).open();
   }
 </script>
+  <style>
+    .table {
+      table-layout: fixed;
+    }
+    .table td, .table th {
+      border-top: none;
+      vertical-align: middle;
+      padding: 0.5rem; /* 간격을 줄이기 위해 패딩 조정 */
+    }
+    .text-center {
+      text-align: center;
+      padding-right: 0.5rem; /* 셀 간격을 줄이기 위해 오른쪽 패딩 조정 */
+    }
+    .form-container {
+      display: flex;
+      justify-content: center;
+    }
+    .form-content {
+      width: 100%;
+      max-width: 80%;
+    }
+  </style>
+</head>
 <body>
 <!-- breadcrumbs -->
 <section class="breadcrumbs separator-bottom">
@@ -400,156 +424,159 @@
 </section>
 
 <!-- listing -->
-<section class="pt-5">
-  <div class="container">
-    <div class="row">
-      <div class="col col-lg-2">
-      </div>
-      <!-- content -->
-      <div class="col col-lg-10">
-        <form action="/user/join" method="POST" name="frm" id="frm">
 
-          <%--아이디 기입을 하지 않은경우--%>
-          <div class="row mb-3">
-            <label for="id" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>아이디</strong></label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" id="id" name="id" >
-              <div class="invalid-feedback" id="idErrorMsg"></div>
-            </div>
-            <div class="col-sm-2">
-              <button type="button" class="btn btn-primary btn-rounded" id="id_btn">중복확인</button>
-            </div>
+      <section class="pt-5">
+        <div class="container form-container">
+          <div class="form-content">
+            <form action="/user/join" method="POST" name="frm" id="frm">
+              <table class="table">
+                <tr>
+                  <td class="text-center" style="color: #3d733d; width: 30%;"><strong>아이디</strong></td>
+                  <td colspan="2" class="col-4">
+                    <input type="text" class="form-control" id="id" name="id">
+                    <div class="invalid-feedback" id="idErrorMsg"></div>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-primary btn-rounded" id="id_btn">중복확인</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center" style="color: #3d733d;"><strong>비밀번호</strong></td>
+                  <td colspan="3" class="col-4">
+                    <input type="password" class="form-control" id="pwd">
+                    <div class="invalid-feedback" id="pwdErrorMsg"></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center" style="color: #3d733d;"><strong>비밀번호 확인</strong></td>
+                  <td colspan="3" class="col-4">
+                    <input type="password" class="form-control" id="pwd_check">
+                    <div class="invalid-feedback" id="pwd_checkErrorMsg"></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center" style="color: #3d733d;"><strong>이름</strong></td>
+                  <td colspan="3" class="col-4">
+                    <input type="text" class="form-control" id="name">
+                    <div class="invalid-feedback" id="nameErrorMsg"></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center" style="color: #3d733d;"><strong>전화번호</strong></td>
+                  <td colspan="3" class="col-4">
+                    <div class="form-row">
+                      <div class="col">
+                        <input type="text" class="form-control" id="tel1" placeholder="010">
+                        <div class="invalid-feedback" id="tel1ErrorMsg"></div>
+                      </div>
+                      <div class="col">
+                        <input type="text" class="form-control" id="tel2" placeholder="1234">
+                        <div class="invalid-feedback" id="tel2ErrorMsg"></div>
+                      </div>
+                      <div class="col">
+                        <input type="text" class="form-control" id="tel3" placeholder="5678">
+                        <div class="invalid-feedback" id="tel3ErrorMsg"></div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center" style="color: #3d733d;"><strong>이메일</strong></td>
+                  <td colspan="3" class="col-4">
+                    <div class="form-row">
+                      <div class="col">
+                        <input type="text" class="form-control" id="email_id" placeholder="이메일" aria-label="이메일입력">
+                        <div class="invalid-feedback" id="email_idErrorMsg"></div>
+                      </div>
+                      <span class="col-form-label p-0 d-flex justify-content-center align-items-center" style="height:53px;">&nbsp;&nbsp;@&nbsp;&nbsp;</span>
+                      <div class="col">
+                        <input type="text" class="form-control" id="email_domain" placeholder="도메인이름" aria-label="도메인이름" readonly>
+                        <div class="invalid-feedback" id="email_domainErrorMsg"></div>
+                      </div>
+                      <div class="col">
+                        <select id="emailSel" class="custom-select">
+                          <option value="">선택-</option>
+                          <option value="직접입력">직접입력</option>
+                          <option value="naver.com">naver.com</option>
+                          <option value="gmail.com">gmail.com</option>
+                          <option value="hanmail.net">hanmail.net</option>
+                          <option value="hotmail.com">hotmail.com</option>
+                          <option value="korea.com">korea.com</option>
+                          <option value="nate.com">nate.com</option>
+                          <option value="yahoo.com">yahoo.com</option>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <button type="button" class="btn btn-primary btn-rounded " id="email_btn">인증코드</button>
+                        <div class="invalid-feedback" id="email_btnErrorMsg"></div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr id="emailVerification" style="display: none;">
+                  <td class="text-center" style="color: #3d733d;"><strong>인증코드 입력</strong></td>
+                  <td colspan="3" class="col-4">
+                    <div class="form-row">
+                      <div class="col">
+                        <input type="text" class="form-control" id="emailcheck_id">
+                        <div class="invalid-feedback" id="emailcheck_idErrorMsg"></div>
+                      </div>
+                      <div class="col d-flex justify-content-center align-items-center" style="height:53px;">
+                        <span id='timer2'></span>
+                      </div>
+                      <div class="col">
+                        <button type="button" class="btn btn-primary btn-rounded" id="emailCheck_btn">인증확인</button>
+                      </div>
+                      <div class="col">
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center" style="color: #3d733d;"><strong>주소</strong></td>
+                  <td colspan="3" class="col-4">
+                    <div class="form-row">
+                      <div class="col">
+                        <input type="text" class="form-control" id="zipcode" readonly>
+                        <div class="invalid-feedback" id="zipcodeErrorMsg"></div>
+                      </div>
+                      <div class="col">
+                        <button type="button" class="btn btn-primary btn-rounded" id="adr_btn">우편번호</button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td colspan="3" class="col-4">
+                    <input type="text" class="form-control" id="addr1" readonly>
+                    <div class="invalid-feedback" id="addr1ErrorMsg"></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td colspan="3" class="col-4">
+                    <input type="text" class="form-control" id="addr2">
+                    <div class="valid-feedback"></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                  </td>
+                  <td></td>
+                  <td colspan="2">
+                    <button type="button" class="btn btn-primary" onclick="history.back();">취소</button>
+                    <button type="button" class="btn btn-primary" onclick="goLogin()">확인</button>
+                  </td>
+                </tr>
+              </table>
+              <input type="hidden" id="relEmail" name="relEmail">
+              <input type="hidden" id="relTel" name="relTel">
+              <input type="hidden" id="relAdd" name="relAdd">
+            </form>
           </div>
-
-          <div class="row mb-3" style="margin-bottom: 0;">
-            <label for="pwd" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>비밀번호</strong></label>
-            <div class="col-sm-6">
-              <input type="password" class="form-control" id="pwd" >
-              <div class="invalid-feedback" id="pwdErrorMsg"></div>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label for="pwd_check" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>비밀번호 확인</strong></label>
-            <div class="col-sm-6">
-              <input type="password" class="form-control" id="pwd_check" >
-              <div class="invalid-feedback" id="pwd_checkErrorMsg"></div>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label for="name" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>이름</strong></label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="name" >
-              <div class="invalid-feedback" id="nameErrorMsg"></div>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-2 col-form-label" style="color: #3d733d"><strong>전화번호</strong></label>
-            <div class="col-sm-2">
-              <input type="text" class="form-control" id="tel1" placeholder="010" >
-              <div class="invalid-feedback" id="tel1ErrorMsg"></div>
-            </div>
-            <div class="col-sm-2">
-              <input type="text" class="form-control" id="tel2" placeholder="1234">
-              <div class="invalid-feedback" id="tel2ErrorMsg"></div>
-            </div>
-            <div class="col-sm-2">
-              <input type="text" class="form-control" id="tel3" placeholder="5678" >
-              <div class="invalid-feedback" id="tel3ErrorMsg"></div>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label for="email_id" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>이메일</strong></label>
-            <div class="col-sm-2 pr-0">
-              <input type="text" class="form-control" id="email_id" placeholder="이메일" aria-label="이메일입력">
-              <div class="invalid-feedback" id="email_idErrorMsg"></div>
-            </div>
-            <span class="col-form-label p-0">&nbsp;&nbsp;@&nbsp;&nbsp;</span>
-            <div class="col-2 pr-0 pl-0">
-              <input type="text" class="form-control" id="email_domain" placeholder="도메인이름" aria-label="도메인이름" readonly >
-              <div class="invalid-feedback" id="email_domainErrorMsg"></div>
-            </div>
-            <div class="col-2" style="padding-right: 30px; padding-left: 0">
-              <div class="form-group mb-1">
-                <select id="emailSel" class="custom-select" >
-                  <option value="">선택-</option>
-                  <option value="직접입력">직접입력</option>
-                  <option value="naver.com">naver.com</option>
-                  <option value="gmail.com">gmail.com</option>
-                  <option value="hanmail.net">hanmail.net</option>
-                  <option value="hotmail.com">hotmail.com</option>
-                  <option value="korea.com">korea.com</option>
-                  <option value="nate.com">nate.com</option>
-                  <option value="yahoo.com">yahoo.com</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-sm-3" style="padding-left: 0px">
-              <button type="button" class="btn btn-primary btn-rounded" id="email_btn">인증코드</button>
-              <div class="invalid-feedback" id="email_btnErrorMsg"></div>
-            </div>
-          </div>
-          <div class="row mb-3" id="emailVerification" style="display: none;">
-            <label for="emailcheck_id" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>인증코드 입력</strong></label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" id="emailcheck_id" >
-              <div class="invalid-feedback" id="emailcheck_idErrorMsg"></div>
-            </div>
-            <div class="form-group col-1 d-flex justify-content-sm-center align-items-center" style="padding-right: 15px; padding-left: 0">
-              <span id='timer2'></span>
-            </div>
-
-            <div class="col-sm-2">
-              <button type="button" class="btn btn-primary btn-rounded" id="emailCheck_btn" >인증확인</button>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label for="zipcode" class="col-sm-2 col-form-label" style="color: #3d733d"><strong>주소</strong></label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" id="zipcode" readonly >
-              <div class="invalid-feedback" id="zipcodeErrorMsg"></div>
-            </div>
-            <div class="col-sm-2">
-              <button type="button" class="btn btn-primary btn-rounded" id="adr_btn" >우편번호</button>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="addr1" class="col-sm-2 col-form-label"></label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="addr1" readonly >
-              <div class="invalid-feedback" id="addr1ErrorMSg"></div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="addr2" class="col-sm-2 col-form-label"></label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="addr2">
-              <div class="valid-feedback" ></div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-sm-3">
-            </div>
-            <div class="col-sm-2">
-              <button type="button" class="btn btn-primary" onclick="history.back();">취소</button>
-            </div>
-            <div class="col-sm-2">
-              <button type="button" class="btn btn-primary" onclick="goLogin()">확인</button>
-            </div>
-          </div>
-          <input type="hidden" id="relEmail" name="relEmail">
-          <input type="hidden" id="relTel" name="relTel">
-          <input type="hidden" id="relAdd" name="relAdd">
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
+        </div>
+      </section>
 <%@ include file="/WEB-INF/views/user/include/footer.jsp" %>
 </body>
 </html>
