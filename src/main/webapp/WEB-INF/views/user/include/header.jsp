@@ -24,10 +24,10 @@
                                 STORE
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#!">HOME & LIVING</a></li>
-                                <li><a class="dropdown-item" href="#!">HAIR</a></li>
-                                <li><a class="dropdown-item" href="#!">FACE & BODY</a></li>
-                                <li><a class="dropdown-item" href="#!">FOR PET</a></li>
+                                <li><a class="dropdown-item" href="/item/list">All</a></li>
+                                <c:forEach var="category" items="${categories}">
+                                    <li><a class="dropdown-item" href="/item/list?category_no=${category.category_no}">${category.name}</a></li>
+                                </c:forEach>
                             </ul>
                         </li>
                         <li class="nav-item">
