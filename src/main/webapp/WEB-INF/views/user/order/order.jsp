@@ -243,38 +243,6 @@
             <aside class="col-4">
                 <div class="row">
 
-                    <!-- order preview -->
-                    <div class="col-12">
-                        <div class="card card-data bg-light">
-                            <div class="card-header py-2 px-3">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h3 class="fs-18 mb-0">Your Cart</h3>
-                                    </div>
-                                    <div class="col text-right">
-                                        <a href="cart.html" class="underline eyebrow">Edit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-group list-group-line">
-                                    <li class="list-group-item d-flex justify-content-between text-dark align-items-center">
-                                        Analog Magazine Rack x2
-                                        <span>$240</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between text-dark align-items-center">
-                                        Closca Helmet
-                                        <span>$132</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between text-dark align-items-center">
-                                        Sigg Water Bottle x2
-                                        <span>$46</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- order summary -->
                     <div class="col-12 mt-1">
                         <div class="card card-data bg-light">
@@ -288,34 +256,28 @@
                             <div class="card-body">
                                 <ul class="list-group list-group-minimal">
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Subtotal
-                                        <span>$418</span>
+                                        총 n개의 상품 금액
+                                        <span>11,850원</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Shipping
-                                        <span>Free</span>
+                                        배송비
+                                        <span>3000원</span>
                                     </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Discount
-                                        <span>-25%</span>
-                                    </li>
+                                    
                                 </ul>
                             </div>
                             <div class="card-footer py-2">
                                 <ul class="list-group list-group-minimal">
                                     <li class="list-group-item d-flex justify-content-between align-items-center text-dark fs-18">
                                         Total
-                                        <span>$313,5</span>
+                                        <span>14,850원</span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
 
-                    <!-- place order -->
-                    <div class="col-12 mt-1">
-                        <a href="#!" class="btn btn-primary btn-lg btn-block">Place Order</a>
-                    </div>
+
 
 
                 </div>
