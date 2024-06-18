@@ -136,9 +136,14 @@
 	<section>
 		<div class="container">
 			<div class="row">
-				<div class="col text-center">
-					<h2>${item.category_name}</h2>
-				</div>
+                <div class="col text-center">
+                    <c:if test="${item.category_name == null || item.category_name == ''}">
+                        <h2>ALL</h2>
+                    </c:if>
+                    <c:if test="${item.category_name != null && item.category_name != ''}">
+                        <h2>${item.category_name}</h2>
+                    </c:if>
+                </div>
 			</div>
             <div class="datatable-dropdown row align-items-center">
                 <div class="col-md-8">
