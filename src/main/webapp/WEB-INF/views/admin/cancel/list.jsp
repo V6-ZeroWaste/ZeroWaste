@@ -30,17 +30,20 @@
 <script type="text/javascript">
 	let page = 1;
 	let filter = null;
-	   
-	   window.onload = function() {
-	      const urlParams = new URLSearchParams(window.location.search);
-	      filter = urlParams.get('filter');
-	      if (filter !== null) {
-	         $('#filter').val(filter);
-	      } else {
-	         $('#filter').val("");  // 전체보기 시 필터를 빈 문자열로 설정
-	      }
-	      getList();
-	   }
+
+	
+	window.onload = function() {
+		const urlParams = new URLSearchParams(window.location.search);
+		filter = urlParams.get('filter');
+		if (filter !== null) {
+			$('#filter').val(filter);
+		} else {
+			$('#filter').val("");  // 전체보기 시 필터를 빈 문자열로 설정
+		}
+		getList();
+	}
+	
+
 	function applyCondition() {
 		page = 1;
 		getList();
@@ -51,10 +54,11 @@
 	}
 	function getList() {
 		var filterValue = $('#filter').val();
-	      var data = {
-	         searchWord : $('#searchWord').val(),
-	         orderBy : $('#orderBy').val(),
-	         filter : filterValue !== "" ? parseInt(filterValue) : null, 
+
+		var data = {
+			searchWord : $('#searchWord').val(),
+			orderBy : $('#orderBy').val(),
+			filter : filterValue !== "" ? parseInt(filterValue) : null, 
 			startRequestDate : $('#startRequestDate').val(),
 			endRequestDate : $('#endRequestDate').val(),
 			startApproveDate : $('#startApproveDate').val(),
@@ -112,9 +116,12 @@
 									+ '" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
 						}
 						$(".datatable-pagination-list").html(printPage);
-					
-					const newUrl = '/admin/cancel/list?filter=' + data.filter;
-	                  history.pushState(null, '', newUrl);},
+
+						
+						const newUrl = '/admin/cancel/list?filter=' + data.filter;
+						history.pushState(null, '', newUrl);
+					},
+
 					error : function(data, textStatus) {
 						$('#fail').html("관리자에게 문의하세요.");
 						console.log('error', data, textStatus);
