@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>대시 보드</title>
+    <title>dashboard</title>
     <link href="/admin/css/styles.css" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -24,11 +24,32 @@
 <script>
 	let page = 1;
 
-
     var myAreaChart;
     var itemChart;
     var usersChart;
+ 
+	let start_temp = new Date();
+	let end_temp = new Date();
+
+	function formatDate(date) {
+	    const year = date.getFullYear();
+	    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+	    const day = date.getDate().toString().padStart(2, '0'); 
+	    const result = year+"-"+month+"-"+day
+	    
+	    return result;}
 	
+	function addDays(date, days) {
+		  const clone = date;
+		  clone.setDate(date.getDate() + days)
+		  return clone;
+		}
+	
+	const start_date = formatDate(addDays(start_temp,-7));
+	const end_date = formatDate(end_temp);
+	console.log(start_date);
+	console.log(end_date);
+
     window.onload = function () {
         getItemList();
         getUsersList();
@@ -209,8 +230,8 @@ function drawUsersChart(usersList,leaveList) {
 		    			
 		    			orderBy: "최근날짜순",
 		    			filter: "일별",
-		    			start_date: '2024-06-01',
-		                end_date: '2024-06-06',
+		    			start_date: start_date,
+		                end_date: end_date,
 		    	}
 
 
@@ -236,8 +257,8 @@ function drawUsersChart(usersList,leaveList) {
         var data = {
             orderBy: '최근날짜순',
             filter: '일별',
-            start_date: '2024-06-01',
-            end_date: '2024-06-06',
+            start_date: start_date,
+            end_date: end_date,
 
         };
 
@@ -365,7 +386,7 @@ function drawUsersChart(usersList,leaveList) {
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4 fw-bold">Dashboard</h1>
+                <h1 class="mt-4">Dashboard</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item active"></li>
                 </ol>
@@ -417,7 +438,7 @@ function drawUsersChart(usersList,leaveList) {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xl-6">
+                    <div class="col-xl-12">
                         <div class="card mb-4">
                             <div class="card-header" onclick="location.href=''">
                                 <i class="fas fa-chart-area me-1"></i>
