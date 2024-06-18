@@ -28,7 +28,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
-@ComponentScan(basePackages = { "kr.co.soaff" })
+@ComponentScan(basePackages = { "kr.co.soaff","util"})
 @EnableWebMvc
 @MapperScan(basePackages = { "kr.co.soaff" }, annotationClass = Mapper.class) // 인터페이스 스캔
 @EnableTransactionManagement
