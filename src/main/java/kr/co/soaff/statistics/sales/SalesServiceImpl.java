@@ -38,8 +38,8 @@ public class SalesServiceImpl implements SalesService {
 		map.put("list", list);
 		map.put("endPage", endPage);
 		map.put("startPage", startPage);
-		map.put("prev", prev);
-		map.put("next", next);
+		map.put("isPrev", prev);
+		map.put("isNext", next);
 		return map;
 	};
 
