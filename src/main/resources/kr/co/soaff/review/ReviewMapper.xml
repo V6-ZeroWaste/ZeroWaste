@@ -67,7 +67,8 @@
 		exposed_status,
 		order_detail_no,
 		item_no,
-		order_no
+		order_no,
+		item_img
 		)
 		VALUES (
 		#{user_no},
@@ -80,7 +81,8 @@
 		#{exposed_status},
 		#{order_detail_no},
 		#{item_no},
-		#{order_no}
+		#{order_no},
+		#{item_img}
 		)
 	</insert>
 
@@ -100,6 +102,7 @@
 		JOIN user u ON u.user_no = #{user_no}
 		WHERE i.item_no = #{item_no} AND od.order_detail_no = #{order_detail_no}
 	</select>
+
 
 
 	<select id="getItemName" parameterType="int" resultType="String">

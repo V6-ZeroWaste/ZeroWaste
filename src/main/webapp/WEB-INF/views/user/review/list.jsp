@@ -164,7 +164,7 @@ height:80px;}
                                        <a href="product-1.html"
                                           title="Fawn Wool / Natural Mammoth Chair"
                                           data-toggle="tooltip" data-placement="top"> <img
-                                          src="${list.review_img}">
+                                          src="${list.item_img}">
                                        </a>
                                     </div>
                                     <div class="col-lg-4">

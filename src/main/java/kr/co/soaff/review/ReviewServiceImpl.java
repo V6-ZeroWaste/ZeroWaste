@@ -70,14 +70,14 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public int post(ReviewVO vo) {
-		System.out.println("서비스에서 리뷰 저장: " + vo);
+		vo.setTitle(vo.getTitle().trim());
+	    vo.setContent(vo.getContent().trim());
 		return mapper.post(vo);
 	}
 	
 	@Override
 	public ReviewVO write(ReviewVO vo) {
-		ReviewVO data = mapper.write(vo);
-		return data;
+		return mapper.write(vo);
 	}
 
 	

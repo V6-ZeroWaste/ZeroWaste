@@ -32,15 +32,14 @@ public class S3Uploader {
     // 이미지 삭제
     public void deleteFile(String fileUrl) {
         String key = extractKeyFromUrl(fileUrl);
-
-        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                .bucket(bucket)
-                .key(key)
-                .build();
-
-        s3Client.deleteObject(deleteObjectRequest);
+        if (key != null && !key.isEmpty()) {
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                    .bucket(bucket)
+                    .key(key)
+                    .build();
+            s3Client.deleteObject(deleteObjectRequest);
+        }
     }
-    
     //이미지 수정
     public String updateFile(String oldFileUrl, MultipartFile newFile) throws IOException {
         deleteFile(oldFileUrl);
@@ -65,9 +64,14 @@ public class S3Uploader {
         return fileExtension;
     }
 
-    // URL에서 키 추출 메서드
     private String extractKeyFromUrl(String fileUrl) {
-        return fileUrl.substring(fileUrl.indexOf(bucket) + bucket.length() + 1);
+        try {
+            int startIndex = fileUrl.indexOf(".com/") + 5; // ".com/" 이후의 경로 추출
+            return fileUrl.substring(startIndex);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // 파일 업로드 메서드
