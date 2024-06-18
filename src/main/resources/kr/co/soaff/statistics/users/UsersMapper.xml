@@ -52,7 +52,7 @@
         </if>
         <if test="filter == '월별'">
             <if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
-                AND DATE_FORMAT(dr.date, '%Y-%m') BETWEEN #{start_date} AND #{end_date}
+                AND DATE_FORMAT(dr.date, '%Y-%m') BETWEEN #{start_date} AND DATE_SUB(DATE_ADD(CONCAT(#{end_date},'-01'), INTERVAL 1 MONTH), INTERVAL 1 SECOND)
             </if>
             <if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
                 <![CDATA[
@@ -179,9 +179,23 @@
             dr.date as date,
             (SELECT COUNT(*) 
 		     FROM user
-		     <![CDATA[
-		     WHERE date <= dr.date AND (`delete` IS NULL OR `delete` > dr.date)) AS user_cnt
-   			]]>
+		     WHERE
+		     <choose>
+		     	<when test="filter=='일별'">
+		     		<![CDATA[ date_format(date, '%Y-%m-%d') <= date_format(dr.date, '%Y-%m-%d') AND (`delete` IS NULL OR date_format(`delete`, '%Y-%m-%d') > date_format(dr.date, '%Y-%m-%d')))]]> 
+		     	</when>
+		     	<when test="filter=='주별'">
+		     		<![CDATA[ date_format(date, '%Y-%u') <= date_format(dr.date, '%Y-%u') AND (`delete` IS NULL OR date_format(`delete`, '%Y-%u') > date_format(dr.date, '%Y-%u')))]]> 
+		     	</when>
+		     	<when test="filter=='월별'">
+		     		<![CDATA[ date_format(date, '%Y-%m') <= date_format(dr.date, '%Y-%m') AND (`delete` IS NULL OR date_format(`delete`, '%Y-%m') > date_format(dr.date, '%Y-%m')))]]> 
+		     	</when>
+                <otherwise>
+                    <![CDATA[ date_format(date, '%Y-%m-%d') <= date_format(dr.date, '%Y-%m-%d') AND (`delete` IS NULL OR date_format(`delete`, '%Y-%m-%d') > date_format(dr.date, '%Y-%m-%d')))]]>
+                </otherwise>
+		     </choose>
+		      AS user_cnt
+   		
        	FROM date_range dr
        	<where>
             <include refid="searchSql"/>

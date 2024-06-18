@@ -18,7 +18,7 @@ public class UsersController {
 
 	@GetMapping("/index")
 	public String login(Model model, UsersVO vo) {
-		model.addAttribute("map", service.list(vo));
+//		model.addAttribute("map", service.list(vo));
 		model.addAttribute("vo", vo);
 		return "/admin/statistics/users";
 	}
@@ -26,6 +26,7 @@ public class UsersController {
 	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(UsersVO vo, Model model) {
+		System.out.println("---------"+vo.toString());
 		Map<String, Object> map = service.list(vo);
 		String printList = "";
 		List<UsersVO> usersList = (List<UsersVO>) map.get("usersList");
@@ -43,6 +44,7 @@ public class UsersController {
 		}
 		map.put("printList", printList);
 		model.addAttribute("map", service.list(vo));
+		System.out.println("-----"+vo.toString());
 		return map;
 	}
 
