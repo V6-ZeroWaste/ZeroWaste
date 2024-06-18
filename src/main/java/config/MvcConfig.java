@@ -82,8 +82,7 @@ public class MvcConfig implements WebMvcConfigurer {
 		reg.addViewController("/user/basic-mypage");
 		reg.addViewController("/user/test");
 		reg.addViewController("/user/login/passwordFind");
-		reg.addViewController("/user/login/passwordFindEmail");
-		reg.addViewController("/user/login/passwordReSubmit");
+		reg.addViewController("/user/order/cancelForm2");
 
 	}
 

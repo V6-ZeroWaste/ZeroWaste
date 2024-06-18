@@ -108,7 +108,7 @@
         </div>
     </div>
     <script>
-	var page = 1;
+	let page = 1;
     var isDateChanged = false;
     
     if (!isDateChanged) {
@@ -243,7 +243,7 @@
                	drawChart(resp.usersList,resp.leaveList);
            		// 페이지네이션 출력
            		// 총 개수Showing
-           		$(".datatable-info").html("Showing "+resp.page+" to "+resp.totalPage+" of "+resp.count+" entries"); 
+           		$(".datatable-info").html("Showing "+((page-1)*10+1)+" to "+(page*20<=resp.totalPage? page*10 : resp.totalPage)+" of "+resp.count+" entries"); 
            		// 페이지네이션
            		let printPage = "";
            		if(resp.isPrev){

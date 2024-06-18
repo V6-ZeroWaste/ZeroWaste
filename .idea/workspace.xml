@@ -9,18 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="71d8286f-28c5-442b-b0e2-b77825eee59c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/kr/co/soaff/dashboard/DashboardMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/kr/co/soaff/dashboard/DashboardMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/dashboard/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/dashboard/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/include/sidenav.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/include/sidenav.jsp" afterDir="false" />
-    </list>
+    <list default="true" id="71d8286f-28c5-442b-b0e2-b77825eee59c" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,7 +54,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Tomcat Server.Tomcat 9.0.88.executor": "Run",
     "Tomcat Server.loginFind.jsp.executor": "Run",
-    "git-widget-placeholder": "dashboard",
+    "git-widget-placeholder": "develop",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/kiv99/git/ZeroWaste",
     "node.js.detected.package.eslint": "true",
