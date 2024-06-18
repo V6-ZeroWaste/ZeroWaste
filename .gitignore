@@ -96,6 +96,14 @@ $RECYCLE.BIN/
 db.properties
 s3.properties
 /.gitignore
+<<<<<<< HEAD
+s3.properties
+.factorypath
+=======
+s3.properties
+.factorypath
+>>>>>>> refs/heads/develop
+>>>>>>> refs/heads/develop
 
 s3.properties
 .factorypath

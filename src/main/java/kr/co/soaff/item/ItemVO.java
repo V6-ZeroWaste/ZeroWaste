@@ -21,6 +21,7 @@ public class ItemVO {
 	private int packing_price;
 	private Timestamp item_regist_date;
 	private int category_no;
+	private int sales_amount;
 
 	// 검색 키워드
 	public String searchWord;
@@ -36,8 +37,4 @@ public class ItemVO {
 	public ItemVO() {
 		this.page = 1;
 	}
-
-	public int getStartIdx() {
-		return (page - 1) * 20;
-	};
 }

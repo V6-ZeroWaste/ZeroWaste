@@ -64,6 +64,11 @@ public class ItemAdminController {
 			printList += "<td class=\"col-item-exposed\">";
 			printList += item.isExposed_status() ? "O" : "X";
 			printList += "</td>";
+
+			printList += "<td class=\"col-item-exposed\">";
+			printList += item.getSales_amount();
+			printList += "</td>";
+
 			printList += "</tr>";
 		}
 
@@ -103,8 +108,7 @@ public class ItemAdminController {
 	@PostMapping("/admin/item/update")
 	public String upadteItem(HttpServletRequest request, ItemVO vo, @RequestParam("file") MultipartFile detail)
 			throws IOException {
-		service.update(vo, detail, request);
-		ItemVO vo2 = service.detail(vo);
+		service.update(service.detail(vo), detail, request);
 		return "redirect:detail?item_no=" + vo.getItem_no();
 	}
 

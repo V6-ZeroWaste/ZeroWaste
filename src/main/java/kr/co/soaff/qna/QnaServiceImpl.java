@@ -7,53 +7,51 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.soaff.cancel.CancelAdminListVO;
+
 @Service
 public class QnaServiceImpl implements QnaService {
-    @Autowired
-    private QnaAdminMapper mapper;
+	@Autowired
+	QnaMapper mapper;
 
-    @Override
-    public Map<String, Object> list(QnaVO vo) {
-        List<QnaVO> list = mapper.list(vo);
-        int count = mapper.count(vo);
-        int totalPage = count / 20;
-        if (count % 20 > 0) totalPage++;
-        
-        Map<String, Object> map = new HashMap<>();
-        map.put("total", count);
-        map.put("totalPage", totalPage);
-        map.put("list", list);
+	@Override
+	public Map<String, Object> list(QnaVO vo) {
+	    int count = mapper.count(vo);
+	    int totalPage = count / 20;
+	    if (count % 20 > 0) totalPage++;
+	    List<QnaVO> list = mapper.list(vo); // 목록
 
-        int endPage = (int) (Math.ceil(vo.getPage() / 15.0) * 15);
-        int startPage = endPage - 14;
-        if (endPage > totalPage) endPage = totalPage;
-        boolean prev = startPage > 1;
-        boolean next = endPage < totalPage;
-        map.put("endPage", endPage);
-        map.put("startPage", startPage);
-        map.put("prev", prev);
-        map.put("next", next);
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("count", count);
+	    map.put("totalPage", totalPage);
+	    map.put("list", list);
 
-        return map;
-    }
-
-    @Override
-    public QnaVO detail(int qna_no) {
-        return mapper.detail(qna_no);
-    }
-
-    @Override
-    public int deleteContent(int qna_no) {
-        return mapper.deleteContent(qna_no);
-    }
-
-    @Override
-    public int updateReply(QnaVO vo) {
-        return mapper.updateReply(vo);
-    }
-
-    @Override
-    public int deleteReply(int qna_no) {
-        return mapper.deleteReply(qna_no);
-    }
+	    int endPage = (int) (Math.ceil(vo.getPage() / 10.0) * 10);
+	    int startPage = endPage - 9;
+	    if (endPage > totalPage) endPage = totalPage;
+	    boolean isPrev = startPage > 1;
+	    boolean isNext = endPage < totalPage;
+	    map.put("endPage", endPage);
+	    map.put("startPage", startPage);
+	    map.put("isPrev", isPrev);
+	    map.put("isNext", isNext);
+	    return map;
+	}
+	
+	@Override
+	public QnaVO detail(QnaVO vo) {
+		QnaVO data = mapper.detail(vo);
+		return data;
+	}
+	
+	@Override
+	public int update(QnaVO vo) {
+		return mapper.update(vo);
+	}
+	
+	@Override
+	public int delete(int qna_no) {
+		return mapper.delete(qna_no);
+	}
+	
 }
