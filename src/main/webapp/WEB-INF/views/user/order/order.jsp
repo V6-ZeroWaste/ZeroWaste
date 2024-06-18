@@ -22,7 +22,8 @@
 
 
     #orderInfo th {
-        width: 150px;
+        width: 200px;
+        vertical-align: middle;
     }
 
 
@@ -32,7 +33,8 @@
     }
 
     #deliveryInfo th {
-        width: 180px;
+        width: 200px;
+        vertical-align: middle;
     }
 
     #deliveryInfo tr {
@@ -46,7 +48,12 @@
     }
 
     #paymentMethodTable th {
-        width: 180px;
+        width: 200px;
+        vertical-align: middle;
+    }
+    #paymentInfoTable th {
+        width: 200px;
+        vertical-align: middle;
     }
 
     #agreeContainer {
@@ -58,14 +65,9 @@
 
 <script>
 
-    function goPay() {
-        if (fieldCheck()) {
-            location.href = "/order/success";
-        }
 
-    }
-
-
+    let isValid = true;
+    
     function fieldCheck() {
         let receiverName = $("#receiverName");
         let zipcode = $("#zipcode");
@@ -98,7 +100,7 @@
         agreeCheckMsg.css("display", "none");
 
 
-        let isValid = true;
+        
 
         if (!receiverName.val()) {
             receiverNameCheckMsg.html("받으실 분의 성함을 입력해주세요");
@@ -141,8 +143,6 @@
         if (!agree) {
             agreeCheckMsg.html("주문 동의가 필요합니다");
             agreeCheckMsg.css("display", "block");
-            alert("주문 동의가 필요합니다");
-            agree.focus();
             isValid = false;
         }
 
@@ -173,6 +173,21 @@
             if (!$("#addr").val()) {
                 zipcode();
             }
+        });
+        
+        $("#goPay").on('click', function () {
+        	 var agree = $("#agree").is(":checked");
+
+        	if (fieldCheck()) {
+                location.href = "/order/success";
+            }
+        	
+        	if(!agree){
+                alert("주문 동의가 필요합니다");
+                $("#agree").focus();
+
+            }
+
         });
 
     };
@@ -483,41 +498,38 @@
                         <div class="col-md-6 text-md-right">
                         </div>
                     </div>
-                    <div class="tab-content" id="paymentInfoTable">
-                        <div class="tab-pane fade active show" id="paymentInfoTableComponent" role="tabpanel"
-                             aria-labelledby="paymentInfoTableComponent">
-                            <table class="table table-borderless">
+
+                            <table class="table table-borderless" id="paymentInfoTable">
                                 <tbody>
                                 <tr>
-                                    <th scope="row"><b>상품 합계 금액</b></th>
+                                    <th><b>상품 합계 금액</b></th>
                                     <td>11,850원</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><b>배송비</b></th>
+                                    <th><b>배송비</b></th>
                                     <td>3000원</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><b>적립금 사용</b></th>
+                                    <th><b>적립금 사용</b></th>
                                     <td>
                                         <div class="d-inline-flex col-12" style="padding-left: 0px;">
                                             <input type="text" class="form-control col-md-6" name="point"
                                                    placeholder="사용가능한 적립금: 5000원">
-                                            <button class="form-control col-sm-3 btn btn-primary ml-2">사용</button>
+                                            <input type=button class="form-control col-sm-3 btn btn-primary ml-2" value="사용">
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><b>최종 결제 금액</b></th>
+                                    <th><b>최종 결제 금액</b></th>
                                     <td>14,580원</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><b>예상 적립 금액</b></th>
+                                    <th><b>예상 적립 금액</b></th>
                                     <td>355원</td>
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
+                    
 
                     <!-- Payment method -->
                     <br>
@@ -581,11 +593,9 @@
                     </div>
                 </form>
                 <br>
-                <button class="form-control btn btn-primary"
+                <button id="goPay" type="button" class="form-control btn btn-primary"
                         style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;"
-                        onclick="goPay();">
-                    14,850원 결제하기
-                </button>
+                        >14,850원 결제하기</button>
             </div>
 
 
