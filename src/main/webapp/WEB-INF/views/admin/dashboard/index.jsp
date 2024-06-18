@@ -32,7 +32,7 @@
                             <div class="row">
                             <div class="col">
                                 <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body fw-bold fs-5 text" >취소 요청 2건</div>
+                                    <div class="card-body fw-bold fs-5 text" >취소 요청 ${vo.cancelCount }건</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="/admin/cancel/list?filter=0">자세히 보기</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -41,7 +41,7 @@
                             </div>
                             <div class="col">
                                 <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body fw-bold fs-5 text">문의 요청 1건</div>
+                                    <div class="card-body fw-bold fs-5 text">문의 요청 ${vo.qnaCount }건</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="/admin/qna/list?filter=답변대기">자세히 보기</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -50,9 +50,9 @@
                             </div>
                             <div class="col">
                                 <div class="card bg-success text-white mb-4">
-                                    <div class="card-body fw-bold fs-5 text">주문 요청 17건</div>
+                                    <div class="card-body fw-bold fs-5 text">주문 요청 ${vo.deliveryCount }건</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="/admin/order/list?filter=2">자세히 보기</a>
+                                        <a class="small text-white stretched-link" href="/admin/order/list?filter=0">자세히 보기</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
@@ -61,12 +61,13 @@
                         <div class="row">
                             <div class="col">
                                 <div class="card bg-light text-white mb-4">
-                                    <div class="card-body fw-bold text-dark">🎉 오늘의 매출액은 <span class="text-primary">1,000,000원</span> 입니다</div>
+                                    <div class="card-body fw-bold text-dark">🎉 오늘의 매출액은 <span class="text-primary"><fmt:formatNumber value="${vo.todaySalse}" type="number" pattern="#,###"/> 원
+</span>원 입니다</div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="card bg-light text-white mb-4">
-                                    <div class="card-body fw-bold text-dark">📦 오늘의 주문건수는 <span class="text-primary">23건</span> 입니다</div>
+                                    <div class="card-body fw-bold text-dark">📦 오늘의 주문건수는 <span class="text-primary">${vo.todayOrderCount}</span>건 입니다</div>
                                 </div>
                             </div>
                             </div>
