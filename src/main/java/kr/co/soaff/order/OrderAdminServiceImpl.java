@@ -35,7 +35,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("count", count);
-		map.put("totalPage", totalPage);
+		map.put("total", totalPage);
 		map.put("list", list);
 		map.put("endPage", endPage);
 		map.put("startPage", startPage);

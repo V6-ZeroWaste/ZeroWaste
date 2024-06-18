@@ -1,7 +1,6 @@
 package kr.co.soaff.order;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import lombok.Data;
 
@@ -13,7 +12,7 @@ public class OrderDetailVO {
 	private int amount;
 	private int price;
 	private Timestamp confirm_date;
-	private int cancel_status;
+	private Integer cancel_status;
 	private Timestamp cancel_request_date;
 	private Timestamp cancel_approve_date;
 	private int cancel_reason_type;

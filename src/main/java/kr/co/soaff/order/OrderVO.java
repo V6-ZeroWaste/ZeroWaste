@@ -34,6 +34,8 @@ public class OrderVO {
 
 	// 주문 총 수량
 	private int total_amount;
+	
+	private int cancel_status;
 
 	// 사용자로부터 전송되어지는 값(검색, 페이징, 필터링(조건))
 	private String searchWord;

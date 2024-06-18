@@ -94,11 +94,25 @@ $RECYCLE.BIN/
 */target/*
 /target/
 db.properties
+s3.properties
 /.gitignore
+.factorypath
+workspace.xml
+
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
 
 /bin/
 
 /.apt_generated/
+
 /.apt_generated_tests/
+/.idea/.gitignore
+/.idea/compiler.xml
+/.idea/encodings.xml
+/.idea/jarRepositories.xml
+/.idea/misc.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
+/.idea/webContexts.xml
+

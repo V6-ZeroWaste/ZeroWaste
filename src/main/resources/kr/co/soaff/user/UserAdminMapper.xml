@@ -16,12 +16,11 @@
 		SELECT
 			user_no, id, name, email, zipcode, addr, addr_detail, tel, date
 		FROM user
-		<include refid="searchSql"/>
 		<if test="orderBy == '가입일자오래된순'">
-			ORDER BY date ASC
+			ORDER BY date ASC, user_no asc
 		</if>
 		<if test="orderBy != '가입일자오래된순'">
-			ORDER BY date DESC
+			ORDER BY date DESC, user_no desc
 		</if>
 		LIMIT #{startIdx}, 20
 	</select>

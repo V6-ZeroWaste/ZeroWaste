@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -31,7 +32,7 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 			totalPage++;
 
 		// 시작인덱스
-		int startIdx = (vo.getPage() - 1) * 10;
+		int startIdx = (vo.getPage() - 1) * 20;
 		vo.setStartIdx(startIdx); // sql문에 파라미터로 넣어줌
 		List<ItemVO> items = mapper.list(vo); // 목록
 
@@ -89,6 +90,7 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 		return r;
 	}
 
+	@Transactional
 	@Override
 	public int update(ItemVO vo, MultipartFile file, HttpServletRequest request) {
 		if (!file.isEmpty()) {
@@ -112,8 +114,12 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 			}
 			vo.setItem_img(real);
 		}
+		else if (vo.getItem_img() != null && !vo.getItem_img().isEmpty()) {
+			// 새 파일이 없고 기존 파일이 있는 경우
+			ItemVO detail = mapper.detail(vo);
+			vo.setItem_img(detail.getItem_img());
+		}
 		vo.setDiscount_rate((int) (((vo.getPrice() - vo.getDiscounted_price()) / (float) vo.getPrice()) * 100));
-
 		return mapper.update(vo);
 	}
 
