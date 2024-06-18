@@ -46,6 +46,7 @@ public class S3Uploader {
         return upload(newFile);
     }
 
+
     // 랜덤 파일명 생성 메서드
     private String generateRandomFilename(MultipartFile multipartFile) {
         String originalFilename = multipartFile.getOriginalFilename();

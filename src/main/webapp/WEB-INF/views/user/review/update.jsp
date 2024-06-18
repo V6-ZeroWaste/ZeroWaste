@@ -52,15 +52,24 @@
 function updateReview(review_no) {
     var title = document.getElementById('title').value;
     var content = document.getElementById('content').value;
+    var fileInput = document.getElementById('file');
+    var file = fileInput.files[0];
+
+    var formData = new FormData();
+    formData.append("review_no", review_no);
+    formData.append("title", title);
+    formData.append("content", content);
+    if(file) {
+        formData.append("review_img", file);
+    }
+
     if(confirm("정말 수정하시겠습니까?")) {
         $.ajax({
             type: "POST",
             url: "/mypage/review/updateReview",
-            data: {
-                title: title,
-                content: content,
-                review_no: review_no
-            },
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function(response) {
                 if(response === 1) {
                     alert("리뷰가 수정되었습니다.");
@@ -79,6 +88,8 @@ function updateReview(review_no) {
 function handleUpdate() {
     updateReview(${vo.review_no});
 }
+</script>
+
 </script>
 </head>
 <body>
@@ -104,7 +115,7 @@ function handleUpdate() {
                     <div style="width:140px;text-align:center">
                         <!-- 상품이미지 -->
                         <a href="product-1.html" title="Fawn Wool / Natural Mammoth Chair" data-toggle="tooltip" data-placement="top">
-                            <img class="item-img" src="${vo.review_img}" alt="Fawn Wool / Natural Mammoth Chair">
+                            <img class="item-img" src="${vo.item_img}" alt="Fawn Wool / Natural Mammoth Chair">
                         </a>
                     </div>
                     <div style="width:400px">

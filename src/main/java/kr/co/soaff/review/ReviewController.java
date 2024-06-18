@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.soaff.qna.QnaVO;
 import util.S3Uploader;
 
 @Controller
@@ -151,5 +152,32 @@ public class ReviewController {
 		}
 
 		return result;
+	}
+	
+	@PostMapping("/updateReview")
+	@ResponseBody
+	public int updateReview(@RequestParam int review_no, @RequestParam("title") String title, @RequestParam("content") String content, @RequestParam(value = "review_img", required = false) MultipartFile review_img) {
+	   ReviewVO vo = new ReviewVO();
+	   vo.setReview_no(review_no);
+	   vo.setTitle(title.trim());
+	   vo.setContent(content.trim());
+
+	   ReviewVO existingReview = service.detail(vo);
+	   String oldReviewImgUrl = existingReview.getReview_img();
+
+	   if (review_img != null && !review_img.isEmpty()) {
+	      try {
+	         String newImgUrl = s3Uploader.updateFile(oldReviewImgUrl, review_img);
+	         vo.setReview_img(newImgUrl);
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	         return 0;
+	      }
+	   } else {
+	      vo.setReview_img(oldReviewImgUrl); // 이미지 변경이 없을 경우 기존 이미지 유지
+	   }
+
+	   int result = service.update(vo);
+	   return result > 0 ? 1 : 0;
 	}
 }
