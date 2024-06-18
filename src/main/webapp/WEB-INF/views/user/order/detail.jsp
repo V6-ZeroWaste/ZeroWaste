@@ -42,10 +42,16 @@
 			margin:10px 0px 10px 0px;
 		}
 		.area{
-			padding-top:50px
+			padding-top:100px
 		}
 		.order-status.shipping::before {
 			background: #F5BE17; 
+		}
+		tr{
+			border-bottom: solid lightgray 0.5px;
+		}
+		th{
+			width: 200px;
 		}
     	
     </style>

@@ -31,10 +31,11 @@ public class UsersController {
 		List<UsersVO> usersList = (List<UsersVO>) map.get("usersList");
 		List<UsersVO> leaveList = (List<UsersVO>) map.get("leaveList");
 
-		for (int i = 0; i < usersList.size(); i++) {
-			System.out.println(usersList.get(i).getDate()+" /// "+usersList.get(i).getUser_cnt()+" /// "+leaveList.get(i).getLeave_cnt());
+		for (int i = 0; i < leaveList.size(); i++) {
+			System.out.print(usersList.get(i).getDate()+" /// "+usersList.get(i).getUser_cnt()+" /// ");
+			System.out.println(leaveList.get(i).getLeave_cnt());
 			printList += "<tr class='itemRow'>";
-			printList += "<td class=\"col-sales-date\">" + usersList.get(i).getDate() + "</td>";
+			printList += "<td class=\"col-sales-date\">" + leaveList.get(i).getDate() + "</td>";
 			printList += "<td class=\"col-sales-sales\">" + usersList.get(i).getUser_cnt() + "</td>";
 			printList += "<td class=\"col-sales-sales\">" + leaveList.get(i).getLeave_cnt() + "</td>";
 			printList += "</tr>";

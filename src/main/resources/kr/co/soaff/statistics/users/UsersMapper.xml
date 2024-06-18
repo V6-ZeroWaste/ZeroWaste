@@ -112,25 +112,26 @@
         FROM date_range dr
             LEFT JOIN (
 		            SELECT COUNT(*) AS leave_cnt,  
-		            <choose>
-		                <when test="filter == '일별'">
-		                	DATE(date)
-		                </when>
-		                <when test="filter == '주별'">
-		                    DATE_FORMAT(date, '%Y-%u')
-		                </when>
-		                <when test="filter == '월별'">
-		                    DATE_FORMAT(date, '%Y-%m')
-		                </when>
-		                <otherwise>
-		                    date
-		                </otherwise>
-		            </choose> AS fomated_date
+		            date
 		        FROM user
 		        WHERE `delete` is not null
-		        GROUP BY fomated_date
+		        GROUP BY date
 		    ) user_status 
-        ON dr.date = user_status.fomated_date
+        ON
+            <choose>
+                <when test="filter == '일별'">
+                    DATE(user_status.date) = dr.date
+                </when>
+                <when test="filter == '주별'">
+                    DATE_FORMAT(user_status.date, '%Y-%u') = DATE_FORMAT(dr.date, '%Y-%u')
+                </when>
+                <when test="filter == '월별'">
+                    DATE_FORMAT(user_status.date, '%Y-%m') = DATE_FORMAT(dr.date, '%Y-%m')
+                </when>
+                <otherwise>
+                    DATE(user_status.date) = dr.date
+                </otherwise>
+            </choose>
         <where>
             <include refid="searchSql"/>
         </where>
@@ -175,26 +176,16 @@
             </otherwise>
         </choose>
         SELECT 
-            <choose>
-                <when test="filter == '일별'">
-                    DATE(dr.date) AS date
-                </when>
-                <when test="filter == '주별'">
-                    DATE_FORMAT(dr.date, '%Y-%u') AS date
-                </when>
-                <when test="filter == '월별'">
-                    DATE_FORMAT(dr.date, '%Y-%m') AS date
-                </when>
-                <otherwise>
-                    DATE(dr.date) AS date
-                </otherwise>
-            </choose>,
+            dr.date as date,
             (SELECT COUNT(*) 
 		     FROM user
 		     <![CDATA[
 		     WHERE date <= dr.date AND (`delete` IS NULL OR `delete` > dr.date)) AS user_cnt
    			]]>
        	FROM date_range dr
+       	<where>
+            <include refid="searchSql"/>
+        </where>
         GROUP BY dr.date
         <include refid="orderBySql"/>
         LIMIT #{startIdx}, 20;
@@ -234,6 +225,7 @@
                     <![CDATA[
                     WHERE DATE_ADD(date, INTERVAL 1 DAY) <= #{end_date}
                     ]]>
+                    
                 )
             </otherwise>
         </choose>
