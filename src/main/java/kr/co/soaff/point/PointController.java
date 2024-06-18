@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.soaff.order.OrderVO;
 import kr.co.soaff.user.UserVO;
 
 
@@ -77,5 +78,19 @@ public class PointController {
 		}
 		return msg;
 	}
+	
+	
+
+    @GetMapping("/order/cancelRequest")
+    public String pointReqForm(Model model, OrderVO orderVO) {
+      return "/user/order/pointList";
+    }
+
+
+    @GetMapping("/order/cancelInfo")
+    public String pointInfoForm(Model model, OrderVO orderVO) {
+      return "/user/order/pointList";
+    }
+
 
 }

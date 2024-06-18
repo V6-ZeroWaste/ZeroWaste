@@ -22,7 +22,7 @@ public class OrderController {
     @Autowired
     private OrderAdminService service;
 
-    @GetMapping("/mypage/order")
+    @GetMapping("/mypage/order/list")
     public String index(Model model, OrderVO orderVO) {
       return "/user/order/list";
     }
@@ -31,20 +31,6 @@ public class OrderController {
     public String detail(Model model, OrderVO orderVO) {
       return "/user/order/detail";
     }	
-    @GetMapping("/mypage/cancelInfo")
-    public String cancelInfo(Model model, OrderVO orderVO) {
-      return "/user/order/cancelForm";
-    }
-    @GetMapping("/mypage/cancelRequest")
-    public String cancelRequest(Model model, OrderVO orderVO) {
-        return "/user/order/cancelForm";
-      }
-
-    @GetMapping("/mypage/point")
-    public String point(Model model, OrderVO orderVO) {
-      return "/user/order/pointList";
-    }
-
 
 
 
