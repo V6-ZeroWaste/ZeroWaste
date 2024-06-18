@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <nav class="navbar navbar-expand-lg navbar-dark">
-                <a href="/index" class="navbar-brand order-1 order-lg-2">SOAFF</a>
+                <a href="/" class="navbar-brand order-1 order-lg-2">SOAFF</a>
                 <button class="navbar-toggler order-2" type="button" data-toggle="collapse"
                         data-target=".navbar-collapse"
                         aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,7 +15,7 @@
 
                 <div class="collapse navbar-collapse order-3 order-lg-1" id="navbarMenu">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"><a class="nav-link" href="/index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
 
                         <!-- store 토글 -->
                         <li class="nav-item dropdown">
