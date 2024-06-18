@@ -9,6 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
     <link rel="stylesheet" href="/user/css/vendor.css" />
     <link rel="stylesheet" href="/user/css/style.css" />
+      <style>
+          .product-price{
+              white-space: nowrap;
+          }
+      </style>
 	  <script>
 
 		  let page = 1;

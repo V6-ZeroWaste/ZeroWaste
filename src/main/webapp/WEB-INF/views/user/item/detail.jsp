@@ -72,6 +72,9 @@
         /*.date{*/
         /*    padding: 0 25px;*/
         /*}*/
+        #total-price {
+            white-space: nowrap;
+        }
     </style>
 
     <title>soaff</title>
@@ -225,16 +228,17 @@
 
     <!-- 리뷰 -->
     <script>
-        let page = 1;
+        let reviewPage = 1;
         window.onload=function(){
             getReviewList();
+            getQnaList();
         }
         function applyReviewCondition(){
-            page = 1;
+            reviewPage = 1;
             getReviewList();
         }
         function changeReviewPage(obj){
-            page = obj.getAttribute("data-page");
+            reviewPage = obj.getAttribute("data-page");
             getReviewList();
         }
 
@@ -242,7 +246,7 @@
             var data = {
                 orderBy: $('#reviewOrderBy').val(),
                 item_no: ${item.item_no},
-                page: page,
+                page: reviewPage,
 
             }
 
@@ -259,28 +263,25 @@
                     $("#avgScore").html(resp.avgScore);
                     //
                     // // 페이지네이션 출력
-                    // // 총 개수
-                    // $(".datatable-info").html("("+resp.total+"개)");
                     // // 페이지네이션
-                    // let printPage = "";
-                    // if(resp.isPrev){
-                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
-                    //     printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
-                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
-                    //     printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
-                    // }
-                    // for(i = resp.startPage; i<=resp.endPage; i++){
-                    //     printPage += '<li class="datatable-pagination-list-item page-item'+(i==page? ' datatable-active' : '')+'">';
-                    //     printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">'+i+'</a></li>';
-                    // }
-                    // if(resp.isNext){
-                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
-                    //     printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
-                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
-                    //     printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
-                    // }
-                    // console.log(printPage);
-                    // $(".datatable-pagination-list").html(printPage);
+                    let printPage = "";
+                    if(resp.isPrev){
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
+                    }
+                    for(i = resp.startPage; i<=resp.endPage; i++){
+                        printPage += '<li class="datatable-pagination-list-item page-item'+(i==reviewPage? ' datatable-active' : '')+'">';
+                        printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">'+i+'</a></li>';
+                    }
+                    if(resp.isNext){
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
+                    }
+                    $(".review-pagination-list").html(printPage);
 
 
 
@@ -297,7 +298,66 @@
 
     <!-- 문의 -->
     <script>
+        let qnaPage = 1;
+        function applyQnaCondition(){
+            qnaPage = 1;
+            getQnaList();
+        }
+        function changeQnaPage(obj){
+            qnaPage = obj.getAttribute("data-page");
+            getQnaList();
+        }
 
+        function getQnaList(){
+            var data = {
+                item_no: ${item.item_no},
+                page: qnaPage,
+            }
+
+            $.ajax({
+                type: "GET", // method type
+                url: "/item/getQnaList", // 요청할 url
+                data: data, // 전송할 데이터
+                dataType: "json", // 응답 받을 데이터 type
+                success : function(resp){
+                    console.log("문의 성공");
+                    // 데이터 리스트 출력
+                    $("#qnaPrintList").html(resp.printList);
+                    $("#qna-total").html("상품 문의("+resp.total.toLocaleString()+"개)");
+                    //
+                    // // 페이지네이션 출력
+                    // // 페이지네이션
+                    let printPage = "";
+                    if(resp.isPrev){
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹‹</a></li>';
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹</a></li>';
+                    }
+                    for(i = resp.startPage; i<=resp.endPage; i++){
+                        printPage += '<li class="datatable-pagination-list-item page-item'+(i==qnaPage? ' datatable-active' : '')+'">';
+                        printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">'+i+'</a></li>';
+                    }
+                    if(resp.isNext){
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹‹</a></li>';
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹</a></li>';
+                    }
+                    // console.log(printPage);
+                    $(".qna-pagination-list").html(printPage);
+
+
+
+                },
+                error:function (data, textStatus) {
+                    console.log("문의 실패");
+                    $('#fail').html("관리자에게 문의하세요.") // 서버오류
+                    console.log('error', data, textStatus);
+                }
+            })
+
+        }
     </script>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
@@ -477,35 +537,12 @@
             <br>
             <br>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div class="col-md-9 text-left">
-                    상품 문의(6,404 개)
+                <div class="col-md-9 text-left" id="qna-total">
                 </div>
                 <div class="col-md-3 d-flex align-items-center justify-content-end">
                     <input type="button" value="문의하기" class="btn btn-primary btn-sm">
                 </div>
             </div>
-<%--            <div class="row gutter-2 gutter-lg-4 mb-0 w-100" style="font-size: 14px;">--%>
-<%--            <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center" style="font-size: 14px;">--%>
-<%--                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">--%>
-<%--                    <div class="row w-100 align-items-center mb-0 border-bottom" style="width: 100%; margin: 0;">--%>
-<%--                        <div class="col-md-1 reply-status-line">--%>
-<%--                            답변상태--%>
-<%--                        </div>--%>
-<%--                        <div class="col-md-2 reply-type-line">--%>
-<%--                            질문유형--%>
-<%--                        </div>--%>
-<%--                        <div class="col-md-5 reply-title-line">--%>
-<%--                            제목--%>
-<%--                        </div>--%>
-<%--                        <div class="col-md-2 user-id-line">--%>
-<%--                            작성자--%>
-<%--                        </div>--%>
-<%--                        <div class="col-md-2 date-line">--%>
-<%--                            작성일--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
             <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center" style="font-size: 14px;">
                 <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="padding: 0; width: 100%;">
                     <div class="row w-100 align-items-center mb-0 border-bottom" style="padding:20px; margin-right:18px; width:100%">
@@ -528,101 +565,14 @@
                 </div>
             </div>
             <br>
-            <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
-                    <div class="accordion accordion-minimal" id="qna-1" style="width: 100%; margin: 0;">
-                        <div class="card">
-                            <div class="card-header" id="qna-heading-1">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link w-100" type="button" data-toggle="collapse" data-target="#qna-detail-1" aria-expanded="false" aria-controls="qna-detail-1" style="padding-bottom: 0;">
-                                        <div class="row w-100 align-items-center">
-                                            <div class="col-1 reply-status text-center">
-                                                답변 대기
-                                            </div>
-                                            <div class="col-2 reply-type text-center">
-                                                상품 상세 문의
-                                            </div>
-                                            <div class="col-5 reply-title text-left">
-                                                상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다
-                                            </div>
-                                            <div class="col-2 user-id text-center">
-                                                User123
-                                            </div>
-                                            <div class="col-2 date text-center">
-                                                2024-06-13
-                                            </div>
-                                        </div>
-                                    </button>
-                                </h5>
-                            </div>
-                            <div id="qna-detail-1" class="collapse" aria-labelledby="qna-heading-1" data-parent="#qna-1" style="background: #fafafa ">
-                                <div class="card-body text-left content-box">
-                                    <h4>Q</h4>
-                                    <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1685510644/noticon/zlnodb9oj9icejaqiytd.png">
-                                    <p> 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
-                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
-                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id="qnaPrintList"> <!-- 문의 리스트 -->
             </div>
-            <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
-                    <div class="accordion accordion-minimal" id="qna-2" style="width: 100%; margin:0;">
-                        <div class="card">
-                            <div class="card-header" id="qna-heading-2">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#qna-detail-2" aria-expanded="false" aria-controls="qna-detail-2" style="padding-bottom: 0;">
-                                        <div class="row w-100 align-items-center">
-                                            <div class="col-1 reply-status text-center">
-                                                답변 완료
-                                            </div>
-                                            <div class="col-2 reply-type text-center">
-                                                교환/환불 문의
-                                            </div>
-                                            <div class="col-5 reply-title text-left">
-                                                상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다
-                                            </div>
-                                            <div class="col-2 user-id text-center">
-                                                User123
-                                            </div>
-                                            <div class="col-2 date text-center">
-                                                2024-06-13
-                                            </div>
-                                        </div>
-                                    </button>
-                                </h5>
-                            </div>
-
-                            <!-- class에서 show의 유무에 따라 열리고 닫힘 -->
-                            <div id="qna-detail-2" class="collapse" aria-labelledby="qna-heading-2" data-parent="#qna-2" style="background: #fafafa ">
-                                <div class="card-body text-left content-box">
-                                    <h4>Q</h4>
-                                    <p> 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
-                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
-                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
-                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t </p>
-                                </div>
-                                <div class="card-body text-left content-box border-top">
-                                    <br>
-                                    <h4>A</h4>
-                                    <p> 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t
-                                        문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t
-                                        문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t
-                                        문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- 문의 끝 -->
             <div class="row">
                 <div class="col text-center">
                     <!-- 문의 페이지 네이션 영역 -->
-                    <nav class="item-pagination">
-                        <ul class="item-pagination-list">
+                    <nav class="qna-pagination">
+                        <ul class="qna-pagination-list">
                         </ul>
                     </nav>
                 </div>
