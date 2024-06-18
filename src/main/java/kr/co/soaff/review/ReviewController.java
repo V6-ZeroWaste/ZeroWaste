@@ -72,56 +72,55 @@ public class ReviewController {
 	}
 
 	@GetMapping("/post")
-	public String write(Model model, ReviewVO vo) {
-		return "/user/review/post";
+	public String write(Model model, @RequestParam int item_no, @RequestParam int order_detail_no) {
+	    ReviewVO vo = new ReviewVO();
+	    vo.setUser_no(1); // 로그인된 사용자의 user_no
+	    vo.setItem_no(item_no);
+	    vo.setOrder_detail_no(order_detail_no);
+	    model.addAttribute("vo", service.write(vo));
+	    return "/user/review/post";
 	}
-
-//	@PostMapping("/postReview")
-//	public String post(@RequestParam String title, String content, int score,
-//			@RequestParam(required = false) String review_img, Model model) {
-//		ReviewVO vo = new ReviewVO();
-//		vo.setTitle(title);
-//		vo.setContent(content);
-//		vo.setScore(score);
-//		vo.setReview_img(review_img);
-//
-//		int result = service.post(vo);
-//
-//		if (result > 0) {
-//			return "redirect:/user/review/list";
-//		} else {
-//			model.addAttribute("error", "리뷰 작성에 실패했습니다.");
-//			return "/user/review/post";
-//		}
-//	}
 
 	@PostMapping("/postReview")
+	@ResponseBody
 	public String post(@RequestParam String title, @RequestParam String content, @RequestParam int score,
-			@RequestParam(required = false) MultipartFile review_img, Model model) {
-		ReviewVO vo = new ReviewVO();
-		vo.setTitle(title);
-		vo.setContent(content);
-		vo.setScore(score);
+	                   @RequestParam(required = false) MultipartFile review_img, 
+	                   @RequestParam int order_detail_no, @RequestParam int item_no, Model model) {
 
-		if (review_img != null && !review_img.isEmpty()) {
-			try {
-				String imgUrl = s3Uploader.uploadFile(review_img);
-				vo.setReview_img(imgUrl);
-			} catch (IOException e) {
-				model.addAttribute("error", "이미지 업로드에 실패했습니다.");
-				return "/user/review/post";
-			}
-		}
+	    int user_no = 1;
+	    String user_id = "user01";
+	    ReviewVO vo = new ReviewVO();
+	    vo.setTitle(title);
+	    vo.setContent(content);
+	    vo.setScore(score);
+	    vo.setUser_no(user_no);
+	    vo.setUser_id(user_id);
+	    vo.setOrder_detail_no(order_detail_no);
+	    vo.setItem_no(item_no);
+	    vo.setExposed_status(1);
 
-		int result = service.post(vo);
+	    if (review_img != null && !review_img.isEmpty()) {
+	        try {
+	            String imgUrl = s3Uploader.uploadFile(review_img);
+	            vo.setReview_img(imgUrl);
+	        } catch (IOException e) {
+	            model.addAttribute("error", "이미지 업로드에 실패했습니다.");
+	            return "0";
+	        }
+	    } else {
+	        vo.setReview_img(null);
+	    }
 
-		if (result > 0) {
-			return "redirect:/user/review/list";
-		} else {
-			model.addAttribute("error", "리뷰 작성에 실패했습니다.");
-			return "/user/review/post";
-		}
+	    int result = service.post(vo);
+
+	    if (result > 0) {
+	        return "1";
+	    } else {
+	        return "0";
+	    }
 	}
+
+
 
 	@PostMapping("/delete")
 	@ResponseBody

@@ -51,28 +51,34 @@ public class ReviewServiceImpl implements ReviewService {
 
 		return map;
 	}
-	
+
 	@Override
 	public ReviewVO detail(ReviewVO vo) {
 		ReviewVO data = mapper.detail(vo);
 		return data;
 	}
-	
+
 	@Override
 	public int update(ReviewVO vo) {
 		return mapper.update(vo);
 	}
-	
+
 	@Override
 	public int delete(int review_no) {
 		return mapper.delete(review_no);
 	}
-	
-	 @Override
-	    public int post(ReviewVO vo) {
-	        return mapper.post(vo);
-	    }
-	
 
+	@Override
+	public int post(ReviewVO vo) {
+		System.out.println("서비스에서 리뷰 저장: " + vo);
+		return mapper.post(vo);
+	}
+	
+	@Override
+	public ReviewVO write(ReviewVO vo) {
+		ReviewVO data = mapper.write(vo);
+		return data;
+	}
 
+	
 }

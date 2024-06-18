@@ -8,5 +8,6 @@ public interface ReviewService {
 	int update(ReviewVO vo);
 	int delete(int review_no);
 	int post(ReviewVO vo);
+	ReviewVO write(ReviewVO vo);
 	
 }
