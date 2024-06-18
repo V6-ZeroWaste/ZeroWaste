@@ -120,7 +120,7 @@
                 </li>
               </ul>
             </div>
-            <form class="row">
+            <form action="/user/login/passwordReSubmit" class="row">
               <div class="row" id="emailVerification">
                 <label for="emailcheck_id" class="col-sm-12 col-form-label"style="color: #3d733d"><strong>인증코드 입력</strong></label>
                 <div class="form-group col-6" style="padding-right: 0">

@@ -72,7 +72,7 @@
                 </div>
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body" style="border : 1px #c2c2c2 solid">
-                        <form action="/user/login/loginFind" method="POST" name="frm" id="frm" class="row mt-2 needs-validation" novalidate>
+                        <form action="/user/login/passwordFindEmail" name="frm" id="frm" class="row mt-2 needs-validation" novalidate>
                             <div class="form-group col-12 mb-2">
                                 <label for="name" style="color: #3d733d"><strong>아이디</strong></label>
                                 <input type="text" class="form-control" id="id" name="id" required>
