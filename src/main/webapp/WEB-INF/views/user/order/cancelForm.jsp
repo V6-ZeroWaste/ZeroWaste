@@ -1,16 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" isELIgnored="false" %>
+         pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
-    <link rel="stylesheet" href="/user/css/vendor.css" />
-    <link rel="stylesheet" href="/user/css/style.css" />
-	
-    <title>Cancel</title>
+    <link rel="stylesheet" href="/user/css/vendor.css"/>
+    <link rel="stylesheet" href="/user/css/style.css"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <title>Order Cancel</title>
+    <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
+
     <style>
 		.review-info{
 			position: relative;
@@ -24,18 +27,29 @@
 		th{
 			width: 150px;
 		}
-		.review-img{
-			max-width: 70%;
-		}
-		
+	
 		.item-img{
 		max-height: 99.98px;
 		}
     	
     </style>
+
   </head>
     <body>
-    <div style="width:700px;margin: auto;">
+    <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
+	<%@ include file="/WEB-INF/views/user/include/mypageInfo.jsp" %>
+	<section class="pt-5">
+    	<div class="container">
+    		<div class="row gutter-4 justify-content-between">
+				<%@ include file="/WEB-INF/views/user/include/mypageNav.jsp" %>
+				<div class="col-lg-9">
+		            <div class="row">
+		              <div class="col">
+		                
+    
+    <!-- content -->
+    <div>
+    
     <!-- content -->
 	<div class="row">
 		<!-- title -->
@@ -49,16 +63,16 @@
 	   		<div class="col-12">
               <div style="border: 1px solid #dddddd;">
                 <div class="row align-items-center" style="min-height:100px">
-                  <div style="width:140px;text-align:center">
+                  <div class="col-lg-2 order-preview justify-content-center">
                   	<!-- 상품이미지 -->
                   	<a href="product-1.html" title="Fawn Wool / Natural Mammoth Chair" data-toggle="tooltip" data-placement="top">
                   		<img class="item-img" src="/user/images/demo/product-1.jpg" alt="Fawn Wool / Natural Mammoth Chair">
                   	</a>
                   </div>
-                  <div style="width:400px">
+                  <div class="col-8">
                     <h3 class="order-number">Item name</h3>
                   </div>
-                  <div style="width:130px">
+                  <div class="col-2">
                   	<!-- 상품 바로가기 링크 -->
                     <a href="#!" class="action eyebrow underline">View Item</a>
                   </div>
@@ -136,6 +150,17 @@
          	
 				</div>
 				<!-- /content -->
-	</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+		if(window.location.pathname == '/order/cancelRequest'){
+			
+		}
+	</script>
     </body>
 </html>  

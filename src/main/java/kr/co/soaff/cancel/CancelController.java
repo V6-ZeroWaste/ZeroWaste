@@ -10,11 +10,11 @@ import kr.co.soaff.order.OrderVO;
 public class CancelController {
 	
 	
-    @GetMapping("/mypage/cancelInfo")
+    @GetMapping("/order/cancelInfo")
     public String cancelInfo(Model model, OrderVO orderVO) {
       return "/user/order/cancelForm";
     }
-    @GetMapping("/mypage/cancelRequest")
+    @GetMapping("/order/cancelRequest")
     public String cancelRequest(Model model, OrderVO orderVO) {
         return "/user/order/cancelForm";
       }
