@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/user/qna")
+@RequestMapping("/mypage/qna")
 public class QnaController {
 	@Autowired
 	private QnaService service;
@@ -64,13 +64,13 @@ public class QnaController {
 		return "/user/qna/detail";
 	}
 	
-	@GetMapping("/detail2")
+	@GetMapping("/update")
 	public String detail2(Model model, QnaVO vo) {
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/qna/update";
 	}
 	
-	@PostMapping("/update")
+	@PostMapping("/updateQna")
 	@ResponseBody
 	public int update(@RequestParam int qna_no, String title, String content) {
 		QnaVO vo = new QnaVO();
