@@ -72,7 +72,7 @@
                		
                		// 페이지네이션 출력
                		// 총 개수
-               		$(".datatable-info").html("Showing "+((page-1)*20+1)+" to "+(page*20<=resp.total? page*20 : resp.total)+" of "+resp.total+" entries"); 
+               		$(".datatable-info").html("Showing "+((page-1)*20+1)+" to "+(page*20<=resp.total? page*20 : resp.total)+" of "+resp.count+" entries"); 
                		// 페이지네이션
                		let printPage = "";
                		if(resp.isPrev){

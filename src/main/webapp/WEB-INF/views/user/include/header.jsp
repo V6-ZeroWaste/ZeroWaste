@@ -45,10 +45,7 @@
                             <a class="nav-link" href="/login">Log In</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a data-toggle="modal" data-target="#search" class="nav-link"><i
-                                    class="icon-search"></i></a>
-                        </li>
+                        
                         <li class="nav-item cart">
                             <a href="/cart" class="nav-link"><span>Cart</span><span>2</span></a>
                         </li>

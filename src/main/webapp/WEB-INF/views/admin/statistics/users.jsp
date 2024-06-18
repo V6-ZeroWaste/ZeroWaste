@@ -28,9 +28,7 @@
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">회원 통계</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
+                    
                     
                     <!-- 정렬, 필터 -->
                     <div class="datatable-dropdown">
@@ -52,7 +50,6 @@
                         <div class="col-md-8">
                             <div class="datatable-dropdown" style="margin-bottom: 15px" >
                                	<input id="start_date" name="start_date" type="date" class="datatable-selector dateInput">-<input id="end_date" name="end_date" type="date" class="datatable-selector dateInput">
-                            <button class="btn btn-primary applyButton" onclick="getList();">검색</button>
                             </div>
                         </div>
                         
@@ -61,7 +58,7 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-xl-6">
+                        <div class="col-xl-12">
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-area me-1"></i>
