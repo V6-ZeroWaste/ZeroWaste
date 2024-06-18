@@ -10,9 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="71d8286f-28c5-442b-b0e2-b77825eee59c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/main/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/main/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/user/login.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/order.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/order.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/dashboard/DashboardVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/kr/co/soaff/dashboard/DashboardMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/kr/co/soaff/dashboard/DashboardMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/dashboard/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/dashboard/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/include/sidenav.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/admin/include/sidenav.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,9 +65,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Tomcat Server.Tomcat 9.0.88.executor": "Run",
     "Tomcat Server.loginFind.jsp.executor": "Run",
-    "git-widget-placeholder": "user__bongbong",
+    "git-widget-placeholder": "dashboard",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Algorithm_Study",
+    "last_opened_file_path": "C:/Users/kiv99/git/ZeroWaste",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -68,6 +75,7 @@
     "project.structure.last.edited": "Artifacts",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "SQL Dialects",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -186,7 +194,7 @@
       <workItem from="1718593765820" duration="152000" />
       <workItem from="1718593936420" duration="388000" />
       <workItem from="1718624535895" duration="15079000" />
-      <workItem from="1718670268637" duration="1423000" />
+      <workItem from="1718670268637" duration="3718000" />
     </task>
     <servers />
   </component>
@@ -206,5 +214,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
