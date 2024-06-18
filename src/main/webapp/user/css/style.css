@@ -8,7 +8,7 @@
 :root {
   --blue: #013A80;
   --indigo: #6610f2;
-  --purple: #B0D9B1;
+  --purple: #618264;
   --pink: #FF9EBD;
   --red: #E35D46;
   --orange: #fd7e14;
@@ -8106,7 +8106,7 @@ button.bg-indigo:focus {
   background-color: #510bc4 !important; }
 
 .bg-purple {
-  background-color: #B0D9B1 !important; }
+  background-color: #618264 !important }
 
 a.bg-purple:hover, a.bg-purple:focus,
 button.bg-purple:hover,

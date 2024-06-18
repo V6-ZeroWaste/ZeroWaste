@@ -96,8 +96,14 @@ $RECYCLE.BIN/
 db.properties
 s3.properties
 /.gitignore
-workspace.xml
-factorypath.xml
+<<<<<<< HEAD
+s3.properties
+.factorypath
+=======
+s3.properties
+.factorypath
+>>>>>>> refs/heads/develop
+>>>>>>> refs/heads/develop
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
 

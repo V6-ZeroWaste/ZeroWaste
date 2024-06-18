@@ -12,7 +12,6 @@
             <h3 class="text-muted">Point : 1,000 p</h3>
           </div>
           <div class="col-md-6 text-center text-md-right">
-            <a href="#!" class="btn btn-sm btn-outline-white">Logout</a>
           </div>
         </div>
       </div>

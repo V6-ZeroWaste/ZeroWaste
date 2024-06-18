@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/user/review")
-public class ReviewUserController {
+public class ReviewController {
 	@Autowired
-	private ReviewUserService service;
+	private ReviewService service;
 
 	@GetMapping("/list")
 	public String index(Model model, ReviewVO vo) {
@@ -51,54 +51,53 @@ public class ReviewUserController {
 		map.put("printList", printList);
 		return map;
 	}
-	
+
 	@GetMapping("/detail")
 	public String detail(Model model, ReviewVO vo) {
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/review/detail";
 	}
-	
+
 	@GetMapping("/detail2")
 	public String detail2(Model model, ReviewVO vo) {
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/review/update";
 	}
 	
-	// 리뷰등록페이지 입장하는 버튼
 	@GetMapping("/write")
-	public String write() {
-		return "/user/review/write";
+	public String write(Model model, ReviewVO vo) {
+		return "/user/review/post";
 	}
-	
-	 @PostMapping("/post")
-	    public String post(@RequestParam String title, String content, int score, String review_img, Model model) {
-	        ReviewVO vo = new ReviewVO();
-	        vo.setTitle(title);
-	        vo.setContent(content);
-	        vo.setScore(score);
-	        vo.setReview_img(review_img);
 
-	        int result = service.post(vo);
+	@PostMapping("/post")
+	public String post(@RequestParam String title, String content, int score, @RequestParam(required = false) String review_img, Model model) {
+		ReviewVO vo = new ReviewVO();
+		vo.setTitle(title);
+		vo.setContent(content);
+		vo.setScore(score);
+		vo.setReview_img(review_img);
 
-	        if (result > 0) {
-	            return "redirect:/user/review/list";
-	        } else {
-	            model.addAttribute("error", "리뷰 작성에 실패했습니다.");
-	            return "/user/review/write";
-	        }
-	    }
-	
+		int result = service.post(vo);
+
+		if (result > 0) {
+			return "redirect:/user/review/list";
+		} else {
+			model.addAttribute("error", "리뷰 작성에 실패했습니다.");
+			return "/user/review/post";
+		}
+	}
+
 	@PostMapping("/update")
 	@ResponseBody
 	public int update(@RequestParam int review_no, String title, String content) {
-	    ReviewVO vo = new ReviewVO();
-	    vo.setReview_no(review_no);
-	    vo.setTitle(title);
-	    vo.setContent(content);
-	    int result = service.update(vo);
-	    return result > 0 ? 1 : 0;
+		ReviewVO vo = new ReviewVO();
+		vo.setReview_no(review_no);
+		vo.setTitle(title);
+		vo.setContent(content);
+		int result = service.update(vo);
+		return result > 0 ? 1 : 0;
 	}
-	
+
 	@PostMapping("/delete")
 	@ResponseBody
 	public int delete(@RequestParam int review_no) {
@@ -106,6 +105,4 @@ public class ReviewUserController {
 		return result;
 	}
 
-	
-	
 }

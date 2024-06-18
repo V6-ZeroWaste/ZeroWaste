@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.co.soaff.order.CancelAdminMapper">
+<mapper namespace="kr.co.soaff.cancel.CancelAdminMapper">
 
 	<sql id="searchSql">
     <where>
@@ -67,8 +67,8 @@
 
 	<!-- 취소관리 리스트 -->
 	<select id="list"
-		parameterType="kr.co.soaff.order.CancelAdminListVO"
-		resultType="kr.co.soaff.order.CancelAdminListVO">
+		parameterType="kr.co.soaff.cancel.CancelAdminListVO"
+		resultType="kr.co.soaff.cancel.CancelAdminListVO">
 		SELECT
 		od.order_detail_no,
 		od.order_no,
@@ -90,7 +90,7 @@
 	</select>
 
 	<select id="detailFromOrderDetailVO" parameterType="int"
-		resultType="kr.co.soaff.order.CancelAdminDetailVO">
+		resultType="kr.co.soaff.cancel.CancelAdminDetailVO">
 		SELECT
 		od.order_detail_no,
 		od.order_no,
@@ -111,7 +111,7 @@
 	</select>
 
 	<select id="detailFromOrderVO" parameterType="int"
-		resultType="kr.co.soaff.order.CancelAdminOrderVO">
+		resultType="kr.co.soaff.cancel.CancelAdminOrderVO">
 		SELECT
 		order_no,
 		user_no,
@@ -128,7 +128,7 @@
 	</select>
 
 	<select id="count"
-		parameterType="kr.co.soaff.order.CancelAdminListVO" resultType="int">
+		parameterType="kr.co.soaff.cancel.CancelAdminListVO" resultType="int">
 		SELECT COUNT(*)
 		FROM order_detail od
 		JOIN user u ON od.user_no =
@@ -149,7 +149,7 @@
 
 	<!-- 상세에서 승인버튼시 취소승인 -->
 	<update id="approveCancel"
-		parameterType="kr.co.soaff.order.CancelAdminDetailVO">
+		parameterType="kr.co.soaff.cancel.CancelAdminDetailVO">
 		UPDATE order_detail
 		SET cancel_status = 1
 		WHERE
@@ -158,7 +158,7 @@
 
 	<!-- 상세에서 거절버튼 취소거절 -->
 	<update id="refuseCancel"
-		parameterType="kr.co.soaff.order.CancelAdminDetailVO">
+		parameterType="kr.co.soaff.cancel.CancelAdminDetailVO">
 		UPDATE order_detail
 		SET cancel_status = null
 		WHERE
@@ -167,7 +167,7 @@
 
 	<!-- 환불완료시 취소완료 -->
 	<update id="completeCancel"
-		parameterType="kr.co.soaff.order.CancelAdminDetailVO">
+		parameterType="kr.co.soaff.cancel.CancelAdminDetailVO">
 		UPDATE order_detail
 		SET cancel_status = 2,
 		cancel_approve_date = CURRENT_TIMESTAMP
@@ -177,7 +177,7 @@
 
 	<!-- 주문상세에서 강제취소 -->
 	<update id="adminCancel"
-		parameterType="kr.co.soaff.order.CancelAdminDetailVO">
+		parameterType="kr.co.soaff.cancel.CancelAdminDetailVO">
 		UPDATE order_detail
 		SET cancel_status = 2,
 		cancel_reason_type = 1,
