@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.soaff.review.ReviewVO;
@@ -20,16 +21,19 @@ public class ItemController {
 	ItemService itemService;
 
 	@GetMapping("/list")
-	public String item(Model model, ItemVO vo) {
+	public String item(Model model, ItemVO vo, @RequestParam(required = false) Integer category_no) {
+		if(category_no!=null && !category_no.equals(0)){
+			vo.setFilter(String.valueOf(category_no));
+			vo.setCategory_name(itemService.getCategoryName(category_no));
+		}
 		model.addAttribute("map", itemService.list(vo));
 		model.addAttribute("item", vo);
-		model.addAttribute("categories", itemService.categories());
 		return "user/item/list";
 	}
 
 	@GetMapping("/getItemList")
 	@ResponseBody
-	public Map<String, Object> getItemList(Model model, ItemVO vo) {
+	public Map<String, Object> getItemList(ItemVO vo) {
 		Map<String, Object> map = itemService.list(vo);
 		String printList = "";
 		List<ItemVO> itemList = (List<ItemVO>) map.get("items");
@@ -58,7 +62,6 @@ public class ItemController {
 			printList += "</div>";
 		}
 		map.put("printList", printList);
-		model.addAttribute("categories", itemService.categories());
 		return map;
 	};
 
