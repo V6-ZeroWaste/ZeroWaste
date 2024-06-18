@@ -22,8 +22,8 @@ public class ReviewController {
 	@Autowired
 	private ReviewService service;
 
-	@Autowired
-	private S3Uploader s3Uploader;
+//	@Autowired
+//	private S3Uploader s3Uploader;
 
 	@GetMapping("/list")
 	public String index(Model model, ReviewVO vo) {
@@ -94,7 +94,7 @@ public class ReviewController {
 //			return "/user/review/post";
 //		}
 //	}
-
+/*
 	@PostMapping("/postReview")
 	public String post(@RequestParam String title, @RequestParam String content, @RequestParam int score,
 			@RequestParam(required = false) MultipartFile review_img, Model model) {
@@ -122,6 +122,7 @@ public class ReviewController {
 			return "/user/review/post";
 		}
 	}
+	*/
 
 	@PostMapping("/delete")
 	@ResponseBody
