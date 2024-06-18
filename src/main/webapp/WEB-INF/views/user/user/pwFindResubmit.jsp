@@ -13,51 +13,26 @@
   <title>soaff</title>
   <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
   <script>
-    window.addEventListener('load', function() {
-      var forms = document.querySelectorAll('.needs-validation');
-      (function() {
-        'use strict';
-
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-                .forEach(function(form) {
-                  console.log(form);
-                  form.addEventListener('submit', function(event) {
-                    if (!check()) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-                    if (!form.checkValidity()) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-
-                    form.classList.add('was-validated');
-                  }, false);
-                });
-      })();
-    });
-
-    function check() {
-      var con = true;
-      var name = $('#name').val();
-      var email = $('#relEmail').val($('#email_id').val() + "@" + $('#email_domain').val());
-      $.ajax({
-        type: 'POST',
-        url: '/user/login/loginFind',
-        data: { name: name,
-          email: email},
-        async: false,
-        success: function(res) {
-          console.log(res);
-          if (res == '1') {
-
-            con = false;
-          }
-        }
-      });
-      return con;
-    }
+    // function check() {
+    //   var con = true;
+    //   var name = $('#name').val();
+    //   var email = $('#relEmail').val($('#email_id').val() + "@" + $('#email_domain').val());
+    //   $.ajax({
+    //     type: 'POST',
+    //     url: '/user/login/loginFind',
+    //     data: { name: name,
+    //       email: email},
+    //     async: false,
+    //     success: function(res) {
+    //       console.log(res);
+    //       if (res == '1') {
+    //
+    //         con = false;
+    //       }
+    //     }
+    //   });
+    //   return con;
+    // }
   </script>
 </head>
 <body>
@@ -65,6 +40,7 @@
   <div class="container">
     <div class="row justify-content-center align-items-center vh-md-100">
       <div class="col-md-10 col-lg-6">
+        <div class="card active">
         <div class="card-header" id="headingOne">
           <h6 class="mb-0">
             <p style="color: #68ae68"><strong>비밀번호 변경</strong></p>
@@ -72,9 +48,9 @@
         </div>
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
           <div class="card-body" style="border : 1px #c2c2c2 solid">
-            <form action="/index" name="frm" id="frm" class="row mt-2 needs-validation" novalidate>
+            <form action="/user/login/loginFind" method="POST" name="frm" id="frm" class="row mt-2 needs-validation" novalidate>
               <div class="form-group col-12 mb-2">
-                <label for="name" style="color: #3d733d"><strong>새 배밀번호</strong></label>
+                <label for="name" style="color: #3d733d"><strong>새 비밀번호</strong></label>
                 <input type="text" class="form-control" id="id" name="id" required>
 
               </div>
@@ -85,11 +61,9 @@
               <div class="col-12 mt-3">
                 <button class="btn btn-block btn-primary" id="btn" type="submit">제출</button>
               </div>
-              <div class="col-12 mt-2" style="text-align: right;">
-                <a class="nav-link" href="#!">아이디 찾기</a>
-              </div>
             </form>
           </div>
+        </div>
         </div>
       </div>
     </div>
