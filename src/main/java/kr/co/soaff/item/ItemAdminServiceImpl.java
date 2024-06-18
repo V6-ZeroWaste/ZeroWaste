@@ -52,8 +52,8 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 
 		map.put("endPage", endPage);
 		map.put("startPage", startPage);
-		map.put("prev", prev);
-		map.put("next", next);
+		map.put("isPrev", prev);
+		map.put("isNext", next);
 
 		return map;
 
@@ -99,8 +99,6 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 			String real = System.currentTimeMillis() + ext;
 			String uploadDir = request.getRealPath("/upload/item_img/");
 			String path = uploadDir + real;
-			System.out.println(uploadDir);
-			System.out.println(path);
 
 			File dir = new File(uploadDir);
 			if (!dir.exists()) {
@@ -114,8 +112,7 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 			}
 			vo.setItem_img(real);
 		}
-		else if (vo.getItem_img() != null && !vo.getItem_img().isEmpty()) {
-			// 새 파일이 없고 기존 파일이 있는 경우
+		else{
 			ItemVO detail = mapper.detail(vo);
 			vo.setItem_img(detail.getItem_img());
 		}
