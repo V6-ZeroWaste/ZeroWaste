@@ -81,16 +81,11 @@ public class PointController {
 	
 	
 
-    @GetMapping("/order/cancelRequest")
+    @GetMapping("/mypage/point")
     public String pointReqForm(Model model, OrderVO orderVO) {
       return "/user/order/pointList";
     }
 
-
-    @GetMapping("/order/cancelInfo")
-    public String pointInfoForm(Model model, OrderVO orderVO) {
-      return "/user/order/pointList";
-    }
 
 
 }
