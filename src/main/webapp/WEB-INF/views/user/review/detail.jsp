@@ -41,7 +41,7 @@ th {
 <script type="text/javascript">
 function redirectToUpdate() {
     var reviewNo = document.getElementById('review_no').value;
-    window.location.href = '/user/review/detail2?review_no=' + reviewNo;
+    window.location.href = '/mypage/review/update?review_no=' + reviewNo;
 }
 
 var review_no = ${vo.review_no};
@@ -49,12 +49,12 @@ function deleteReview() {
     if (confirm("정말 삭제하시겠습니까?")) {
         $.ajax({
             type: "POST",
-            url: "/user/review/delete",
+            url: "/mypage/review/delete",
             data: { review_no: ${vo.review_no} },
             success: function(response) {
                 if (response === 1) {
                     alert("리뷰가 삭제되었습니다.");
-                    location.href = "/user/review/list";
+                    location.href = "/mypage/review/list";
                 } else {
                     alert("리뷰 삭제에 실패했습니다.");
                 }

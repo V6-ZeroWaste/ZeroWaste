@@ -24,15 +24,13 @@
                                 STORE
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            	<li><a class="dropdown-item" href="#!">All Items</a></li>
-                                <li><a class="dropdown-item" href="#!">HOME & LIVING</a></li>
-                                <li><a class="dropdown-item" href="#!">HAIR</a></li>
-                                <li><a class="dropdown-item" href="#!">FACE & BODY</a></li>
-                                <li><a class="dropdown-item" href="#!">FOR PET</a></li>
+                                <li><a class="dropdown-item" href="/item/list">All</a></li>
+                                <c:forEach var="category" items="${categories}">
+                                    <li><a class="dropdown-item" href="/item/list?category_no=${category.category_no}">${category.name}</a></li>
+                                </c:forEach>
                             </ul>
                         </li>
                         <li class="nav-item">
-
                             <a class="nav-link" href="/about">
                                 SOAFF STORY
                             </a>
@@ -46,6 +44,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/login">Log In</a>
                         </li>
+
+                        
                         <li class="nav-item cart">
                             <a href="/cart" class="nav-link"><span>Cart</span><span>2</span></a>
                         </li>

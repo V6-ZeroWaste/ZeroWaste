@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.co.soaff.order.OrderAdminMapper">
+<mapper namespace="kr.co.soaff.order.OrderMapper">
 	
 	<sql id="searchSql">
 		<where>
-			<if test="searchWord != null">
-				AND concat_ws("-", `order`.order_no, user.id, item.name)  like '%${searchWord}%'
-			</if>
-			<if test="filter != null">
-				AND `order`.delivery_status = #{filter}
-			</if>
 			<if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
 				AND `order`.payment_date BETWEEN #{start_date} AND #{end_date}
 			</if>
@@ -24,44 +18,25 @@
 		</where>
 	</sql>
 	
-	<sql id="orderBySql">
-		<if test="orderBy == 'none'">
-			ORDER BY `order`.payment_date DESC
-		</if>
-		<if test="orderBy == '최신순'">
-			ORDER BY `order`.payment_date DESC
-		</if>
-		<if test="orderBy == '오래된순'">
-			ORDER BY `order`.payment_date
-		</if>
-		<if test="orderBy == '주문금액많은순'">
-			ORDER BY payment_price DESC
-		</if>
-		<if test="orderBy == '주문금액적은순'">
-			ORDER BY payment_price
-		</if>
-	</sql>
-	
 	<!-- list -->
-	<select id="list" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.order.OrderVO">
+	<select id="orderList" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.order.OrderVO">
 		SELECT 
-		    `order`.order_no,
-		    `order`.payment_date,
-		    user.id,
-		    `order`.payment_price,
-		    sum(order_detail.amount) as total_amount,
-		    `order`.order_status,
-		    `order`.delivery_status,
-		    `order`.delivery_price
-		    
-		FROM `order` 
-		JOIN user ON `order`.user_no = user.user_no
-		JOIN order_detail ON `order`.order_no = order_detail.order_no
-		JOIN item ON order_detail.item_no = item.item_no
-		<include refid="searchSql"/>
-		GROUP BY `order`.order_no
-		<include refid="orderBySql"/>
-		LIMIT #{startIdx}, 20
+			od.order_no, user_no, payment_date, delivery_status, total_item_price,
+			cancel_status,total_amount,
+			IF(item_amount > 1, CONCAT(item.name ,' 외 ',item_amount - 1,'개'), item.name ) AS order_name,
+		    item_amount
+		FROM (
+			SELECT 
+				order_no, MIN(item_no) AS item_no, SUM(price) AS total_item_price,
+				SUM(amount) AS total_amount, MIN(cancel_status) AS cancel_status, COUNT(*) AS item_amount
+			FROM order_detail
+			GROUP BY order_no
+		    ) od
+		JOIN item
+		ON item.item_no = od.item_no
+		JOIN `order`
+		ON `order`.order_no = od.order_no
+		ORDER BY payment_date DESC
 	</select>
 	
 	<!-- count -->
@@ -90,22 +65,18 @@
 			delivery_price,
 		    point,
 		    payment_method,
-		    payment_price,
-		    user_no
+		    payment_price
    		FROM `order`
 		WHERE order_no = #{order_no}
 	</select>
 	<!-- OrderDetailVO에 담는 정보 -->
 	<select id="detailFromOrderDetailVO" parameterType="kr.co.soaff.order.OrderDetailVO">
-		SELECT
-			order_detail_no,
+		SELECT 
 			item.item_img,
 			item.name as item_name,
 			order_detail.price,
-			order_detail.cancel_status,
-			order_detail.amount,
-			confirm_date,
-			cancel_approve_date		
+			order_detail.cancel_status
+			
 		FROM order_detail 
 		JOIN item ON order_detail.item_no = item.item_no
 		WHERE order_detail.order_no = #{order_no};

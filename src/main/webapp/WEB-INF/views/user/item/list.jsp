@@ -28,11 +28,12 @@
 			  var data = {
 				  searchWord: $('#searchWord').val(),
 				  orderBy: $('#orderBy').val(),
-				  filter: $('#filter').val(),
+				  // filter: $('#filter').val(),
+                  filter: '${item.filter}',
 				  page: page,
 
 			  }
-
+              console.log(data.filter);
 			  $.ajax({
 				  type: "GET", // method type
 				  url: "/item/getItemList", // 요청할 url
@@ -80,16 +81,69 @@
 		  }
 	  </script>
     <title>soaff</title>
-    <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
   </head>
     <body>
+    <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
+        <!-- hero -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="image image-overlay image-zoom" style="background-image:url(/user/images/main_test1.png)">
+                </div>
+                <div class="container">
+                    <div class="row align-items-center vh-100">
+                        <div class="col-lg-8 text-white" data-swiper-parallax-x="-100%">
+                            <h1 class="display-1 mt-1 mb-3 font-weight-light">SOAFF BEST Item <b class="d-block">Greener24</b>
+                            </h1>
+                            <a href="listing-full.html" class="btn btn-sm btn-white btn-action">Shop Now <span
+                                    class="icon-arrow-right"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="image image-overlay image-zoom" style="background-image:url(/user/images/background-2.jpg)">
+                </div>
+                <div class="container">
+                    <div class="row align-items-end align-items-center vh-100">
+                        <div class="col-lg-8 text-white" data-swiper-parallax-x="-100%">
+                            <h1 class="display-1 mb-2 font-weight-light">Brand New <b>Sunglasses</b></h1>
+                            <a href="listing-full.html" class="btn btn-sm btn-white btn-action">Shop Now <span
+                                    class="icon-arrow-right"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-footer">
+            <div class="container">
+                <div class="row align-items-center mb-5">
+                    <div class="col-lg-6">
+                        <div class="swiper-pagination"></div>
+                    </div>
+                    <div class="col-lg-6 text-right">
+                        <div class="swiper-navigation">
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 	<!-- latest products -->
 	<section>
 		<div class="container">
 			<div class="row">
-				<div class="col text-center">
-					<h2>상품 목록</h2>
-				</div>
+                <div class="col text-center">
+                    <c:if test="${item.category_name == null || item.category_name == ''}">
+                        <h2>ALL</h2>
+                    </c:if>
+                    <c:if test="${item.category_name != null && item.category_name != ''}">
+                        <h2>${item.category_name}</h2>
+                    </c:if>
+                </div>
 			</div>
             <div class="datatable-dropdown row align-items-center">
                 <div class="col-md-8">
@@ -104,29 +158,29 @@
                             <option value="낮은가격순" <c:if test="${param.orderBy == '낮은가격순'}">selected</c:if>>낮은가격순</option>
                         </select>
                     </label>
-                    <label>
-                        <select name="filter" id="filter" class="datatable-selector form-control-sm" onchange="applyCondition();">
-                            <option value="">모든 카테고리</option>
-                            <c:forEach var="category" items="${categories}">
-                                <c:if test="${param.filter == category.category_no}">
-                                    <option value="${category.category_no}" selected>${category.name}</option>
-                                </c:if>
-                                <c:if test="${param.filter != category.category_no}">
-                                    <option value="${category.category_no}">${category.name}</option>
-                                </c:if>
-                            </c:forEach>
-                        </select>
-                    </label>
+<%--                    <label>--%>
+<%--                        <select name="filter" id="filter" class="datatable-selector form-control-sm" onchange="applyCondition();">--%>
+<%--                            <option value="">모든 카테고리</option>--%>
+<%--                            <c:forEach var="category" items="${categories}">--%>
+<%--                                <c:if test="${param.filter == category.category_no}">--%>
+<%--                                    <option value="${category.category_no}" selected>${category.name}</option>--%>
+<%--                                </c:if>--%>
+<%--                                <c:if test="${param.filter != category.category_no}">--%>
+<%--                                    <option value="${category.category_no}">${category.name}</option>--%>
+<%--                                </c:if>--%>
+<%--                            </c:forEach>--%>
+<%--                        </select>--%>
+<%--                    </label>--%>
                     <label class="text-sm-center datatable-info">
                          <!-- 리스트에 보이는 부분 말고 검색된 상품의 모든 개수 -->
                     </label>
                 </div>
 				<div class="col-md-1"></div>
                 <!-- search-container 를 searchWord가 있을 때만 보이도록 수정 스크립트로 search-container 영역 [].css("display", "none"); / block -->
-                <div class="col-md-3">
+                <div class="col-md-3 d-flex justify-content-end">
                     <div class="form-inline search-container">
-                        <input name="searchWord" id="searchWord" class="form-control form-control-sm" type="search"
-                               value="${item.searchWord != null ? item.searchWord : ''}" placeholder="검색어 입력">
+                        <input name="searchWord" id="searchWord" class="form-control form-control-sm " type="search"
+                               value="${item.searchWord != null ? item.searchWord : ''}" placeholder="검색어 입력" onkeydown="if(event.key === 'Enter') applyCondition();" >
                         <input type="button" value="검색" class="btn btn-primary btn-sm" onclick="applyCondition();" >
                     </div>
                 </div>

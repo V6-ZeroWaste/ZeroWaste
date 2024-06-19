@@ -37,7 +37,7 @@ public class OrderAdminController {
 		String printList = "";
 		List<OrderVO> orderList = (List<OrderVO>) map.get("list");
 		if (orderList.size() == 0) {
-			printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
+			printList = "<td class='first' colspan='6' style='text-align: center;'>등록된 글이 없습니다.</td>";
 		}
 		for (OrderVO vo : orderList) {
 			printList += "<tr onclick=location.href='/admin/order/detail?order_no=" + vo.getOrder_no() + "&id="

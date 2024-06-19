@@ -2,5 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.dashboard.DashboardMapper">
 
+    <!-- 취소요청상태인 주문상세 개수 -->
+    <select id="cancelCount" resultType="int">
+        SELECT count(*) 
+        FROM soaff.order_detail 
+        where cancel_status=0;
+    </select>
 
+    <!-- 문의요청상태인 문의 개수 -->
+    <select id="qnaCount" resultType="int">
+		SELECT count(*)
+		FROM soaff.qna 
+		where reply_date is null;
+    </select>
+
+    <!-- 상품준비중인 주문 개수 -->
+    <select id="deliveryCount" resultType="int">
+		SELECT count(*)
+		FROM soaff.order 
+		where delivery_status=0;
+    </select>
+    
+    <!-- 오늘의 매출액 -->
+    <select id="todaySalse" resultType="int">
+		SELECT COALESCE(SUM(payment_price), 0) 
+		FROM soaff.order 
+		where DATE(payment_date) = CURDATE();
+    </select>
+    
+        <!-- 오늘의 매출액 -->
+    <select id="todayOrderCount" resultType="int">
+		SELECT count(*)
+		FROM soaff.order 
+		where DATE(payment_date) = CURDATE();
+    </select>
+    
+    
 </mapper>

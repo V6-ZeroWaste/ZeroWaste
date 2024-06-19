@@ -59,10 +59,10 @@ var qna_no = ${vo.qna_no};
 function updateQna(qna_no,title,content){
 	 var title = $('#title').val();
 	    var content = $('#content').val();
-	if(confirm("정말 수정하시겠습니까?")){
+	if(confirm("정말 등록하시겠습니까?")){
 		$.ajax({
 			type: "POST",
-			url: "/mypage/qna/updateQna",
+			url: "/mypage/qna/postQna",
 			data: {
 				title: title,
 				content: content,
@@ -70,10 +70,10 @@ function updateQna(qna_no,title,content){
 			},
 			success: function(response){
 				if(response===1){
-					alert("문의가 수정되었습니다.");
+					alert("문의가 등록되었습니다.");
 					window.location.href = '/mypage/qna/list';
 				}else{
-					alert("문의 수정에 실패하였습니다.");
+					alert("문의 등록에 실패하였습니다.");
 				}
 			},
 			error: function(){
@@ -96,7 +96,7 @@ function handleUpdate() {
 		<div class="row">
 			<!-- title -->
 			<div class="col-12">
-				<h3 class="mb-0">Qna Update</h3>
+				<h3 class="mb-0">Qna Post</h3>
 			</div>
 			<!-- /title -->
 
@@ -150,8 +150,8 @@ function handleUpdate() {
 				</div>
 			</div>
 			<div class="col-12" style="text-align: center">
-				<button id="update" class="btn btn-primary"
-					onclick="handleUpdate();">수정</button>
+				<button id="post" class="btn btn-primary"
+					onclick="handlePost();">등록</button>
 			</div>
 		</div>
 		<!-- /content -->

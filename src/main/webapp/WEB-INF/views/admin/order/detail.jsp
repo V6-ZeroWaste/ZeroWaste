@@ -109,7 +109,7 @@
 	                                          <td>
 	                                          <fmt:formatDate value="${detailMap.detailFromOrderVO.payment_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
 	                                          </td>
-	                                          <td onclick="location.href='/admin/user/detail?id=${detailMap.detailFromOrderVO.user_no}'">${orderVO.id}</td>
+	                                          <td><a href="/admin/user/detail?user_no=${detailMap.detailFromOrderVO.user_no}">${orderVO.id}</a></td>
 	                                          
 	                                       </tr>
 	                                   </thead>

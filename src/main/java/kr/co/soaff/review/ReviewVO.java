@@ -17,6 +17,7 @@ public class ReviewVO {
 	private int exposed_status;
 	private int order_detail_no;
 	private int item_no;
+	private String item_img;
 	private int order_no;
 	
 	private String searchWord;

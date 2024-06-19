@@ -2,10 +2,6 @@
          pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" isELIgnored="false" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,12 +24,12 @@
         min = parseInt(time / 60);
         sec = time % 60;
 
-        document.getElementById("timer").innerHTML = min + "분 " + sec + "초";
+        document.getElementById("timer2").innerHTML = min + "분 " + sec + "초";
         time--;
 
         if (time < 0) {
           clearInterval(timerInterval);
-          document.getElementById("timer").innerHTML = "시간초과";
+          document.getElementById("timer2").innerHTML = "시간초과";
         }
       }, 1000);
     }
@@ -100,43 +96,45 @@
   <div class="container">
     <div class="row justify-content-center align-items-center vh-md-100">
       <div class="col-md-10 col-lg-6">
-        <div class="card-header" id="headingOne">
-          <h6 class="mb-0">
-            <p style="color: #68ae68"><strong>이메일 인증</strong></p>
-          </h6>
-        </div>
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-          <div class="card-body" style="border : 1px #c2c2c2 solid">
-            <div class="form-group">
-              <ul class="list-group list-group-minimal mb-2">
-                <li class="list-group-item d-flex justify-content-center align-items-center">
-                  <span class="fs-18 mb-0" style="color: #3d733d"><strong>이메일</strong></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-center align-items-center">
-                  <span class="fs-18 mb-0" style="color: #3d733d"><strong>(${vo.email}shseo232@gmail.com)로</strong></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-center align-items-center">
-                  <span class="fs-18 mb-0" style="color: #3d733d"><strong>인증번호를 발송했습니다</strong></span>
-                </li>
-              </ul>
-            </div>
-            <form class="row">
-              <div class="row" id="emailVerification">
-                <label for="emailcheck_id" class="col-sm-12 col-form-label"style="color: #3d733d"><strong>인증코드 입력</strong></label>
-                <div class="form-group col-6" style="padding-right: 0">
-                  <input type="text" class="form-control" id="emailcheck_id" required>
-                </div>
-                <div class="form-group col-3 justify-content-lg-center d-flex" style="padding-left: 0;padding-right: 0">
-                  <button type="button" class="btn btn-primary btn-rounded" id="emailCheck_btn">재전송</button>
-                </div>
-                <div class="form-group col-3" style="padding-right: 15px; padding-left: 0">
-                  <span class='btn btn-block btn-secondary' id='timer'></span>
-                </div>
-                <div class="col-12 mt-3">
-                  <button class="btn btn-block btn-primary" id="btn" type="submit">확인</button>
-                </div>
+        <div class="card active">
+          <div class="card-header" id="headingOne">
+            <h6 class="mb-0">
+              <p style="color: #68ae68"><strong>이메일 인증</strong></p>
+            </h6>
+          </div>
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body" style="border : 1px #c2c2c2 solid">
+              <div class="form-group">
+                <ul class="list-group list-group-minimal mb-2">
+                  <li class="list-group-item d-flex justify-content-center align-items-center">
+                    <span class="fs-18 mb-0" style="color: #3d733d"><strong>이메일</strong></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-center align-items-center">
+                    <span class="fs-18 mb-0" style="color: #3d733d"><strong>(${vo.email}shseo232@gmail.com)로</strong></span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-center align-items-center">
+                    <span class="fs-18 mb-0" style="color: #3d733d"><strong>인증번호를 발송했습니다</strong></span>
+                  </li>
+                </ul>
               </div>
-            </form>
+              <form>
+                <div class="form-group">
+                  <ul class="list-group list-group-minimal mb-2">
+                    <li class="list-group-item d-flex justify-content-center align-items-center">
+                      <label for="emailcheck_id" class="col-sm-12 col-form-label"style="color: #3d733d"><strong>인증코드 입력</strong></label>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-sm-center align-items-center">
+                      <input type="text" class="form-control col-6" id="emailcheck_id" required>
+                      <span id='timer2' class="col-3 d-flex justify-content-sm-center align-items-center"" style="margin-left: 0px;"></span>
+                      <button type="button" class="btn btn-primary btn-rounded pr col-3" id="emailCheck_btn">재전송</button>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-center align-items-center">
+                      <button class="btn btn-block btn-primary" id="btn" type="submit" >확인</button>
+                    </li>
+                  </ul>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>

@@ -11,4 +11,5 @@ public interface ItemService {
     int count(ItemVO vo);
     List<CategoryVO> categories();
     Map<String, Object> reviewList(ReviewVO vo);
+    String getCategoryName(int category_no);
 }

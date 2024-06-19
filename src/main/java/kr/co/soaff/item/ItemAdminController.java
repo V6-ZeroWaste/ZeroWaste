@@ -23,17 +23,15 @@ public class ItemAdminController {
 	private ItemAdminService service;
 
 	@GetMapping("/admin/item/list")
-	public String index(Model model, HttpServletRequest request, ItemVO vo) {
+	public String index(Model model, ItemVO vo) {
 		model.addAttribute("map", service.index(vo));
-		request.setAttribute("item", vo);
-		List<CategoryVO> categories = service.categories();
-		request.setAttribute("categories", categories);
+		model.addAttribute("item", vo);
 		return "admin/item/list";
 	}
 
 	@GetMapping("/admin/item/getList")
 	@ResponseBody
-	public Map<String, Object> listAjax(HttpServletRequest request, ItemVO vo) {
+	public Map<String, Object> listAjax(ItemVO vo) {
 		Map<String, Object> map = service.index(vo);
 		String printList = "";
 		List<ItemVO> itemList = (List<ItemVO>) map.get("items");
@@ -72,26 +70,19 @@ public class ItemAdminController {
 			printList += "</tr>";
 		}
 
-		List<CategoryVO> categories = service.categories();
-		request.setAttribute("categories", categories);
 		map.put("printList", printList);
 		return map;
 	}
 
 	@GetMapping("/admin/item/detail")
-	public String detail(HttpServletRequest request, ItemVO vo) {
-		System.out.println(vo);
+	public String detail(Model model, ItemVO vo) {
 		ItemVO item = service.detail(vo);
-		List<CategoryVO> categories = service.categories();
-		request.setAttribute("item", item);
-		request.setAttribute("categories", categories);
+		model.addAttribute("item", item);
 		return "admin/item/detail";
 	}
 
 	@GetMapping("/admin/item/regist")
-	public String regist(HttpServletRequest request, ItemVO vo) {
-		List<CategoryVO> categories = service.categories();
-		request.setAttribute("categories", categories);
+	public String regist() {
 		return "admin/item/regist";
 	}
 
@@ -108,7 +99,7 @@ public class ItemAdminController {
 	@PostMapping("/admin/item/update")
 	public String upadteItem(HttpServletRequest request, ItemVO vo, @RequestParam("file") MultipartFile detail)
 			throws IOException {
-		service.update(service.detail(vo), detail, request);
+		service.update(vo, detail, request);
 		return "redirect:detail?item_no=" + vo.getItem_no();
 	}
 
@@ -143,9 +134,7 @@ public class ItemAdminController {
 	}
 
 	@GetMapping("/admin/item/category")
-	public String category(Model model) throws IOException {
-		List<CategoryVO> categories = service.categories();
-		model.addAttribute("categories", categories);
+	public String category() throws IOException {
 		return "admin/item/category";
 	}
 

@@ -42,7 +42,7 @@ public class CancelAdminController {
 	    if (cancelAdminListVO.getOrderBy() == null || cancelAdminListVO.getOrderBy().isEmpty()) {
 	        cancelAdminListVO.setOrderBy("오래된순");
 	    }
-
+	    
 	    Map<String, Object> map = service.list(cancelAdminListVO);
 	    String printList = "";
 	    List<CancelAdminListVO> cancelList = (List<CancelAdminListVO>) map.get("list");

@@ -81,7 +81,7 @@
 		#{discounted_price}, #{amount},
 		#{detail}, #{item_img},
 		#{exposed_status}, #{packable_option},
-		#{packing_price}
+		2000
 		)
 		<selectKey keyProperty="item_no" order="AFTER"
 				   resultType="int">
@@ -91,18 +91,17 @@
 	<!-- 상품 상세 정보 수정하기 -->
 	<update id="update" parameterType="kr.co.soaff.item.ItemVO">
 		UPDATE item SET
-						item_img =
-							#{item_img},
+						item_img = #{item_img},
 						category_no = #{category_no},
 						name = #{name},
 						packable_option = #{packable_option},
 						price = #{price},
-						discount_rate =
-							#{discount_rate},
-						discounted_price =
-							#{discounted_price},
+						discount_rate = #{discount_rate},
+						discounted_price =	#{discounted_price},
 						exposed_status = #{exposed_status},
-						detail = #{detail}
+						detail = #{detail},
+						amount = #{amount},
+						description = #{description}
 		WHERE item_no = #{item_no}
 	</update>
 	<!-- 상품 삭제하기 -->

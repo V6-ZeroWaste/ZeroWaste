@@ -5,7 +5,7 @@
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
-                <a class="nav-link" href="/admin/dashboard">
+                <a class="nav-link" href="/admin/dashboard/index">
                     <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
                     대시보드
                 </a>

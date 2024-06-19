@@ -34,6 +34,8 @@
 .col-12 {
    margin-bottom: 10px;
 }
+.order{
+height:80px;}
 </style>
 <script type="text/javascript">
    let page = 1;
@@ -42,7 +44,7 @@
    }
    
    function redirectToDetail(reviewNo) {
-	    window.location.href = '/user/review/detail?review_no=' + reviewNo;
+	    window.location.href = '/mypage/review/detail?review_no=' + reviewNo;
 	}
    
    function applyCondition() {
@@ -63,7 +65,7 @@
       $
             .ajax({
                type : "GET",
-               url : "/user/review/getList",
+               url : "/mypage/review/getList",
                data : data,
                dataType : "json",
                success : function(resp) {
@@ -155,7 +157,6 @@
                   <div class="col-12">
                         <c:forEach var="list" items="${map.list}">
                            <div class="col-12">
-                              <!-- review 클래스를 order 클래스로 변경 -->
                               <div class="order">
                                  <div class="row align-items-center">
                                     <div class="col-lg-2 order-preview justify-content-center">

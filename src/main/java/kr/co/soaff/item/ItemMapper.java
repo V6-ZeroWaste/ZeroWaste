@@ -11,4 +11,5 @@ public interface ItemMapper {
     ItemVO detail(ItemVO vo);
     int count(ItemVO vo);
     List<CategoryVO> categories();
+    String getCategoryName(int category_no);
 }
