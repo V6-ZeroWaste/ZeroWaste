@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/user/css/style.css"/>
     <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    
     <title>soaff</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
@@ -66,9 +67,10 @@
 <script>
 
 
-    let isValid = true;
+    let isValid;
     
     function fieldCheck() {
+    	isValid = true;
         let receiverName = $("#receiverName");
         let zipcode = $("#zipcode");
         let addr = $("#addr");
@@ -177,9 +179,15 @@
         
         $("#goPay").on('click', function () {
         	 var agree = $("#agree").is(":checked");
+        	 
+        	 console.log(1);
 
-        	if (fieldCheck()) {
-                location.href = "/order/success";
+        	 //fieldCheck()
+        	if (true) {
+                //location.href = "/order/success";
+                 console.log(0);
+                request_pay();
+                
             }
         	
         	if(!agree){
@@ -232,6 +240,42 @@
         }).open();
     }
 </script>
+
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script>
+    
+    function request_pay(){
+    	
+    	IMP.init("imp33028331");
+    	
+    	IMP.request_pay(
+    			  {
+    			    pg: "{nice}.{store-cfa799d7-b5cc-4fb8-b538-98363bffffbd}",
+    			    pay_method: "card",
+    			    merchant_uid: `payment-${crypto.randomUUID()}`, // 주문 고유 번호
+    			    name: "노르웨이 회전 의자",
+    			    amount: 64900,
+    			    buyer_email: "gildong@gmail.com",
+    			    buyer_name: "홍길동",
+    			    buyer_tel: "010-4242-4242",
+    			    buyer_addr: "서울특별시 강남구 신사동",
+    			    buyer_postcode: "01181",
+    			  },
+    			  function (response) {
+    				  console.log(response);
+    			    // 결제 종료 시 호출되는 콜백 함수
+    			    // response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
+    			    // 결제 결과를 처리하는 로직을 작성합니다.
+    			  },
+    			);
+    	
+    };
+    
+	
+    
+</script>
+
+
 
 
 <body>
