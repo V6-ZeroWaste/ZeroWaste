@@ -75,8 +75,12 @@ public class ItemController {
 
 	@GetMapping("/detail")
 	public String detail(Model model, ItemVO vo) {
-		model.addAttribute("item", itemService.detail(vo));
-		return "user/item/detail";
+		if(itemService.detail(vo)==null){
+			return "common/404";
+		}else{
+			model.addAttribute("item", itemService.detail(vo));
+			return "user/item/detail";
+		}
 	}
 
 	@GetMapping("/getReviewList")
@@ -168,7 +172,11 @@ public class ItemController {
 						+ qna.getQna_no() + "' style='padding-bottom: 0;'>";
 				printList += "<div class='row w-100 align-items-center'>";
 				printList += "<div class='col-1 reply-status text-center'>";
-				printList += qna.getReplyState();
+				if(qna.getReply_date()==null){
+					printList += "답변대기";
+				}else{
+					printList += "답변완료";
+				}
 				printList += "</div>";
 				printList += "<div class='col-2 reply-type text-center'>";
 				printList += qna.getType()==0?"교환/환불문의":"상품상세문의";
