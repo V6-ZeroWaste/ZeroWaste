@@ -32,8 +32,11 @@
 		review
 		JOIN item ON review.item_no = item.item_no
 		WHERE review.item_no = #{item_no}
+		<if test="filter != null and filter == '사진'">
+			AND review.review_img IS NOT NULL AND review.review_img != ''
+		</if>
 		<include refid="orderBySql" />
-		LIMIT #{startIdx}, 20
+		LIMIT #{startIdx}, 10
 	</select>
 
 	<!-- 리뷰 개수 조회 -->
@@ -44,6 +47,9 @@
 		review
 		JOIN item ON review.item_no = item.item_no
 		WHERE review.item_no = #{item_no}
+		<if test="filter != null and filter == '사진'">
+			AND review.review_img IS NOT NULL AND review.review_img != ''
+		</if>
 	</select>
 
 	<!-- 리뷰 평점 조회 -->

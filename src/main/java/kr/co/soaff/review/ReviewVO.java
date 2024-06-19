@@ -24,6 +24,7 @@ public class ReviewVO {
 	private String orderBy;
 	private String startDate;
 	private String endDate;
+	private String filter;
 	private int page;
 	private int startIdx; // limit 앞에 들어갈 시작인덱스값
 	private String item_name; // item.name
@@ -33,8 +34,8 @@ public class ReviewVO {
 		this.page = 1;
 	}
 	
-	public int getStartIdx() {
-		return (page-1) * 20;
-	}
+//	public int getStartIdx() {
+//		return (page-1) * 20;
+//	}
 	
 }

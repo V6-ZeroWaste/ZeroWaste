@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kr.co.soaff.qna.QnaVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,14 @@ public class ReviewAdminServiceImpl implements ReviewAdminService {
 	@Override
 	public Map<String,Object> list(ReviewVO vo) {
 		Map<String,Object> map = new HashMap();
-        
+//		// 시작인덱스
+//		int startIdx = (vo.getPage() - 1) * 10;
+//		vo.setStartIdx(startIdx); // sql문에 파라미터로 넣어줌
+//		List<QnaVO> list = qnaItemMapper.list(vo); // 목록
+
+		int startIdx = (vo.getPage()-1) * 20;
+		vo.setStartIdx(startIdx);
+
         // 총개수 
      	int total = mapper.count(vo);
      	map.put("total", total);

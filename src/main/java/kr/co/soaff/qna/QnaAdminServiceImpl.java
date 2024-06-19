@@ -14,6 +14,8 @@ public class QnaAdminServiceImpl implements QnaAdminService {
 
     @Override
     public Map<String, Object> list(QnaVO vo) {
+        int startIdx = (vo.getPage()-1) * 20;
+        vo.setStartIdx(startIdx);
         List<QnaVO> list = mapper.list(vo);
         int count = mapper.count(vo);
         int totalPage = count / 20;

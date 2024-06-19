@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kr.co.soaff.qna.QnaItemMapper;
+import kr.co.soaff.qna.QnaVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class ItemServiceImpl implements ItemService {
 
 	@Autowired
 	ReviewItemMapper reviewItemMapper;
+    @Autowired
+    private QnaItemMapper qnaItemMapper;
+
 
 	@Override
 	public Map<String, Object> list(ItemVO vo) {
@@ -47,8 +52,8 @@ public class ItemServiceImpl implements ItemService {
 
 		map.put("endPage", endPage);
 		map.put("startPage", startPage);
-		map.put("prev", prev);
-		map.put("next", next);
+		map.put("isPrev", prev);
+		map.put("isNext", next);
 		return map;
 	}
 
@@ -94,9 +99,45 @@ public class ItemServiceImpl implements ItemService {
 
 		map.put("endPage", endPage);
 		map.put("startPage", startPage);
-		map.put("prev", prev);
-		map.put("next", next);
+		map.put("isPrev", prev);
+		map.put("isNext", next);
 		map.put("avgScore", avgScore == null ? 0 : avgScore);
+		return map;
+	}
+
+	public Map<String, Object> qnaList(QnaVO vo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int totalCount = qnaItemMapper.count(vo); // 총 게시물 수
+		int totalPage = totalCount / 10;
+		if (totalCount % 10 > 0)
+			totalPage++;
+
+		// 시작인덱스
+		int startIdx = (vo.getPage() - 1) * 10;
+		vo.setStartIdx(startIdx); // sql문에 파라미터로 넣어줌
+		List<QnaVO> list = qnaItemMapper.list(vo); // 목록
+
+		for (QnaVO qnaVO : list) {
+			System.out.println(qnaVO);
+		}
+
+		// 페이징처리
+		int endPage = (int) (Math.ceil(vo.getPage() / 10.0) * 10); // 끝페이지
+		int startPage = endPage - 9; // 시작페이지
+
+		if (endPage > totalPage)
+			endPage = totalPage;
+		boolean prev = startPage > 1;
+		boolean next = endPage < totalPage;
+
+		map.put("total", totalCount);
+		map.put("totalPage", totalPage);
+		map.put("qnas", list); // 모델에 직접 넣어줘도 됨
+
+		map.put("endPage", endPage);
+		map.put("startPage", startPage);
+		map.put("isPrev", prev);
+		map.put("isNext", next);
 		return map;
 	}
 
