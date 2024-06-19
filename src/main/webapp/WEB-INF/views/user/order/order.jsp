@@ -187,12 +187,12 @@
                 request_pay();
 
             }
-
-            if (!agree) {
-                alert("주문 동의가 필요합니다");
-                $("#agree").focus();
-
-            }
+            //
+            // if (!agree) {
+            //     alert("주문 동의가 필요합니다");
+            //     $("#agree").focus();
+            //
+            // }
 
         });
 
@@ -239,26 +239,57 @@
     }
 </script>
 
-<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
 <script>
 
-    async function request_pay() {
+    function generateUuid() {
+        // 4자리 랜덤 숫자 생성
+        const randomNumber = Math.floor(1000 + Math.random() * 9000); // 1000부터 9999까지의 숫자 생성
 
+        // 현재 타임스탬프 생성
+        const timestamp = Date.now(); // 밀리초 단위의 현재 타임스탬프
+
+        // 랜덤 숫자와 타임스탬프 결합
+        return randomNumber+"-"+timestamp;
+    }
+
+    async function request_pay() {
+        const orderUuid = generateUuid();
+        console.log(orderUuid);
         const response = await PortOne.requestPayment({
             // Store ID 설정
             storeId: "store-cfa799d7-b5cc-4fb8-b538-98363bffffbd",
             // 채널 키 설정
             channelKey: "channel-key-8f312486-23c0-4ee3-95b4-5a26210375f3",
-            paymentId: `payment-${crypto.randomUUID()}`,
+            paymentId: 'payment-'+orderUuid,
             orderName: "나이키 와플 트레이너 2 SD",
-            totalAmount: 1000,
+            totalAmount: 100,
             currency: "CURRENCY_KRW",
-            payMethod: "CARD",
+            payMethod: $('input[name=paymentMethod]:checked').val(),
         });
+
+        console.log(response);
+
+        if (response.code != null) {
+            // 오류 발생
+            return alert(response.message);
+        }
+
+        // 고객사 서버에서 /payment/complete 엔드포인트를 구현해야 합니다.
+        // (다음 목차에서 설명합니다)
+        const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            // paymentId와 주문 정보를 서버에 전달합니다
+            body: JSON.stringify({
+                paymentId: paymentId,
+                // 주문 정보...
+            }),
+        });
+
     }
-    
+
 </script>
 
 
@@ -515,7 +546,7 @@
                         </table>
 
                     </div>
-
+`
 
                     <!-- Payment Info -->
                     <br>
@@ -579,25 +610,25 @@
 
                                             <div class="d-inline-flex col-12" style="padding-left: 0px;">
                                                 <div class="custom-control custom-radio col-4">
-                                                    <input type="radio" name="paymentMethod"
+                                                    <input type="radio" name="paymentMethod" value="CARD"
                                                            class="custom-control-input"
                                                            id="paymentMethod1" checked>
                                                     <label class="custom-control-label"
-                                                           for="paymentMethod1">간편결제</label>
+                                                           for="paymentMethod1">카드결제</label>
                                                 </div>
                                                 <div class="custom-control custom-radio col-4">
-                                                    <input type="radio" name="paymentMethod"
+                                                    <input type="radio" name="paymentMethod" value="TRANSFER"
                                                            class="custom-control-input"
                                                            id="paymentMethod2">
                                                     <label class="custom-control-label"
-                                                           for="paymentMethod2">신용카드</label>
+                                                           for="paymentMethod2">계좌이체</label>
                                                 </div>
                                                 <div class="custom-control custom-radio col-4">
-                                                    <input type="radio" name="paymentMethod"
+                                                    <input type="radio" name="paymentMethod" value="CARD"
                                                            class="custom-control-input"
                                                            id="paymentMethod3">
                                                     <label class="custom-control-label"
-                                                           for="paymentMethod3">무통장입금</label>
+                                                           for="paymentMethod3">간편결제</label>
                                                 </div>
                                             </div>
                                         </div>
