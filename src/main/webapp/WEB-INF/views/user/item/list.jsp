@@ -13,12 +13,17 @@
           .product-price{
               white-space: nowrap;
           }
+          .datatable-info{
+              font-size: 12px;
+          }
       </style>
 	  <script>
 
 		  let page = 1;
 		  window.onload=function(){
 			  getList();
+              const offset = $("#items-container").offset();
+              $('html, body').animate({scrollTop : offset.top}, 500);
 		  }
 		  function applyCondition(){
 			  page = 1;
@@ -51,7 +56,7 @@
 
 					  // 페이지네이션 출력
 					  // 총 개수
-					  $(".datatable-info").html("("+resp.total+"개)");
+					  $(".datatable-info").html("&nbsp;"+resp.total+"개");
 					  // 페이지네이션
 					  let printPage = "";
 					  if(resp.isPrev){
@@ -139,7 +144,7 @@
 
 	<!-- latest products -->
 	<section>
-		<div class="container">
+		<div class="container" id="items-container">
 			<div class="row">
                 <div class="col text-center">
                     <c:if test="${item.category_name == null || item.category_name == ''}">
@@ -163,19 +168,6 @@
                             <option value="낮은가격순" <c:if test="${param.orderBy == '낮은가격순'}">selected</c:if>>낮은가격순</option>
                         </select>
                     </label>
-<%--                    <label>--%>
-<%--                        <select name="filter" id="filter" class="datatable-selector form-control-sm" onchange="applyCondition();">--%>
-<%--                            <option value="">모든 카테고리</option>--%>
-<%--                            <c:forEach var="category" items="${categories}">--%>
-<%--                                <c:if test="${param.filter == category.category_no}">--%>
-<%--                                    <option value="${category.category_no}" selected>${category.name}</option>--%>
-<%--                                </c:if>--%>
-<%--                                <c:if test="${param.filter != category.category_no}">--%>
-<%--                                    <option value="${category.category_no}">${category.name}</option>--%>
-<%--                                </c:if>--%>
-<%--                            </c:forEach>--%>
-<%--                        </select>--%>
-<%--                    </label>--%>
                     <label class="text-sm-center datatable-info">
                          <!-- 리스트에 보이는 부분 말고 검색된 상품의 모든 개수 -->
                     </label>

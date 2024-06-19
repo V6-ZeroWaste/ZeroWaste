@@ -54,15 +54,16 @@ public class ItemController {
 			printList += "</figure>";
 			printList += "<div class='product-meta'>";
 			printList += "<h3 class='product-title'><a href='detail?item_no=" + item.getItem_no() + "'>"
-					+ item.getName() + "</a></h3>";
+					+ item.getName();
+			if (item.getDiscount_rate() != 0) {
+				printList += "&nbsp;&nbsp;<span class='text-red text-sm-center'>"+ item.getDiscount_rate() +"%</span>";
+			}
+			printList += "</a></h3>";
 			printList += "<div class='product-price'>";
 			if (item.getDiscount_rate() != 0) {
 				printList += "<span><s class='text-muted'>" + format.format(item.getPrice()) + "원 </s>&nbsp</span>";
 			}
 			printList += "<span>" + format.format(item.getDiscounted_price()) + "원</span>";
-			printList += "<span class='product-action'>";
-			printList += "<a href='#!'>Add to cart</a>";
-			printList += "</span>";
 			printList += "</div>";
 			printList += "</div>";
 			printList += "</div>";
