@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/user/css/style.css"/>
     <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    
+
     <title>soaff</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
@@ -52,6 +52,7 @@
         width: 200px;
         vertical-align: middle;
     }
+
     #paymentInfoTable th {
         width: 200px;
         vertical-align: middle;
@@ -68,9 +69,9 @@
 
 
     let isValid;
-    
+
     function fieldCheck() {
-    	isValid = true;
+        isValid = true;
         let receiverName = $("#receiverName");
         let zipcode = $("#zipcode");
         let addr = $("#addr");
@@ -101,8 +102,6 @@
         paymentMethodCheckMsg.css("display", "none");
         agreeCheckMsg.css("display", "none");
 
-
-        
 
         if (!receiverName.val()) {
             receiverNameCheckMsg.html("받으실 분의 성함을 입력해주세요");
@@ -162,7 +161,6 @@
         });
 
 
-
         $("#addr").on('click', function () {
 
             if (!$("#addr").val()) {
@@ -176,21 +174,21 @@
                 zipcode();
             }
         });
-        
-        $("#goPay").on('click', function () {
-        	 var agree = $("#agree").is(":checked");
-        	 
-        	 console.log(1);
 
-        	 //fieldCheck()
-        	if (true) {
+        $("#goPay").on('click', function () {
+            var agree = $("#agree").is(":checked");
+
+            console.log(1);
+
+            //fieldCheck()
+            if (true) {
                 //location.href = "/order/success";
-                 console.log(0);
+                console.log(0);
                 request_pay();
-                
+
             }
-        	
-        	if(!agree){
+
+            if (!agree) {
                 alert("주문 동의가 필요합니다");
                 $("#agree").focus();
 
@@ -242,40 +240,26 @@
 </script>
 
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+
 <script>
-    
-    function request_pay(){
-    	
-    	IMP.init("imp33028331");
-    	
-    	IMP.request_pay(
-    			  {
-    			    pg: "{nice}.{store-cfa799d7-b5cc-4fb8-b538-98363bffffbd}",
-    			    pay_method: "card",
-    			    merchant_uid: `payment-${crypto.randomUUID()}`, // 주문 고유 번호
-    			    name: "노르웨이 회전 의자",
-    			    amount: 64900,
-    			    buyer_email: "gildong@gmail.com",
-    			    buyer_name: "홍길동",
-    			    buyer_tel: "010-4242-4242",
-    			    buyer_addr: "서울특별시 강남구 신사동",
-    			    buyer_postcode: "01181",
-    			  },
-    			  function (response) {
-    				  console.log(response);
-    			    // 결제 종료 시 호출되는 콜백 함수
-    			    // response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
-    			    // 결제 결과를 처리하는 로직을 작성합니다.
-    			  },
-    			);
-    	
-    };
-    
-	
+
+    async function request_pay() {
+
+        const response = await PortOne.requestPayment({
+            // Store ID 설정
+            storeId: "store-cfa799d7-b5cc-4fb8-b538-98363bffffbd",
+            // 채널 키 설정
+            channelKey: "channel-key-8f312486-23c0-4ee3-95b4-5a26210375f3",
+            paymentId: `payment-${crypto.randomUUID()}`,
+            orderName: "나이키 와플 트레이너 2 SD",
+            totalAmount: 1000,
+            currency: "CURRENCY_KRW",
+            payMethod: "CARD",
+        });
+    }
     
 </script>
-
-
 
 
 <body>
@@ -322,7 +306,7 @@
                                         배송비
                                         <span>3000원</span>
                                     </li>
-                                    
+
                                 </ul>
                             </div>
                             <div class="card-footer py-2">
@@ -335,8 +319,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
 
                 </div>
@@ -471,9 +453,10 @@
                                     <div class="d-inline-flex col-12" style="padding-left: 0px;">
                                         <input type="text" class="form-control col-5" name="zipcode" id="zipcode"
                                                placeholder="" readonly>
-                                        <input type="button" class="btn btn-primary form-control col-4 ml-2" value="우편번호 검색"
+                                        <input type="button" class="btn btn-primary form-control col-4 ml-2"
+                                               value="우편번호 검색"
                                                style="background-color: #FFFFFF; color: #618264;" id="searchZipcode"
-                                               >
+                                        >
 
 
                                     </div>
@@ -484,7 +467,8 @@
                                 <th><b>* 주소</b></th>
                                 <td><input type="text" class="form-control" name="addr" id="addr" placeholder=""
                                            readonly>
-                                <div id="addrCheckMsg" class="invalid-feedback"></div></td>
+                                    <div id="addrCheckMsg" class="invalid-feedback"></div>
+                                </td>
 
                             </tr>
                             <tr>
@@ -543,37 +527,37 @@
                         </div>
                     </div>
 
-                            <table class="table table-borderless" id="paymentInfoTable">
-                                <tbody>
-                                <tr>
-                                    <th><b>상품 합계 금액</b></th>
-                                    <td>11,850원</td>
-                                </tr>
-                                <tr>
-                                    <th><b>배송비</b></th>
-                                    <td>3000원</td>
-                                </tr>
-                                <tr>
-                                    <th><b>적립금 사용</b></th>
-                                    <td>
-                                        <div class="d-inline-flex col-12" style="padding-left: 0px;">
-                                            <input type="text" class="form-control col-md-6" name="point"
-                                                   placeholder="사용가능한 적립금: 5000원">
-                                            <input type=button class="form-control col-sm-3 btn btn-primary ml-2" value="사용">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><b>최종 결제 금액</b></th>
-                                    <td>14,580원</td>
-                                </tr>
-                                <tr>
-                                    <th><b>예상 적립 금액</b></th>
-                                    <td>355원</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                    
+                    <table class="table table-borderless" id="paymentInfoTable">
+                        <tbody>
+                        <tr>
+                            <th><b>상품 합계 금액</b></th>
+                            <td>11,850원</td>
+                        </tr>
+                        <tr>
+                            <th><b>배송비</b></th>
+                            <td>3000원</td>
+                        </tr>
+                        <tr>
+                            <th><b>적립금 사용</b></th>
+                            <td>
+                                <div class="d-inline-flex col-12" style="padding-left: 0px;">
+                                    <input type="text" class="form-control col-md-6" name="point"
+                                           placeholder="사용가능한 적립금: 5000원">
+                                    <input type=button class="form-control col-sm-3 btn btn-primary ml-2" value="사용">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><b>최종 결제 금액</b></th>
+                            <td>14,580원</td>
+                        </tr>
+                        <tr>
+                            <th><b>예상 적립 금액</b></th>
+                            <td>355원</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
 
                     <!-- Payment method -->
                     <br>
@@ -639,7 +623,8 @@
                 <br>
                 <button id="goPay" type="button" class="form-control btn btn-primary"
                         style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;"
-                        >14,850원 결제하기</button>
+                >14,850원 결제하기
+                </button>
             </div>
 
 
