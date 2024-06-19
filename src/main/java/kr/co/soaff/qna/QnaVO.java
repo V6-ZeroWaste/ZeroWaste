@@ -33,7 +33,7 @@ public class QnaVO {
 		this.page = 1;
 	}
 
-	public int getStartIdx() {
-		return (page - 1) * 20;
-	}
+//	public int getStartIdx() {
+//		return (page - 1) * 20;
+//	}
 }
