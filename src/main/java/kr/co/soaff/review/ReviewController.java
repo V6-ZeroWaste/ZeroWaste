@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.soaff.qna.QnaVO;
 import util.S3Uploader;
 
 @Controller
@@ -64,12 +63,6 @@ public class ReviewController {
 	public String detail(Model model, ReviewVO vo) {
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/review/detail";
-	}
-
-	@GetMapping("/update")
-	public String detail2(Model model, ReviewVO vo) {
-		model.addAttribute("vo", service.detail(vo));
-		return "/user/review/update";
 	}
 
 	@GetMapping("/post")
@@ -131,29 +124,13 @@ public class ReviewController {
 			return "0";
 		}
 	}
-
-	@PostMapping("/delete")
-	@ResponseBody
-	public int delete(@RequestParam int review_no) {
-		ReviewVO vo = new ReviewVO();
-		vo.setReview_no(review_no);
-		ReviewVO review = service.detail(vo);
-
-		String reviewImgUrl = review.getReview_img();
-		int result = service.delete(review_no);
-
-		if (result > 0 && reviewImgUrl != null && !reviewImgUrl.isEmpty()) {
-			try {
-				s3Uploader.deleteFile(reviewImgUrl);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return 0;
-			}
-		}
-
-		return result;
-	}
 	
+	@GetMapping("/update")
+	public String detail2(Model model, ReviewVO vo) {
+		model.addAttribute("vo", service.detail(vo));
+		return "/user/review/update";
+	}
+
 	@PostMapping("/updateReview")
 	@ResponseBody
 	public int updateReview(@RequestParam int review_no, @RequestParam("title") String title, @RequestParam("content") String content, @RequestParam(value = "review_img", required = false) MultipartFile review_img) {
@@ -174,10 +151,32 @@ public class ReviewController {
 	         return 0;
 	      }
 	   } else {
-	      vo.setReview_img(oldReviewImgUrl); // 이미지 변경이 없을 경우 기존 이미지 유지
+	      vo.setReview_img(oldReviewImgUrl);
 	   }
 
 	   int result = service.update(vo);
 	   return result > 0 ? 1 : 0;
+	}
+	
+	@PostMapping("/delete")
+	@ResponseBody
+	public int delete(@RequestParam int review_no) {
+		ReviewVO vo = new ReviewVO();
+		vo.setReview_no(review_no);
+		ReviewVO review = service.detail(vo);
+
+		String reviewImgUrl = review.getReview_img();
+		int result = service.delete(review_no);
+
+		if (result > 0 && reviewImgUrl != null && !reviewImgUrl.isEmpty()) {
+			try {
+				s3Uploader.deleteFile(reviewImgUrl);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+		}
+
+		return result;
 	}
 }

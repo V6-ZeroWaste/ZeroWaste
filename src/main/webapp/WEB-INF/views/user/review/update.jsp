@@ -89,8 +89,6 @@ function handleUpdate() {
     updateReview(${vo.review_no});
 }
 </script>
-
-</script>
 </head>
 <body>
  <%@ include file="/WEB-INF/views/user/include/header.jsp"%>

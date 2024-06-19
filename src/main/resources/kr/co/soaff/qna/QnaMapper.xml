@@ -61,6 +61,7 @@
 		SELECT
 		qna.qna_no,
 		qna.qna_img,
+		item.item_img AS item_img,
 		item.name AS item_name,
 		qna.title,
 		qna.type,
@@ -114,7 +115,8 @@
 		UPDATE qna
 		SET
 		title = #{title},
-		content = #{content}
+		content = #{content},
+		qna_img = #{qna_img}
 		WHERE
 		qna_no = #{qna_no};
 	</update>
