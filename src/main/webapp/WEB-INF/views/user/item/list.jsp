@@ -173,7 +173,6 @@
                     </label>
                 </div>
 				<div class="col-md-1"></div>
-                <!-- search-container 를 searchWord가 있을 때만 보이도록 수정 스크립트로 search-container 영역 [].css("display", "none"); / block -->
                 <div class="col-md-3 d-flex justify-content-end">
                     <div class="form-inline search-container">
                         <input name="searchWord" id="searchWord" class="form-control form-control-sm " type="search"

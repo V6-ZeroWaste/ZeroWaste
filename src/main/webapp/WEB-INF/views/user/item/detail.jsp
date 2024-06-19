@@ -44,13 +44,6 @@
             text-overflow: ellipsis;
             padding-bottom: 1%;
         }
-        /*.rating{*/
-        /*    font-size: 14px;*/
-        /*    white-space: nowrap;*/
-        /*    overflow: hidden;*/
-        /*    text-overflow: ellipsis;*/
-        /*    padding-bottom: 2%;*/
-        /*}*/
 
         .reply-status-line,
         .reply-type-line,
@@ -84,14 +77,28 @@
             /*padding: 50px;*/
             margin: 50px;
         }
-        /*.user-id{*/
-        /*    padding: 0 30px;*/
-        /*}*/
-        /*.date{*/
-        /*    padding: 0 25px;*/
-        /*}*/
         #total-price {
             white-space: nowrap;
+        }
+
+        .review-pagination-list,
+        .qna-pagination-list{
+            display: flex; /* 가로 배열을 위해 flexbox 사용 */
+            justify-content: center; /* 자식 요소들을 수평으로 가운데 정렬 */
+            list-style-type: none; /* 기본 리스트 스타일 제거 */
+            padding: 0; /* 기본 패딩 제거 */
+            margin: 0; /* 기본 마진 제거 */
+        }
+        .review-pagination-list .page-item,
+        .qna-pagination-list .page-item{
+            margin-right: 5px; /* 페이지 아이템 간의 간격 조정 */
+        }
+        .review-pagination-list .page-link:hover,
+        .qna-pagination-list .page-link:hover{
+            background-color: #e9ecef; /* 호버 시 배경색 변경 */
+        }
+        .datatable-active .page-link {
+            font-weight: bold;
         }
     </style>
 
@@ -107,27 +114,9 @@
 
             document.getElementById(sectionId + 'Btn').classList.add('active-border');
             document.getElementById(sectionId + 'Section').scrollIntoView({behavior: 'smooth'});
-
-
-            setTimeout(function () {
-                document.getElementById('qnaBtn').classList.remove('active-border');
-                document.getElementById(sectionId + 'Btn').classList.add('active-border');
-                document.getElementById(sectionId + 'Section').scrollIntoView({behavior: 'smooth'});
-            }, 1500);
         }
 
-        // 기본적으로 첫 번째 버튼에 active-border 클래스 추가
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('detailBtn').classList.add('active-border');
-        });
-        /*
-        먼저, 각 섹션을 관찰하기 위한 IntersectionObserver를 설정합니다.
-        각 섹션이 뷰포트에 들어오면 해당 버튼에 active-border 클래스를 추가하고, 다른 버튼에서 제거합니다.
-        추가하기 !!
-        * */
-
         function addItem() {
-
             var itemName = $("#select-product").val();
             var itemPrice = $("#item-price").text();
             var selectedItems = [];
@@ -137,11 +126,6 @@
                 itemPrice = itemPrice.toLocaleString();
                 itemPrice += '원';
             }
-            <%--if(itemName.startsWith('포장')){--%>
-            <%--    itemPrice=${item.discounted_price + item.packing_price};--%>
-            <%--    itemPrice = itemPrice.toLocaleString();--%>
-            <%--    itemPrice += '원';--%>
-            <%--}--%>
 
             console.log(itemPrice.toString().toLocaleString());
 
@@ -246,6 +230,47 @@
                 row.find('.selected-item-price').text(totalPrice.toLocaleString()+'원');
             }
         }
+
+        $(document).ready(function() {
+            // 처음에는 detailBtn에 active-border 클래스 추가
+            $('#detailBtn').addClass('active-border');
+
+            // IntersectionObserver의 콜백 함수
+            const callback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 모든 버튼에서 active-border 클래스 제거
+                        $('#detailBtn').removeClass('active-border');
+                        $('#reviewBtn').removeClass('active-border');
+                        $('#qnaBtn').removeClass('active-border');
+
+                        // 현재 보이는 섹션에 해당하는 버튼에 active-border 클래스 추가
+                        if ($(entry.target).attr('id') === 'detailSection') {
+                            $('#detailBtn').addClass('active-border');
+                        } else if ($(entry.target).attr('id') === 'reviewSection') {
+                            $('#reviewBtn').addClass('active-border');
+                        } else if ($(entry.target).attr('id') === 'qnaSection') {
+                            $('#qnaBtn').addClass('active-border');
+                        }
+                    }
+                });
+            };
+
+            // IntersectionObserver 옵션
+            const options = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // 원하는 임계값 (0.5는 절반 이상 보여야 함)
+            };
+
+            // IntersectionObserver 인스턴스 생성
+            const observer = new IntersectionObserver(callback, options);
+
+            // 각 섹션을 관찰 대상으로 설정
+            observer.observe(document.getElementById('detailSection'));
+            observer.observe(document.getElementById('reviewSection'));
+            observer.observe(document.getElementById('qnaSection'));
+        });
     </script>
 
     <!-- 리뷰 -->
@@ -262,16 +287,24 @@
         function changeReviewPage(obj){
             reviewPage = obj.getAttribute("data-page");
             getReviewList();
+            scrollToReviewSection();
+        }
+
+        function scrollToReviewSection(){
+            $('html, body').animate({
+                scrollTop: $('#reviewSection').offset().top
+            }, 500);
+
         }
 
         function getReviewList(){
             var data = {
                 orderBy: $('#reviewOrderBy').val(),
                 item_no: ${item.item_no},
+                filter: $('#photo-check-box').is(':checked') ? '사진' : '',
                 page: reviewPage,
-
             }
-
+            console.log(data.photoCheck);
             $.ajax({
                 type: "GET", // method type
                 url: "/item/getReviewList", // 요청할 url
@@ -527,7 +560,7 @@
                 <div class="col-md-8">
                 </div>
                 <div class="col-md-3 d-flex align-items-center justify-content-end">
-                    <input type="checkbox" value="photo-review-check" class="form-control-sm">
+                    <input type="checkbox" value="photo-review-check" id="photo-check-box" class="form-control-sm" onchange="applyReviewCondition();">
                     <label class="mb-0 ml-1">포토리뷰만 보기</label>
                 </div>
                 <div class="col-1">

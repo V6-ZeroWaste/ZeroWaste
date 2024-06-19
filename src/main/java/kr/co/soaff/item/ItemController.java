@@ -104,7 +104,7 @@ public class ItemController {
 					printList += "⭐";
 				}
 				printList += "</span>";
-				if (review.getReview_img() != null && review.getReview_img().isEmpty()) {
+				if (review.getReview_img() != null && !review.getReview_img().equals("")) {
 					printList += "<span class='photo-status'>\uD83D\uDDBC\uFE0F\uFE0F</span>";
 				}
 				printList += "</div>";
