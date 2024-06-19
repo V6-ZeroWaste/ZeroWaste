@@ -27,17 +27,30 @@
             border-bottom: 3px solid #618264; /* 원하는 색상과 두께로 설정 */
         }
 
+        .input-count:read-only{
+            background-color: #efefef;
+        }
+
         .review-title,
         .reply-status,
         .reply-type,
         .reply-title,
         .user-id,
+        .rating,
         .date {
             font-size: 14px; /* 텍스트 크기 조정 */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding-bottom: 1%;
         }
+        /*.rating{*/
+        /*    font-size: 14px;*/
+        /*    white-space: nowrap;*/
+        /*    overflow: hidden;*/
+        /*    text-overflow: ellipsis;*/
+        /*    padding-bottom: 2%;*/
+        /*}*/
 
         .reply-status-line,
         .reply-type-line,
@@ -56,6 +69,11 @@
             font-size: 12px; /* 별점과 사진 상태 텍스트 크기 조정 */
             display: inline-block; /* 한 줄에 나란히 배치 */
             vertical-align: middle; /* 텍스트 가운데 정렬 */
+            /* */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-bottom: 7%;
         }
 
         .photo-status {
@@ -114,12 +132,16 @@
             var itemPrice = $("#item-price").text();
             var selectedItems = [];
 
-
-            if(itemName.startsWith('포장')){
-                itemPrice=${item.packing_price};
+            if(itemName.includes('포장')){
+                itemPrice=${item.discounted_price + item.packing_price};
                 itemPrice = itemPrice.toLocaleString();
                 itemPrice += '원';
             }
+            <%--if(itemName.startsWith('포장')){--%>
+            <%--    itemPrice=${item.discounted_price + item.packing_price};--%>
+            <%--    itemPrice = itemPrice.toLocaleString();--%>
+            <%--    itemPrice += '원';--%>
+            <%--}--%>
 
             console.log(itemPrice.toString().toLocaleString());
 
@@ -149,8 +171,8 @@
             html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
             html+="id='button-minus-0' onClick='decreaseValue(this)'>-";
             html+="</button>";
-            html+="<input type='number' class='form-control form-control-sm input-full-width mt-3' min='1'";
-            html+="max='9' value='1'/>";
+            html+="<input type='number' class='form-control form-control-sm input-full-width mt-3 input-count' min='1'";
+            html+="max='9' value='1' readonly />";
             html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
             html+="id='button-plus-0' onClick='increaseValue(this)'>+";
             html+="</button>";
@@ -402,7 +424,8 @@
                                 <option value="" disabled selected>상품 선택</option>
                                 <option value="${item.name}"> ${item.name} </option>
                                 <c:if test="${item.packable_option}">
-                                    <option value="포장(<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원)"> 포장(<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) </option>
+<%--                                    <option value="포장(<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.discounted_price+item.packing_price}" />원)"> ${item.name} 포장 (+<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) </option>--%>
+                                    <option value="${item.name} (포장) "> ${item.name} 포장 (+<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) </option>
                                 </c:if>
                             </select>
                         </div>
