@@ -242,7 +242,8 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                             </div>
                             <div class="col-md-3 d-flex flex-column align-items-center">
                             	<c:if test="${item.item_img != null && item.item_img != ''}">
-                                    <img src="/upload/item_img/${item.item_img}" class="img-fluid"/>
+<%--                                    <img src="/upload/item_img/${item.item_img}" class="img-fluid"/>--%>
+                                    <img src="${item.item_img}" class="img-fluid"/>
 							    	<p>${item.item_img}</p>
 							    	<input class="btn btn-danger" type="button" name="x" value="이미지 삭제" onclick="deleteImg()">
                             	</c:if>

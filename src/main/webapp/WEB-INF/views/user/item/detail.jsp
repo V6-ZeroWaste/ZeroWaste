@@ -431,8 +431,10 @@
                     <div class="col-lg-10 order-lg-2">
                         <div class="owl-carousel gallery" data-slider-id="1" data-thumbs="true" data-nav="true">
                             <figure class="equal">
-                                <a class="image" href="/upload/item_img/${item.item_img}"
-                                   style="background-image: url(/upload/item_img/${item.item_img});">
+<%--                                <a class="image" href="/upload/item_img/${item.item_img}"--%>
+                                <a class="image" href="${item.item_img}"
+<%--                                   style="background-image: url(/upload/item_img/${item.item_img});">--%>
+                                   style="background-image: url(${item.item_img});">
                                 </a>
                             </figure>
                             </div>
