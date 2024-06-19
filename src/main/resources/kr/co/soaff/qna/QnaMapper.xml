@@ -66,8 +66,7 @@
 		qna.type,
 		user.id AS user_id,
 		qna.question_date,
-		qna.reply_date,
-		qna.replyState
+		qna.reply_date
 		FROM
 		qna JOIN item ON qna.item_no = item.item_no
 		JOIN user
