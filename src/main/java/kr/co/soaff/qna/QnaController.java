@@ -104,7 +104,21 @@ public class QnaController {
 	@PostMapping("/delete")
 	@ResponseBody
 	public int delete(@RequestParam int qna_no) {
+		QnaVO vo = new QnaVO();
+		vo.setQna_no(qna_no);
+		QnaVO qna = service.detail(vo);
+		
+		String qnaImgUrl = qna.getQna_img();
 		int result = service.delete(qna_no);
+		if (result > 0 && qnaImgUrl != null && !qnaImgUrl.isEmpty()) {
+			try {
+				s3Uploader.deleteFile(qnaImgUrl);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
+		}
+		
 		return result;
 	}
 }
