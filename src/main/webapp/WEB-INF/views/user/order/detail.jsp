@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/user/css/vendor.css" />
     <link rel="stylesheet" href="/user/css/style.css" />
 
-    <title>Order Detail</title>
+    <title>soaff mypage</title>
     <style>
     	input[type='date']::before {
 		  content: attr(data-placeholder);
@@ -53,6 +53,9 @@
 		th{
 			width: 200px;
 		}
+		td{
+			align-content:center;
+		}
     	
     </style>
   </head>
@@ -78,8 +81,8 @@
    			<!-- /title -->
    			<!-- Order Info -->
    			<div class="order-head">
-						<span>Order No.165342</span>
-				     	<span>2021-12-19 12:11:11</span>
+						<span>Order No.${order.order_no }</span>
+				     	<span><fmt:formatDate value="${order.payment_date}" pattern="yyyy-MM-dd HH:mm:ss" type="date"/></span>
 			</div>
 			<!-- Order Info -->
    		</div>
@@ -89,109 +92,53 @@
    			<h4 class="mb-0">Item Info</h4>
 	   		<table class="table table-borderless">
 	                      <tbody>
-	                      	<tr>
-	                          <td>
-	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
-	                          </td>
-	                          <td>
-	                          	<strong>황새 추천 비누</strong><br>
-	                          	<span>3 개</span>
-	                          </td>
-	                          <td>30,000 원</td>
-	                          <td><span class="order-status canceled">취소요청</span></td>
-	                          <td><button type="button" class="btn btn-outline-danger">취소상세</button></td>
-	                        </tr>
-	                        
-	                        
-	                        
-	                      	<tr>
-	                          <td>
-	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
-	                          </td>
-	                          <td>
-	                          	<strong>황새 추천 비누</strong><br>
-	                          	<span>3 개</span>
-	                          </td>
-	                          <td>30,000 원</td>
-	                          <td><span class="order-status canceled">취소승인</span></td>
-	                          <td><button type="button" class="btn btn-outline-danger">취소상세</button></td>
-	                        </tr>
-	                        
-	                        
-	                        
-	                        
-	                      	<tr>
-	                          <td>
-	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
-	                          </td>
-	                          <td>
-	                          	<strong>황새 추천 비누</strong><br>
-	                          	<span>3 개</span>
-	                          </td>
-	                          <td>30,000 원</td>
-	                          <td><span class="order-status">상품준비중</span></td>
-	                          <td><button type="button" class="btn btn-danger">주문취소</button></td>
-	                        </tr>	                        
-	                        
-	                        
-	                        
-	                      	<tr>
-	                          <td>
-	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
-	                          </td>
-	                          <td>
-	                          	<strong>황새 추천 비누</strong><br>
-	                          	<span>3 개</span>
-	                          </td>
-	                          <td>30,000 원</td>
-	                          <td><span class="order-status shipping">배송중</span></td>
-	                          <td><button type="button" class="btn btn-primary">구매확정</button></td>
-	                        </tr>	                        
-	                        
-	                        
-	                        
-	                      	<tr>
-	                          <td>
-	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
-	                          </td>
-	                          <td>
-	                          	<strong>황새 추천 비누</strong><br>
-	                          	<span>3 개</span>
-	                          </td>
-	                          <td>30,000 원</td>
-	                          <td><span class="order-status sent">배송완료</span></td>
-	                          <td><button type="button" class="btn btn-primary">구매확정</button></td>
-	                        </tr>	                        
-	                        
-	                        
-	                        
-	                      	<tr>
-	                          <td>
-	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
-	                          </td>
-	                          <td>
-	                          	<strong>황새 추천 비누</strong><br>
-	                          	<span>3 개</span>
-	                          </td>
-	                          <td>30,000 원</td>
-	                          <td><span class="order-status sent">구매확정</span></td>
-	                          <td><button type="button" class="btn btn-primary">리뷰작성</button></td>
-	                        </tr>	                        
-	                        
-	                        
-	                        
-	                      	<tr>
-	                          <td>
-	                          	<img class="order-itemImg" src="/user/images/demo/product-4.jpg" alt="Red Analog Magazine Rack">
-	                          </td>
-	                          <td>
-	                          	<strong>황새 추천 비누</strong><br>
-	                          	<span>3 개</span>
-	                          </td>
-	                          <td>30,000 원</td>
-	                          <td><span class="order-status sent">구매확정</span></td>
-	                          <td><button type="button" class="btn btn-outline-primary">리뷰상세</button></td>
-	                        </tr>
+ 	                      	<c:forEach var="vo" items="${list}">
+	                      		<tr>
+	                      			<td>
+	                      				<a href="/item/detail?item_no=${vo.item_no}"><img class="order-itemImg" src="/upload/item_img/${vo.item_img}" alt="item-img"></a>
+	                      				<%-- <img class="order-itemImg" src="${vo.item_img}" alt="item-img"> --%>
+	                      			</td>
+	                      			<td>
+			                          	<strong>${vo.item_name}</strong><br>
+			                          	<span>${vo.amount} 개</span>
+			                        </td>
+			                        <td><fmt:formatNumber value="${vo.price*vo.amount }" pattern="#,###" /> 원</td>
+			                        <c:if test="${vo.cancel_status != null}">
+			                        	<td><span class="order-status canceled">${vo.cancel_status == 0 ? '취소요청' : '취소완료'}</span></td>
+			                        	<td><button type="button" class="btn btn-outline-danger" onclick="location.href='/order/cancelInfo?order_detail_no=${vo.order_detail_no}'">취소상세</button></td>
+			                        </c:if>
+			                        <c:if test="${vo.cancel_status == null}">
+			                        	<c:if test="${vo.confirm_date == null }">
+			                        		
+			                        		<c:if test="${order.delivery_status == 0}">
+					                        	<td><span class="order-status">상품준비중</span></td>
+					                         	<td><button type="button" class="btn btn-danger" onclick="location.href='/order/cancelRequset?order_detail_no=${vo.order_detail_no}'">주문취소</button></td>
+			                        		</c:if>
+			                        		<c:if test="${order.delivery_status == 1}">
+			                        			<td><span class="order-status shipping">배송중</span></td>
+	                          					<td><button type="button" class="btn btn-primary">구매확정</button></td>
+			                        		</c:if>
+			                        		<c:if test="${order.delivery_status == 2}">
+	                          					<td><span class="order-status sent">배송완료</span></td>
+	                          					<td><button type="button" class="btn btn-primary">구매확정</button></td>
+			                        		</c:if>
+			                        	</c:if>
+			                        	<c:if test="${vo.confirm_date != null }">
+			                        		<td><span class="order-status sent">구매확정</span></td>
+			                        		<td>
+				                        		<c:if test="${vo.review_no == null}">
+				                        			<button type="button" class="btn btn-primary"  onclick="location.href='/mypage/review/update?order_detail_no=${vo.order_detail_no}'">리뷰작성</button>
+				                        		</c:if>
+				                        		<c:if test="${vo.review_no != null}">
+				                        			<button type="button" class="btn btn-outline-primary" onclick="location.href='/mypage/review/detail?review_no=${vo.review_no}'">리뷰상세</button>
+				                        		</c:if>
+			                        		</td>
+			                        	</c:if>
+			                        </c:if>
+			                        
+	                      		</tr>
+	                      		
+	                      	</c:forEach>
 	                      </tbody>
 	                    </table>
 	   		</div>
@@ -206,23 +153,23 @@
 	                      <tbody>
 	                      	<tr>
 	                      		<th>이름</th>
-	                      		<td>user name</td>
+	                      		<td>${order.receiver_name}</td>
 	                        </tr>
 	                      	<tr>
 	                      		<th>연락처</th>
-	                      		<td>010-1234-1234<td>
+	                      		<<td>${order.receiver_tel}</td>
 	                        </tr>
 	                      	<tr>
 	                      		<th>배송지 주소</th>
 	                      		<td>
-	                      			000-000
-	                      			<br>서울특별시 마포구 양화로 180
-	                      			<br>123동 1234호
+	                      			${order.zipcode}
+	                      			<br>${order.addr}
+	                      			<br>${order.addr_detail}
 	                      		</td>
 	                        </tr>
 	                      	<tr>
 	                      		<th>배송 메시지</th>
-	                      		<td>부재중이면 문 앞에 놔주세여</td>
+	                      		<td>${order.delivery_request }</td>
 	                        </tr>
 	                      </tbody>
 	                    </table>
@@ -238,31 +185,31 @@
 	                      <tbody>
 	                      	<tr>
 	                      		<th>상품 합계</th>
-	                      		<td>180,000 원</td>
+	                      		<td><fmt:formatNumber value="${order.payment_price +order.point }" pattern="#,###" /> 원</td>
 	                        </tr>
 	                      	<tr>
 	                      		<th>배송비</th>
-	                      		<td>3,000 원<td>
+	                      		<td><fmt:formatNumber value="${order.delivery_price }" pattern="#,###" /> 원</td>
 	                        </tr>
 	                      	<tr>
 	                      		<th>적립금 사용</th>
-	                      		<td>1,000 원</td>
+	                      		<td><fmt:formatNumber value="${order.point }" pattern="#,###" /> 원</td>
 	                        </tr>
 	                      	<tr>
 	                      		<th>최종 결제 금액</th>
 	                      		<td>
-	                      			<strong>182,000 원</strong>
-	                      			<br><span>예상 적립금 182원</span>
+	                      			<strong><fmt:formatNumber value="${order.payment_price}" pattern="#,###" /> 원</strong>
+	                      			<br><span>예상 적립금 <fmt:formatNumber value="${Math.floor(order.payment_price *0.03)}" pattern="#,###" /> 원</span>
 	                      		</td>
 	                        </tr>
 	                      	<tr>
 	                      		<th>결제 수단</th>
-	                      		<td>카카오페이</td>
+	                      		<td>${order.payment_method}</td>
 	                        </tr>
 	                      </tbody>
 	                    </table>
 	   		</div>
-	   	</div>
+
    		<!-- /payment info area -->
    		
    		
