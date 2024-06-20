@@ -30,22 +30,22 @@
         let pwdCheckMsg = $("#pwdCheckMsg");
         let submitCheckMsg = $("#submitCheckMsg");
 
-        submitCheckMsg.css("visibility", "hidden");
-        idCheckMsg.css("visibility", "hidden");
-        pwdCheckMsg.css("visibility", "hidden");
+        submitCheckMsg.css("display", "hidden");
+        idCheckMsg.css("display", "hidden");
+        pwdCheckMsg.css("display", "hidden");
 
         let isValid = true;
 
         if (!id.val()) {
             idCheckMsg.html("아이디를 입력해주세요");
-            idCheckMsg.css("visibility", "visible");
+            idCheckMsg.css("display", "block");
             id.focus();
             isValid = false;
         }
 
         if (!pw.val()) {
             pwdCheckMsg.html("비밀번호를 입력해주세요");
-            pwdCheckMsg.css("visibility", "visible");
+            pwdCheckMsg.css("display", "block");
             if (isValid) {
                 pw.focus();
             }
@@ -72,10 +72,10 @@
                 success: function (res) {
                     console.log(res);
                     if (res == '1') {
-                        $("#submitCheckMsg").html("아이디와 비밀번호를 다시 확인해주세요").css("visibility", "visible");
+                        $("#submitCheckMsg").html("아이디와 비밀번호를 다시 확인해주세요").css("display", "block");
                         isValid = false;
                     } else {
-                        alert('로그인성공');
+                        location.href="/"
                         isValid = true;
                     }
                 }
