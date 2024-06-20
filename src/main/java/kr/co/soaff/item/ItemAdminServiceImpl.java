@@ -283,6 +283,15 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 		return mapper.insertCategory(vo);
 	}
 
+	@Override
+	public String uploadItemImgAjax(MultipartFile file) {
+		String uploadedUrl = null;
+		try {
+			uploadedUrl = s3Uploader.uploadFile(file);
+		}catch (Exception e){}
+		return uploadedUrl;
+	}
+
 	public static MultipartFile getFileFromUrl(String fileUrl) throws IOException {
 		URL url = new URL(fileUrl);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();

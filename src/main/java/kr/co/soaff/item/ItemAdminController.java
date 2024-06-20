@@ -175,4 +175,10 @@ public class ItemAdminController {
 		return msg;
 	}
 
+	@PostMapping("/admin/item/uploadItemImg")
+	@ResponseBody
+	public String uploadItemImgAjax(@RequestParam("file") MultipartFile file)  {
+		return service.uploadItemImgAjax(file);
+	};
+
 }
