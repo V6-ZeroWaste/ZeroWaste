@@ -218,7 +218,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                                         </div>
                                         <div class="col-md-3 d-flex flex-column align-items-center">
                                             <img src="/upload/item_img/${item.item_img}" class="img-fluid"/>
-                                            <p>${item.item_img}</p>
+                                            <a href="${item.item_img}" target="_blank"><p>이미지 보기</p></a>
                                             <input class="btn btn-danger" type="button" name="x" value="이미지 삭제" onclick="deleteImg()">
                                         </div>
                                     </div>
@@ -368,7 +368,7 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                     </div>
                 </div>
             </main>
-            <%@ include file="/WEB-INF/views/admin//include/footer.jsp" %>
+            <%@ include file="/WEB-INF/views/admin/include/footer.jsp" %>
         </div>
     </div>
 

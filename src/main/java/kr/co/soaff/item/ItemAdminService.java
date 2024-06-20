@@ -32,4 +32,6 @@ public interface ItemAdminService {
 	int deleteCategory(int category_no);
 
 	int insertCategory(CategoryVO vo);
+
+	String uploadItemImgAjax(MultipartFile file);
 }
