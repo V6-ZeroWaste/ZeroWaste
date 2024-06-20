@@ -87,9 +87,9 @@
                		}
                		if(resp.isNext){
                			printPage += '<li class="datatable-pagination-list-item">';
-               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
                			printPage += '<li class="datatable-pagination-list-item">';
-               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
                		}
                		$(".datatable-pagination-list").html(printPage);
                		
