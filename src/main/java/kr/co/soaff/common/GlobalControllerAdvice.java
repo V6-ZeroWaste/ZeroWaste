@@ -24,10 +24,9 @@ public class GlobalControllerAdvice {
     private PointService poinstService;
 
     @ModelAttribute
-    public void addCategoriesToModel(Model model, HttpServletRequest request) {
+    public void addCategoriesToModel(Model model, HttpSession session) {
         List<CategoryVO> categories = itemService.categories();
         model.addAttribute("categories", categories);
-        HttpSession session = request.getSession();
         String userId = (String) session.getAttribute("user_id");
         if(userId != null) {
         	PointVO pointVo = new PointVO();
