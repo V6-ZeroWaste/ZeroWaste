@@ -49,7 +49,8 @@ public class ItemController {
 			printList += "<div class='product'>";
 			printList += "<figure class='product-image'>";
 			printList += "<a href='detail?item_no=" + item.getItem_no() + "'>";
-			printList += "<img src='/upload/item_img/" + item.getItem_img() + "' alt='Image'>";
+//			printList += "<img src='/upload/item_img/" + item.getItem_img() + "' alt='Image'>";
+			printList += "<img src='" + item.getItem_img() + "' alt='Image'>";
 			printList += "</a>";
 			printList += "</figure>";
 			printList += "<div class='product-meta'>";
@@ -75,8 +76,12 @@ public class ItemController {
 
 	@GetMapping("/detail")
 	public String detail(Model model, ItemVO vo) {
-		model.addAttribute("item", itemService.detail(vo));
-		return "user/item/detail";
+		if(itemService.detail(vo)==null){
+			return "user/include/404";
+		}else{
+			model.addAttribute("item", itemService.detail(vo));
+			return "user/item/detail";
+		}
 	}
 
 	@GetMapping("/getReviewList")
@@ -126,7 +131,8 @@ public class ItemController {
 						+ "' data-parent='#review-" + review.getReview_no() + "' style='background: #fafafa;'>";
 				printList += "<div class='card-body text-left content-box'>";
 				if (review.getReview_img() != null && review.getReview_img().isEmpty()) {
-					printList += "<img src='/upload/review_img/" + review.getReview_img() + "'>";
+//					printList += "<img src='/upload/review_img/" + review.getReview_img() + "'>";
+					printList += "<img src='" + review.getReview_img() + "'>";
 				}
 				printList += "<p>" + review.getContent() + "</p>";
 				printList += "</div>";
@@ -168,7 +174,11 @@ public class ItemController {
 						+ qna.getQna_no() + "' style='padding-bottom: 0;'>";
 				printList += "<div class='row w-100 align-items-center'>";
 				printList += "<div class='col-1 reply-status text-center'>";
-				printList += qna.getReplyState();
+				if(qna.getReply_date()==null){
+					printList += "답변대기";
+				}else{
+					printList += "답변완료";
+				}
 				printList += "</div>";
 				printList += "<div class='col-2 reply-type text-center'>";
 				printList += qna.getType()==0?"교환/환불문의":"상품상세문의";
@@ -189,6 +199,10 @@ public class ItemController {
 				printList += "<div id='qna-detail-" + qna.getQna_no() + "' class='collapse' aria-labelledby='qna-heading-"+ qna.getQna_no() +"' data-parent='#qna-"+ qna.getQna_no() +"' style='background: #fafafa '>";
 				printList += "<div class='card-body text-left content-box'>";
 				printList += "<h4>Q</h4>";
+				if (qna.getQna_img() != null && qna.getQna_img().isEmpty()) {
+//					printList += "<img src='/upload/review_img/" + review.getReview_img() + "'>";
+					printList += "<img src='" + qna.getQna_img() + "'>";
+				}
 				printList += "<p>";
 				printList += qna.getContent();
 				printList += "</p>";

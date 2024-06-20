@@ -7,7 +7,7 @@
 		SELECT
 			qna.qna_no, qna.question_date, qna.title, qna.type,
 			qna.user_id, qna.content, item.name,item.item_no,
-			qna.reply, qna.reply_date,qna.qna_img, qna.replyState
+			qna.reply, qna.reply_date,qna.qna_img
 		FROM
 		qna
 		INNER JOIN item

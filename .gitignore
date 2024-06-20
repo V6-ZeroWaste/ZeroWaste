@@ -107,6 +107,7 @@ workspace.xml
 /.apt_generated/
 
 /.apt_generated_tests/
+
 /.idea/.gitignore
 /.idea/compiler.xml
 /.idea/encodings.xml
@@ -117,3 +118,7 @@ workspace.xml
 /.idea/webContexts.xml
 .idea/workspace.xml
 
+
+.idea
+.idea/*.xml
+*.idea
