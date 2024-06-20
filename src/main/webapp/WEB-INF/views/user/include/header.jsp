@@ -65,10 +65,11 @@
 	                                    <li><a class="dropdown-item" href="/mypage/point">Point</a></li>
 	                                </ul>
 	                            </li>
+                        	
+		                        <li class="nav-item cart">
+		                            <a href="/cart" class="nav-link"><span>Cart</span><span>2</span></a>
+		                        </li>
                         	</c:if>
-                        <li class="nav-item cart">
-                            <a href="/cart" class="nav-link"><span>Cart</span><span>2</span></a>
-                        </li>
                     </ul>
                 </div>
             </nav>
