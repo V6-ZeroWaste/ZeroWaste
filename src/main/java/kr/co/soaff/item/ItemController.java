@@ -77,7 +77,7 @@ public class ItemController {
 	@GetMapping("/detail")
 	public String detail(Model model, ItemVO vo) {
 		if(itemService.detail(vo)==null){
-			return "common/404";
+			return "user/include/404";
 		}else{
 			model.addAttribute("item", itemService.detail(vo));
 			return "user/item/detail";
