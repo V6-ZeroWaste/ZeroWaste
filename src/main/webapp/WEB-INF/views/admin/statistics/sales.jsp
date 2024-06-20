@@ -29,7 +29,6 @@
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">매출 통계</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
                     <div class="row">
                         <div class="col-xl-6">
@@ -80,7 +79,6 @@
                         </div>
                         <div class="col-md-3"></div>
                         <div class="col-md-1">
-                            <input type="button" value="검색" class="btn btn-primary applyButton">
                         </div>
                     </div>
                     
@@ -162,8 +160,9 @@
 
                     $("#printList").html(resp.printList);
 
-                    $(".datatable-info").html("Showing " + resp.page + " to " + resp.totalPage + " of " + resp.total + " entries");
-
+                    // $(".datatable-info").html("Showing " + resp.page + " to " + resp.totalPage + " of " + resp.total + " entries");
+                    // $(".datatable-info").html("Showing " + resp.startIdx + " to " + resp.endIdx + " of " + resp.total + " entries");
+                    $(".datatable-info").html("Showing "+((page-1)*20+1)+" to "+(page*20<=resp.total? page*20 : resp.total)+" of "+resp.total+" entries");
                     var printPage = "";
                     if (resp.isPrev) {
                         printPage += '<li class="datatable-pagination-list-item">';

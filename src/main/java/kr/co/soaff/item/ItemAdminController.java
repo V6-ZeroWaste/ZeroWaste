@@ -43,7 +43,8 @@ public class ItemAdminController {
 			printList += "<td class=\"col-item-img\">";
 			printList += "<div class='img-container'>";
 			if (item.getItem_img() != null && !item.getItem_img().equals("")) {
-				printList += "<img src='/upload/item_img/" + item.getItem_img() + "' class='fixed-size-img'/>";
+//				printList += "<img src='/upload/item_img/" + item.getItem_img() + "' class='fixed-size-img'/>";
+				printList += "<img src='" + item.getItem_img() + "' class='fixed-size-img'/>";
 			}
 			printList += "</div>";
 			printList += "</td>";
