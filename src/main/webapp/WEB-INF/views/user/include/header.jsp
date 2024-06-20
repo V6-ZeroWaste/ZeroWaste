@@ -42,7 +42,7 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- 로그인 토글 -->
                         <li class="nav-item">
-                            <a class="nav-link" href="/login">Log In</a>
+                            <a class="nav-link" href="/user/user/login">Log In</a>
                         </li>
 
                         

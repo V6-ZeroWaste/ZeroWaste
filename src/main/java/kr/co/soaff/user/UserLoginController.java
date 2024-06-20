@@ -22,17 +22,21 @@ public class UserLoginController {
         return "user/user/login"; 
     }
 
-    @PostMapping("/user/user/login")
+    @PostMapping(value = "/user/user/login")
     @ResponseBody
-    public int login(UserVO vo,HttpSession session, HttpServletResponse res) throws IOException {
-        res.setContentType("text/html;charset=utf-8");
-        PrintWriter out = res.getWriter();
+    public String login(@RequestBody UserVO vo,HttpSession session, HttpServletResponse res) throws IOException {
+//        res.setContentType("text/html;charset=utf-8");
+//        PrintWriter out = res.getWriter();
         UserVO login = userService.login(vo);
-        String saved_id = login.getSaved_id();
-        System.out.print(vo);
-        int result = -1;
-        if (login != null && login.getId() != null) {
-            session.setAttribute("user", login);
+
+        System.out.println(vo);
+        String result="1";
+        if (login != null) {
+            session.setAttribute("user_id", login.getId());
+            session.setAttribute("user_name", login.getName());
+            session.setAttribute("user_no", login.getUser_no());
+
+            String saved_id = vo.getIdSaveCheck();
             if ("yes".equals(saved_id)) { // Check if rememberMe is checked
                 Cookie cookie = new Cookie("saved_id", login.getId());
                 cookie.setMaxAge(60 * 60 * 24 * 30); // 쿠키 유효기간 30일
@@ -42,9 +46,9 @@ public class UserLoginController {
                 cookie.setMaxAge(0); // 쿠키 삭제
                 res.addCookie(cookie);
             }
-            result=0;//성공
+            result="0";//성공
         } else {
-			result=1; //실패
+			result="1"; //실패
         }
         return result;
     }
