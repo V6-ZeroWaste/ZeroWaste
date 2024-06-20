@@ -362,6 +362,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </section>
 <%@ include file="/WEB-INF/views/user/include/footer.jsp" %>
 </body>
