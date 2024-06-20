@@ -58,6 +58,26 @@
 		}
     	
     </style>
+    <script>
+    	function orderConfirm(no){
+    		if(confirm("구매확정 시 되돌릴 수 없습니다. 구매확정 하시겠습니까?")){
+                $.ajax({
+                    url : "/mypage/order/detail/confirm",
+                    type : "POST",
+                    data : JSON.stringify({order_detail_no : no}),
+                    dataType: "text",
+                    contentType: "application/json; charset=UTF-8",
+                    success : function(response){
+                        alert(response);
+                        window.location.reload();
+                    },
+                    error: function(xhr, status, error){
+                        console.log(error)
+                    }
+                });
+            }
+    	}
+    </script>
   </head>
     <body>
 	<%@ include file="/WEB-INF/views/user/include/header.jsp" %>
@@ -116,11 +136,11 @@
 			                        		</c:if>
 			                        		<c:if test="${order.delivery_status == 1}">
 			                        			<td><span class="order-status shipping">배송중</span></td>
-	                          					<td><button type="button" class="btn btn-primary">구매확정</button></td>
+	                          					<td><button type="button" class="btn btn-primary" onclick="orderConfirm(${vo.order_detail_no});">구매확정</button></td>
 			                        		</c:if>
 			                        		<c:if test="${order.delivery_status == 2}">
 	                          					<td><span class="order-status sent">배송완료</span></td>
-	                          					<td><button type="button" class="btn btn-primary">구매확정</button></td>
+	                          					<td><button type="button" class="btn btn-primary" onclick="orderConfirm(${vo.order_detail_no});">구매확정</button></td>
 			                        		</c:if>
 			                        	</c:if>
 			                        	<c:if test="${vo.confirm_date != null }">
@@ -157,7 +177,7 @@
 	                        </tr>
 	                      	<tr>
 	                      		<th>연락처</th>
-	                      		<<td>${order.receiver_tel}</td>
+	                      		<td>${order.receiver_tel}</td>
 	                        </tr>
 	                      	<tr>
 	                      		<th>배송지 주소</th>
@@ -209,7 +229,7 @@
 	                      </tbody>
 	                    </table>
 	   		</div>
-
+		</div>
    		<!-- /payment info area -->
    		
    		
