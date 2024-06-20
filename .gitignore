@@ -108,6 +108,17 @@ workspace.xml
 
 /.apt_generated_tests/
 
+/.idea/.gitignore
+/.idea/compiler.xml
+/.idea/encodings.xml
+/.idea/jarRepositories.xml
+/.idea/misc.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
+/.idea/webContexts.xml
+.idea/workspace.xml
+
+
 .idea
 .idea/*.xml
 *.idea

@@ -16,11 +16,6 @@ public class MainController {
 		return "user/user/login";
 	}
 
-	@GetMapping("/cart")
-	public String cart() {
-		return "/user/order/cart";
-	}
-
 	@GetMapping("/about")
 	public String about() {
 		return "/user/main/about";
