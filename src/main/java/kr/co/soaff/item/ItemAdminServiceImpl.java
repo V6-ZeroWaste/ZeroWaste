@@ -2,16 +2,27 @@ package kr.co.soaff.item;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import util.S3Uploader;
 
 @Service
@@ -70,6 +81,22 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 
 	@Override
 	public int insert(ItemVO vo, MultipartFile file, HttpServletRequest request){
+		String voDetail = vo.getDetail();
+		if(voDetail != null && !voDetail.isEmpty()){
+			List<String> strings = extractSrcAttributes(voDetail);
+			List<String> uploadedImages = new ArrayList<>();
+			for (String imageUrl : strings) {
+				try {
+					MultipartFile fileFromUrl = getFileFromUrl(imageUrl);
+					String uploadImage = s3Uploader.uploadFile(fileFromUrl);
+					uploadedImages.add(uploadImage);
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+			String updatedDetail = updateHtmlWithUploadedImages(voDetail, uploadedImages);
+			vo.setDetail(updatedDetail);
+		}
 		if (!file.isEmpty()) {
 			try {
 				String imgUrl = s3Uploader.uploadFile(file);
@@ -112,6 +139,24 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 	@Transactional
 	@Override
 	public int update(ItemVO vo, MultipartFile file, HttpServletRequest request) {
+		String voDetail = vo.getDetail();
+		if(voDetail != null && !voDetail.isEmpty()){
+			List<String> strings = extractSrcAttributes(voDetail);
+			List<String> uploadedImages = new ArrayList<>();
+			for (String imageUrl : strings) {
+				try {
+					MultipartFile fileFromUrl = getFileFromUrl(imageUrl);
+					String uploadImage = s3Uploader.uploadFile(fileFromUrl);
+					uploadedImages.add(uploadImage);
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+			String updatedDetail = updateHtmlWithUploadedImages(voDetail, uploadedImages);
+			vo.setDetail(updatedDetail);
+		}
+
+
 		if (!file.isEmpty()) {
 			if(vo.getItem_img() != null && !vo.getItem_img().isEmpty()){ //기존 파일이 있을 경우 s3 update
 				ItemVO detail = mapper.detail(vo);
@@ -236,6 +281,52 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 	@Override
 	public int insertCategory(CategoryVO vo) {
 		return mapper.insertCategory(vo);
+	}
+
+	public static MultipartFile getFileFromUrl(String fileUrl) throws IOException {
+		URL url = new URL(fileUrl);
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestMethod("GET");
+
+		try (InputStream inputStream = connection.getInputStream()) {
+			byte[] fileBytes = IOUtils.toByteArray(inputStream);
+			String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+
+			FileItem fileItem = new DiskFileItem("file", connection.getContentType(), false, fileName, fileBytes.length, new File(System.getProperty("java.io.tmpdir")));
+			try (OutputStream os = fileItem.getOutputStream()) {
+				os.write(fileBytes);
+			}
+
+			return new CommonsMultipartFile(fileItem);
+		}
+	}
+
+	public List<String> extractSrcAttributes(String html) {
+		List<String> srcList = new ArrayList<>();
+		String regex = "src\\s*=\\s*\"([^\"]*)\"";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(html);
+
+		while (matcher.find()) {
+			srcList.add(matcher.group(1));
+		}
+
+		return srcList;
+	}
+
+	public String updateHtmlWithUploadedImages(String html, List<String> uploadedImageUrls) {
+		StringBuffer updatedHtml = new StringBuffer();
+		String regex = "src\\s*=\\s*\"([^\"]*)\"";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(html);
+
+		int index = 0;
+		while (matcher.find() && index < uploadedImageUrls.size()) {
+			matcher.appendReplacement(updatedHtml, "src=\"" + uploadedImageUrls.get(index++) + "\"");
+		}
+		matcher.appendTail(updatedHtml);
+
+		return updatedHtml.toString();
 	}
 
 }

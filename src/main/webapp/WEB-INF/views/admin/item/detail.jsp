@@ -244,7 +244,8 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                             	<c:if test="${item.item_img != null && item.item_img != ''}">
 <%--                                    <img src="/upload/item_img/${item.item_img}" class="img-fluid"/>--%>
                                     <img src="${item.item_img}" class="img-fluid"/>
-							    	<p>${item.item_img}</p>
+<%--							    	<a href="${item.item_img}" target="_blank"><p>${item.item_img.substring(item.item_img.lastIndexOf('/')+1,item.item_img.length())}</p></a>--%>
+							    	<a href="${item.item_img}" target="_blank"><p>이미지 보기</p></a>
 							    	<input class="btn btn-danger" type="button" name="x" value="이미지 삭제" onclick="deleteImg()">
                             	</c:if>
 							    
