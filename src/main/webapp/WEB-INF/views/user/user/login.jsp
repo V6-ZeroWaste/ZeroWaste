@@ -16,7 +16,8 @@
 </head>
 <script>
 
-    function loginCheck() {
+    function loginCheck(event) {
+    	event.preventDefault();
         let id = $("#id");
         let pw = $("#pw");
         let idCheckMsg = $("#idCheckMsg");
@@ -42,18 +43,34 @@
             }
             isValid = false;
         }
+	      $.ajax({
+	        url: '/user/user/login',
+	        data: {
+	        	id: $("#id").val(),
+	        	pw: $("#pw").val()	
+	        },
+	        async: false,
+	        success: function (res) {
+	          if (res == '1') {
+	            $("#idCheckMsg").html("중복된 아이디입니다").css("display", "block");
+	            console.log(1);
+	            isValid = false;
+	          } else {
+	            isValid = true;
+	          }
+	        }
+	      });
+	      return isValid;
+	    }
+        
+    window.onload = function() {
+         var savedId = document.getElementById("savedId").value;
+         if (savedId) {
+             document.getElementById("id").value = savedId;
+             document.getElementById("saved_id").checked = true;
+         }
+     }
 
-        return isValid;
-    }
-    window.onload = function (){
-        window.onload = function() {
-            var savedId = document.getElementById("savedId").value;
-            if (savedId) {
-                document.getElementById("id").value = savedId;
-                document.getElementById("rememberMe").checked = true;
-            }
-        }
-    }
 
 </script>
 
@@ -74,7 +91,7 @@
                         </div>
 
                         <form action="/user/user/login" method="post" id="loginBorard" name="loginBoard"
-                              onsubmit="return loginCheck();">
+                              onsubmit="return loginCheck(event);">
                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
                                  data-parent="#accordionExample">
                                 <div class="card-body">
@@ -82,19 +99,19 @@
                                         <div class="form-group col-12">
                                             <label for="id">ID</label>
                                             <input type="text" class="form-control"
-                                                   id="id" onchange="loginCheck();">
+                                                   id="id" onchange="loginCheck();"name="id">
                                             <div id="idCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
                                             <label for="pw">Password</label>
                                             <input type="password" class="form-control"
-                                                   id="pw" onchange="loginCheck();">
+                                                   id="pw" onchange="loginCheck();" name="pw">
                                             <div id="pwdCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="col-12 mt-1">
                                             <div class="custom-control custom-switch mb-2">
                                                 <input type="checkbox" class="custom-control-input"
-                                                       id="customSwitch1" name="saved_id" value="yes">
+                                                       id="saved_id" name="saved_id" value="yes">
                                                 <label class="custom-control-label"
                                                        for="customSwitch1">Remeber ID</label>
                                             </div>
