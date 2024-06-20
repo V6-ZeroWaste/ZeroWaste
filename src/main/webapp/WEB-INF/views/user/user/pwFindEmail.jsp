@@ -39,56 +39,47 @@
       startTimer(180);
     }
 
-    window.addEventListener('load', function() {
-      var forms = document.querySelectorAll('.needs-validation');
-      (function() {
-        'use strict';
-
-        Array.prototype.slice.call(forms)
-                .forEach(function(form) {
-                  form.addEventListener('submit', function(event) {
-                    if (!check()) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-                    if (!form.checkValidity()) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    }
-
-                    form.classList.add('was-validated');
-                  }, false);
-                });
-      })();
-
-      // 타이머 시작
+    window.onload = function (){
       startTimer(180);
-    });
-
-    function check() {
-      var con = true;
-      var name = $('#name').val();
-      var email = $('#relEmail').val($('#email_id').val() + "@" + $('#email_domain').val());
-      $.ajax({
-        type: 'POST',
-        url: '/user/login/loginFind',
-        data: { name: name, email: email },
-        async: false,
-        success: function(res) {
-          if (res == '1') {
-            con = false;
-          }
-        }
-      });
-      return con;
-    }
+    };
 
     $(function() {
       $('#emailCheck_btn').on('click', function() {
         resetTimer(); // 타이머를 재시작합니다.
         $('#emailVerification').show();
       });
+
+      $('#submitBtn').on('click', function() {
+        validateEmailCode();
+      });
     });
+
+    function validateEmailCode() {
+      let emailCode = $('#emailcheck_id').val();
+      let errorMsg = $('#pwFindEmailSubmitErrorMsg');
+      errorMsg.css("display", "none");
+
+      if (!emailCode) {
+        errorMsg.html("인증코드를 입력해 주세요");
+        errorMsg.css("display", "block");
+        return;
+      }
+
+      $.ajax({
+        type: 'POST',
+        url: '/user/login/verifyEmailCode',
+        data: { code: emailCode },
+        success: function(res) {
+          if (res == '0') {
+            errorMsg.html("인증코드가 일치하지 않습니다");
+            errorMsg.css("display", "block");
+          } else {
+            // Handle success scenario (e.g., navigate to the next page or show success message)
+            window.location.href = '/nextPage'; // replace with your actual success action
+          }
+        }
+      });
+    }
   </script>
 </head>
 <body>
@@ -123,13 +114,14 @@
                     <li class="list-group-item d-flex justify-content-center align-items-center">
                       <label for="emailcheck_id" class="col-sm-12 col-form-label"style="color: #3d733d"><strong>인증코드 입력</strong></label>
                     </li>
-                    <li class="list-group-item d-flex justify-content-sm-center align-items-center">
+                    <li class="list-group-item d-flex justify-content-sm-center align-items-center mb-2">
                       <input type="text" class="form-control col-6" id="emailcheck_id" required>
-                      <span id='timer2' class="col-3 d-flex justify-content-sm-center align-items-center"" style="margin-left: 0px;"></span>
+                      <span id='timer2' class="col-3 d-flex justify-content-sm-center align-items-center" style="margin-left: 0px;"></span>
                       <button type="button" class="btn btn-primary btn-rounded pr col-3" id="emailCheck_btn">재전송</button>
                     </li>
                     <li class="list-group-item d-flex justify-content-center align-items-center">
-                      <button class="btn btn-block btn-primary" id="btn" type="submit" >확인</button>
+                      <button class="btn btn-block btn-primary" id="submitBtn" type="button">확인</button>
+                      <div class="invalid-feedback" id="pwFindEmailSubmitErrorMsg"></div>
                     </li>
                   </ul>
                 </div>
