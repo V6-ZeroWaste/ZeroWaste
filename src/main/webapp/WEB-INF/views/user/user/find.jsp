@@ -13,6 +13,7 @@
     <title>soaff</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 <script>
+
     let emailIdRegex = /^[a-zA-Z0-9._%+-]+$/;
     let emailDomainRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -28,28 +29,41 @@
                 id_email_domain.val(emailSel);
             }
         });
-
-        $('#relEmail').val($('#id_email_id').val() + "@" + $('#id_email_domain').val());
     });
 
     function goFindId() {
+        let idErrorMsg = $("#idErrorMsg");
+        let dupCheck = false;
+        let id = $("#id_name").val();
+        let email = $('#id_email_id').val() + "@" + $('#id_email_domain').val();
         if (fieldCheckId()) {
             $.ajax({
-
                 url: '/user/join/idCheck.do',
-                data: {id: $("#id").val()},
+                data: {
+                    id: id,
+                    email : email
+                },
                 async: false,
                 success: function (res) {
                     if (res == '1') {
-                        $("#idErrorMsg").html("중복된 아이디입니다").css("display", "block");
-                        isValid = false;
+                        idErrorMsg.html("중복된 아이디입니다").css("display", "block");
+                        dupCheck = false;
                     } else {
-                        $("#idErrorMsg").css("display", "none");
-                        isValid = true;
+                        idErrorMsg.css("display", "none");
+                        dupCheck = true;
                     }
+                },
+                error:function (){
+                    console.log(email);
+                    console.log(id);
                 }
             });
-            $('#frmFindId').submit();
+            if(dupCheck){
+                $('#frmFindId').submit();
+            }
+            else{
+                idErrorMsg.focus();
+            }
         }
     }
 
@@ -95,8 +109,31 @@
     }
 
     function goFindPw() {
+        let pw_SubmitErrorMsg = $("#pw_SubmitErrorMsg");
+        let dupCheck = false;
+
         if (fieldCheckPw()) {
-            $('#frmFindPw').submit();
+            $.ajax({
+                url: '/user/join/idCheck.do',
+                data: {  id: $("#pw_id").val(),
+                         name :  $("#pw_name").val()
+                },
+                async: false,
+                success: function (res) {
+                    if (res == '1') {
+                        pw_SubmitErrorMsg.html("올바른 값을 입력해주세요").css("display", "block");
+                    } else {
+                        pw_SubmitErrorMsg.css("display", "none");
+                        dupCheck = true;
+                    }
+                }
+            });
+            if(dupCheck){
+                $('#frmFindPw').submit();
+            }
+            else{
+                pw_SubmitErrorMsg.focus();
+            }
         }
     }
 
@@ -107,6 +144,7 @@
 
         let pw_idErrorMsg = $("#pw_idErrorMsg");
         let pw_nameErrorMsg = $("#pw_nameErrorMsg");
+
 
         pw_idErrorMsg.css("display", "none");
         pw_nameErrorMsg.css("display", "none");
@@ -133,13 +171,16 @@
 
 
     $(function () {
+
+    });
+    window.onload = function () {
         $("#name, #email_id, #email_domain").on("change", function (){
             fieldCheckId();
         });
         $("#id, #name").on("change", function (){
             fieldCheckPw();
         });
-    });
+    }
 
 </script>
 </head>
@@ -188,8 +229,7 @@
                                                     </div>
                                                     <div class="col-4" style="padding: 0;">
                                                         <select id="emailSel" class="custom-select" >
-                                                            <option value="">선택-</option>
-                                                            <option value="직접입력">직접입력</option>
+                                                            <option value="직접입력" selected>직접입력</option>
                                                             <option value="naver.com">naver.com</option>
                                                             <option value="gmail.com">gmail.com</option>
                                                             <option value="hanmail.net">hanmail.net</option>

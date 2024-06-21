@@ -95,9 +95,10 @@ $RECYCLE.BIN/
 /target/
 db.properties
 s3.properties
+workspace.xml
 /.gitignore
 .factorypath
-workspace.xml
+
 
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java
@@ -116,7 +117,7 @@ workspace.xml
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/vcs.xml
 /.idea/webContexts.xml
-.idea/workspace.xml
+/.idea/workspace.xml
 
 
 .idea
