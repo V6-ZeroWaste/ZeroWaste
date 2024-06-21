@@ -11,6 +11,10 @@
   <component name="ChangeListManager">
     <list default="true" id="875a90b7-4b78-4d1e-b6d0-e4efa1623915" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
+=======
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp" afterDir="false" />
+>>>>>>> refs/heads/develop
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +66,11 @@
     "JUnit.CartTest.update.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Tomcat Server.Tomcat 9.0.88.executor": "Run",
+<<<<<<< HEAD
     "git-widget-placeholder": "user__bongbong",
+=======
+    "git-widget-placeholder": "develop",
+>>>>>>> refs/heads/develop
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -215,6 +223,12 @@
         </option>
       </method>
     </configuration>
+    <list>
+      <item itemvalue="JUnit.CartTest.del" />
+      <item itemvalue="JUnit.CartTest.list" />
+      <item itemvalue="JUnit.CartTest.update" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.88" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.CartTest.update" />
@@ -242,8 +256,13 @@
       <workItem from="1718760663771" duration="9760000" />
       <workItem from="1718778245379" duration="7555000" />
       <workItem from="1718843661728" duration="29707000" />
+<<<<<<< HEAD
       <workItem from="1718886894553" duration="967000" />
       <workItem from="1718896547087" duration="3000" />
+=======
+      <workItem from="1718886894553" duration="310000" />
+      <workItem from="1718931221133" duration="2074000" />
+>>>>>>> refs/heads/develop
     </task>
     <servers />
   </component>
@@ -255,6 +274,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp</url>
+<<<<<<< HEAD
           <line>394</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
@@ -267,6 +287,10 @@
           <url>file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp</url>
           <line>401</line>
           <option name="timeStamp" value="6" />
+=======
+          <line>428</line>
+          <option name="timeStamp" value="8" />
+>>>>>>> refs/heads/develop
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
