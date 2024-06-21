@@ -104,4 +104,80 @@
 						confirm_date = current_timestamp()
 		WHERE order_detail_no = #{order_detail_no} and user_no = #{user_no}
 	</update>
+	
+	<!-- 봉욱 주문페이지에서 사용하는 쿼리-->
+	<!-- start -->
+	<!-- Order, delivery Info에 들어갈 정보 (list) -->
+	<select id="info" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.order.OrderVO">
+		SELECT tel as buyer_tel,
+	   		   email as buyer_email, 
+      	   	   zipcode,
+               addr, addr_detail
+		FROM user
+		WHERE user_no=#{user_no}
+	</select>
+	
+	<!-- 잔여 적립금 조회(point)-->
+	<select id="point" parameterType="kr.co.soaff.order.OrderVO" resultType="int">
+		SELECT sum(point) as point FROM point WHERE user_no=#{user_no}
+	</select>
+	
+	<!-- 카트 정보 조회 -->
+	<!-- cart list -->
+	<select id="cartList" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.cart.CartVO">
+		SELECT c.cart_no, c.user_no, c.amount, c.packing_status,
+		c.item_no, i.name, i.price, i.discounted_price,
+		i.item_img, i.amount as inventory
+		FROM cart c
+		JOIN item i ON c.item_no = i.item_no
+		WHERE c.user_no = #{user_no}
+		AND c.cart_no IN
+		<foreach item="cartNo" collection="checkedCartNo" open="(" separator="," close=")">
+			#{cartNo}
+		</foreach>
+		ORDER BY c.cart_no;
+	</select>
+
+	
+		
+	<!-- cart count -->
+	<select id="cartCount" parameterType="kr.co.soaff.order.OrderVO" resultType="int">
+		SELECT count(*)
+		FROM cart
+		WHERE user_no = #{user_no}
+		AND cart_no IN
+		<foreach item="cartNo" collection="checkedCartNo" open="(" separator="," close=")">
+			#{cartNo}
+		</foreach>
+	</select>
+	
+	<!-- updateDB -->
+	<update id="updateOrder" parameterType="kr.co.soaff.order.OrderVO">		
+	UPDATE `order`
+		SET 
+			order_no = #{order_no},
+			user_no = #{user_no}, 
+			payment_date = #{order_no}, 
+			point = #{point}, 
+			payment_id = #{payment_id}, 
+			payment_price = #{payment_price}, 
+			payment_method = #{payment_method}, 
+			order_status = #{order_status}, 
+			order_name = #{order_name}, 
+			receiver_name = #{receiver_name}, 
+			zipcode = #{zipcode}, 
+			addr = #{addr}, 
+			addr_detail = #{addr_detail}, 
+			receiver_tel = #{receiver_tel}, 
+			delivery_request = #{delivery_request}, 
+			delivery_price = #{delivery_price}, 
+			buyer_name = #{buyer_name}, 
+			buyer_email = #{buyer_email}, 
+			buyer_tel = #{buyer_tel}, 
+			delivery_status = #{delivery_status}, 
+			delivery_date = #{delivery_date}
+	</update>
+	
+	<!-- end -->
+	
 </mapper>
