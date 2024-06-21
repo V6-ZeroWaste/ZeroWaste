@@ -10,8 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="875a90b7-4b78-4d1e-b6d0-e4efa1623915" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/java/kr/co/soaff/orderTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/order/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/order/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/order/OrderMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/order/OrderMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/order/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/order/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/order/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/order/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/co/soaff/order/OrderVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/co/soaff/order/OrderVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/kr/co/soaff/order/OrderMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/kr/co/soaff/order/OrderMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/order.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/order.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,60 +64,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JUnit.CartTest.del.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CartTest.list.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CartTest.update.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Tomcat Server.Tomcat 9.0.88.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;user__bongbong&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.CartTest.del.executor": "Run",
+    "JUnit.CartTest.list.executor": "Run",
+    "JUnit.CartTest.update.executor": "Run",
+    "JUnit.orderTest.cartCount.executor": "Run",
+    "JUnit.orderTest.cartList.executor": "Run",
+    "JUnit.orderTest.info.executor": "Run",
+    "JUnit.orderTest.point.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Tomcat Server.Tomcat 9.0.88.executor": "Run",
+    "git-widget-placeholder": "user__bongbong",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="kr.co.soaff" />
+    </key>
+  </component>
   <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.88">
-    <configuration name="CartTest.del" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="soaff" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="kr.co.soaff.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="kr.co.soaff" />
-      <option name="MAIN_CLASS_NAME" value="kr.co.soaff.CartTest" />
-      <option name="METHOD_NAME" value="del" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CartTest.list" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="soaff" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="kr.co.soaff.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="kr.co.soaff" />
-      <option name="MAIN_CLASS_NAME" value="kr.co.soaff.CartTest" />
-      <option name="METHOD_NAME" value="list" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="CartTest.update" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="soaff" />
       <extension name="coverage">
@@ -121,6 +106,70 @@
       <option name="PACKAGE_NAME" value="kr.co.soaff" />
       <option name="MAIN_CLASS_NAME" value="kr.co.soaff.CartTest" />
       <option name="METHOD_NAME" value="update" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="orderTest.cartCount" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="soaff" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="kr.co.soaff.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="kr.co.soaff" />
+      <option name="MAIN_CLASS_NAME" value="kr.co.soaff.orderTest" />
+      <option name="METHOD_NAME" value="cartCount" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="orderTest.cartList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="soaff" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="kr.co.soaff.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="kr.co.soaff" />
+      <option name="MAIN_CLASS_NAME" value="kr.co.soaff.orderTest" />
+      <option name="METHOD_NAME" value="cartList" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="orderTest.info" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="soaff" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="kr.co.soaff.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="kr.co.soaff" />
+      <option name="MAIN_CLASS_NAME" value="kr.co.soaff.orderTest" />
+      <option name="METHOD_NAME" value="info" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="orderTest.point" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="soaff" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="kr.co.soaff.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="kr.co.soaff" />
+      <option name="MAIN_CLASS_NAME" value="kr.co.soaff.orderTest" />
+      <option name="METHOD_NAME" value="point" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -217,16 +266,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.CartTest.del" />
-      <item itemvalue="JUnit.CartTest.list" />
+      <item itemvalue="JUnit.orderTest.cartCount" />
+      <item itemvalue="JUnit.orderTest.cartList" />
+      <item itemvalue="JUnit.orderTest.info" />
+      <item itemvalue="JUnit.orderTest.point" />
       <item itemvalue="JUnit.CartTest.update" />
       <item itemvalue="Tomcat Server.Tomcat 9.0.88" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.orderTest.cartCount" />
+        <item itemvalue="JUnit.orderTest.cartList" />
+        <item itemvalue="JUnit.orderTest.point" />
+        <item itemvalue="JUnit.orderTest.info" />
         <item itemvalue="JUnit.CartTest.update" />
-        <item itemvalue="JUnit.CartTest.del" />
-        <item itemvalue="JUnit.CartTest.list" />
       </list>
     </recent_temporary>
   </component>
@@ -251,6 +304,7 @@
       <workItem from="1718843661728" duration="29707000" />
       <workItem from="1718886894553" duration="967000" />
       <workItem from="1718896547087" duration="3000" />
+      <workItem from="1718941911944" duration="30082000" />
     </task>
     <servers />
   </component>
@@ -262,17 +316,17 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp</url>
-          <line>394</line>
+          <line>435</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp</url>
-          <line>376</line>
+          <line>417</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp</url>
-          <line>401</line>
+          <line>442</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>

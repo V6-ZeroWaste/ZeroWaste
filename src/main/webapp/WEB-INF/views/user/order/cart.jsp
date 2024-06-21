@@ -257,10 +257,55 @@
 
     function goOrder() {
         if (con) {
-            location.href = "/order";
+
+            // console.log(selectedCheckedCartNo());
+            //
+            // var data = {
+            //     selectedCheckedCartNo: selectedCheckedCartNo()
+            // };
+            // $.ajax({
+            //     type: "GET", // method type
+            //     url: "/order", // 요청할 url
+            //     data: data, // 전송할 데이터
+            //     success: function () {
+            //         console.log("ok")
+            //     },
+            //     error: function (data, textStatus) {
+            //         $('#fail').html("관리자에게 문의하세요.") // 서버오류
+            //         console.log('error', data, textStatus);
+            //     }
+            // })
+            $('#frm').submit();
+
+
+
         } else {
             alert("상품을 선택해주세요")
+
         }
+    }
+
+    function checkedCartNo() {
+
+        let cartNoArray = [];
+
+        $(".cart-item .custom-control-input:checked").each(function () {
+            let cartNo = $(this).attr("cart_no");
+
+            // cart_no 속성 값이 존재하면 배열에 추가
+            if (cartNo !== undefined) {
+                cartNoArray.push(cartNo);
+            }
+        });
+
+        // cart_no 값들이 담긴 배열을 반환
+        return cartNoArray;
+
+    }
+
+
+    function updateConState() {
+        con = $(".cart-item .custom-control-input:checked").length > 0;
     }
 
     let con = false;
@@ -290,10 +335,6 @@
             updateConState();
             goOrder();
         });
-
-        function updateConState() {
-            con = $(".cart-item .custom-control-input:checked").length > 0;
-        }
 
     });
 
@@ -352,66 +393,66 @@
                         </div>
                     </div>
                 </c:if>
+                <form action="/order" method="post" id="frm">
+                    <c:forEach var="vo" items="${map.list }">
 
-                <c:forEach var="vo" items="${map.list }">
+                        <!-- cart item -->
+                        <div class="cart-item" id="cart${vo.cart_no}">
+                            <div class="row align-items-center">
+                                <div class="col-12 col-lg-6">
+                                    <div class="media media-product">
 
-                    <!-- cart item -->
-                    <div class="cart-item" id="cart${vo.cart_no}">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-lg-6">
-                                <div class="media media-product">
+                                        <!-- id, for 가 일치해야 토글이 됩니다 -->
+                                        <div class="custom-control custom-checkbox mb-2">
+                                            <input type="checkbox" class="custom-control-input"
+                                                   id="checkbox${vo.cart_no}" name="checkedCartNo" value="${vo.cart_no}" cart_no="${vo.cart_no}"
+                                                   checked>
+                                            <label class="custom-control-label" for="checkbox${vo.cart_no}"></label>
+                                        </div>
 
-                                    <!-- id, for 가 일치해야 토글이 됩니다 -->
-                                    <div class="custom-control custom-checkbox mb-2">
-                                        <input type="checkbox" class="custom-control-input"
-                                               id="checkbox${vo.cart_no}" cart_no="${vo.cart_no}"
-                                               checked>
-                                        <label class="custom-control-label" for="checkbox${vo.cart_no}"></label>
-                                    </div>
-
-                                    <a href="/item/detail?${vo.item_no}"><img src="${vo.item_img}" alt="Image"></a>
-                                    <div class="media-body">
-                                        <h5 class="media-title">${vo.name}</h5>
-                                        <c:if test="${vo.packing_status eq 1}">
-                                            <span class="small">포장O (+2,000원)</span>
-                                        </c:if>
+                                        <a href="/item/detail?${vo.item_no}"><img src="${vo.item_img}" alt="Image"></a>
+                                        <div class="media-body">
+                                            <h5 class="media-title">${vo.name}</h5>
+                                            <c:if test="${vo.packing_status eq 1}">
+                                                <span class="small">포장O (+2,000원)</span>
+                                            </c:if>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-4 col-lg-2 text-center">
+                                <div class="col-4 col-lg-2 text-center">
 
-                                <del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</del>
+                                    <del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</del>
 
-                                <p class="cart-item-price" id="discountedPrice${vo.cart_no}"><fmt:formatNumber
-                                        value="${vo.discounted_price}"
-                                        type="number" pattern="#,##0"/>원</p>
-                            </div>
-                            <div class="col-4 col-lg-2 text-center">
-                                <div class="counter">
+                                    <p class="cart-item-price" id="discountedPrice${vo.cart_no}"><fmt:formatNumber
+                                            value="${vo.discounted_price}"
+                                            type="number" pattern="#,##0"/>원</p>
+                                </div>
+                                <div class="col-4 col-lg-2 text-center">
+                                    <div class="counter">
                                         <span class="counter-minus icon-minus" id='plusAmount${vo.cart_no}'
                                               field='amount${vo.cart_no}' onclick="chageAmount(this, '-');"
                                               cart_no="${vo.cart_no}"></span>
-                                    <input type='text' name='amount${vo.cart_no}' id='amount${vo.cart_no}'
-                                           class="counter-value" value="${vo.amount}"
-                                           min="0" max="${vo.inventory}" cart_no="${vo.cart_no}" readonly>
-                                    <span class="counter-plus icon-plus" id='minusAmount${vo.cart_no}'
-                                          field='amount${vo.cart_no}' onclick="chageAmount(this, '+');"
-                                          cart_no="${vo.cart_no}"></span>
+                                        <input type='text' id='amount${vo.cart_no}'
+                                               class="counter-value" value="${vo.amount}"
+                                               min="0" max="${vo.inventory}" cart_no="${vo.cart_no}" readonly>
+                                        <span class="counter-plus icon-plus" id='minusAmount${vo.cart_no}'
+                                              field='amount${vo.cart_no}' onclick="chageAmount(this, '+');"
+                                              cart_no="${vo.cart_no}"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-4 col-lg-2 text-center">
+                                <div class="col-4 col-lg-2 text-center">
                                     <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
                                           cart_no="${vo.cart_no}"><fmt:formatNumber
                                             value="${vo.amount*vo.discounted_price}" type="number"
                                             pattern="#,##0"/>원</span>
 
+                                </div>
+                                <a class="cart-item-close"><i class="icon-x" onclick="deleteCart(this);"
+                                                              id="delete${vo.cart_no}" cart_no="${vo.cart_no}"></i></a>
                             </div>
-                            <a class="cart-item-close"><i class="icon-x" onclick="deleteCart(this);"
-                                                          id="delete${vo.cart_no}" cart_no="${vo.cart_no}"></i></a>
                         </div>
-                    </div>
-                </c:forEach>
-
+                    </c:forEach>
+                </form>
             </div>
 
 
@@ -449,9 +490,10 @@
                         </ul>
                     </div>
                 </div>
-                <a href="/order" class="btn btn-lg btn-primary btn-block mt-1"
+
+                <button class="btn btn-lg btn-primary btn-block mt-1"
                         style="background-color:#79AC78;border-color: #79AC78;" id="orderBtn">Order NOW
-                </a>
+                </button>
 
 
             </div>
