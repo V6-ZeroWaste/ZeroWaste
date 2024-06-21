@@ -61,7 +61,7 @@
         if (active == '+') {
             amount++;
         }
-        if (amount>0 && active == '-') {
+        if (amount > 0 && active == '-') {
             amount--;
         }
         if (amount == 0) {
@@ -187,7 +187,7 @@
 
 
         // 체크된 항목이 없거나 전체 선택 체크박스가 체크되지 않았을 때 deliveryValue를 0으로 설정
-        if (checkedItemsCount === 0 ) {
+        if (checkedItemsCount === 0) {
             deliveryValue = 0;
             $('#deliveryPrice').text("0원");
         } else {
@@ -210,7 +210,7 @@
         // 체크된 항목 개수 확인
         var checkedItemsCount = $(".cart-item .custom-control-input:checked").length;
 
-        $('#countItemTotal').html("총 "+checkedItemsCount+"개의 상품금액");
+        $('#countItemTotal').html("총 " + checkedItemsCount + "개의 상품금액");
     }
 
 
@@ -221,7 +221,7 @@
         console.log(cart_no);
 
         var data = {
-            cart_no : cart_no,
+            cart_no: cart_no,
         };
 
         // delete 쿼리 날리기
@@ -235,7 +235,7 @@
                 // 데이터 리스트 출력
                 if (resp > 0) {
 
-                    var deleteId = "#cart"+cart_no;
+                    var deleteId = "#cart" + cart_no;
                     $(deleteId).hide();
                     location.href = "/cart";
                 }
@@ -338,125 +338,126 @@
             </div>
         </div>
 
-        <form>
-            <div class="row gutter-2 gutter-lg-4 justify-content-end">
+
+        <div class="row gutter-2 gutter-lg-4 justify-content-end">
 
 
-                <!-- item list 담는 박스 -->
-                <div class="col-lg-8 cart-item-list" id="cartList">
+            <!-- item list 담는 박스 -->
+            <div class="col-lg-8 cart-item-list" id="cartList">
 
-                    <c:if test="${empty map.list}">
-                        <div class="cart-item">
-                            <div class="row align-items-center col-12">
-                                <span>Empty</span>
-                            </div>
+                <c:if test="${empty map.list}">
+                    <div class="cart-item">
+                        <div class="row align-items-center col-12">
+                            <span>Empty</span>
                         </div>
-                    </c:if>
+                    </div>
+                </c:if>
 
-                    <c:forEach var="vo" items="${map.list }">
+                <c:forEach var="vo" items="${map.list }">
 
-                        <!-- cart item -->
-                        <div class="cart-item" id="cart${vo.cart_no}" >
-                            <div class="row align-items-center">
-                                <div class="col-12 col-lg-6">
-                                    <div class="media media-product">
+                    <!-- cart item -->
+                    <div class="cart-item" id="cart${vo.cart_no}">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-lg-6">
+                                <div class="media media-product">
 
-                                        <!-- id, for 가 일치해야 토글이 됩니다 -->
-                                        <div class="custom-control custom-checkbox mb-2">
-                                            <input type="checkbox" class="custom-control-input"
-                                                   id="checkbox${vo.cart_no}" cart_no="${vo.cart_no}"
-                                                   checked>
-                                            <label class="custom-control-label" for="checkbox${vo.cart_no}"></label>
-                                        </div>
+                                    <!-- id, for 가 일치해야 토글이 됩니다 -->
+                                    <div class="custom-control custom-checkbox mb-2">
+                                        <input type="checkbox" class="custom-control-input"
+                                               id="checkbox${vo.cart_no}" cart_no="${vo.cart_no}"
+                                               checked>
+                                        <label class="custom-control-label" for="checkbox${vo.cart_no}"></label>
+                                    </div>
 
-                                        <a href="/item/detail?${vo.item_no}"><img src="${vo.item_img}" alt="Image"></a>
-                                        <div class="media-body">
-                                            <h5 class="media-title">${vo.name}</h5>
-                                            <c:if test="${vo.packing_status eq 1}">
-                                                <span class="small">포장O (+2,000원)</span>
-                                            </c:if>
-                                        </div>
+                                    <a href="/item/detail?${vo.item_no}"><img src="${vo.item_img}" alt="Image"></a>
+                                    <div class="media-body">
+                                        <h5 class="media-title">${vo.name}</h5>
+                                        <c:if test="${vo.packing_status eq 1}">
+                                            <span class="small">포장O (+2,000원)</span>
+                                        </c:if>
                                     </div>
                                 </div>
-                                <div class="col-4 col-lg-2 text-center">
+                            </div>
+                            <div class="col-4 col-lg-2 text-center">
 
-                                    <del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</del>
+                                <del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</del>
 
-                                    <p class="cart-item-price" id="discountedPrice${vo.cart_no}"><fmt:formatNumber
-                                            value="${vo.discounted_price}"
-                                            type="number" pattern="#,##0"/>원</p>
-                                </div>
-                                <div class="col-4 col-lg-2 text-center">
-                                    <div class="counter">
+                                <p class="cart-item-price" id="discountedPrice${vo.cart_no}"><fmt:formatNumber
+                                        value="${vo.discounted_price}"
+                                        type="number" pattern="#,##0"/>원</p>
+                            </div>
+                            <div class="col-4 col-lg-2 text-center">
+                                <div class="counter">
                                         <span class="counter-minus icon-minus" id='plusAmount${vo.cart_no}'
                                               field='amount${vo.cart_no}' onclick="chageAmount(this, '-');"
                                               cart_no="${vo.cart_no}"></span>
-                                        <input type='text' name='amount${vo.cart_no}' id='amount${vo.cart_no}'
-                                               class="counter-value" value="${vo.amount}"
-                                               min="0" max="${vo.inventory}" cart_no="${vo.cart_no}" readonly>
-                                        <span class="counter-plus icon-plus" id='minusAmount${vo.cart_no}'
-                                              field='amount${vo.cart_no}' onclick="chageAmount(this, '+');"
-                                              cart_no="${vo.cart_no}"></span>
-                                    </div>
+                                    <input type='text' name='amount${vo.cart_no}' id='amount${vo.cart_no}'
+                                           class="counter-value" value="${vo.amount}"
+                                           min="0" max="${vo.inventory}" cart_no="${vo.cart_no}" readonly>
+                                    <span class="counter-plus icon-plus" id='minusAmount${vo.cart_no}'
+                                          field='amount${vo.cart_no}' onclick="chageAmount(this, '+');"
+                                          cart_no="${vo.cart_no}"></span>
                                 </div>
-                                <div class="col-4 col-lg-2 text-center">
+                            </div>
+                            <div class="col-4 col-lg-2 text-center">
                                     <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
                                           cart_no="${vo.cart_no}"><fmt:formatNumber
                                             value="${vo.amount*vo.discounted_price}" type="number"
                                             pattern="#,##0"/>원</span>
 
-                                </div>
-                                <a class="cart-item-close" ><i class="icon-x" onclick="deleteCart(this);" id="delete${vo.cart_no}" cart_no="${vo.cart_no}"></i></a>
                             </div>
-                        </div>
-                    </c:forEach>
-
-                </div>
-
-
-                <div class="col-lg-4" id="orderSummary">
-
-                    <div class="card card-data bg-light">
-                        <div class="card-header py-2 px-3">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h3 class="fs-18 mb-0">Order Summary</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-group list-group-minimal">
-                                <li class="list-group-item d-flex justify-content-between align-items-center" >
-                                    <span id="countItemTotal" style="margin-left: 0px; color: #555555;">총 ${map.count}개의 상품 금액</span>
-                                    <span class="list-group-item" id="sumItemTotal" style="color: #555555;"></span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span style="margin-left: 0px; color: #555555;">배송비</span>
-                                    <span id="deliveryPrice" style="color: #555555;"><fmt:formatNumber
-                                            value="3000" type="number"
-                                            pattern="#,##0"/>원</span>
-                                </li>
-
-                            </ul>
-                        </div>
-                        <div class="card-footer py-2">
-                            <ul class="list-group list-group-minimal">
-                                <li class="list-group-item d-flex justify-content-between align-items-center text-dark fs-18">
-                                    합계
-                                    <span id="paymentPrice"></span>
-                                </li>
-                            </ul>
+                            <a class="cart-item-close"><i class="icon-x" onclick="deleteCart(this);"
+                                                          id="delete${vo.cart_no}" cart_no="${vo.cart_no}"></i></a>
                         </div>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-block mt-1"
-                            style="background-color:#79AC78;border-color: #79AC78;" id="orderBtn">주문하기
-                    </button>
-
-
-                </div>
+                </c:forEach>
 
             </div>
-        </form>
+
+
+            <div class="col-lg-4" id="orderSummary">
+
+                <div class="card card-data bg-light">
+                    <div class="card-header py-2 px-3">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h3 class="fs-18 mb-0">Order Summary</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-minimal">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span id="countItemTotal" style="margin-left: 0px; color: #555555;">총 ${map.count}개의 상품 금액</span>
+                                <span class="list-group-item" id="sumItemTotal" style="color: #555555;"></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span style="margin-left: 0px; color: #555555;">배송비</span>
+                                <span id="deliveryPrice" style="color: #555555;"><fmt:formatNumber
+                                        value="3000" type="number"
+                                        pattern="#,##0"/>원</span>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="card-footer py-2">
+                        <ul class="list-group list-group-minimal">
+                            <li class="list-group-item d-flex justify-content-between align-items-center text-dark fs-18">
+                                합계
+                                <span id="paymentPrice"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="/order" class="btn btn-lg btn-primary btn-block mt-1"
+                        style="background-color:#79AC78;border-color: #79AC78;" id="orderBtn">Order NOW
+                </a>
+
+
+            </div>
+
+        </div>
+
     </div>
 </section>
 <br>
