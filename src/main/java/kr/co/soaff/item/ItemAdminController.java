@@ -32,47 +32,7 @@ public class ItemAdminController {
 	@GetMapping("/admin/item/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(ItemVO vo) {
-		Map<String, Object> map = service.index(vo);
-		String printList = "";
-		List<ItemVO> itemList = (List<ItemVO>) map.get("items");
-		for (ItemVO item : itemList) {
-			printList += "<tr class='itemRow' onclick=\"location.href='/admin/item/detail?item_no=" + item.getItem_no()
-					+ "'\">";
-			printList += "<td class=\"col-item-no\">" + item.getItem_no() + "</td>";
-
-			printList += "<td class=\"col-item-img\">";
-			printList += "<div class='img-container'>";
-			if (item.getItem_img() != null && !item.getItem_img().equals("")) {
-//				printList += "<img src='/upload/item_img/" + item.getItem_img() + "' class='fixed-size-img'/>";
-				printList += "<img src='" + item.getItem_img() + "' class='fixed-size-img'/>";
-			}
-			printList += "</div>";
-			printList += "</td>";
-
-			printList += "<td class=\"col-item-name\">" + item.getName() + "</td>";
-			printList += "<td class=\"col-item-price\">" + item.getPrice() + "</td>";
-
-			printList += "<td class=\"col-item-discount\">";
-			printList += item.getDiscounted_price();
-			printList += item.getDiscount_rate() == 0 ? "(-)" : "(" + item.getDiscount_rate() + "%)";
-			printList += "</td>";
-
-			printList += "<td class=\"col-item-category\">" + item.getCategory_name() + "</td>";
-			printList += "<td class=\"col-item-amount\">" + item.getAmount() + "</td>";
-
-			printList += "<td class=\"col-item-exposed\">";
-			printList += item.isExposed_status() ? "O" : "X";
-			printList += "</td>";
-
-			printList += "<td class=\"col-item-exposed\">";
-			printList += item.getSales_amount();
-			printList += "</td>";
-
-			printList += "</tr>";
-		}
-
-		map.put("printList", printList);
-		return map;
+        return service.index(vo);
 	}
 
 	@GetMapping("/admin/item/detail")
@@ -121,17 +81,24 @@ public class ItemAdminController {
 
 	@PostMapping(value = "/admin/item/deleteImg", produces = "application/tex; charset=utf8")
 	@ResponseBody
-	public String deleteImg(HttpServletRequest request, int itemNo) throws IOException {
+	public String deleteImg(int itemNo){
 		String msg = "";
 		ItemVO tmp = new ItemVO();
 		tmp.setItem_no(itemNo);
 		ItemVO vo = service.detail(tmp);
-		if (service.deleteImg(vo, request) != 0) {
+		if (service.deleteImg(vo) != 0) {
 			msg = "삭제 완료";
 		} else {
 			msg = "삭제 실패";
 		}
 		return msg;
+	}
+
+	@PostMapping(value = "/admin/item/deleteNewImg", produces = "application/tex; charset=utf8")
+	@ResponseBody
+	public String deleteNewImg(String imgUrl) throws IOException {
+		service.deleteNewImg(imgUrl);
+		return "삭제 완료";
 	}
 
 	@GetMapping("/admin/item/category")
