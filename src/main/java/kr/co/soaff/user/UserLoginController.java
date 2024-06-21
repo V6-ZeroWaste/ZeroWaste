@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 @Controller
 public class UserLoginController {
     @Autowired
-    private UserService userService;
+    private UserLoginService userLoginService;
 
     @GetMapping("/user/user/login")
     public String login(Model model, @CookieValue(value = "saved_id", required = false) String id) {
@@ -27,7 +27,7 @@ public class UserLoginController {
     public String login(@RequestBody UserVO vo,HttpSession session, HttpServletResponse res) throws IOException {
 //        res.setContentType("text/html;charset=utf-8");
 //        PrintWriter out = res.getWriter();
-        UserVO login = userService.login(vo);
+        UserVO login = userLoginService.login(vo);
 
         System.out.println(vo);
         String result="1";

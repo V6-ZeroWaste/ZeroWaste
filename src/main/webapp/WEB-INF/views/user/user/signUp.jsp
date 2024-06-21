@@ -33,13 +33,16 @@
 
     function goLogin(event) {
       event.preventDefault();
-      if (fieldCheck()) {
-        $('#frm').submit();
+      isValid = true;
+      isValid = idbtnCheck();
+      // isValid = fieldCheck();
+      if (isValid) {
+        // $('#frm').submit();
       }
     }
 
     function fieldCheck() {
-      let id = $('#id');
+      var id = $('#id');
       let pwd = $('#pwd');
       let pwd_check = $('#pwd_check');
       let name = $('#name');
@@ -88,10 +91,6 @@
         isValid = false;
       } else if (!idbtnClickedCheck) {
         idErrorMsg.html("중복확인 버튼을 눌러주세요");
-        idErrorMsg.css("display", "block");
-        isValid = false;
-      } else if (!idbtnCheck()) {
-        idErrorMsg.html("아이디가 중복 되었습니다");
         idErrorMsg.css("display", "block");
         isValid = false;
       }
@@ -175,19 +174,19 @@
       }
 
       if(!emailDomainRegex.test(email_domain.val()) && email_domain.val() !== '' ) {
-        email_domainErrorMsg.html("올바른 도메인을 입력해주세요");
-        email_domainErrorMsg.css("display", "block");
+        email_idErrorMsg.html("올바른 이메일을 입력해주세요");
+        email_idErrorMsg.css("display", "block");
         isValid = false;
       }
 
       if (!email_domain.val()) {
-        email_domainErrorMsg.html("도메인을 입력해주세요");
-        email_domainErrorMsg.css("display", "block");
+        email_idErrorMsg.html("이메일을 입력해주세요");
+        email_idErrorMsg.css("display", "block");
         isValid = false;
       }
 
       if (!emailcheck_id.val()) {
-        emailcheck_idErrorMsg.html("인증코드를 입력해주세요");
+        emailcheck_idErrorMsg.html("인증을 해주세요");
         emailcheck_idErrorMsg.css("display", "block");
         isValid = false;
       } else if (emailcheck_id.val() !== verificationCode) {
@@ -219,22 +218,39 @@
 
     function idbtnCheck() {
       let isValid = false;
-      $.ajax({
-        url: '/user/join/idCheck.do',
-        data: {id: $("#id").val()},
-        async: false,
-        success: function (res) {
-          if (res == '1') {
-            $("#idErrorMsg").html("중복된 아이디입니다").css("display", "block");
-            isValid = false;
-          } else {
-            $("#idErrorMsg").css("display", "none");
-            isValid = true;
+      if($('#id').val())
+      {
+        $.ajax({
+          url: '/user/user/idcheck',
+          method: 'post',
+          contentType: "application/json; charset=UTF-8",
+          dataType: "json",
+          data: JSON.stringify({
+            "id": $("#id").val(),
+          }),
+          async: false,
+          success: function(res) {
+            console.log("okokokok")
+            if (res == '1') {
+              $("#idErrorMsg").html("중복된 아이디입니다").css("display", "block");
+              isValid = false;
+              console.log(res);
+            } else {
+              $("#idErrorMsg").css("display", "none");
+              console.log(res);
+              isValid = true;
+            }
           }
-        }
-      });
+        });
+      }
+      else {
+        isValid = false;
+        $("#idErrorMsg").html("아이디를 먼저 입력해주세요");
+        $("#idErrorMsg").css("display", "block");
+      }
       return isValid;
     }
+
 
     function sendVerificationCode() {
       let email = $('#email_id').val() + "@" + $('#email_domain').val();
@@ -285,16 +301,19 @@
           $('#pwd_checkErrorMsg').css("display", "none");
         }
       });
+        $('#emailSel').change(function () {
+          var emailSel = $(this).val();
+          console.log(emailSel);
+          var email_domain = $("#email_domain");
+          if (emailSel !== "직접입력") {
+            email_domain.val(emailSel);
+            document.getElementById("email_domain").readOnly = true
+          }else{
+            emailSel = null;
+            email_domain.removeAttr("readonly");       // readonly 삭제
+          }
 
-      $('#emailSel').change(function () {
-        var emailSel = $(this).val();
-        var email_domain = $("#email_domain");
-        if (emailSel === '직접입력') {
-          emailSel = null;
-          email_domain.attr('readonly', false);
-        }
-        email_domain.val(emailSel);
-      });
+        });
 
       $('#email_btn').on('click', function() {
         emailbtnClickedCheck = true;
@@ -393,13 +412,13 @@
         <table class="table">
           <tr>
             <td class="text-center" style="color: #3d733d; width: 30%;"><strong>아이디</strong></td>
-            <td colspan="2" class="col-4">
-              <input type="text" class="form-control" id="id" name="id">
+            <td colspan="2" class="col-8">
+              <input type="text" class="form-control col-6 d-lg-inline-block" id="id" name="id">
+              <button type="button" class="btn btn-primary btn-rounded ml-1" id="id_btn">중복확인</button>
               <div class="invalid-feedback" id="idErrorMsg"></div>
             </td>
-            <td>
-              <button type="button" class="btn btn-primary btn-rounded" id="id_btn">중복확인</button>
-            </td>
+          </tr>
+          <tr>
           </tr>
           <tr>
             <td class="text-center" style="color: #3d733d;"><strong>비밀번호</strong></td>
@@ -446,12 +465,12 @@
             <td colspan="3" class="col-4">
               <div class="form-row">
                 <div class="col">
-                  <input type="text" class="form-control" id="email_id" placeholder="이메일" aria-label="이메일입력">
+                  <input type="text" class="form-control" id="email_id" placeholder="" aria-label="이메일입력">
                   <div class="invalid-feedback" id="email_idErrorMsg"></div>
                 </div>
                 <span class="col-form-label p-0 d-flex justify-content-center align-items-center" style="height:53px;">&nbsp;&nbsp;@&nbsp;&nbsp;</span>
                 <div class="col">
-                  <input type="text" class="form-control" id="email_domain" placeholder="도메인이름" aria-label="도메인이름" readonly>
+                  <input type="text" class="form-control" id="email_domain" placeholder="" aria-label="도메인이름">
                   <div class="invalid-feedback" id="email_domainErrorMsg"></div>
                 </div>
                 <div class="col">
