@@ -272,7 +272,22 @@
             observer.observe(document.getElementById('qnaSection'));
         });
     </script>
+    <script>
+        function getFormattedQuestionDate(timestamp) {
+            // timestamp를 Date 객체로 변환
+            var questionDate = new Date(timestamp);
+            console.log('questionDate : '+questionDate);
+            // 날짜를 "yyyy-MM-dd" 형식으로 포맷팅
+            var year = questionDate.getFullYear();
+            var month = String(questionDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+            var day = String(questionDate.getDate()).padStart(2, '0');
+            console.log('year : '+year);
+            console.log('month : '+month);
+            console.log('day : '+day);
 
+            return year + '-' + month + '-' + day;
+        }
+    </script>
     <!-- 리뷰 -->
     <script>
         let reviewPage = 1;
@@ -313,7 +328,7 @@
                 success : function(resp){
                     console.log("리뷰 성공");
                     // 데이터 리스트 출력
-                    $("#reviewPrintList").html(resp.printList);
+                    renderReviewList(resp.reviews);
                     $("#review-total").html("후기("+resp.total.toLocaleString()+"개)");
                     $("#avgScore").html(resp.avgScore);
                     //
@@ -349,6 +364,63 @@
             })
 
         }
+
+        function renderReviewList(reviews) {
+            var printList = "";
+
+            if (reviews.length > 0) {
+                reviews.forEach(function(review) {
+                    printList += "<div class='row gutter-2 gutter-lg-4 mb-0'>";
+                    printList += "<div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>";
+                    printList += "<div class='accordion accordion-minimal' id='review-" + review.review_no + "' style='width: 100%; margin: 0;'>";
+                    printList += "<div class='card'>";
+                    printList += "<div class='card-header' id='review-heading-" + review.review_no + "'>";
+                    printList += "<h5 class='mb-0'>";
+                    printList += "<button class='btn btn-link' type='button' data-toggle='collapse' data-target='#review-detail-" + review.review_no + "' aria-expanded='false' aria-controls='review-detail-" + review.review_no + "' style='padding-bottom: 0;'>";
+                    printList += "<div class='row w-100 align-items-center'>";
+                    printList += "<div class='col-2'>";
+                    printList += "<span class='rating'>";
+                    if (review.review_img) {
+                        printList += "<span class='photo-status'>📸</span>";
+                    } else {
+                        printList += "<span class='photo-status' style='visibility:hidden;'>📸</span>";
+                    }
+                    for (var i = 0; i < review.score; i++) {
+                        printList += "⭐";
+                    }
+                    printList += "</span>";
+                    printList += "</div>";
+                    printList += "<div class='col-6 review-title'>" + review.title + "</div>";
+                    printList += "<div class='col-2 user-id'>" + review.user_id + "</div>";
+                    printList += "<div class='col-2 date'>" + getFormattedQuestionDate(review.regist_date) + "</div>";
+                    console.log(review.regist_date);
+                    printList += "</div>";
+                    printList += "</button>";
+                    printList += "</h5>";
+                    printList += "</div>";
+                    printList += "<div id='review-detail-" + review.review_no + "' class='collapse' aria-labelledby='review-heading-" + review.review_no + "' data-parent='#review-" + review.review_no + "' style='background: #fafafa;'>";
+                    printList += "<div class='card-body text-left content-box'>";
+                    if (review.review_img) {
+                        printList += "<img src='" + review.review_img + "'>";
+                    }
+                    printList += "<p>" + review.content + "</p>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                });
+            } else {
+                printList += "<div class='row gutter-2 gutter-lg-4 mb-0'>";
+                printList += "<div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>";
+                printList += "아직 작성된 리뷰가 없습니다.";
+                printList += "</div>";
+                printList += "</div>";
+            }
+
+            $("#reviewPrintList").html(printList);
+        }
     </script>
 
     <!-- 문의 -->
@@ -361,6 +433,13 @@
         function changeQnaPage(obj){
             qnaPage = obj.getAttribute("data-page");
             getQnaList();
+            scrollToQnaSection();
+        }
+
+        function scrollToQnaSection(){
+            $('html, body').animate({
+                scrollTop: $('#qnaSection').offset().top
+            }, 500);
         }
 
         function getQnaList(){
@@ -377,7 +456,7 @@
                 success : function(resp){
                     console.log("문의 성공");
                     // 데이터 리스트 출력
-                    $("#qnaPrintList").html(resp.printList);
+                    renderQnaList(resp.qnas);
                     $("#qna-total").html("상품 문의("+resp.total.toLocaleString()+"개)");
                     //
                     // // 페이지네이션 출력
@@ -412,6 +491,76 @@
                 }
             })
 
+        }
+
+        function renderQnaList(qnas) {
+            var printList = "";
+
+            if (qnas.length > 0) {
+                qnas.forEach(function(qna) {
+                    printList += "<div class='row gutter-2 gutter-lg-4 mb-0'>";
+                    printList += "<div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>";
+                    printList += "<div class='accordion accordion-minimal' id='qna-" + qna.qna_no + "' style='width: 100%; margin: 0;'>";
+                    printList += "<div class='card'>";
+                    printList += "<div class='card-header' id='qna-heading-" + qna.qna_no + "'>";
+                    printList += "<h5 class='mb-0'>";
+                    printList += "<button class='btn btn-link' type='button' data-toggle='collapse' data-target='#qna-detail-"
+                        + qna.qna_no + "' aria-expanded='false' aria-controls='qna-detail-" + qna.qna_no
+                        + "' style='padding-bottom: 0;'>";
+                    printList += "<div class='row w-100 align-items-center'>";
+                    printList += "<div class='col-1 reply-status text-center'>";
+                    printList += qna.reply_date == null ? "답변대기" : "답변완료";
+                    printList += "</div>";
+                    printList += "<div class='col-2 reply-type text-center'>";
+                    printList += qna.type == 0 ? "교환/환불문의" : "상품상세문의";
+                    printList += "</div>";
+                    printList += "<div class='col-5 reply-title text-left'>";
+                    printList += qna.title;
+                    printList += "</div>";
+                    printList += "<div class='col-2 user-id text-center'>";
+                    printList += qna.user_id;
+                    printList += "</div>";
+                    printList += "<div class='col-2 date text-center'>";
+                    printList += getFormattedQuestionDate(qna.question_date);
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</button>";
+                    printList += "</h5>";
+                    printList += "</div>";
+                    printList += "<div id='qna-detail-" + qna.qna_no + "' class='collapse' aria-labelledby='qna-heading-"+ qna.qna_no +"' data-parent='#qna-"+ qna.qna_no +"' style='background: #fafafa '>";
+                    printList += "<div class='card-body text-left content-box'>";
+                    printList += "<h4>Q</h4>";
+                    if (qna.qna_img != null && qna.qna_img !== '') {
+                        printList += "<img src='" + qna.qna_img + "'>";
+                    }
+                    printList += "<p>";
+                    printList += qna.content;
+                    printList += "</p>";
+                    printList += "</div>";
+                    if(qna.reply_date != null){
+                        printList += "<div class='card-body text-left content-box border-top'>";
+                        printList += "<br>";
+                        printList += "<h4>A</h4>";
+                        printList += "<p>";
+                        printList += qna.reply;
+                        printList += "</p>";
+                        printList += "</div>";
+                    }
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                });
+            } else {
+                printList += "<div class='row gutter-2 gutter-lg-4 mb-0'>";
+                printList += "<div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>";
+                printList += "작성된 문의가 없습니다.";
+                printList += "</div>";
+                printList += "</div>";
+            }
+
+            $("#qnaPrintList").html(printList);
         }
     </script>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
