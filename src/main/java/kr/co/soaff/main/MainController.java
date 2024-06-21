@@ -1,10 +1,10 @@
 package kr.co.soaff.main;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
@@ -23,6 +23,7 @@ public class MainController {
 	public String cart(HttpSession session, Model model) {
 
 		return "/user/order/cart";
+	}
 
 	@GetMapping("/login")
 	public String login() {
