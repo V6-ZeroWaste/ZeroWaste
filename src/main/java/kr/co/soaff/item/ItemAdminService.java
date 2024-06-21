@@ -19,7 +19,9 @@ public interface ItemAdminService {
 
 	int delete(ItemVO vo, HttpServletRequest request);
 
-	public int deleteImg(ItemVO vo, HttpServletRequest request);
+	public int deleteImg(ItemVO vo);
+
+	void deleteNewImg(String imgUrl);
 
 	public Map<String, Object> index(ItemVO vo);
 

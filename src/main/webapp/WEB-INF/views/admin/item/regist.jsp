@@ -132,6 +132,25 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                 });
             }
         }
+
+        function deleteNewImg(){
+            var imgUrl = $('#uploadedImage').attr('src');
+            if(confirm("정말 삭제하시겠습니까?")){
+                $.ajax({
+                    url : "/admin/item/deleteNewImg",
+                    type : "POST",
+                    data : {imgUrl : imgUrl },
+                    success : function(response){
+                        alert(response);
+                        $('#uploadedImageContainer').removeClass().hide();
+                        $('#file').val('');
+                    },
+                    error: function(xhr, status, error){
+                        alert(response);
+                    }
+                });
+            }
+        }
     </script>
 
     <script>
@@ -192,6 +211,39 @@ pageEncoding="UTF-8" isELIgnored="false" %>
             $('.check').each(function () {
                 valiCheck.call(this);
             });
+
+            $('#file').on('change',function (){
+                var fileInput = $('#file')[0];
+                var file = fileInput.files[0];
+                var formData = new FormData();
+                formData.append('file', file);
+
+                $.ajax({
+                    url:'/admin/item/uploadItemImg',
+                    type:'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if(response!=null && response !== ''){
+                            $('#existingImageContainer').removeClass().hide();
+
+                            // 새 이미지 컨테이너를 업데이트하고 표시
+                            $('#uploadedImage').attr('src', response);
+                            $('#uploadedImageLink').attr('href', response);
+                            if(!$('#uploadedImageContainer').hasClass(' d-flex flex-column align-items-center ')){
+                                $('#uploadedImageContainer').addClass(' d-flex flex-column align-items-center ')
+                            }
+                            if ($('#uploadedImageContainer').css('display') === 'none') {
+                                $('#uploadedImageContainer').show();
+                            }
+                        }
+                    },
+                    error: function(error) {
+                        console.error('File upload failed');
+                    }
+                });
+            })
         });
     </script>
 </head>
@@ -217,9 +269,11 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                                             <input class="form-control" type="file" name="file" id="file" class="wid100"/>
                                         </div>
                                         <div class="col-md-3 d-flex flex-column align-items-center">
-                                            <img src="/upload/item_img/${item.item_img}" class="img-fluid"/>
-                                            <a href="${item.item_img}" target="_blank"><p>이미지 보기</p></a>
-                                            <input class="btn btn-danger" type="button" name="x" value="이미지 삭제" onclick="deleteImg()">
+                                            <div id="uploadedImageContainer" style="display: none;">
+                                                <img src="" class="img-fluid" id="uploadedImage"/>
+                                                <a href="" target="_blank" id="uploadedImageLink"><p>이미지 보기</p></a>
+                                                <input class="btn btn-danger" type="button" name="del-new-img" value="이미지 삭제" onclick="deleteNewImg()">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

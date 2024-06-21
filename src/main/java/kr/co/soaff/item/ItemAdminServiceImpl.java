@@ -233,11 +233,11 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 //	}
 
 	@Override
-	public int deleteImg(ItemVO vo, HttpServletRequest request) {
-		ItemVO data = mapper.detail(vo);
-		s3Uploader.deleteFile(data.getItem_img());
-		data.setItem_img("");
-		return mapper.update(data);
+	public int deleteImg(ItemVO vo) {
+		ItemVO detail = mapper.detail(vo);
+		s3Uploader.deleteFile(detail.getItem_img());
+		detail.setItem_img("");
+		return mapper.update(detail);
 	}
 //	@Override
 //	public int deleteImg(ItemVO vo, HttpServletRequest request) {
@@ -257,6 +257,11 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 //		data.setItem_img("");
 //		return mapper.update(data);
 //	}
+
+	@Override
+	public void deleteNewImg(String imgUrl) {
+		s3Uploader.deleteFile(imgUrl);
+	}
 
 	@Override
 	public int count(ItemVO vo) {
