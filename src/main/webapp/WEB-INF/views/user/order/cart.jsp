@@ -61,14 +61,18 @@
         if (active == '+') {
             amount++;
         }
-        if (active == '-') {
+        if (amount>0 && active == '-') {
             amount--;
+        }
+        if (amount == 0) {
+            alert("1개 이상부터 주문이 가능합니다")
+            return location.href = "/cart";
         }
 
         var data = {
             cart_no: cart_no,
             amount: amount,
-        }
+        };
         // console.log(data)
 
         // input 값 확인해서 수량 update 쿼리 날리기
@@ -177,13 +181,9 @@
 
         // 숫자가 아닌 값이 들어온 경우 0으로 설정
         sumItemValue = isNaN(sumItemValue) ? 0 : sumItemValue;
-        deliveryValue = isNaN(deliveryValue) ? 0 : deliveryValue;
 
         // 체크된 항목 개수 확인
         var checkedItemsCount = $(".cart-item .custom-control-input:checked").length;
-
-        // 전체 선택 체크박스 체크 상태 확인
-        var checkAllChecked = $("#checkAll").prop('checked');
 
 
         // 체크된 항목이 없거나 전체 선택 체크박스가 체크되지 않았을 때 deliveryValue를 0으로 설정
@@ -205,7 +205,13 @@
         $('#paymentPrice').html(totalPrice.toLocaleString() + "원");
     }
 
+    function updateTotalItemCount() {
 
+        // 체크된 항목 개수 확인
+        var checkedItemsCount = $(".cart-item .custom-control-input:checked").length;
+
+        $('#countItemTotal').html("총 "+checkedItemsCount+"개의 상품금액");
+    }
 
 
     function deleteCart(e) {
@@ -264,6 +270,7 @@
             updateConState();
             sumItemTotalPrice();
             updatePaymentPrice();
+            updateTotalItemCount();
         });
 
         $(".cart-item .custom-control-input").on('change', function () {
@@ -275,6 +282,7 @@
             updateConState();
             sumItemTotalPrice();
             updatePaymentPrice();
+            updateTotalItemCount();
 
         });
 
@@ -418,13 +426,13 @@
                         </div>
                         <div class="card-body">
                             <ul class="list-group list-group-minimal">
-                                <li class="list-group-item d-flex justify-content-between align-items-center" id="">
-                                    총 ${map.count}개의 상품 금액
-                                    <span id="sumItemTotal"></span>
+                                <li class="list-group-item d-flex justify-content-between align-items-center" >
+                                    <span id="countItemTotal" style="margin-left: 0px; color: #555555;">총 ${map.count}개의 상품 금액</span>
+                                    <span class="list-group-item" id="sumItemTotal" style="color: #555555;"></span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    배송비
-                                    <span id="deliveryPrice"><fmt:formatNumber
+                                    <span style="margin-left: 0px; color: #555555;">배송비</span>
+                                    <span id="deliveryPrice" style="color: #555555;"><fmt:formatNumber
                                             value="3000" type="number"
                                             pattern="#,##0"/>원</span>
                                 </li>
