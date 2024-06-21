@@ -18,12 +18,12 @@ public class MainController {
 		model.addAttribute("user_id", session.getAttribute("user_id"));
 		return "/user/main/index";
 	}
-
-	@GetMapping("/cart")
-	public String cart(HttpSession session, Model model) {
-
-		return "/user/order/cart";
-	}
+//
+//	@GetMapping("/cart")
+//	public String cart(HttpSession session, Model model) {
+//
+//		return "/user/order/cart";
+//	}
 
 	@GetMapping("/login")
 	public String login() {
