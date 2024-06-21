@@ -256,13 +256,9 @@
       <workItem from="1718760663771" duration="9760000" />
       <workItem from="1718778245379" duration="7555000" />
       <workItem from="1718843661728" duration="29707000" />
-<<<<<<< HEAD
       <workItem from="1718886894553" duration="967000" />
       <workItem from="1718896547087" duration="3000" />
-=======
-      <workItem from="1718886894553" duration="310000" />
-      <workItem from="1718931221133" duration="2074000" />
->>>>>>> refs/heads/develop
+
     </task>
     <servers />
   </component>
@@ -274,7 +270,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp</url>
-<<<<<<< HEAD
+
           <line>394</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
@@ -287,10 +283,7 @@
           <url>file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp</url>
           <line>401</line>
           <option name="timeStamp" value="6" />
-=======
-          <line>428</line>
-          <option name="timeStamp" value="8" />
->>>>>>> refs/heads/develop
+
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
