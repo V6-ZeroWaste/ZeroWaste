@@ -22,52 +22,52 @@ public class QnaAdminController {
         model.addAttribute("map", service.list(vo));
         return "admin/qna/list";
     }
-    
+
     @GetMapping("/admin/qna/list.do")
     @ResponseBody
     public Map<String, Object> listAjax(QnaVO vo){
-		Map<String, Object> map = service.list(vo);
-		String printList = "";
-		List<QnaVO> qnaList = (List<QnaVO>) map.get("list");
-		System.out.println(qnaList.toString());
-		if (qnaList.size() == 0) {
-			printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
-		} 
-		for(QnaVO QnaVO: qnaList) {
-			printList += "<tr onclick=\"location.href='/admin/qna/detail?qna_no="+ QnaVO.getQna_no() + "'\">";
-       		printList += "<td>" + QnaVO.getQna_no() + "</td>";
-       		printList += "<td>" + QnaVO.getName() + "</td>";
-       		printList += "<td>" + (QnaVO.getType() ==0 ? "교환/환불 문의" : "상품 상세 문의" ) + "</td>";
-       		printList += "<td>" + QnaVO.getTitle() + "</td>";
-       		printList += "<td>" + QnaVO.getUser_id() + "</td>";
-       		printList += "<td>" + QnaVO.getQuestion_date() + "</td>";  
-       		
-       		if(QnaVO.getReply_date() != null) {
-       			QnaVO.setReplyState("답변 완료"); 
-       			printList += "<td>" + QnaVO.getReplyState() + "</td>";
-       		}
-       		else {
-       			QnaVO.setReplyState("답변 대기");
-       			printList += "<td>" + QnaVO.getReplyState() + "</td>";
-       		}
-       		
-       		printList += "</tr>";
-		}
-		map.put("printList", printList);
-		return map;
-	}
+        Map<String, Object> map = service.list(vo);
+        String printList = "";
+        List<QnaVO> qnaList = (List<QnaVO>) map.get("list");
+        System.out.println(qnaList.toString());
+        if (qnaList.size() == 0) {
+            printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
+        }
+        for(QnaVO QnaVO: qnaList) {
+            printList += "<tr onclick=\"location.href='/admin/qna/detail?qna_no="+ QnaVO.getQna_no() + "'\">";
+            printList += "<td>" + QnaVO.getQna_no() + "</td>";
+            printList += "<td>" + QnaVO.getName() + "</td>";
+            printList += "<td>" + (QnaVO.getType() ==0 ? "교환/환불 문의" : "상품 상세 문의" ) + "</td>";
+            printList += "<td>" + QnaVO.getTitle() + "</td>";
+            printList += "<td>" + QnaVO.getUser_id() + "</td>";
+            printList += "<td>" + QnaVO.getQuestion_date() + "</td>";
+
+            if(QnaVO.getReply_date() != null) {
+                QnaVO.setReplyState("답변 완료");
+                printList += "<td>" + QnaVO.getReplyState() + "</td>";
+            }
+            else {
+                QnaVO.setReplyState("답변 대기");
+                printList += "<td>" + QnaVO.getReplyState() + "</td>";
+            }
+
+            printList += "</tr>";
+        }
+        map.put("printList", printList);
+        return map;
+    }
 
     @GetMapping("/admin/qna/detail")
     public String detail(Model model, @RequestParam int qna_no) {
         QnaVO detailVO = service.detail(qna_no);
         if(detailVO.getReply_date() != null) {
-        	detailVO.setReplyState("답변 완료"); 
-        
-   		}
-   		else {
-   			detailVO.setReplyState("답변 대기");
-   		}
-    	model.addAttribute("vo", detailVO);
+            detailVO.setReplyState("답변 완료");
+
+        }
+        else {
+            detailVO.setReplyState("답변 대기");
+        }
+        model.addAttribute("vo", detailVO);
         return "admin/qna/detail";
     }
 

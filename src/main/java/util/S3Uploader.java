@@ -1,6 +1,7 @@
 package util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,21 @@ public class S3Uploader {
         return upload(file);
     }
 
+    public String uploadFile(String fileName, InputStream inputStream, long contentLength) throws IOException {
+        String key = generateRandomFilename(fileName);
+
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucket)
+                .key(key)
+                .contentType("application/octet-stream") // 기본 Content-Type 설정, 필요에 따라 수정 가능
+                .build();
+
+        s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, contentLength));
+
+        return s3Client.utilities().getUrl(builder -> builder.bucket(bucket).key(key)).toExternalForm();
+    }
+
+
     // 이미지 삭제
     public void deleteFile(String fileUrl) {
         String key = extractKeyFromUrl(fileUrl);
@@ -53,6 +69,13 @@ public class S3Uploader {
         String fileExtension = validateFileExtension(originalFilename);
         return UUID.randomUUID() + "." + fileExtension;
     }
+
+    // 랜덤 파일명 생성 메서드 (String 파일명용)
+    private String generateRandomFilename(String fileName) {
+        String fileExtension = validateFileExtension(fileName);
+        return UUID.randomUUID() + "." + fileExtension;
+    }
+
 
     // 파일 확장자 검증 메서드
     private String validateFileExtension(String originalFilename) {

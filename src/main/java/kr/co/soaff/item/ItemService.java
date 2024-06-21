@@ -1,5 +1,6 @@
 package kr.co.soaff.item;
 
+import kr.co.soaff.qna.QnaVO;
 import kr.co.soaff.review.ReviewVO;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface ItemService {
     List<CategoryVO> categories();
     Map<String, Object> reviewList(ReviewVO vo);
     String getCategoryName(int category_no);
+    Map<String, Object> qnaList(QnaVO vo);
 }

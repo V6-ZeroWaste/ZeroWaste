@@ -30,6 +30,7 @@ public class OrderDetailVO {
 	private int refund_point; // 환불 적립금 및 사용 적립금
 	private String item_img;
 	private String total_item_price;
+	private Integer review_no;
 
 	// 사용자로부터 전송되어지는 값(검색, 페이징, 필터링(조건))
 	private String searchWord;

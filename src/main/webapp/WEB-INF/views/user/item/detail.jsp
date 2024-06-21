@@ -27,16 +27,22 @@
             border-bottom: 3px solid #618264; /* 원하는 색상과 두께로 설정 */
         }
 
+        .input-count:read-only{
+            background-color: #efefef;
+        }
+
         .review-title,
         .reply-status,
         .reply-type,
         .reply-title,
         .user-id,
+        .rating,
         .date {
             font-size: 14px; /* 텍스트 크기 조정 */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding-bottom: 1%;
         }
 
         .reply-status-line,
@@ -56,6 +62,11 @@
             font-size: 12px; /* 별점과 사진 상태 텍스트 크기 조정 */
             display: inline-block; /* 한 줄에 나란히 배치 */
             vertical-align: middle; /* 텍스트 가운데 정렬 */
+            /* */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-bottom: 7%;
         }
 
         .photo-status {
@@ -66,12 +77,29 @@
             /*padding: 50px;*/
             margin: 50px;
         }
-        /*.user-id{*/
-        /*    padding: 0 30px;*/
-        /*}*/
-        /*.date{*/
-        /*    padding: 0 25px;*/
-        /*}*/
+        #total-price {
+            white-space: nowrap;
+        }
+
+        .review-pagination-list,
+        .qna-pagination-list{
+            display: flex; /* 가로 배열을 위해 flexbox 사용 */
+            justify-content: center; /* 자식 요소들을 수평으로 가운데 정렬 */
+            list-style-type: none; /* 기본 리스트 스타일 제거 */
+            padding: 0; /* 기본 패딩 제거 */
+            margin: 0; /* 기본 마진 제거 */
+        }
+        .review-pagination-list .page-item,
+        .qna-pagination-list .page-item{
+            margin-right: 5px; /* 페이지 아이템 간의 간격 조정 */
+        }
+        .review-pagination-list .page-link:hover,
+        .qna-pagination-list .page-link:hover{
+            background-color: #e9ecef; /* 호버 시 배경색 변경 */
+        }
+        .datatable-active .page-link {
+            font-weight: bold;
+        }
     </style>
 
     <title>soaff</title>
@@ -86,34 +114,15 @@
 
             document.getElementById(sectionId + 'Btn').classList.add('active-border');
             document.getElementById(sectionId + 'Section').scrollIntoView({behavior: 'smooth'});
-
-
-            setTimeout(function () {
-                document.getElementById('qnaBtn').classList.remove('active-border');
-                document.getElementById(sectionId + 'Btn').classList.add('active-border');
-                document.getElementById(sectionId + 'Section').scrollIntoView({behavior: 'smooth'});
-            }, 1500);
         }
 
-        // 기본적으로 첫 번째 버튼에 active-border 클래스 추가
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('detailBtn').classList.add('active-border');
-        });
-        /*
-        먼저, 각 섹션을 관찰하기 위한 IntersectionObserver를 설정합니다.
-        각 섹션이 뷰포트에 들어오면 해당 버튼에 active-border 클래스를 추가하고, 다른 버튼에서 제거합니다.
-        추가하기 !!
-        * */
-
         function addItem() {
-
             var itemName = $("#select-product").val();
             var itemPrice = $("#item-price").text();
             var selectedItems = [];
 
-
-            if(itemName.startsWith('포장')){
-                itemPrice=${item.packing_price};
+            if(itemName.includes('포장')){
+                itemPrice=${item.discounted_price + item.packing_price};
                 itemPrice = itemPrice.toLocaleString();
                 itemPrice += '원';
             }
@@ -146,8 +155,8 @@
             html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
             html+="id='button-minus-0' onClick='decreaseValue(this)'>-";
             html+="</button>";
-            html+="<input type='number' class='form-control form-control-sm input-full-width mt-3' min='1'";
-            html+="max='9' value='1'/>";
+            html+="<input type='number' class='form-control form-control-sm input-full-width mt-3 input-count' min='1'";
+            html+="max='9' value='1' readonly />";
             html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
             html+="id='button-plus-0' onClick='increaseValue(this)'>+";
             html+="</button>";
@@ -221,31 +230,81 @@
                 row.find('.selected-item-price').text(totalPrice.toLocaleString()+'원');
             }
         }
+
+        $(document).ready(function() {
+            // 처음에는 detailBtn에 active-border 클래스 추가
+            $('#detailBtn').addClass('active-border');
+
+            // IntersectionObserver의 콜백 함수
+            const callback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 모든 버튼에서 active-border 클래스 제거
+                        $('#detailBtn').removeClass('active-border');
+                        $('#reviewBtn').removeClass('active-border');
+                        $('#qnaBtn').removeClass('active-border');
+
+                        // 현재 보이는 섹션에 해당하는 버튼에 active-border 클래스 추가
+                        if ($(entry.target).attr('id') === 'detailSection') {
+                            $('#detailBtn').addClass('active-border');
+                        } else if ($(entry.target).attr('id') === 'reviewSection') {
+                            $('#reviewBtn').addClass('active-border');
+                        } else if ($(entry.target).attr('id') === 'qnaSection') {
+                            $('#qnaBtn').addClass('active-border');
+                        }
+                    }
+                });
+            };
+
+            // IntersectionObserver 옵션
+            const options = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 // 원하는 임계값 (0.5는 절반 이상 보여야 함)
+            };
+
+            // IntersectionObserver 인스턴스 생성
+            const observer = new IntersectionObserver(callback, options);
+
+            // 각 섹션을 관찰 대상으로 설정
+            observer.observe(document.getElementById('detailSection'));
+            observer.observe(document.getElementById('reviewSection'));
+            observer.observe(document.getElementById('qnaSection'));
+        });
     </script>
 
     <!-- 리뷰 -->
     <script>
-        let page = 1;
+        let reviewPage = 1;
         window.onload=function(){
             getReviewList();
+            getQnaList();
         }
         function applyReviewCondition(){
-            page = 1;
+            reviewPage = 1;
             getReviewList();
         }
         function changeReviewPage(obj){
-            page = obj.getAttribute("data-page");
+            reviewPage = obj.getAttribute("data-page");
             getReviewList();
+            scrollToReviewSection();
+        }
+
+        function scrollToReviewSection(){
+            $('html, body').animate({
+                scrollTop: $('#reviewSection').offset().top
+            }, 500);
+
         }
 
         function getReviewList(){
             var data = {
                 orderBy: $('#reviewOrderBy').val(),
                 item_no: ${item.item_no},
-                page: page,
-
+                filter: $('#photo-check-box').is(':checked') ? '사진' : '',
+                page: reviewPage,
             }
-
+            console.log(data.photoCheck);
             $.ajax({
                 type: "GET", // method type
                 url: "/item/getReviewList", // 요청할 url
@@ -259,28 +318,25 @@
                     $("#avgScore").html(resp.avgScore);
                     //
                     // // 페이지네이션 출력
-                    // // 총 개수
-                    // $(".datatable-info").html("("+resp.total+"개)");
                     // // 페이지네이션
-                    // let printPage = "";
-                    // if(resp.isPrev){
-                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
-                    //     printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
-                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
-                    //     printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
-                    // }
-                    // for(i = resp.startPage; i<=resp.endPage; i++){
-                    //     printPage += '<li class="datatable-pagination-list-item page-item'+(i==page? ' datatable-active' : '')+'">';
-                    //     printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">'+i+'</a></li>';
-                    // }
-                    // if(resp.isNext){
-                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
-                    //     printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
-                    //     printPage += '<li class="datatable-pagination-list-item page-item">';
-                    //     printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
-                    // }
-                    // console.log(printPage);
-                    // $(".datatable-pagination-list").html(printPage);
+                    let printPage = "";
+                    if(resp.isPrev){
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
+                    }
+                    for(i = resp.startPage; i<=resp.endPage; i++){
+                        printPage += '<li class="datatable-pagination-list-item page-item'+(i==reviewPage? ' datatable-active' : '')+'">';
+                        printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">'+i+'</a></li>';
+                    }
+                    if(resp.isNext){
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
+                    }
+                    $(".review-pagination-list").html(printPage);
 
 
 
@@ -297,7 +353,66 @@
 
     <!-- 문의 -->
     <script>
+        let qnaPage = 1;
+        function applyQnaCondition(){
+            qnaPage = 1;
+            getQnaList();
+        }
+        function changeQnaPage(obj){
+            qnaPage = obj.getAttribute("data-page");
+            getQnaList();
+        }
 
+        function getQnaList(){
+            var data = {
+                item_no: ${item.item_no},
+                page: qnaPage,
+            }
+
+            $.ajax({
+                type: "GET", // method type
+                url: "/item/getQnaList", // 요청할 url
+                data: data, // 전송할 데이터
+                dataType: "json", // 응답 받을 데이터 type
+                success : function(resp){
+                    console.log("문의 성공");
+                    // 데이터 리스트 출력
+                    $("#qnaPrintList").html(resp.printList);
+                    $("#qna-total").html("상품 문의("+resp.total.toLocaleString()+"개)");
+                    //
+                    // // 페이지네이션 출력
+                    // // 페이지네이션
+                    let printPage = "";
+                    if(resp.isPrev){
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹‹</a></li>';
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹</a></li>';
+                    }
+                    for(i = resp.startPage; i<=resp.endPage; i++){
+                        printPage += '<li class="datatable-pagination-list-item page-item'+(i==qnaPage? ' datatable-active' : '')+'">';
+                        printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">'+i+'</a></li>';
+                    }
+                    if(resp.isNext){
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹‹</a></li>';
+                        printPage += '<li class="datatable-pagination-list-item page-item">';
+                        printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹</a></li>';
+                    }
+                    // console.log(printPage);
+                    $(".qna-pagination-list").html(printPage);
+
+
+
+                },
+                error:function (data, textStatus) {
+                    console.log("문의 실패");
+                    $('#fail').html("관리자에게 문의하세요.") // 서버오류
+                    console.log('error', data, textStatus);
+                }
+            })
+
+        }
     </script>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
@@ -316,8 +431,10 @@
                     <div class="col-lg-10 order-lg-2">
                         <div class="owl-carousel gallery" data-slider-id="1" data-thumbs="true" data-nav="true">
                             <figure class="equal">
-                                <a class="image" href="/upload/item_img/${item.item_img}"
-                                   style="background-image: url(/upload/item_img/${item.item_img});">
+<%--                                <a class="image" href="/upload/item_img/${item.item_img}"--%>
+                                <a class="image" href="${item.item_img}"
+<%--                                   style="background-image: url(/upload/item_img/${item.item_img});">--%>
+                                   style="background-image: url(${item.item_img});">
                                 </a>
                             </figure>
                             </div>
@@ -342,7 +459,8 @@
                                 <option value="" disabled selected>상품 선택</option>
                                 <option value="${item.name}"> ${item.name} </option>
                                 <c:if test="${item.packable_option}">
-                                    <option value="포장(<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원)"> 포장(<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) </option>
+<%--                                    <option value="포장(<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.discounted_price+item.packing_price}" />원)"> ${item.name} 포장 (+<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) </option>--%>
+                                    <option value="${item.name} (포장) "> ${item.name} 포장 (+<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) </option>
                                 </c:if>
                             </select>
                         </div>
@@ -444,7 +562,7 @@
                 <div class="col-md-8">
                 </div>
                 <div class="col-md-3 d-flex align-items-center justify-content-end">
-                    <input type="checkbox" value="photo-review-check" class="form-control-sm">
+                    <input type="checkbox" value="photo-review-check" id="photo-check-box" class="form-control-sm" onchange="applyReviewCondition();">
                     <label class="mb-0 ml-1">포토리뷰만 보기</label>
                 </div>
                 <div class="col-1">
@@ -477,35 +595,12 @@
             <br>
             <br>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div class="col-md-9 text-left">
-                    상품 문의(6,404 개)
+                <div class="col-md-9 text-left" id="qna-total">
                 </div>
                 <div class="col-md-3 d-flex align-items-center justify-content-end">
                     <input type="button" value="문의하기" class="btn btn-primary btn-sm">
                 </div>
             </div>
-<%--            <div class="row gutter-2 gutter-lg-4 mb-0 w-100" style="font-size: 14px;">--%>
-<%--            <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center" style="font-size: 14px;">--%>
-<%--                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">--%>
-<%--                    <div class="row w-100 align-items-center mb-0 border-bottom" style="width: 100%; margin: 0;">--%>
-<%--                        <div class="col-md-1 reply-status-line">--%>
-<%--                            답변상태--%>
-<%--                        </div>--%>
-<%--                        <div class="col-md-2 reply-type-line">--%>
-<%--                            질문유형--%>
-<%--                        </div>--%>
-<%--                        <div class="col-md-5 reply-title-line">--%>
-<%--                            제목--%>
-<%--                        </div>--%>
-<%--                        <div class="col-md-2 user-id-line">--%>
-<%--                            작성자--%>
-<%--                        </div>--%>
-<%--                        <div class="col-md-2 date-line">--%>
-<%--                            작성일--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
             <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center" style="font-size: 14px;">
                 <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="padding: 0; width: 100%;">
                     <div class="row w-100 align-items-center mb-0 border-bottom" style="padding:20px; margin-right:18px; width:100%">
@@ -528,101 +623,14 @@
                 </div>
             </div>
             <br>
-            <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
-                    <div class="accordion accordion-minimal" id="qna-1" style="width: 100%; margin: 0;">
-                        <div class="card">
-                            <div class="card-header" id="qna-heading-1">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link w-100" type="button" data-toggle="collapse" data-target="#qna-detail-1" aria-expanded="false" aria-controls="qna-detail-1" style="padding-bottom: 0;">
-                                        <div class="row w-100 align-items-center">
-                                            <div class="col-1 reply-status text-center">
-                                                답변 대기
-                                            </div>
-                                            <div class="col-2 reply-type text-center">
-                                                상품 상세 문의
-                                            </div>
-                                            <div class="col-5 reply-title text-left">
-                                                상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다
-                                            </div>
-                                            <div class="col-2 user-id text-center">
-                                                User123
-                                            </div>
-                                            <div class="col-2 date text-center">
-                                                2024-06-13
-                                            </div>
-                                        </div>
-                                    </button>
-                                </h5>
-                            </div>
-                            <div id="qna-detail-1" class="collapse" aria-labelledby="qna-heading-1" data-parent="#qna-1" style="background: #fafafa ">
-                                <div class="card-body text-left content-box">
-                                    <h4>Q</h4>
-                                    <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1685510644/noticon/zlnodb9oj9icejaqiytd.png">
-                                    <p> 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
-                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
-                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id="qnaPrintList"> <!-- 문의 리스트 -->
             </div>
-            <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div class="col-md-12 d-flex justify-content-center align-items-center text-center" style="width: 100%;">
-                    <div class="accordion accordion-minimal" id="qna-2" style="width: 100%; margin:0;">
-                        <div class="card">
-                            <div class="card-header" id="qna-heading-2">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#qna-detail-2" aria-expanded="false" aria-controls="qna-detail-2" style="padding-bottom: 0;">
-                                        <div class="row w-100 align-items-center">
-                                            <div class="col-1 reply-status text-center">
-                                                답변 완료
-                                            </div>
-                                            <div class="col-2 reply-type text-center">
-                                                교환/환불 문의
-                                            </div>
-                                            <div class="col-5 reply-title text-left">
-                                                상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다 상품 문의 글입니다
-                                            </div>
-                                            <div class="col-2 user-id text-center">
-                                                User123
-                                            </div>
-                                            <div class="col-2 date text-center">
-                                                2024-06-13
-                                            </div>
-                                        </div>
-                                    </button>
-                                </h5>
-                            </div>
-
-                            <!-- class에서 show의 유무에 따라 열리고 닫힘 -->
-                            <div id="qna-detail-2" class="collapse" aria-labelledby="qna-heading-2" data-parent="#qna-2" style="background: #fafafa ">
-                                <div class="card-body text-left content-box">
-                                    <h4>Q</h4>
-                                    <p> 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
-                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
-                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t
-                                        문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t 문 의 상 세 t e x t </p>
-                                </div>
-                                <div class="card-body text-left content-box border-top">
-                                    <br>
-                                    <h4>A</h4>
-                                    <p> 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t
-                                        문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t
-                                        문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t
-                                        문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t 문 의 답 변 t e x t </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- 문의 끝 -->
             <div class="row">
                 <div class="col text-center">
                     <!-- 문의 페이지 네이션 영역 -->
-                    <nav class="item-pagination">
-                        <ul class="item-pagination-list">
+                    <nav class="qna-pagination">
+                        <ul class="qna-pagination-list">
                         </ul>
                     </nav>
                 </div>

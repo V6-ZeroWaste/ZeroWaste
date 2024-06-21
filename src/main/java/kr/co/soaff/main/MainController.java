@@ -8,13 +8,12 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
-	//user_id
-	//user_no
-	//user_name
+	// user_id
+	// user_no
+	// user_name
 
 	@GetMapping("/")
-	public String index(HttpSession session, Model model)
-	{
+	public String index(HttpSession session, Model model) {
 		session.getAttribute("user_id");
 		model.addAttribute("user_id", session.getAttribute("user_id"));
 		return "/user/main/index";
@@ -24,6 +23,11 @@ public class MainController {
 	public String cart(HttpSession session, Model model) {
 
 		return "/user/order/cart";
+
+	@GetMapping("/login")
+	public String login() {
+		return "user/user/login";
+
 	}
 
 	@GetMapping("/about")

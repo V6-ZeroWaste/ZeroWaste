@@ -9,14 +9,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="71d8286f-28c5-442b-b0e2-b77825eee59c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+    <list default="true" id="875a90b7-4b78-4d1e-b6d0-e4efa1623915" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp" afterDir="false" />
+>>>>>>> refs/heads/develop
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -41,16 +54,22 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 8
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
 }</component>
+<<<<<<< HEAD
   <component name="ProjectId" id="2hzP77zA7Llm3XqAwRGmSlgRCHM" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+=======
+  <component name="ProjectId" id="2i5R2GnenP23KUkWtmer8tkv25R" />
+>>>>>>> refs/heads/develop
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
@@ -69,17 +88,82 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;SQL Dialects&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.CartTest.del.executor": "Run",
+    "JUnit.CartTest.list.executor": "Run",
+    "JUnit.CartTest.update.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Tomcat Server.Tomcat 9.0.88.executor": "Run",
+    "git-widget-placeholder": "develop",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+>>>>>>> refs/heads/develop
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\kiv99\git\ZeroWaste\src\main\webapp\WEB-INF\views\user\user" />
-    </key>
-  </component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.88">
+    <configuration name="CartTest.del" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="soaff" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="kr.co.soaff.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="kr.co.soaff" />
+      <option name="MAIN_CLASS_NAME" value="kr.co.soaff.CartTest" />
+      <option name="METHOD_NAME" value="del" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CartTest.list" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="soaff" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="kr.co.soaff.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="kr.co.soaff" />
+      <option name="MAIN_CLASS_NAME" value="kr.co.soaff.CartTest" />
+      <option name="METHOD_NAME" value="list" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CartTest.update" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="soaff" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="kr.co.soaff.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="kr.co.soaff" />
+      <option name="MAIN_CLASS_NAME" value="kr.co.soaff.CartTest" />
+      <option name="METHOD_NAME" value="update" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Tomcat 9.0.88" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.88" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
       <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
       <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="SHOW_DIALOG_ON_UPDATE" value="false" />
       <deployment>
         <artifact name="soaff:war exploded">
           <settings>
@@ -88,7 +172,7 @@
         </artifact>
       </deployment>
       <server-settings>
-        <option name="BASE_DIRECTORY_NAME" value="4137f255-ad1a-4d1f-b63f-f48cdaec0771" />
+        <option name="BASE_DIRECTORY_NAME" value="8cc208eb-5edd-46ad-ae75-32099ead1ac8" />
         <option name="HTTP_PORT" value="8091" />
       </server-settings>
       <predefined_log_file enabled="true" id="Tomcat" />
@@ -97,7 +181,7 @@
       <predefined_log_file id="Tomcat Host Manager" />
       <predefined_log_file id="Tomcat Localhost Access" />
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="50325" />
+        <option name="DEBUG_PORT" value="63960" />
       </RunnerSettings>
       <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
         <option name="USE_ENV_VARIABLES" value="true" />
@@ -166,6 +250,19 @@
         </option>
       </method>
     </configuration>
+    <list>
+      <item itemvalue="JUnit.CartTest.del" />
+      <item itemvalue="JUnit.CartTest.list" />
+      <item itemvalue="JUnit.CartTest.update" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.88" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.CartTest.update" />
+        <item itemvalue="JUnit.CartTest.del" />
+        <item itemvalue="JUnit.CartTest.list" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -178,21 +275,23 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="71d8286f-28c5-442b-b0e2-b77825eee59c" name="Changes" comment="" />
-      <created>1718593763871</created>
+      <changelist id="875a90b7-4b78-4d1e-b6d0-e4efa1623915" name="Changes" comment="" />
+      <created>1718760662579</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1718593763871</updated>
-      <workItem from="1718593765820" duration="152000" />
-      <workItem from="1718593936420" duration="388000" />
-      <workItem from="1718624535895" duration="15079000" />
-      <workItem from="1718670268637" duration="4732000" />
+      <updated>1718760662579</updated>
+      <workItem from="1718760663771" duration="9760000" />
+      <workItem from="1718778245379" duration="7555000" />
+      <workItem from="1718843661728" duration="29707000" />
+      <workItem from="1718886894553" duration="310000" />
+      <workItem from="1718931221133" duration="2074000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+<<<<<<< HEAD
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -211,5 +310,17 @@
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+=======
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/order/cart.jsp</url>
+          <line>428</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+>>>>>>> refs/heads/develop
   </component>
 </project>
