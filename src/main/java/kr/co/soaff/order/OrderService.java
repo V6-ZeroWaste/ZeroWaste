@@ -19,4 +19,6 @@ public interface OrderService {
 
 	boolean orderInsert(OrderVO vo);
 
+	int deleteCartAfterOrder(OrderVO vo);
+
 }

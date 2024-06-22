@@ -2,6 +2,8 @@ package kr.co.soaff.cart;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +21,8 @@ public class CartController {
 	private CartService service;
 
 	@GetMapping("/cart")
-	public String index(Model model, CartVO vo) {
-		vo.setUser_no(1); // 세션에서 값 추가 필요
+	public String index(Model model, CartVO vo, HttpSession session) {
+		vo.setUser_no((int) session.getAttribute("user_no"));
 		Map<String, Object> map = service.list(vo);
 		model.addAttribute("map", map);
 		return "/user/order/cart";
@@ -28,16 +30,16 @@ public class CartController {
 
 	@ResponseBody
 	@GetMapping("/cart/updateAmount")
-	public int updateAmount(Model model, CartVO vo) {
-		vo.setUser_no(1); // 세션에서 값 추가 필요
+	public int updateAmount(Model model, CartVO vo, HttpSession session) {
+		vo.setUser_no((int) session.getAttribute("user_no"));
 		return service.updateAmount(vo);
 	}
 
 	@ResponseBody
 	@GetMapping("/cart/delete")
-	public int delete(Model model, CartVO vo) {
-		vo.setUser_no(1); // 세션에서 값 추가 필요
-		log.info("vo.getCart_no : "+vo.getCart_no());
+	public int delete(Model model, CartVO vo, HttpSession session) {
+		vo.setUser_no((int) session.getAttribute("user_no"));
+		log.info("vo.getCart_no : " + vo.getCart_no());
 		System.out.println("--");
 		return service.delete(vo);
 	}

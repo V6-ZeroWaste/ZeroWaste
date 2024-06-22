@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
@@ -92,6 +93,26 @@ public class OrderController {
 //		vo.setUser_no(1); // 세션 사용시 지울것
 		String msg = "";
 		if (service.orderInsert(vo)) {
+			msg = "success";
+		} else {
+			msg = "fail";
+		}
+		return msg;
+
+	}
+
+	@ResponseBody
+	@GetMapping("/order/deleteCartAfterOrder")
+	public String deleteCartAfterOrder(@RequestParam("checkedCartNo") int[] checkedCartNo, HttpSession session) {
+//		session에서 user_no 가져오기
+		OrderVO vo = new OrderVO();
+		vo.setCheckedCartNo(checkedCartNo);
+		vo.setUser_no((int) session.getAttribute("user_no"));
+
+		log.info(vo.toString());
+
+		String msg = "";
+		if (service.deleteCartAfterOrder(vo) > 0) {
 			msg = "success";
 		} else {
 			msg = "fail";

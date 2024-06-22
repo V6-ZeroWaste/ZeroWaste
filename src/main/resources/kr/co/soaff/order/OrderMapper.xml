@@ -196,6 +196,17 @@
 	
 	</insert>
 	
+	<!-- 항목 삭제 -->
+	<delete id="deleteCartAfterOrder" parameterType="kr.co.soaff.order.OrderVO">
+	    DELETE FROM cart
+		WHERE user_no = #{user_no}
+		AND cart_no IN
+		<foreach item="cartNo" collection="checkedCartNo" open="(" separator="," close=")">
+			#{cartNo}
+		</foreach>
+	</delete>
+	
+	
 	<!-- end -->
 	
 </mapper>

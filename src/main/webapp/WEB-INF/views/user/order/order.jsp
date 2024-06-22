@@ -72,7 +72,7 @@
 
 
     let isValid;
-    let paymentResult;
+    //let paymentResult;
 
     function fieldCheck() {
         isValid = true;
@@ -194,7 +194,6 @@
             if (fieldCheck()) {
                 
                 request_pay();
-              	location.href = "/order/success";
                 
 
             }
@@ -345,10 +344,13 @@
             	
             	//console.log(resp);
             	if(resp == 'success'){
-            		paymentResult = true;
+            		//paymentResult = true;
+            		deleteCart();
+
+                  	
             	}
             	else{
-            		paymentResult =false;
+            		//paymentResult =false;
             	}
             	
             	
@@ -361,8 +363,52 @@
 
 
     }
+    
+    
+    function deleteCart() {
+        let spans = document.querySelectorAll('span[id^="itemTotalPrice"]');
+
+        // 선택된 태그들의 cart_no 속성 값을 저장할 배열
+        let cartNoList = [];
+
+        // 각 <span> 태그에서 cart_no 속성 값을 추출하여 배열에 추가
+        spans.forEach(span => {
+            let cartNo = span.getAttribute('cart_no');
+            if (cartNo !== null) {
+                cartNoList.push(cartNo);
+            }
+        });
+
+        console.log(cartNoList);
+
+        // 데이터 객체 생성
+        var data = {
+            checkedCartNo: cartNoList // checkedCartNo를 배열로 전달
+        };
+
+        // AJAX 요청
+        $.ajax({
+            type: "GET", // 요청 메서드 타입
+            url: "/order/deleteCartAfterOrder", // 요청할 URL
+            traditional: true, // 배열 데이터 전송 시 필요한 옵션
+            data: data, // 전송할 데이터
+            success: function(resp) {
+                if (resp === 'success') {
+                    console.log("return true");
+                    location.href = "/order/success";
+                    
+                    // 성공적으로 처리된 경우
+                }
+            },
+            error: function(data, textStatus) {
+                $('#fail').html("관리자에게 문의하세요."); // 에러 메시지 출력
+                console.log('error', data, textStatus);
+            }
+        });
+    }
 
     function currDate() {
+    	const date = new Date();
     	const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = date.getDate().toString().padStart(2, '0');
@@ -876,6 +922,8 @@
                 <button id="goPay" type="button" class="form-control btn btn-primary"
                         style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;"
                 ></button>
+                
+                
 
             </div>
 

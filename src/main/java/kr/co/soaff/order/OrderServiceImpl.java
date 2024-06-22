@@ -91,4 +91,9 @@ public class OrderServiceImpl implements OrderService {
 
 	}
 
+	@Override
+	public int deleteCartAfterOrder(OrderVO vo) {
+		return mapper.deleteCartAfterOrder(vo);
+	}
+
 }
