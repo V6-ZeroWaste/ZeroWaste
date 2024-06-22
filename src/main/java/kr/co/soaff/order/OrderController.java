@@ -85,11 +85,12 @@ public class OrderController {
 	@ResponseBody
 	@PostMapping(value = "/order/insert", produces = "application/text; charset=utf8")
 	public String orderInsert(@RequestBody OrderVO vo, HttpSession session) {
-//		session에서 user_no 가져오기
-		vo.setUser_no((int) session.getAttribute("user_no"));
-//		vo.setUser_no(1); // 세션 사용시 지울것
+		int userNo = (int) session.getAttribute("user_no");
+		vo.setUser_no(userNo);
+		boolean orderInsertResult = service.orderInsert(vo);
+
 		String msg = "";
-		if (service.orderInsert(vo)) {
+		if (orderInsertResult) {
 			msg = "success";
 		} else {
 			msg = "fail";
