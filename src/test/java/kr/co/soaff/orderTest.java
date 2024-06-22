@@ -1,5 +1,8 @@
 package kr.co.soaff;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import kr.co.soaff.order.OrderDetailVO;
 import kr.co.soaff.order.OrderMapper;
 import kr.co.soaff.order.OrderVO;
 import lombok.extern.log4j.Log4j;
@@ -78,6 +82,23 @@ public class orderTest {
 		vo.setPointPlusContent("스마트워치 외 1건 주문건 적립");
 		vo.setPointContent("스마트워치 외 1건 주문시 적립금 사용");
 		vo.setPointPlus(200);
+		vo.setImp_uid("5836-1719015301044");
+		int[] amountArray = { 1, 2, 1 };
+		int[] itemNoArray = { 1, 3, 4 };
+		int[] priceArray = { 100, 200, 100 };
+		vo.setAmountArray(amountArray);
+		vo.setItemNoArray(itemNoArray);
+		vo.setPriceArray(priceArray);
+
+		List<OrderDetailVO> list = new ArrayList<>();
+		for (int i = 0; i < amountArray.length; i++) {
+			OrderVO orderVO = new OrderVO();
+			orderVO.setUser_no(1);
+			orderVO.setAmount(amountArray[i]);
+			orderVO.setPrice(priceArray[i]);
+			orderVO.setItem_no(itemNoArray[i]);
+			log.info(mapper.orderDetailInsert(orderVO));
+		}
 
 		log.info(mapper.orderInsert(vo));
 		log.info(mapper.pointMinus(vo));

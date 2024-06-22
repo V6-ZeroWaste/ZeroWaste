@@ -33,6 +33,13 @@ public class OrderVO {
 	private int total_item_price;
 	private int[] checkedCartNo;
 	private int checkedCartCount;
+	// orderDeatil 관련정보
+	private int[] amountArray;
+	private int[] itemNoArray;
+	private int[] priceArray;
+	private int amount;
+	private int item_no;
+	private int price;
 	// 포인트 관련
 	private String pointPlusContent;
 	private String pointContent;
