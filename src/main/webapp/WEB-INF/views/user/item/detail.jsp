@@ -102,7 +102,7 @@
         }
     </style>
 
-    <title>soaff</title>
+    <title>${item.name}</title>
     <script>
         // 스크롤 이동
         function scrollToSection(sectionId) {
@@ -389,10 +389,12 @@
                     printList += "</div>";
                     printList += "<div id='review-detail-" + review.review_no + "' class='collapse' aria-labelledby='review-heading-" + review.review_no + "' data-parent='#review-" + review.review_no + "' style='background: #fafafa;'>";
                     printList += "<div class='card-body text-left content-box'>";
+                    printList += "<div class='d-flex align-items-start'>";
                     if (review.review_img) {
-                        printList += "<img src='" + review.review_img + "'>";
+                        printList += "<img src='" + review.review_img + "' style='max-width: 20%; margin-right: 20px;' >";
                     }
                     printList += "<p>" + review.content + "</p>";
+                    printList += "</div>";
                     printList += "</div>";
                     printList += "</div>";
                     printList += "</div>";
@@ -515,12 +517,14 @@
                     printList += "<div id='qna-detail-" + qna.qna_no + "' class='collapse' aria-labelledby='qna-heading-"+ qna.qna_no +"' data-parent='#qna-"+ qna.qna_no +"' style='background: #fafafa '>";
                     printList += "<div class='card-body text-left content-box'>";
                     printList += "<h4>Q</h4>";
+                    printList += "<div class='d-flex align-items-start'>";
                     if (qna.qna_img != null && qna.qna_img !== '') {
-                        printList += "<img src='" + qna.qna_img + "'>";
+                        printList += "<img src='" + qna.qna_img + "' style='max-width: 20%; margin-right: 20px;'>";
                     }
                     printList += "<p>";
                     printList += qna.content;
                     printList += "</p>";
+                    printList += "</div>";
                     printList += "</div>";
                     if(qna.reply_date != null){
                         printList += "<div class='card-body text-left content-box border-top'>";
@@ -615,9 +619,9 @@
 
         }
 
-        $(document).on('ready', ()=>{
+        $(document).on('ready', () => {
             const isLoggedIn = <c:out value="${not empty user_id}" />;
-            $('#buy').on('click',()=>{
+            $('#buy').on('click',() => {
                 if($('.selected-item-name').length === 0){
                     alert('상품을 선택해주세요');
                 }else{
@@ -630,7 +634,7 @@
                     }
                 }
             });
-            $('#addToCart').on('click',()=>{
+            $('#addToCart').on('click', () => {
                 if($('.selected-item-name').length === 0){
                     alert('상품을 선택해주세요');
                 }else{
@@ -643,6 +647,9 @@
                     }
                 }
             });
+            $('#toQna').on('click', () => {
+
+            })
 
         });
 
@@ -833,7 +840,7 @@
                 <div class="col-md-9 text-left" id="qna-total">
                 </div>
                 <div class="col-md-3 d-flex align-items-center justify-content-end">
-                    <input type="button" value="문의하기" class="btn btn-primary btn-sm">
+                    <input type="button" value="문의하기" class="btn btn-primary btn-sm" id="toQna">
                 </div>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center" style="font-size: 14px;">
