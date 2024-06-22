@@ -60,9 +60,12 @@ public class OrderController {
 	}
 
 	@PostMapping("/order")
-	public String goOrder(OrderVO vo, Model model) {
-		vo.setUser_no(1); // 세션처리
-		vo.setBuyer_name("테스트0"); // 세션처리
+	public String goOrder(OrderVO vo, Model model, HttpSession session) {
+//		session에서 user_no 가져오기
+		vo.setUser_no((int) session.getAttribute("user_no"));
+		vo.setBuyer_name((String) session.getAttribute("user_name"));
+//		vo.setUser_no(1); // 세션 사용시 지울것
+//		vo.setBuyer_name("테스트0"); // 세션 사용시 지울것
 
 		model.addAttribute("map", service.order(vo));
 
@@ -70,8 +73,8 @@ public class OrderController {
 	}
 
 	@GetMapping("/order/success")
-	public String success() {
-		return "user/order/success";
+	public String success(HttpSession session) {
+		return "/user/order/success";
 	}
 //	@GetMapping("/order/success")
 //	public String success(HttpServletRequest req, HttpServletResponse res, Model model) throws Exception {
@@ -83,8 +86,10 @@ public class OrderController {
 
 	@ResponseBody
 	@PostMapping(value = "/order/insert", produces = "application/text; charset=utf8")
-	public String orderInsert(@RequestBody OrderVO vo) {
-		vo.setUser_no(1); // 세션처리
+	public String orderInsert(@RequestBody OrderVO vo, HttpSession session) {
+//		session에서 user_no 가져오기
+		vo.setUser_no((int) session.getAttribute("user_no"));
+//		vo.setUser_no(1); // 세션 사용시 지울것
 		String msg = "";
 		if (service.orderInsert(vo)) {
 			msg = "success";

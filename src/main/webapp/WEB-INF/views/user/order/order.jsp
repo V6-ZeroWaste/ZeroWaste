@@ -72,6 +72,7 @@
 
 
     let isValid;
+    let paymentResult;
 
     function fieldCheck() {
         isValid = true;
@@ -190,18 +191,19 @@
         $("#goPay").on('click', function () {
             var agree = $("#agree").is(":checked");
 
-            //fieldCheck()
-            if (true) {
-                //location.href = "/order/success";
+            if (fieldCheck()) {
+                
                 request_pay();
+              	location.href = "/order/success";
+                
 
             }
-            //
-            // if (!agree) {
-            //     alert("주문 동의가 필요합니다");
-            //     $("#agree").focus();
-            //
-            // }
+            
+             if (!agree) {
+                 alert("주문 동의가 필요합니다");
+                 $("#agree").focus();
+            
+            }
 
 
         });
@@ -281,7 +283,7 @@
             currency: "CURRENCY_KRW",
             payMethod: payMethod,
         });
-        console.log(response);
+        //console.log(response);
 
         if (response.code != null) {
             // 오류 발생
@@ -307,28 +309,7 @@
         let pointContent = order_name + "주문시 적립금 사용";
         let pointPlus = parseFloat($('#estimatedPoint').text().replace(/[^0-9.-]/g, '')) || 0;
 
-        console.log(payment_date);
-        console.log(payment_price);
-        console.log(payMethod);
-        console.log(paymentId);
-        console.log(point);
-        console.log(order_status);
-        console.log(order_name);
-        console.log(receiver_name);
-        console.log(zipcode);
-        console.log(addr);
-        console.log(addr_detail);
-        console.log(receiver_tel);
-        console.log(delivery_request);
-        console.log(delivery_price);
-        console.log(buyer_name);
-        console.log(buyer_email);
-        console.log(buyer_tel);
-        console.log(delivery_status);
-        console.log(pointPlusContent)
-        console.log(pointContent)
-        console.log(pointPlus);
-
+        
         let data = {
             payment_date: payment_date,
             payment_price: payment_price,
@@ -360,13 +341,16 @@
             data: JSON.stringify(data), // 전송할 데이터를 JSON 문자열로 변환
             contentType: "application/json ; charset=UTF-8", // 요청 데이터의 Content-Type을 JSON으로 설정
             success: function (resp) {
-            	console.log(resp);
+            	
+            	
+            	//console.log(resp);
             	if(resp == 'success'){
-            		location.href = "/order/success";
+            		paymentResult = true;
             	}
             	else{
-            		alert("결제는 완료 되었지만, 결제정보 저장에 실패했습니다.")
+            		paymentResult =false;
             	}
+            	
             	
             },
             error: function (data, textStatus) {
@@ -379,11 +363,13 @@
     }
 
     function currDate() {
-        const date = new Date();
-        const year = date.getFullYear();
+    	const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = date.getDate().toString().padStart(2, '0');
-        const result = year + "-" + month + "-" + day
+        const hours = date.getHours().toString().padStart(2, '0'); // 24시간 형식
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const seconds = date.getSeconds().toString().padStart(2, '0');
+        const result = year + "-" + month + "-" + day+" "+hours+ "-" +minutes+ "-" +seconds;
 
         return result;
     }
@@ -409,10 +395,10 @@
 
 
         // value에 3000을 더함(배송비추가)
-        // total += 3000;
+        total += 3000;
 
         // $('#sumDeliveryPrice')인 h4 태그 사이에 결과 출력
-        $('#sumDeliveryPrice').text(total.toLocaleString() + "원");
+        $('#sumDeliveryPrice').text("= "+total.toLocaleString() + "원");
         $('#orderSummarySumDeliveryPrice').text(total.toLocaleString() + "원");
         $('#paymentPrice').text(total.toLocaleString() + "원");
         $('#goPay').text(total.toLocaleString() + "원 결제하기");
@@ -442,13 +428,15 @@
 
         // id가 pointToUse인 input 요소의 값을 숫자로 변환하여 가져옴
         var pointsToUse = parseFloat($('#pointToUse').val().replace(/[^0-9.-]/g, '')) || 0;
-        console.log(pointsToUse);
+        //console.log(pointsToUse);
 
         // pointToUse의 값을 고려하여 finalPayment 계산
         var finalPayment = total - pointsToUse;
 
         // 결과를 id가 paymentPrice인 td에 넣음
         $('#paymentPrice').text(finalPayment.toLocaleString() + "원");
+        $('#orderSummarySumDeliveryPrice').text(finalPayment.toLocaleString() + "원");
+        $('#goPay').text(finalPayment.toLocaleString() + "원 결제하기");
 
         // 적립금 계산 (3%를 계산하고, 소수점 이하를 버림)
         var estimatedPoint = Math.floor(finalPayment * 0.03);
@@ -593,8 +581,8 @@
 
                     <c:if test="${empty map.cartList}">
                         <div class="cart-item">
-                            <div class="row align-items-center col-12">
-                                <span>Empty</span>
+                            <div class="row align-items-center col-12 eyebrow" style="text-align : center;">
+                                Empty
                             </div>
                         </div>
                     </c:if>
@@ -696,7 +684,7 @@
                             <h2 class="h3 mb-0"><span class="text-muted">03.</span> Delivery Info</h2>
                         </div>
                         <div class="col-md-6 text-md-right">
-                            <a class="eyebrow underline">* 필수 입력값</a>
+                            <a class="eyebrow">* 필수 입력값</a>
                         </div>
                         <table class="table table-borderless" id="deliveryInfo">
                             <tbody>

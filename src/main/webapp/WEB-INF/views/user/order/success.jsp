@@ -23,8 +23,8 @@
             <div class="col-12 col-md-12 col-lg-12 text-center">
                 <h1 class="display-1 font-weight-bold">Thank you for practicing zero waste!</h1>
                 <p class="lead"></p>
-                <p><a href="/index" class="btn btn-primary">메인페이지로 이동</a>
-                    <a href="/mypage/order/detail?order_no=1" class="btn btn-primary">주문 내역 확인</a></p>
+                <p><a href="/" class="btn btn-primary">메인페이지로 이동</a>
+                    <a href="#" class="btn btn-primary">주문 내역 확인</a></p>
             </div>
         </div>
     </div>
