@@ -38,6 +38,9 @@ public class ItemAdminController {
 	@GetMapping("/admin/item/detail")
 	public String detail(Model model, ItemVO vo) {
 		ItemVO item = service.detail(vo);
+		if(item == null){
+			return "admin/include/404";
+		}
 		model.addAttribute("item", item);
 		return "admin/item/detail";
 	}

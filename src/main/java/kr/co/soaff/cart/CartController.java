@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpSession;
+
 @Slf4j
 //@RequestMapping("/cart")
 @Controller
@@ -48,8 +50,8 @@ public class CartController {
 
 	@PostMapping("/cart/addItem")
 	@ResponseBody
-	public Map<String, Object> addItem(@RequestBody CartItemDTO dto) {
-		List<Integer> cartNos = service.insert(dto);
+	public Map<String, Object> addItem(@RequestBody CartItemDTO dto, HttpSession session) {
+		List<Integer> cartNos = service.insert(dto, (Integer)session.getAttribute("user_no"));
 		Map<String, Object> map = new HashMap<>();
 		map.put("status", dto.getStatus());
 		map.put("cartNos", cartNos);

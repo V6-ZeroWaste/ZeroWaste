@@ -1,5 +1,6 @@
 package kr.co.soaff.cart;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,6 @@ public interface CartService {
 
 	int delete(CartVO vo);
 
-	List<Integer> insert(CartItemDTO dto);
+	List<Integer> insert(CartItemDTO dto, int user_no);
 
 }

@@ -102,7 +102,7 @@
         }
     </style>
 
-    <title>soaff</title>
+    <title>${item.name}</title>
     <script>
         // 스크롤 이동
         function scrollToSection(sectionId) {
@@ -389,10 +389,12 @@
                     printList += "</div>";
                     printList += "<div id='review-detail-" + review.review_no + "' class='collapse' aria-labelledby='review-heading-" + review.review_no + "' data-parent='#review-" + review.review_no + "' style='background: #fafafa;'>";
                     printList += "<div class='card-body text-left content-box'>";
+                    printList += "<div class='d-flex align-items-start'>";
                     if (review.review_img) {
-                        printList += "<img src='" + review.review_img + "'>";
+                        printList += "<img src='" + review.review_img + "' style='max-width: 20%; margin-right: 20px;' >";
                     }
                     printList += "<p>" + review.content + "</p>";
+                    printList += "</div>";
                     printList += "</div>";
                     printList += "</div>";
                     printList += "</div>";
@@ -515,12 +517,14 @@
                     printList += "<div id='qna-detail-" + qna.qna_no + "' class='collapse' aria-labelledby='qna-heading-"+ qna.qna_no +"' data-parent='#qna-"+ qna.qna_no +"' style='background: #fafafa '>";
                     printList += "<div class='card-body text-left content-box'>";
                     printList += "<h4>Q</h4>";
+                    printList += "<div class='d-flex align-items-start'>";
                     if (qna.qna_img != null && qna.qna_img !== '') {
-                        printList += "<img src='" + qna.qna_img + "'>";
+                        printList += "<img src='" + qna.qna_img + "' style='max-width: 20%; margin-right: 20px;'>";
                     }
                     printList += "<p>";
                     printList += qna.content;
                     printList += "</p>";
+                    printList += "</div>";
                     printList += "</div>";
                     if(qna.reply_date != null){
                         printList += "<div class='card-body text-left content-box border-top'>";
@@ -615,16 +619,40 @@
 
         }
 
-        $(document).on('ready', ()=>{
-            $('#buy').on('click',()=>{
-                addToCart("buy");
+        $(document).on('ready', () => {
+            const isLoggedIn = <c:out value="${not empty user_id}" />;
+            $('#buy').on('click',() => {
+                if($('.selected-item-name').length === 0){
+                    alert('상품을 선택해주세요');
+                }else{
+                    if (!isLoggedIn) {
+                        if(confirm('로그인이 필요한 기능입니다. \n로그인 하시겠습니까?')){
+                            location.href = '/user/user/login';
+                        }
+                    } else {
+                        addToCart("buy");
+                    }
+                }
             });
+            $('#addToCart').on('click', () => {
+                if($('.selected-item-name').length === 0){
+                    alert('상품을 선택해주세요');
+                }else{
+                    if (!isLoggedIn) {
+                        if(confirm('로그인이 필요한 기능입니다. \n로그인 하시겠습니까?')){
+                            location.href = '/user/user/login';
+                        }
+                    } else {
+                        addToCart("cart");
+                    }
+                }
+            });
+            $('#toQna').on('click', () => {
 
-            $('#addToCart').on('click',()=>{
-                addToCart("cart");
-            });
+            })
 
         });
+
 
 
     </script>
@@ -767,10 +795,10 @@
             <br>
             <br>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div id="review-total">후기(6,404 개)</div>
+                <div id="review-total">후기(0개)</div>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <h2><b id="avgScore">4.3</b> / 5</h2>
+                <h2><b id="avgScore">0</b> / 5</h2>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
                 <div class="col-md-8">
@@ -788,8 +816,12 @@
                     </select>
                 </div>
             </div>
-
             <div id="reviewPrintList"> <!-- 리뷰 리스트 -->
+                <div class='row gutter-2 gutter-lg-4 mb-0'>
+                    <div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>
+                        아직 작성된 리뷰가 없습니다.
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col text-center">
@@ -812,7 +844,7 @@
                 <div class="col-md-9 text-left" id="qna-total">
                 </div>
                 <div class="col-md-3 d-flex align-items-center justify-content-end">
-                    <input type="button" value="문의하기" class="btn btn-primary btn-sm">
+                    <input type="button" value="문의하기" class="btn btn-primary btn-sm" id="toQna">
                 </div>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center" style="font-size: 14px;">
@@ -838,6 +870,11 @@
             </div>
             <br>
             <div id="qnaPrintList"> <!-- 문의 리스트 -->
+                <div class='row gutter-2 gutter-lg-4 mb-0'>
+                    <div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>
+                        작성된 문의가 없습니다.
+                    </div>
+                </div>
             </div>
             <!-- 문의 끝 -->
             <div class="row">
