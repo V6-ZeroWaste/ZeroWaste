@@ -304,14 +304,14 @@
         let buyer_email = $('#buyerEmail').text();
         let buyer_tel = $('#buyerTel').text();
         let delivery_status = 0;
-        let payment_date = currDate();
+        //let payment_date = currDate();
         let pointPlusContent = order_name + "주문건 적립";
         let pointContent = order_name + "주문시 적립금 사용";
         let pointPlus = parseFloat($('#estimatedPoint').text().replace(/[^0-9.-]/g, '')) || 0;
 
         
         let data = {
-            payment_date: payment_date,
+            //payment_date: payment_date,
             payment_price: payment_price,
             payment_method: payMethod,
             payment_id: paymentId,
@@ -417,7 +417,7 @@
         const hours = date.getHours().toString().padStart(2, '0'); // 24시간 형식
         const minutes = date.getMinutes().toString().padStart(2, '0');
         const seconds = date.getSeconds().toString().padStart(2, '0');
-        const result = year + "-" + month + "-" + day+" "+hours+ "-" +minutes+ "-" +seconds;
+        const result = year + "-" + month + "-" + day+" "+hours+ ":" +minutes+ ":" +seconds;
 
         return result;
     }
