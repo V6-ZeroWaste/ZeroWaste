@@ -551,72 +551,81 @@
 
     <!-- 장바구니, 바로 구매 연결 -->
     <script>
+        function addToCart(status){
+            var selectedItemNo = [];
+            var selectedItemPackingStatus = [];
+            var selectedItemAmount = [];
+            $('.selected-item-name').each((index, item) => {
+                selectedItemNo.push(${item.item_no});
+                if($(item).text().includes('포장')){
+                    selectedItemPackingStatus.push('1');
+                }else{
+                    selectedItemPackingStatus.push('0');
+                }
+            });
+            $('.selected-item-amount').each((index, element) => {
+                selectedItemAmount.push($(element).val());
+            });
+
+            var data = {
+                item_no_array : selectedItemNo,
+                packing_status_array : selectedItemPackingStatus,
+                amount_array : selectedItemAmount,
+                status :  status
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/cart/addItem",
+                contentType: "application/json", // JSON 형식으로 설정
+                data: JSON.stringify(data), // JSON 문자열로 변환하여 전송
+                success: function(resp){
+                    //상품의 상태가 buy 일 때와 cart 일 때
+                    if (resp.status === "buy") {
+                        sendData(resp.cartNos, '/order')
+                    } else if (resp.status === "cart") {
+                        if (confirm("상품이 장바구니에 담겼습니다 바로 이동하시겠습니까?")) {
+                            location.href = "/cart";
+                        }
+                    }
+                },
+                error: function (resp){
+                    alert("접근 실패");
+                }
+            });
+        }
+
+        function sendData(cartNos, url) {
+
+            const form = document.createElement('form'); // form 태그 생성
+            form.setAttribute('method', 'post'); // 전송 방식 결정 (get or post)
+            form.setAttribute('action', url); // 전송할 url 지정
+
+            for (var cartNo of cartNos) {
+                const data = document.createElement('input');
+                data.setAttribute('type', 'hidden');
+                data.setAttribute('name', 'checkedCartNo');
+                data.setAttribute('value', cartNo);
+                form.appendChild(data);
+            }
+
+            document.body.appendChild(form);
+
+            form.submit();
+
+        }
+
         $(document).on('ready', ()=>{
             $('#buy').on('click',()=>{
-
-                var selectedItemNo = [];
-                var selectedItemPackingStatus = [];
-                var selectedItemAmount = [];
-                $('.selected-item-name').each((index, item) => {
-                    selectedItemNo.push(${item.item_no});
-                    if($(item).text().includes('포장')){
-                        selectedItemPackingStatus.push('1');
-                    }else{
-                        selectedItemPackingStatus.push('0');
-                    }
-                });
-                $('.selected-item-amount').each((index, element) => {
-                    selectedItemAmount.push($(element).val());
-                });
-
-                console.log(selectedItemNo);
-                console.log(selectedItemPackingStatus);
-                console.log(selectedItemAmount);
-
-                var data = {
-                    item_no : selectedItemNo,
-                    packing_status : selectedItemPackingStatus,
-                    amount : selectedItemAmount
-                };
-
-                $.ajax({
-
-                })
-
+                addToCart("buy");
             });
 
             $('#addToCart').on('click',()=>{
-
-                var selectedItemNo = [];
-                var selectedItemPackingStatus = [];
-                var selectedItemAmount = [];
-                $('.selected-item-name').each((index, item) => {
-                    selectedItemNo.push(${item.item_no});
-                    if($(item).text().includes('포장')){
-                        selectedItemPackingStatus.push('1');
-                    }else{
-                        selectedItemPackingStatus.push('0');
-                    }
-                });
-                $('.selected-item-amount').each((index, element) => {
-                    selectedItemAmount.push($(element).val());
-                });
-
-                console.log(selectedItemNo);
-                console.log(selectedItemPackingStatus);
-                console.log(selectedItemAmount);
-
-                var data = {
-                    item_no : selectedItemNo,
-                    packing_status : selectedItemPackingStatus,
-                    amount : selectedItemAmount
-                };
-
-                $.ajax({
-
-                })
+                addToCart("cart");
             });
+
         });
+
 
     </script>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
