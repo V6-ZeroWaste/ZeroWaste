@@ -29,5 +29,9 @@ public interface OrderMapper {
 
 	int cartCount(OrderVO vo);
 
-	int updateOrder(OrderVO vo);
+	int orderInsert(OrderVO vo);
+
+	int pointPlus(OrderVO vo);
+
+	int pointMinus(OrderVO vo);
 }

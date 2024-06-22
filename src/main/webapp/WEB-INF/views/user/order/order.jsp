@@ -190,12 +190,9 @@
         $("#goPay").on('click', function () {
             var agree = $("#agree").is(":checked");
 
-            console.log(1);
-
             //fieldCheck()
             if (true) {
                 //location.href = "/order/success";
-                console.log(0);
                 request_pay();
 
             }
@@ -268,9 +265,9 @@
 
     async function request_pay() {
         const orderUuid = generateUuid();
-        console.log(orderUuid);
+        // console.log(orderUuid);
         let order_name = portOneOrderName();
-        let totalAmount = $("#paymentPrice").text();
+        let payment_price = parseFloat($('#paymentPrice').text().replace(/[^0-9.-]/g, ''))
         let payMethod = $('input[name=paymentMethod]:checked').val();
         let paymentId = 'payment-' + orderUuid
         const response = await PortOne.requestPayment({
@@ -280,16 +277,115 @@
             channelKey: "channel-key-8f312486-23c0-4ee3-95b4-5a26210375f3",
             paymentId: paymentId,
             orderName: order_name,
-            totalAmount: totalAmount,
+            totalAmount: payment_price,
             currency: "CURRENCY_KRW",
             payMethod: payMethod,
         });
+        console.log(response);
 
         if (response.code != null) {
             // 오류 발생
             return alert(response.message);
         }
 
+        // db `order` 업데이트 정보
+        let point = (parseFloat($('#pointToUse').val().replace(/[^0-9.-]/g, '')) * -1) || 0;
+        let order_status = 2
+        let receiver_name = $('#receiverName').val();
+        let zipcode = $('#zipcode').val();
+        let addr = $('#addr').val();
+        let addr_detail = $('#addrDetail').val();
+        let receiver_tel = $('#receiverTel1').val() + "-" + $('#receiverTel2').val() + "-" + $('#receiverTel3').val();
+        let delivery_request = $('#deliveryRequest').val();
+        let delivery_price = 3000;
+        let buyer_name = $('#buyerName').text();
+        let buyer_email = $('#buyerEmail').text();
+        let buyer_tel = $('#buyerTel').text();
+        let delivery_status = 0;
+        let payment_date = currDate();
+        let pointPlusContent = order_name + "주문건 적립";
+        let pointContent = order_name + "주문시 적립금 사용";
+        let pointPlus = parseFloat($('#estimatedPoint').text().replace(/[^0-9.-]/g, '')) || 0;
+
+        console.log(payment_date);
+        console.log(payment_price);
+        console.log(payMethod);
+        console.log(paymentId);
+        console.log(point);
+        console.log(order_status);
+        console.log(order_name);
+        console.log(receiver_name);
+        console.log(zipcode);
+        console.log(addr);
+        console.log(addr_detail);
+        console.log(receiver_tel);
+        console.log(delivery_request);
+        console.log(delivery_price);
+        console.log(buyer_name);
+        console.log(buyer_email);
+        console.log(buyer_tel);
+        console.log(delivery_status);
+        console.log(pointPlusContent)
+        console.log(pointContent)
+        console.log(pointPlus);
+
+        let data = {
+            payment_date: payment_date,
+            payment_price: payment_price,
+            payment_method: payMethod,
+            payment_id: paymentId,
+            point: point,
+            order_status: order_status,
+            order_name: order_name,
+            receiver_name: receiver_name,
+            zipcode: zipcode,
+            addr: addr,
+            addr_detail: addr_detail,
+            receiver_tel: receiver_tel,
+            delivery_request: delivery_request,
+            delivery_price: delivery_price,
+            buyer_name: buyer_name,
+            buyer_email: buyer_email,
+            buyer_tel: buyer_tel,
+            delivery_status: 0,
+            pointPlusContent: pointPlusContent,
+            pointContent: pointContent,
+            pointPlus: pointPlus
+
+        };
+
+        $.ajax({
+            type: "POST", // method type
+            url: "/order/insert", // 요청할 url
+            data: JSON.stringify(data), // 전송할 데이터를 JSON 문자열로 변환
+            contentType: "application/json ; charset=UTF-8", // 요청 데이터의 Content-Type을 JSON으로 설정
+            success: function (resp) {
+            	console.log(resp);
+            	if(resp == 'success'){
+            		location.href = "/order/success";
+            	}
+            	else{
+            		alert("결제는 완료 되었지만, 결제정보 저장에 실패했습니다.")
+            	}
+            	
+            },
+            error: function (data, textStatus) {
+                $('#fail').html("관리자에게 문의하세요."); // 서버오류
+                console.log('error', data, textStatus);
+            }
+        })
+
+
+    }
+
+    function currDate() {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const result = year + "-" + month + "-" + day
+
+        return result;
     }
 
     function aboutTotalPrice() {
@@ -312,13 +408,15 @@
         $('#paymentInfoSumItemTotal').text(total.toLocaleString() + "원");
 
 
-        // value에 3000을 더함
-        total += 3000;
+        // value에 3000을 더함(배송비추가)
+        // total += 3000;
 
         // $('#sumDeliveryPrice')인 h4 태그 사이에 결과 출력
         $('#sumDeliveryPrice').text(total.toLocaleString() + "원");
         $('#orderSummarySumDeliveryPrice').text(total.toLocaleString() + "원");
         $('#paymentPrice').text(total.toLocaleString() + "원");
+        $('#goPay').text(total.toLocaleString() + "원 결제하기");
+        
     }
 
     function telFormat() {
@@ -574,15 +672,15 @@
                         <tbody>
                         <tr>
                             <th><b>주문자 이름</b></th>
-                            <td>${orderVO.buyer_name}</td>
+                            <td id="buyerName">${orderVO.buyer_name}</td>
                         </tr>
                         <tr>
                             <th><b>전화번호</b></th>
-                            <td>${map.info.buyer_tel}</td>
+                            <td id="buyerTel">${map.info.buyer_tel}</td>
                         </tr>
                         <tr>
                             <th><b>email</b></th>
-                            <td>${map.info.buyer_email}</td>
+                            <td id="buyerEmail">${map.info.buyer_email}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -713,13 +811,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <th><b>최종 결제 금액</b></th>
-                            <td id="paymentPrice"></td>
-                        </tr>
-                        <tr>
                             <th><b>예상 적립 금액</b></th>
                             <td id="estimatedPoint"></td>
                         </tr>
+                        <tr>
+                            <th class="text-danger"><b>최종 결제 금액</b></th>
+                            <td id="paymentPrice" class="text-danger"></td>
+                        </tr>
+                        
                         </tbody>
                     </table>
 
@@ -788,8 +887,8 @@
                 <br>
                 <button id="goPay" type="button" class="form-control btn btn-primary"
                         style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;"
-                >14,850원 결제하기
-                </button>
+                ></button>
+
             </div>
 
 

@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.co.soaff.cart.CartVO;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -78,8 +81,14 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public int updateOrder(OrderVO vo) {
-		return mapper.updateOrder(vo);
+	public boolean orderInsert(OrderVO vo) {
+		String result = "";
+		int orderInsertResult = mapper.orderInsert(vo);
+		int pointInsertResult = mapper.pointMinus(vo);
+		int pointPlusResult = mapper.pointPlus(vo);
+
+		return orderInsertResult > 0 && pointInsertResult > 0 && pointPlusResult > 0 ? true : false;
+
 	}
 
 }

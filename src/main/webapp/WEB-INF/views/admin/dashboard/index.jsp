@@ -22,40 +22,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 </head>
 <script>
-	let page = 1;
+    let page = 1;
 
     var myAreaChart;
     var itemChart;
     var usersChart;
- 
-	let start_temp = new Date();
-	let end_temp = new Date();
 
-	function formatDate(date) {
-	    const year = date.getFullYear();
-	    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
-	    const day = date.getDate().toString().padStart(2, '0'); 
-	    const result = year+"-"+month+"-"+day
-	    
-	    return result;}
-	
-	function addDays(date, days) {
-		  const clone = date;
-		  clone.setDate(date.getDate() + days)
-		  return clone;
-		}
-	
-	const start_date = formatDate(addDays(start_temp,-7));
-	const end_date = formatDate(end_temp);
-	console.log(start_date);
-	console.log(end_date);
+    let start_temp = new Date();
+    let end_temp = new Date();
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const result = year + "-" + month + "-" + day
+
+        return result;
+    }
+
+    function addDays(date, days) {
+        const clone = date;
+        clone.setDate(date.getDate() + days)
+        return clone;
+    }
+
+    const start_date = formatDate(addDays(start_temp, -7));
+    const end_date = formatDate(end_temp);
+    console.log(start_date);
+    console.log(end_date);
 
     window.onload = function () {
         getItemList();
         getUsersList();
         getSalesList();
     }
-	
+
 
     function drawItemChart(data) {
         var labels = data.map(d => d.name);
@@ -128,83 +129,83 @@
         });
 
     }
-    
-    
-function drawUsersChart(usersList,leaveList) {
-    	
-    	
-    	var labels = usersList.map(obj => obj.date);
-    	var datasets =[
-    		{
-    			label: "회원수",
-				data: usersList.map(d => d.user_cnt),
-    			backgroundColor: "#1e306e"
-    		},
-    		{
-    			label: "탈퇴 ",
-				data: leaveList.map(d => d.leave_cnt),
-    			backgroundColor: "#C0C0C0"
-    		}
-    	]
-    	
-    	// 차트 옵션 객체 생성
-    	var options = {
-    			plugins: {    
-    				legend: { // 범례 스타일링      
-    					labels: {        
-    						usePointStyle: true,        // 범례 도형 모양과 관련된 속성으로, false일 경우엔 기본 직사각형 도형으로 표시됩니다.        
-    						padding: 10,        // 범례 간 가로 간격을 조정할 수 있습니다. 범례의 상하 padding을 지정하는 기능은 따로 지원되지 않아요. ㅠㅠ
-    					}
-    				}
-    			},
-    	    scales: {
-    	        x: [{
-    	            stacked: true, // x축을 STACKED 모드로 설정
-    	        }],
-    	        y: [{
-    	            stacked: true, // y축을 STACKED 모드로 설정
-    	            barThickness: 15,
-        	        maxBarThickness: 15,
-        	        
-    	            
-    	        }],
-    			
-    	    },
-    	    tooltips: {
-    	        callbacks: {
-    	            label: function (tooltipItem, data) {
-    	                var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
-    	                var value = tooltipItem.xLabel;
-    	                if (value === 0) {
-        	                // Hide tooltip for 0 values
-        	                return '';
-        	            }
-        	           	return datasetLabel + ': ' + value;
-    	            },
-    	        },
-    	    },
-    	    
-    	};
-    	
-    	// 캔버스 요소 선택
-    	$('#usersChart').remove(); // this is my <canvas> element
-		$('#usersCanvas-div').append('<canvas id="usersChart"><canvas>');
-    
-    	var ctx = document.getElementById("usersChart").getContext("2d");
-    	
-    	// 차트 객체 생성
-    	myChart = new Chart(ctx, {
-    	    type: "bar", // 가로막대 그래프 타입 설정
-    	    data: {
-    	        labels: labels,
-    	        datasets: datasets
-    	    },
-    	    options: options
-    	});
-	
-	}
 
-	
+
+    function drawUsersChart(usersList, leaveList) {
+
+
+        var labels = usersList.map(obj => obj.date);
+        var datasets = [
+            {
+                label: "회원수",
+                data: usersList.map(d => d.user_cnt),
+                backgroundColor: "#1e306e"
+            },
+            {
+                label: "탈퇴 ",
+                data: leaveList.map(d => d.leave_cnt),
+                backgroundColor: "#C0C0C0"
+            }
+        ]
+
+        // 차트 옵션 객체 생성
+        var options = {
+            plugins: {
+                legend: { // 범례 스타일링      
+                    labels: {
+                        usePointStyle: true,        // 범례 도형 모양과 관련된 속성으로, false일 경우엔 기본 직사각형 도형으로 표시됩니다.        
+                        padding: 10,        // 범례 간 가로 간격을 조정할 수 있습니다. 범례의 상하 padding을 지정하는 기능은 따로 지원되지 않아요. ㅠㅠ
+                    }
+                }
+            },
+            scales: {
+                x: [{
+                    stacked: true, // x축을 STACKED 모드로 설정
+                }],
+                y: [{
+                    stacked: true, // y축을 STACKED 모드로 설정
+                    barThickness: 15,
+                    maxBarThickness: 15,
+
+
+                }],
+
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
+                        var value = tooltipItem.xLabel;
+                        if (value === 0) {
+                            // Hide tooltip for 0 values
+                            return '';
+                        }
+                        return datasetLabel + ': ' + value;
+                    },
+                },
+            },
+
+        };
+
+        // 캔버스 요소 선택
+        $('#usersChart').remove(); // this is my <canvas> element
+        $('#usersCanvas-div').append('<canvas id="usersChart"><canvas>');
+
+        var ctx = document.getElementById("usersChart").getContext("2d");
+
+        // 차트 객체 생성
+        myChart = new Chart(ctx, {
+            type: "bar", // 가로막대 그래프 타입 설정
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: options
+        });
+
+    }
+
+
     function getItemList() {
 
 
@@ -223,26 +224,26 @@ function drawUsersChart(usersList,leaveList) {
         })
 
     }
-    
+
     function getUsersList() {
-    	
-		var data = {
-		    			
-		    			orderBy: "최근날짜순",
-		    			filter: "일별",
-		    			start_date: start_date,
-		                end_date: end_date,
-		    	}
+
+        var data = {
+
+            orderBy: "최근날짜순",
+            filter: "일별",
+            start_date: start_date,
+            end_date: end_date,
+        }
 
 
         $.ajax({
             type: "GET", // method type
             url: "/admin/statistics/users/getList", // 요청할 url
             dataType: "json", // 응답 받을 데이터 type
-            data : data,
+            data: data,
             success: function (resp) {
 
-            drawUsersChart(resp.usersList,resp.leaveList);
+                drawUsersChart(resp.usersList, resp.leaveList);
             },
             error: function (data, textStatus) {
                 $('#fail').html("관리자에게 문의하세요.") // 서버오류
@@ -251,9 +252,9 @@ function drawUsersChart(usersList,leaveList) {
         })
 
     }
-    
+
     function getSalesList() {
-    	
+
         var data = {
             orderBy: '최근날짜순',
             filter: '일별',
@@ -268,14 +269,14 @@ function drawUsersChart(usersList,leaveList) {
             data: data,
             dataType: "json",
             success: function (resp) {
-               
+
                 var labels = [];
                 var data = [];
-                resp.list.reverse().forEach(function(item){
-                	labels.push(item.date);
-                	data.push(item.sales);
+                resp.list.reverse().forEach(function (item) {
+                    labels.push(item.date);
+                    data.push(item.sales);
                 })
-                
+
                 // Destroy existing charts if they exist
                 if (myAreaChart) myAreaChart.destroy();
 
@@ -372,9 +373,7 @@ function drawUsersChart(usersList,leaveList) {
             }
         });
     }
-	
-    
-    
+
 
 </script>
 
@@ -443,13 +442,11 @@ function drawUsersChart(usersList,leaveList) {
                                 <i class="fas fa-chart-area me-1"></i>
                                 매출 통계
                             </div>
-                            
-                        
-                              
-                                <canvas id="myAreaChart"></canvas>
-                      
-                            
-                            
+
+
+                            <canvas id="myAreaChart"></canvas>
+
+
                         </div>
                     </div>
                     <div class="col-xl-6">
@@ -473,13 +470,13 @@ function drawUsersChart(usersList,leaveList) {
                                 <i class="fas fa-chart-bar me-1"></i>
                                 회원 통계
                             </div>
-                            
+
                             <div style=" overflow-y: auto; max-height: 500px;">
                                 <div id="usersCanvas-div" style="padding:10px;">
                                     <canvas id="usersChart"></canvas>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
