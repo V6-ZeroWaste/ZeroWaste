@@ -64,7 +64,11 @@
                 $.ajax({
                     url : "/mypage/order/detail/confirm",
                     type : "POST",
-                    data : JSON.stringify({order_detail_no : no}),
+                    data : JSON.stringify({
+                    	order_detail_no : no,
+                    	order_no : ${order.order_no
+                    		}
+                    	}),
                     dataType: "text",
                     contentType: "application/json; charset=UTF-8",
                     success : function(response){
@@ -96,7 +100,7 @@
     		<!-- title -->
     		<div  style="display:flex;justify-content: space-between;">
 	   			<h3 class="mb-0">Order Detail</h3>
-	   			<button class="btn btn-primary" onclick="history.back()">go list</button>
+	   			<button class="btn btn-primary" onclick="location.href='/mypage/order/list'">go list</button>
    			</div>
    			<!-- /title -->
    			<!-- Order Info -->
@@ -125,14 +129,14 @@
 			                        <td><fmt:formatNumber value="${vo.price*vo.amount }" pattern="#,###" /> 원</td>
 			                        <c:if test="${vo.cancel_status != null}">
 			                        	<td><span class="order-status canceled">${vo.cancel_status == 0 ? '취소요청' : '취소완료'}</span></td>
-			                        	<td><button type="button" class="btn btn-outline-danger" onclick="location.href='/order/cancelInfo?order_detail_no=${vo.order_detail_no}'">취소상세</button></td>
+			                        	<td><button type="button" class="btn btn-outline-danger" onclick="location.href='/order/cancel/info?order_detail_no=${vo.order_detail_no}'">취소상세</button></td>
 			                        </c:if>
 			                        <c:if test="${vo.cancel_status == null}">
 			                        	<c:if test="${vo.confirm_date == null }">
 			                        		
 			                        		<c:if test="${order.delivery_status == 0}">
 					                        	<td><span class="order-status">상품준비중</span></td>
-					                         	<td><button type="button" class="btn btn-danger" onclick="location.href='/order/cancelRequset?order_detail_no=${vo.order_detail_no}'">주문취소</button></td>
+					                         	<td><button type="button" class="btn btn-danger" onclick="location.href='/order/cancel/form?order_detail_no=${vo.order_detail_no}'">주문취소</button></td>
 			                        		</c:if>
 			                        		<c:if test="${order.delivery_status == 1}">
 			                        			<td><span class="order-status shipping">배송중</span></td>
@@ -205,7 +209,7 @@
 	                      <tbody>
 	                      	<tr>
 	                      		<th>상품 합계</th>
-	                      		<td><fmt:formatNumber value="${order.payment_price +order.point }" pattern="#,###" /> 원</td>
+	                      		<td><fmt:formatNumber value="${order.payment_price +order.point - order.delivery_price}" pattern="#,###" /> 원</td>
 	                        </tr>
 	                      	<tr>
 	                      		<th>배송비</th>
@@ -219,7 +223,7 @@
 	                      		<th>최종 결제 금액</th>
 	                      		<td>
 	                      			<strong><fmt:formatNumber value="${order.payment_price}" pattern="#,###" /> 원</strong>
-	                      			<br><span>예상 적립금 <fmt:formatNumber value="${Math.floor(order.payment_price *0.03)}" pattern="#,###" /> 원</span>
+	                      			<br><span>예상 적립금 <fmt:formatNumber value="${Math.floor((order.payment_price-order.refund_price) *0.03)}" pattern="#,###" /> 원</span>
 	                      		</td>
 	                        </tr>
 	                      	<tr>
