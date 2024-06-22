@@ -171,7 +171,6 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                 var scriptTag2 = /[~^&()|<>?]/;
                 var checkText = "";
                 var thisVal = $(this).val();
-                console.log(thisVal);
                 switch ($(this).attr("name")) {
                     case "name":
                         if (thisVal.length === 0) {
@@ -240,7 +239,6 @@ pageEncoding="UTF-8" isELIgnored="false" %>
                         }
                     },
                     error: function(error) {
-                        console.error('File upload failed');
                     }
                 });
             })

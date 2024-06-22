@@ -43,16 +43,15 @@
 				  page: page,
 
 			  }
-              console.log(data.filter);
+
 			  $.ajax({
 				  type: "GET", // method type
 				  url: "/item/getItemList", // 요청할 url
 				  data: data, // 전송할 데이터
 				  dataType: "json", // 응답 받을 데이터 type
 				  success : function(resp){
-					  console.log("성공");
 					  // 데이터 리스트 출력
-					  $("#printList").html(resp.printList);
+                      renderItemList(resp.items);
 
 					  // 페이지네이션 출력
 					  // 총 개수
@@ -75,20 +74,51 @@
 						  printPage += '<li class="datatable-pagination-list-item page-item">';
 						  printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹</a></li>';
 					  }
-					  console.log(printPage);
 					  $(".datatable-pagination-list").html(printPage);
 
 
 
 				  },
 				  error:function (data, textStatus) {
-					  console.log("실패");
 					  $('#fail').html("관리자에게 문의하세요.") // 서버오류
-					  console.log('error', data, textStatus);
 				  }
 			  })
 
 		  }
+
+          function renderItemList(items) {
+              var printList = "";
+
+              if (items.length > 0) {
+                  items.forEach(function(item) {
+                      printList += "<div class='col-6 col-lg-3'>";
+                      printList += "<div class='product'>";
+                      printList += "<figure class='product-image'>";
+                      printList += "<a href='detail?item_no=" + item.item_no + "'>";
+                      printList += "<img src='" + item.item_img + "' alt='Image'>";
+                      printList += "</a>";
+                      printList += "</figure>";
+                      printList += "<div class='product-meta'>";
+                      printList += "<h3 class='product-title'><a href='detail?item_no=" + item.item_no + "'>"
+                          + item.name;
+                      if (item.discount_rate != 0) {
+                          printList += "&nbsp;&nbsp;<span class='text-red text-sm-center'>"+ item.discount_rate +"%</span>";
+                      }
+                      printList += "</a></h3>";
+                      printList += "<div class='product-price'>";
+                      if (item.discount_rate != 0) {
+                          printList += "<span><s class='text-muted'>" + item.price.toLocaleString() + "원 </s>&nbsp</span>";
+                      }
+                      printList += "<span>" + item.discounted_price.toLocaleString() + "원</span>";
+                      printList += "</div>";
+                      printList += "</div>";
+                      printList += "</div>";
+                      printList += "</div>";
+                  });
+
+                  $("#printList").html(printList);
+              }
+          }
 	  </script>
     <title>soaff</title>
   </head>

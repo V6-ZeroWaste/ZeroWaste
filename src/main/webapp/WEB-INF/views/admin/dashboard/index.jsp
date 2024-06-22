@@ -331,45 +331,7 @@
                     }
                 });
 
-                // Create the Bar Chart
-                var ctxBar = document.getElementById("myAreaChart").getContext('2d');
-                myBarChart = new Chart(ctxBar, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: "Sales",
-                            backgroundColor: "rgba(2,117,216,1)",
-                            borderColor: "rgba(2,117,216,1)",
-                            data: data,
-                        }],
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                grid: {
-                                    display: false
-                                },
-                                ticks: {
-                                    maxTicksLimit: 6
-                                }
-                            },
-                            y: {
-                                ticks: {
-                                    maxTicksLimit: 5
-                                },
-                                grid: {
-                                    color: "rgba(0, 0, 0, .125)",
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        }
-                    }
-                });
+                
             }
         });
     }
