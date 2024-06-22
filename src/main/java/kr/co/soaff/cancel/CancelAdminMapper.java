@@ -23,4 +23,6 @@ public interface CancelAdminMapper {
 	int completeCancel(CancelAdminDetailVO vo);
 
 	int adminCancel(CancelAdminDetailVO vo);
+	
+	int requestCancel(CancelAdminDetailVO vo);
 }

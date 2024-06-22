@@ -9,8 +9,9 @@ public interface OrderService {
 
 	// Mypage > order > detail
 	OrderVO orderInfo(OrderVO orderVO);
+	OrderDetailVO orderDetailInfo(OrderDetailVO orderVO);
+	List<OrderDetailVO> orderDetailList(OrderVO orderVO);
 
-	List<OrderDetailVO> orderDetailInfo(OrderVO orderVO);
 
 	boolean orderConfirm(OrderDetailVO vo);
 

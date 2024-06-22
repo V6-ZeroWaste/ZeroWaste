@@ -80,14 +80,16 @@
 	<select id="orderInfo" parameterType="kr.co.soaff.order.OrderVO">
 		SELECT
 			order_no, delivery_status,
-		    payment_method, payment_date,  point, payment_price, delivery_price,
-		    receiver_name, receiver_tel, zipcode, addr, addr_detail, delivery_request
+		    payment_method, payment_date,  point, payment_price, delivery_price, refund_price
+		    receiver_name, receiver_tel, zipcode, addr, addr_detail, delivery_request,
+		    (select count(*) - count(cancel_status) from order_detail where order_no = #{order_no} ) as cancel_count,
+		    (select max(cancel_request_date) from order_detail where order_no = #{order_no}) as last_cancel_date
 		FROM `order`
 		WHERE order_no = #{order_no} and `order`.user_no = #{user_no};
 	</select>
 	<!-- 마이페이지>주문>상세> (주문 상세 정보) -->
-	<!-- OrderDetailVO에 담는 정보 -->
-	<select id="orderDetailInfo" parameterType="kr.co.soaff.order.OrderDetailVO">
+	<!-- List<OrderDetailVO>에 담는 정보 -->
+	<select id="orderDetailList" parameterType="kr.co.soaff.order.OrderDetailVO">
 		SELECT 
 			order_detail_no,
 		    od.amount, od.price,
@@ -99,6 +101,19 @@
 		    ON item.item_no = od.item_no
 		WHERE order_no = #{order_no} and od.user_no = #{user_no}
 	</select>
+	<!-- OrderDetailVO에 담는 정보 -->
+	<select id="orderDetailInfo" parameterType="kr.co.soaff.order.OrderDetailVO">
+		SELECT
+			order_no, order_detail_no,
+		    od.amount, od.price,
+		    cancel_status, confirm_date, cancel_reason_detail, cancel_reason_type,cancel_request_date,
+		    od.item_no, item_img, item.name as item_name
+		FROM order_detail AS od
+			JOIN item
+		    ON item.item_no = od.item_no
+		WHERE order_detail_no = #{order_detail_no} and od.user_no = #{user_no} 
+	</select>
+	<!-- 구매확정 update -->
 	<update id="orderConfirm" parameterType="kr.co.soaff.order.OrderDetailVO">
 		UPDATE order_detail SET
 						confirm_date = current_timestamp()

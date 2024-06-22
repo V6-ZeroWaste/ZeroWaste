@@ -31,7 +31,6 @@
         </if>
     </where>
 </sql>
-
 	<sql id="orderBySql">
     <if test="orderBy == null or orderBy == '취소상태'">
         ORDER BY
@@ -64,37 +63,10 @@
         od.cancel_request_date ASC
     </if>
 </sql>
-
-	<!-- 취소관리 리스트 -->
-	<select id="list"
-		parameterType="kr.co.soaff.cancel.CancelAdminListVO"
-		resultType="kr.co.soaff.cancel.CancelAdminListVO">
-		SELECT
-		od.order_detail_no,
-		od.order_no,
-		u.id AS user_id,
-		i.name AS
-		item_name,
-		od.amount,
-		od.price,
-		od.cancel_status,
-		od.cancel_request_date,
-		od.cancel_approve_date
-		FROM order_detail od
-		JOIN user u ON od.user_no =
-		u.user_no
-		JOIN item i ON od.item_no = i.item_no
-		<include refid="searchSql" />
-		<include refid="orderBySql" />
-		LIMIT #{startIdx}, 20
-	</select>
-
-	<select id="detailFromOrderDetailVO" parameterType="int"
+	<select id="oderDetailInfo" parameterType="kr.co.soaff.order.OrderDetailVO"
 		resultType="kr.co.soaff.cancel.CancelAdminDetailVO">
 		SELECT
 		od.order_detail_no,
-		od.order_no,
-		od.user_no,
 		od.amount,
 		od.price,
 		od.cancel_status,
@@ -107,7 +79,8 @@
 		FROM order_detail od
 		JOIN item i ON od.item_no = i.item_no
 		WHERE
-		order_detail_no = #{order_detail_no}
+			order_detail_no = #{order_detail_no}
+			AND user_no = #{user_no} 
 	</select>
 
 	<select id="detailFromOrderVO" parameterType="int"
@@ -187,17 +160,5 @@
 		#{cancel_reason_detail}
 		WHERE order_detail_no = #{order_detail_no}
 	</update>
-	
-	<!-- 유저 active -->
-	 <!-- 유저: 취소 신청 -->
-	 <update id="requestCancel" parameterType="kr.co.soaff.cancel.CancelAdminDetailVO">
-	 	UPDATE order_detail
-		SET cancel_status = 0,
-		cancel_reason_type = #{cancel_reason_type},
-		cancel_request_date = CURRENT_TIMESTAMP,
-		cancel_reason_detail = #{cancel_reason_detail}
-		WHERE order_detail_no = #{order_detail_no} and user_no = #{user_no}
-	</update>
-	
 
 </mapper>
