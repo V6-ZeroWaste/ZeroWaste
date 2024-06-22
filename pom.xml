@@ -85,6 +85,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
+
 		<!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
@@ -225,14 +226,14 @@
 			<artifactId>regions</artifactId>
 			<version>2.26.1</version>
 		</dependency>
-		
+
 	<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
+
 		<dependency>
 	        <groupId>javax.mail</groupId>
 	        <artifactId>javax.mail-api</artifactId>
@@ -242,7 +243,12 @@
 	        <groupId>com.sun.mail</groupId>
 	        <artifactId>javax.mail</artifactId>
 	        <version>1.6.2</version>
-	    </dependency>		
+	    </dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
 	</dependencies>
 
 	<build>
