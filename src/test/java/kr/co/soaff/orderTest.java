@@ -97,7 +97,7 @@ public class orderTest {
 			orderVO.setAmount(amountArray[i]);
 			orderVO.setPrice(priceArray[i]);
 			orderVO.setItem_no(itemNoArray[i]);
-			log.info(mapper.orderDetailInsert(orderVO));
+//			log.info(mapper.orderDetailInsert(orderVO));
 		}
 
 		log.info(mapper.orderInsert(vo));
