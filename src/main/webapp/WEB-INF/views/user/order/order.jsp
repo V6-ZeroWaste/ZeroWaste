@@ -271,6 +271,7 @@
         let payment_price = parseFloat($('#paymentPrice').text().replace(/[^0-9.-]/g, ''))
         let payMethod = $('input[name=paymentMethod]:checked').val();
         let paymentId = 'payment-' + orderUuid
+        let impUid = 'payment-' + orderUuid
         const response = await PortOne.requestPayment({
             // Store ID 설정
             storeId: "store-cfa799d7-b5cc-4fb8-b538-98363bffffbd",
@@ -314,6 +315,7 @@
             payment_price: payment_price,
             payment_method: payMethod,
             payment_id: paymentId,
+            imp_uid : impUid,
             point: point,
             order_status: order_status,
             order_name: order_name,
