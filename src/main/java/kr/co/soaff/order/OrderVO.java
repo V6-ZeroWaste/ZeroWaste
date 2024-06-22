@@ -9,7 +9,7 @@ public class OrderVO {
 
 	private int order_no;
 	private int user_no;
-	private String payment_date;
+	private Timestamp payment_date;
 	private int point;
 	private String payment_id;
 	private int order_status;
@@ -26,20 +26,17 @@ public class OrderVO {
 	private String buyer_email;
 	private String buyer_tel;
 	private int delivery_status;
-	private String delivery_date;
+	private Timestamp delivery_date;
 	private String id;
 	private int payment_price;
 	private String payment_method;
 	private int total_item_price;
 	private int[] checkedCartNo;
 	private int checkedCartCount;
-	//포인트 관련
+	// 포인트 관련
 	private String pointPlusContent;
 	private String pointContent;
 	private int pointPlus;
-
-
-
 
 	private int total_amount; // 주문 총 수량
 	private Integer cancel_status;

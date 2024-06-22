@@ -160,7 +160,7 @@
 			addr_detail, receiver_tel, delivery_request, delivery_price, 
 			buyer_name, buyer_email, buyer_tel, delivery_status
 			) VALUES (
-				#{user_no}, #{payment_date}, #{payment_price}, #{payment_method}, 
+				#{user_no}, NOW(), #{payment_price}, #{payment_method}, 
 				#{payment_id}, #{imp_uid}, #{point}, #{order_status}, 
 				#{order_name}, #{receiver_name}, #{zipcode}, #{addr}, 
 				#{addr_detail}, #{receiver_tel}, #{delivery_request}, #{delivery_price},
@@ -178,7 +178,7 @@
 				point_date, order_no
 			) VALUES (
 				#{user_no},#{pointPlusContent},#{pointPlus},
-				#{payment_date},#{order_no}
+				NOW(),#{order_no}
 		
 			)
 	
@@ -190,7 +190,7 @@
 				point_date, order_no
 			) VALUES (
 				#{user_no},#{pointContent},#{point},
-				#{payment_date},#{order_no}
+				NOW(),#{order_no}
 		
 			)
 	
