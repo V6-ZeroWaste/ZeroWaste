@@ -18,6 +18,7 @@ public class UserVO {
 	private Timestamp date;
 	private Timestamp delete;
 
+	private String idSaveCheck; // 로그인 저장사용 여부
 	private String orderBy; // 정렬 조건
 	private String searchWord; // 검색 키워드
 	private int page; // 요청 페이지 번호

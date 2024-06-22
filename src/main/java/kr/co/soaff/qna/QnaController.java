@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class QnaController {
 	@Autowired
 	private QnaService service;
-	
+
 	@GetMapping("/list")
 	public String index(Model model, QnaVO vo) {
 		model.addAttribute("map", service.list(vo));
@@ -45,7 +45,7 @@ public class QnaController {
 			printList += "<td>" + qnaVO.getQuestion_date() + "</td>";
 			
 			if(qnaVO.getReply_date() != null) {
-				qnaVO.setReplyState("답변 완료"); 
+				qnaVO.setReplyState("답변 완료");
 				printList += "<td>" + qnaVO.getReplyState() + "</td>";
 			} else {
 				qnaVO.setReplyState("답변 대기");
@@ -57,19 +57,19 @@ public class QnaController {
 		map.put("printList", printList);
 		return map;
 	}
-	
+
 	@GetMapping("/detail")
 	public String detail(Model model, QnaVO vo) {
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/qna/detail";
 	}
-	
+
 	@GetMapping("/update")
 	public String detail2(Model model, QnaVO vo) {
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/qna/update";
 	}
-	
+
 	@PostMapping("/updateQna")
 	@ResponseBody
 	public int update(@RequestParam int qna_no, String title, String content) {
@@ -80,7 +80,7 @@ public class QnaController {
 		int result = service.update(vo);
 		return result > 0 ? 1 : 0;
 	}
-	
+
 	@PostMapping("/delete")
 	@ResponseBody
 	public int delete(@RequestParam int qna_no) {

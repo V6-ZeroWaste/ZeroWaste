@@ -14,32 +14,40 @@
     <title>soaff</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
-
 <script>
+    function checkBox() {
+        if ($('#idSaveCheck').is(':checked')) {
+            $('#idSaveCheck').val("yes");
+        } else {
+            $('#idSaveCheck').val(null);
+        }
+    }
 
     function loginCheck() {
-        let userId = $("#userId");
-        let pwd = $("#pwd");
+        let id = $("#id");
+        let pw = $("#pw");
         let idCheckMsg = $("#idCheckMsg");
         let pwdCheckMsg = $("#pwdCheckMsg");
+        let submitCheckMsg = $("#submitCheckMsg");
 
-        idCheckMsg.css("display", "none");
-        pwdCheckMsg.css("display", "none");
+        submitCheckMsg.css("display", "hidden");
+        idCheckMsg.css("display", "hidden");
+        pwdCheckMsg.css("display", "hidden");
 
         let isValid = true;
 
-        if (!userId.val()) {
+        if (!id.val()) {
             idCheckMsg.html("아이디를 입력해주세요");
             idCheckMsg.css("display", "block");
-            userId.focus();
+            id.focus();
             isValid = false;
         }
 
-        if (!pwd.val()) {
+        if (!pw.val()) {
             pwdCheckMsg.html("비밀번호를 입력해주세요");
             pwdCheckMsg.css("display", "block");
             if (isValid) {
-                pwd.focus();
+                pw.focus();
             }
             isValid = false;
         }
@@ -47,9 +55,36 @@
         return isValid;
     }
 
-
+    function formcheck() {
+        let isValid = loginCheck();
+        if (isValid) {
+            $.ajax({
+                url: '/user/user/login',
+                method: 'post',
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({
+                    "id": $("#id").val(),
+                    "pw": $("#pw").val(),
+                    "idSaveCheck": $("#idSaveCheck").val()
+                }),
+                async: false,
+                success: function (res) {
+                    console.log(res);
+                    if (res == '1') {
+                        $("#submitCheckMsg").html("아이디와 비밀번호를 다시 확인해주세요").css("display", "block");
+                        isValid = false;
+                    } else {
+                        location.href="/"
+                        isValid = true;
+                    }
+                }
+            });
+        }
+        console.log(isValid);
+        return isValid;
+    }
 </script>
-
 
 <body>
 
@@ -66,50 +101,48 @@
                             </h2>
                         </div>
 
-                        <form action="#" method="post" id="loginBorard" name="loginBoard"
-                              onsubmit="return loginCheck();">
+
                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
                                  data-parent="#accordionExample">
                                 <div class="card-body">
                                     <div class="row mt-2">
                                         <div class="form-group col-12">
-                                            <label for="userId">ID</label>
+                                            <label for="id">ID</label>
                                             <input type="text" class="form-control"
-                                                   id="userId" onchange="loginCheck();">
+                                                   id="id" name="id" onchange="loginCheck();" value="${saved_id}">
                                             <div id="idCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
-                                            <label for="pwd">Password</label>
+                                            <label for="pw">Password</label>
                                             <input type="password" class="form-control"
-                                                   id="pwd" onchange="loginCheck();">
+                                                   id="pw" name="pw" onchange="loginCheck();">
                                             <div id="pwdCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="col-12 mt-1">
                                             <div class="custom-control custom-switch mb-2">
                                                 <input type="checkbox" class="custom-control-input"
-                                                       id="customSwitch1">
+                                                       id="idSaveCheck" name="idSaveCheck"
+                                                ${!empty saved_id ? 'checked' : ''} onclick="checkBox()">
                                                 <label class="custom-control-label"
-                                                       for="customSwitch1">Remeber ID</label>
+                                                       for="idSaveCheck">Remember ID</label>
                                             </div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
-                                            <a href="/user/login/loginFind" style="color: #555555;">아이디 찾기 | </a>
-                                            <a href="/user/login/passwordFind" style="color: #555555;">비밀번호 찾기</a>
+                                            <a href="/user/user/user/find/idFind" style="color: #555555;">아이디 찾기 | </a>
+                                            <a href="/user/user/user/find/pwdFind" style="color: #555555;">비밀번호 찾기</a>
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <input type="submit" value="LOG IN" alt="LOG IN"
+                                            <input type="button" value="LOG IN" alt="LOG IN" onclick="formcheck();"
                                                    class="btn btn-block btn-primary"/>
+                                            <div id="submitCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <a href="/user/login/login" class="btn btn-block btn-primary"
-                                               style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;  ">계정
-                                                생성</a>
+                                            <a href="/user/user/signUp" class="btn btn-block btn-primary"
+                                               style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;">계정 생성</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                        </form>
                     </div>
 
                 </div>

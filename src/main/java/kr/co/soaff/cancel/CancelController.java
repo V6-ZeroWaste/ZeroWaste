@@ -34,8 +34,7 @@ public class CancelController {
     	if( !("form".equals(type)||"info".equals(type)) || vo.getOrder_detail_no() == 0 ) {
     		return "/user/include/404";
     	}
-//    	vo.setUser_no((int) session.getAttribute("user_no"));
-    	vo.setUser_no(1);
+    	vo.setUser_no((int) session.getAttribute("user_no"));
 
     	OrderDetailVO orderDetail = orderService.orderDetailInfo(vo);
     	if(orderDetail == null) {
@@ -48,8 +47,7 @@ public class CancelController {
     		return "/user/include/404";
     	}
     	OrderVO ovo = new OrderVO();
-//    	ovo.setUser_no((int) session.getAttribute("user_no"));
-    	ovo.setUser_no(1);
+    	ovo.setUser_no((int) session.getAttribute("user_no"));
     	ovo.setOrder_no(orderDetail.getOrder_no());
     	OrderVO order = orderService.orderInfo(ovo);
     	if("form".equals(type) && order.getDelivery_status() != 0) {
@@ -75,8 +73,7 @@ public class CancelController {
     @ResponseBody
     public String cancel(@RequestBody CancelAdminDetailVO vo, HttpSession session) {
     	String msg = "";
-//    	vo.setUser_no((int) session.getAttribute("user_no"));
-    	vo.setUser_no(1);
+    	vo.setUser_no((int) session.getAttribute("user_no"));
     	if(cancelService.requestCancel(vo)) {
     		msg="true";
     	}else {

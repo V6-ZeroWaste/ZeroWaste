@@ -21,11 +21,19 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script type="text/javascript">
 
-        let page = 1;  
+        let page = 1;
+        let filter = null;
 
-        window.onload=function(){
-        	  getList();
-        	}
+        window.onload = function() {
+  	      const urlParams = new URLSearchParams(window.location.search);
+  	      filter = urlParams.get('filter');
+  	      if (filter !== null) {
+  	         $('#filter').val(filter);
+  	      } else {
+  	         $('#filter').val("");  // 전체보기 시 필터를 빈 문자열로 설정
+  	      }
+  	      getList();
+  	   }
         function applyCondition(){
        		page = 1;
        		getList();
@@ -36,9 +44,11 @@
         }
         function getList(){
         	    var orderByValue = $('#orderBy').val();
+        	    var filterValue = $('#filter').val();
         	    if (orderByValue === "") {
         	        orderByValue = null;
         	    }
+        	
         	    
         	var data = {
         			searchWord: $('#searchWord').val(),
@@ -46,7 +56,8 @@
         			page: page,
                     start_date: $('#start_date').val(),
                     end_date: $('#end_date').val(),
-                    filter: filter
+                    filter : filterValue !== "" ? parseInt(filterValue) : null
+                    
         		
         	}
             console.log(data);
@@ -128,7 +139,7 @@
 							            <label>
                                           <select id="filter" name="filter" class="datatable-selector" onchange="applyCondition();">
                                              <option value="">전체</option>
-                                            <option value="답변대기">답변대기</option>
+                                            <option value="답변대기" <c:if test="${vo.filter}== '답변대기'">selected</c:if>>답변대기</option>
                                              <option value="답변완료" >답변완료</option>
                                              <option value="교환/환불문의" >교환/환불 문의</option>
            									 <option value="상품상세문의" >상품 상세 문의</option>

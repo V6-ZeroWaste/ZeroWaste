@@ -19,7 +19,9 @@ public interface ItemAdminService {
 
 	int delete(ItemVO vo, HttpServletRequest request);
 
-	public int deleteImg(ItemVO vo, HttpServletRequest request);
+	public int deleteImg(ItemVO vo);
+
+	void deleteNewImg(String imgUrl);
 
 	public Map<String, Object> index(ItemVO vo);
 
@@ -32,4 +34,6 @@ public interface ItemAdminService {
 	int deleteCategory(int category_no);
 
 	int insertCategory(CategoryVO vo);
+
+	String uploadItemImgAjax(MultipartFile file);
 }

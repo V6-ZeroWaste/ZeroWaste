@@ -8,7 +8,7 @@
 				AND concat_ws("-", `order`.order_no, user.id, item.name)  like '%${searchWord}%'
 			</if>
 			<if test="filter != null">
-				AND `order`.order_status = #{filter}
+				AND `order`.delivery_status = #{filter}
 			</if>
 			<if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
 				AND `order`.payment_date BETWEEN #{start_date} AND #{end_date}
