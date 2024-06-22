@@ -24,6 +24,21 @@
 	    DELETE FROM cart
 	    WHERE cart_no = #{cart_no} and user_no = #{user_no}
 	</delete>
+
+	<insert id="insert" parameterType="kr.co.soaff.cart.CartVO" useGeneratedKeys="true" keyProperty="cart_no">
+		INSERT INTO cart
+		(
+		user_no, amount,
+		packing_status, item_no
+		) VALUES (
+		#{user_no}, #{amount},
+		#{packing_status}, #{item_no}
+		);
+
+		<selectKey keyProperty="cart_no" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
 	
 	<!-- count -->
 	<select id="count" parameterType="kr.co.soaff.cart.CartVO" resultType="int">
