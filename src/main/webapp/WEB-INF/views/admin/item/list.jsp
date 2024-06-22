@@ -117,7 +117,6 @@
 	                },
 	                error:function (data, textStatus) {
 	                    $('#fail').html("관리자에게 문의하세요.") // 서버오류
-	                    console.log('error', data, textStatus);
 	                }
 	           	})
 	        	

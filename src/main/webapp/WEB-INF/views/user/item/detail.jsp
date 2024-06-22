@@ -127,8 +127,6 @@
                 itemPrice += '원';
             }
 
-            console.log(itemPrice.toString().toLocaleString());
-
             $(".selected-item-name").each(function () {
                 selectedItems.push($(this).text());
             });
@@ -155,7 +153,7 @@
             html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
             html+="id='button-minus-0' onClick='decreaseValue(this)'>-";
             html+="</button>";
-            html+="<input type='number' class='form-control form-control-sm input-full-width mt-3 input-count' min='1'";
+            html+="<input type='number' class='form-control form-control-sm input-full-width mt-3 input-count selected-item-amount' min='1'";
             html+="max='9' value='1' readonly />";
             html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
             html+="id='button-plus-0' onClick='increaseValue(this)'>+";
@@ -276,14 +274,10 @@
         function getFormattedQuestionDate(timestamp) {
             // timestamp를 Date 객체로 변환
             var questionDate = new Date(timestamp);
-            console.log('questionDate : '+questionDate);
             // 날짜를 "yyyy-MM-dd" 형식으로 포맷팅
             var year = questionDate.getFullYear();
             var month = String(questionDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
             var day = String(questionDate.getDate()).padStart(2, '0');
-            console.log('year : '+year);
-            console.log('month : '+month);
-            console.log('day : '+day);
 
             return year + '-' + month + '-' + day;
         }
@@ -319,14 +313,12 @@
                 filter: $('#photo-check-box').is(':checked') ? '사진' : '',
                 page: reviewPage,
             }
-            console.log(data.photoCheck);
             $.ajax({
                 type: "GET", // method type
                 url: "/item/getReviewList", // 요청할 url
                 data: data, // 전송할 데이터
                 dataType: "json", // 응답 받을 데이터 type
                 success : function(resp){
-                    console.log("리뷰 성공");
                     // 데이터 리스트 출력
                     renderReviewList(resp.reviews);
                     $("#review-total").html("후기("+resp.total.toLocaleString()+"개)");
@@ -357,9 +349,7 @@
 
                 },
                 error:function (data, textStatus) {
-                    console.log("리뷰 실패");
                     $('#fail').html("관리자에게 문의하세요.") // 서버오류
-                    console.log('error', data, textStatus);
                 }
             })
 
@@ -393,7 +383,6 @@
                     printList += "<div class='col-6 review-title'>" + review.title + "</div>";
                     printList += "<div class='col-2 user-id'>" + review.user_id + "</div>";
                     printList += "<div class='col-2 date'>" + getFormattedQuestionDate(review.regist_date) + "</div>";
-                    console.log(review.regist_date);
                     printList += "</div>";
                     printList += "</button>";
                     printList += "</h5>";
@@ -454,7 +443,6 @@
                 data: data, // 전송할 데이터
                 dataType: "json", // 응답 받을 데이터 type
                 success : function(resp){
-                    console.log("문의 성공");
                     // 데이터 리스트 출력
                     renderQnaList(resp.qnas);
                     $("#qna-total").html("상품 문의("+resp.total.toLocaleString()+"개)");
@@ -478,16 +466,13 @@
                         printPage += '<li class="datatable-pagination-list-item page-item">';
                         printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹</a></li>';
                     }
-                    // console.log(printPage);
                     $(".qna-pagination-list").html(printPage);
 
 
 
                 },
                 error:function (data, textStatus) {
-                    console.log("문의 실패");
                     $('#fail').html("관리자에게 문의하세요.") // 서버오류
-                    console.log('error', data, textStatus);
                 }
             })
 
@@ -563,6 +548,77 @@
             $("#qnaPrintList").html(printList);
         }
     </script>
+
+    <!-- 장바구니, 바로 구매 연결 -->
+    <script>
+        $(document).on('ready', ()=>{
+            $('#buy').on('click',()=>{
+
+                var selectedItemNo = [];
+                var selectedItemPackingStatus = [];
+                var selectedItemAmount = [];
+                $('.selected-item-name').each((index, item) => {
+                    selectedItemNo.push(${item.item_no});
+                    if($(item).text().includes('포장')){
+                        selectedItemPackingStatus.push('1');
+                    }else{
+                        selectedItemPackingStatus.push('0');
+                    }
+                });
+                $('.selected-item-amount').each((index, element) => {
+                    selectedItemAmount.push($(element).val());
+                });
+
+                console.log(selectedItemNo);
+                console.log(selectedItemPackingStatus);
+                console.log(selectedItemAmount);
+
+                var data = {
+                    item_no : selectedItemNo,
+                    packing_status : selectedItemPackingStatus,
+                    amount : selectedItemAmount
+                };
+
+                $.ajax({
+
+                })
+
+            });
+
+            $('#addToCart').on('click',()=>{
+
+                var selectedItemNo = [];
+                var selectedItemPackingStatus = [];
+                var selectedItemAmount = [];
+                $('.selected-item-name').each((index, item) => {
+                    selectedItemNo.push(${item.item_no});
+                    if($(item).text().includes('포장')){
+                        selectedItemPackingStatus.push('1');
+                    }else{
+                        selectedItemPackingStatus.push('0');
+                    }
+                });
+                $('.selected-item-amount').each((index, element) => {
+                    selectedItemAmount.push($(element).val());
+                });
+
+                console.log(selectedItemNo);
+                console.log(selectedItemPackingStatus);
+                console.log(selectedItemAmount);
+
+                var data = {
+                    item_no : selectedItemNo,
+                    packing_status : selectedItemPackingStatus,
+                    amount : selectedItemAmount
+                };
+
+                $.ajax({
+
+                })
+            });
+        });
+
+    </script>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
 <body>
@@ -617,10 +673,10 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="button" class="btn btn-block btn-lg btn-primary" value="장바구니">
+                            <input type="button" class="btn btn-block btn-lg btn-primary" id="addToCart" value="장바구니">
                         </div>
                         <div class="col-md-6">
-                            <input type="button" class="btn btn-block btn-lg btn-primary" value="바로 구매">
+                            <input type="button" class="btn btn-block btn-lg btn-primary" id="buy" value="바로 구매">
                         </div>
                     </div>
 
