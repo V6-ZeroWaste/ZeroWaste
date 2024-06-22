@@ -57,7 +57,6 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	@Transactional
 	public boolean orderConfirm(OrderDetailVO vo) {
 		return mapper.orderConfirm(vo) == 0 ? false : true;
 	}
