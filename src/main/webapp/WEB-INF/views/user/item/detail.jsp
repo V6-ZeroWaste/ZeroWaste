@@ -616,15 +616,36 @@
         }
 
         $(document).on('ready', ()=>{
+            const isLoggedIn = <c:out value="${not empty user_id}" />;
             $('#buy').on('click',()=>{
-                addToCart("buy");
+                if($('.selected-item-name').length === 0){
+                    alert('상품을 선택해주세요');
+                }else{
+                    if (!isLoggedIn) {
+                        if(confirm('로그인이 필요한 기능입니다. \n로그인 하시겠습니까?')){
+                            location.href = '/user/user/login';
+                        }
+                    } else {
+                        addToCart("buy");
+                    }
+                }
             });
-
             $('#addToCart').on('click',()=>{
-                addToCart("cart");
+                if($('.selected-item-name').length === 0){
+                    alert('상품을 선택해주세요');
+                }else{
+                    if (!isLoggedIn) {
+                        if(confirm('로그인이 필요한 기능입니다. \n로그인 하시겠습니까?')){
+                            location.href = '/user/user/login';
+                        }
+                    } else {
+                        addToCart("cart");
+                    }
+                }
             });
 
         });
+
 
 
     </script>
