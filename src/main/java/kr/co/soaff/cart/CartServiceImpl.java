@@ -54,7 +54,7 @@ public class CartServiceImpl implements CartService {
 		return mapper.delete(vo);
 	}
 
-	public List<Integer> insert(CartItemDTO dto) {
+	public List<Integer> insert(CartItemDTO dto, int user_no) {
 		List<Integer> itemNoArray = dto.getItem_no_array();
 		List<Integer> packingStatusArray = dto.getPacking_status_array();
 		List<Integer> amountArray = dto.getAmount_array();
@@ -62,7 +62,7 @@ public class CartServiceImpl implements CartService {
 		List<Integer> cartNos = new ArrayList<>();
 		for(int i=0; i<size; i++) {
 			CartVO vo = new CartVO();
-			vo.setUser_no(1); // todo: 로그인 기능 완료시 구현
+			vo.setUser_no(user_no);
 			vo.setItem_no(itemNoArray.get(i));
 			vo.setPacking_status(packingStatusArray.get(i));
 			vo.setAmount(amountArray.get(i));
