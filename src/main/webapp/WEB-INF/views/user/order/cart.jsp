@@ -257,31 +257,10 @@
 
     function goOrder() {
         if (con) {
-
-            // console.log(selectedCheckedCartNo());
-            //
-            // var data = {
-            //     selectedCheckedCartNo: selectedCheckedCartNo()
-            // };
-            // $.ajax({
-            //     type: "GET", // method type
-            //     url: "/order", // 요청할 url
-            //     data: data, // 전송할 데이터
-            //     success: function () {
-            //         console.log("ok")
-            //     },
-            //     error: function (data, textStatus) {
-            //         $('#fail').html("관리자에게 문의하세요.") // 서버오류
-            //         console.log('error', data, textStatus);
-            //     }
-            // })
             $('#frm').submit();
-
-
 
         } else {
             alert("상품을 선택해주세요")
-
         }
     }
 
