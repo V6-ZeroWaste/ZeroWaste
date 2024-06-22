@@ -30,18 +30,25 @@
     let emailIdRegex = /^[a-zA-Z0-9._%+-]+$/;
     let emailDomainRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
+    var submitFist = false; // 처음에는 유효성 검사 자동으로 안하게
     function goLogin(event) {
+      submitFist = true;
       event.preventDefault();
       isValid = true;
       isValid = idbtnCheck();
-      // isValid = fieldCheck();
+      isValid = fieldCheck();
       if (isValid) {
-        // $('#frm').submit();
+        $('#frm').submit();
+      }else{
+        $("#id, #pwd, #pwd_check, #name, #tel1, #tel2, #tel3, #email_id, #email_domain, #zipcode, #addr1").on("change", fieldCheck);
       }
     }
-
-    function fieldCheck() {
+    // //else{
+    // $('#email_idErrorMsg').html("이메일을 먼저 입력해주세요");
+    // $('#email_idErrorMsg').css("display", "block");
+    // isValid = false;
+    // }
+    function fieldCheck(){
       var id = $('#id');
       let pwd = $('#pwd');
       let pwd_check = $('#pwd_check');
@@ -167,6 +174,13 @@
         isValid = false;
       }
 
+      if (!email_domain.val()) {
+        email_idErrorMsg.html("이메일을 입력해주세요");
+        email_idErrorMsg.css("display", "block");
+        isValid = false;
+      }
+
+
       if(!emailIdRegex.test(email_id.val()) && email_id.val() !== '' ) {
         email_idErrorMsg.html("올바른 이메일을 입력해주세요");
         email_idErrorMsg.css("display", "block");
@@ -179,11 +193,6 @@
         isValid = false;
       }
 
-      if (!email_domain.val()) {
-        email_idErrorMsg.html("이메일을 입력해주세요");
-        email_idErrorMsg.css("display", "block");
-        isValid = false;
-      }
 
       if (!emailcheck_id.val()) {
         emailcheck_idErrorMsg.html("인증을 해주세요");
@@ -191,7 +200,7 @@
         isValid = false;
       }
 
-      if (!emailbtnClickedCheck) {
+      if (!emailbtnClickedCheck && emailcheck_id.val()) {
         email_btnErrorMsg.html("버튼을 눌러주세요");
         email_btnErrorMsg.css("display", "block");
         isValid = false;
@@ -239,6 +248,7 @@
         });
       }
       else {
+        event.preventDefault();
         isValid = false;
         $("#idErrorMsg").html("아이디를 먼저 입력해주세요");
         $("#idErrorMsg").css("display", "block");
@@ -247,7 +257,7 @@
     }
 
 
-    function sendVerificationCode() {
+    function sendemail() {
       let email = $('#email_id').val() + "@" + $('#email_domain').val();
       $.ajax({
         url: '/email/sendMail',
@@ -266,15 +276,15 @@
     }
 
 
-    function checkVerificationCode() {
+    function checkemail() {
       let email = $('#email_id').val() + "@" + $('#email_domain').val();
-      //@RequestBody String key, @RequestBody String insertKey, @RequestBody String email
+      // @RequestBody String key, @RequestBody String insertKey, @RequestBody String email
       let insertKey = $('#emailcheck_id').val();
       isValid = false;
       console.log(email)
       console.log(insertKey)
       console.log(key + 'ssdsd')
-      if(key ===''){
+      if(key !=='' && key === null){
         $('#emailcheck_idErrorMsg').html("만료된 인증코드입니다").css("display", "block");
         $('#emailcheck_id').focus();
       }
@@ -306,7 +316,7 @@
 
     function resetTimer() {
       clearInterval(timerInterval);
-      startTimer(30);
+      startTimer(10);
     }
 
     function startTimer(duration) {
@@ -324,18 +334,16 @@
         if (time < 0) {
           clearInterval(timerInterval);
           document.getElementById("timer2").innerHTML = "시간초과";
-          key = '';  // 타이머가 끝나면 인증 코드 사라짐
+          key = null;  // 타이머가 끝나면 인증 코드 사라짐
           console.log("만료됐어~~~")
           console.log(key);
           console.log(key);
           console.log(key);
-          $('#email_btnErrorMsg').html("재전송을 눌러주세요").css("display", "block");
         }
       }, 1000);
     }
 
     $(function() {
-      $("#id, #pwd, #pwd_check, #name, #tel1, #tel2, #tel3, #email_id, #email_domain, #zipcode, #addr1").on("change", fieldCheck);
 
       $('#pwd_check').on('input', function () {
         if ($('#pwd').val() !== $('#pwd_check').val()) {
@@ -358,21 +366,22 @@
           }
 
         });
-
-      $('#email_btn').on('click', function() {
-        emailbtnClickedCheck = true;
-        $(this).text('재전송');
-        $('#emailVerification').show();
-        sendVerificationCode();
-        resetTimer();
-      });
+      if($('#email').val() && $('#email_domain').val()) {
+        $('#email_btn').on('click', function () {
+          emailbtnClickedCheck = true;
+          $(this).text('재전송');
+          $('#emailVerification').show();
+          sendemail();
+          resetTimer();
+        });
+      }
 
       $('#adr_btn').on('click', function() {
         zipcode();
       });
 
-      $('#emailCheck_btn').on('click', function() {
-        checkVerificationCode();
+      $('#emailCheck_btn').on('click', function () {
+        checkemail();
       });
 
       $('#id_btn').on('click', function () {
