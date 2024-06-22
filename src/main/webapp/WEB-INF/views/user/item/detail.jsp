@@ -795,10 +795,10 @@
             <br>
             <br>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div id="review-total">후기(6,404 개)</div>
+                <div id="review-total">후기(0개)</div>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <h2><b id="avgScore">4.3</b> / 5</h2>
+                <h2><b id="avgScore">0</b> / 5</h2>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
                 <div class="col-md-8">
@@ -816,8 +816,12 @@
                     </select>
                 </div>
             </div>
-
             <div id="reviewPrintList"> <!-- 리뷰 리스트 -->
+                <div class='row gutter-2 gutter-lg-4 mb-0'>
+                    <div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>
+                        아직 작성된 리뷰가 없습니다.
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col text-center">
@@ -866,6 +870,11 @@
             </div>
             <br>
             <div id="qnaPrintList"> <!-- 문의 리스트 -->
+                <div class='row gutter-2 gutter-lg-4 mb-0'>
+                    <div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>
+                        작성된 문의가 없습니다.
+                    </div>
+                </div>
             </div>
             <!-- 문의 끝 -->
             <div class="row">
