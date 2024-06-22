@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 
+
 @Service
 public class OrderServiceImpl implements OrderService {
 	@Autowired
@@ -54,8 +55,14 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderDetailVO> orderDetailInfo(OrderVO orderVO) {
-		return mapper.orderDetailInfo(orderVO);
+	public OrderDetailVO orderDetailInfo(OrderDetailVO orderDetailVO) {
+		return  mapper.orderDetailInfo(orderDetailVO);
+	}
+	
+	@Override
+	public List<OrderDetailVO> orderDetailList(OrderVO orderVO) {
+		return  mapper.orderDetailList(orderVO);
+
 	}
 
 	@Override
@@ -95,5 +102,6 @@ public class OrderServiceImpl implements OrderService {
 	public int deleteCartAfterOrder(OrderVO vo) {
 		return mapper.deleteCartAfterOrder(vo);
 	}
+
 
 }
