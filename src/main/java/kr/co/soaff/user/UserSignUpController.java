@@ -16,14 +16,14 @@ public class UserSignUpController {
     @Autowired
     private UserSignUpService service;
 
-    @GetMapping("/user/user/signup")
+    @GetMapping("/user/user/signUp")
     public String userSignUp() {
-        return "/user/user/signup";
+        return "/user/user/signUp";
     }
 
-    @PostMapping("/user/user/signup")
+    @PostMapping("/user/user/signUp")
     public String userSignUp(Model model, UserVO vo){
-        return "/user/user/signup";
+        return "/user/user/signUp";
     }
 
 

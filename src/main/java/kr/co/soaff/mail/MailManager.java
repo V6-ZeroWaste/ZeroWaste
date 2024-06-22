@@ -27,8 +27,6 @@ public class MailManager {
 		mimeMessage.setSubject(sub);
 		mimeMessage.setText(con);
 		javaMailSender.send(mimeMessage);
-		
-
 	}
 
 }

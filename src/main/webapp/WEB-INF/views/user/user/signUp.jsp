@@ -23,7 +23,7 @@
     let timerInterval;
     let emailbtnClickedCheck = false;
     let idbtnClickedCheck = false;
-    let verificationCode = '';
+    let key ='';
     let tel1Regex = /^[0-9]{3}$/;
     let tel2Regex = /^[0-9]{3,4}$/;
     let tel3Regex = /^[0-9]{4}$/;
@@ -189,10 +189,6 @@
         emailcheck_idErrorMsg.html("인증을 해주세요");
         emailcheck_idErrorMsg.css("display", "block");
         isValid = false;
-      } else if (emailcheck_id.val() !== verificationCode) {
-        emailcheck_idErrorMsg.html("인증코드가 다릅니다");
-        emailcheck_idErrorMsg.css("display", "block");
-        isValid = false;
       }
 
       if (!emailbtnClickedCheck) {
@@ -230,7 +226,6 @@
           }),
           async: false,
           success: function(res) {
-            console.log("okokokok")
             if (res == '1') {
               $("#idErrorMsg").html("중복된 아이디입니다").css("display", "block");
               isValid = false;
@@ -255,19 +250,63 @@
     function sendVerificationCode() {
       let email = $('#email_id').val() + "@" + $('#email_domain').val();
       $.ajax({
-        url: '/sendVerificationCode',
+        url: '/email/sendMail',
         method: 'POST',
-        data: {email: email},
-        success: function (res) {
-          verificationCode = res.verificationCode;
+        contentType: 'text/plain',
+        data: email,
+        success: function(res) {
           alert("인증코드가 발송되었습니다.");
+           key= res;
+        },
+        error: function(err) {
+          alert("이메일 전송 중 오류가 발생했습니다.");
+          console.log(email);
         }
       });
     }
 
+
+    function checkVerificationCode() {
+      let email = $('#email_id').val() + "@" + $('#email_domain').val();
+      //@RequestBody String key, @RequestBody String insertKey, @RequestBody String email
+      let insertKey = $('#emailcheck_id').val();
+      isValid = false;
+      console.log(email)
+      console.log(insertKey)
+      console.log(key + 'ssdsd')
+      if(key ===''){
+        $('#emailcheck_idErrorMsg').html("만료된 인증코드입니다").css("display", "block");
+        $('#emailcheck_id').focus();
+      }
+      else {
+        $.ajax({
+          url: '/email/checkMail',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            email: email,
+            insertKey: insertKey,
+            key: key
+          }),
+          success: function (res) {
+            if (res === "1") {
+              alert("인증 성공");
+            } else {
+              $('#emailcheck_idErrorMsg').html("인증코드가 다릅니다").css("display", "block");
+              $('#emailcheck_id').focus();
+            }
+          },
+          error: function (err) {
+            console.log(res);
+          }
+        });
+      }
+    }
+
+
     function resetTimer() {
       clearInterval(timerInterval);
-      startTimer(180);
+      startTimer(30);
     }
 
     function startTimer(duration) {
@@ -281,11 +320,16 @@
 
         document.getElementById("timer2").innerHTML = min + "분 " + sec + "초";
         time--;
-
+        console.log(key);
         if (time < 0) {
           clearInterval(timerInterval);
           document.getElementById("timer2").innerHTML = "시간초과";
-          verificationCode = '';  // 타이머가 끝나면 인증 코드 무효화
+          key = '';  // 타이머가 끝나면 인증 코드 사라짐
+          console.log("만료됐어~~~")
+          console.log(key);
+          console.log(key);
+          console.log(key);
+          $('#email_btnErrorMsg').html("재전송을 눌러주세요").css("display", "block");
         }
       }, 1000);
     }
@@ -328,12 +372,7 @@
       });
 
       $('#emailCheck_btn').on('click', function() {
-        if ($('#emailcheck_id').val() === verificationCode) {
-          alert("인증 성공");
-        } else {
-          $('#emailcheck_idErrorMsg').html("인증코드가 다릅니다").css("display", "block");
-          $('#emailcheck_id').focus();
-        }
+        checkVerificationCode();
       });
 
       $('#id_btn').on('click', function () {
