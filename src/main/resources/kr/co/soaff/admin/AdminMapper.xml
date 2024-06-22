@@ -3,6 +3,6 @@
 <mapper namespace="kr.co.soaff.admin.AdminMapper">
 	<!-- admin 로그인 -->
 	<select id="login" parameterType="kr.co.soaff.admin.AdminVO" resultType="kr.co.soaff.admin.AdminVO">
-		SELECT * FROM admin WHERE id=#{id} AND pw=#{pwd}
+		SELECT * FROM admin WHERE id=#{id} AND pw=#{pw}
 	</select>
 </mapper>
