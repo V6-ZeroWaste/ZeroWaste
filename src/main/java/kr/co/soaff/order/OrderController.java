@@ -26,27 +26,28 @@ public class OrderController {
     private OrderService service;
 
     @GetMapping("/mypage/order/list")
-    public String index(Model model, OrderVO orderVo, HttpSession session) {
-    	orderVo.setUser_no(1); 
+    public String index(Model model, OrderVO vo, HttpSession session) {
+    	vo.setUser_no(1); 
     	// session에서 user_no 가져오기
 //    	orderVo.setUser_no((int) session.getAttribute("user_no"));
-    	model.addAttribute("map", service.list(orderVo));
+    	model.addAttribute("map", service.list(vo));
     	
       return "/user/order/list";
     }
 
     @GetMapping("/mypage/order/detail")
-    public String detail(Model model, OrderVO orderVo, HttpSession session) {
-    	orderVo.setUser_no(1); 
+    public String detail(Model model, OrderVO vo, HttpSession session) {
+    	vo.setUser_no(1); 
     	// session에서 user_no 가져오기
-//    	orderVo.setUser_no((int) session.getAttribute("user_no"));
-    	OrderVO vo = service.orderInfo(orderVo);
-    	if(vo == null) {
+//    	vo.setUser_no((int) session.getAttribute("user_no"));
+    	OrderVO orderVo = service.orderInfo(vo);
+    	if(orderVo == null || orderVo.getOrder_no() == 0) {
     		return "/user/include/404";
     	}
-    	
-    	model.addAttribute("order", vo);
-    	model.addAttribute("list", service.orderDetailInfo(orderVo));
+    	orderVo.setUser_no(1);
+//    	orderVo.setUser_no((int) session.getAttribute("user_no"));
+    	model.addAttribute("order", orderVo);
+    	model.addAttribute("list", service.orderDetailList(orderVo));
     	return "/user/order/detail";
     }	
     @PostMapping( value = "/mypage/order/detail/confirm", produces = "application/text; charset=utf8")
@@ -54,7 +55,7 @@ public class OrderController {
     public String confirm(@RequestBody OrderDetailVO vo, HttpSession session) {
     	vo.setUser_no(1);
     	// session에서 user_no 가져오기
-//    	orderVo.setUser_no((int) session.getAttribute("user_no"));
+//    	vo.setUser_no((int) session.getAttribute("user_no"));
     	String msg = "";
     	if(service.orderConfirm(vo)) {
     		msg = "처리 완료";

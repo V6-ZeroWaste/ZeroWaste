@@ -11,6 +11,7 @@ public interface OrderMapper {
 	int count(OrderVO vo);
 	// Mypage > order > detail
 	OrderVO orderInfo(OrderVO vo);
-	List<OrderDetailVO> orderDetailInfo(OrderVO vo);
+	OrderDetailVO orderDetailInfo(OrderDetailVO vo);
+	List<OrderDetailVO> orderDetailList(OrderVO vo);
 	int orderConfirm(OrderDetailVO vo);
 }

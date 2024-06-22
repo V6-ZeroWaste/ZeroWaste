@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrderServiceImpl implements OrderService{
 	@Autowired
@@ -46,11 +47,17 @@ public class OrderServiceImpl implements OrderService{
 	}
 	
 	@Override
-	public List<OrderDetailVO> orderDetailInfo(OrderVO orderVO) {
-		return  mapper.orderDetailInfo(orderVO);
+	public OrderDetailVO orderDetailInfo(OrderDetailVO orderDetailVO) {
+		return  mapper.orderDetailInfo(orderDetailVO);
+	}
+	
+	@Override
+	public List<OrderDetailVO> orderDetailList(OrderVO orderVO) {
+		return  mapper.orderDetailList(orderVO);
 	}
 
 	@Override
+	@Transactional
 	public boolean orderConfirm(OrderDetailVO vo) {
 		return mapper.orderConfirm(vo) == 0 ? false : true;
 	}

@@ -8,6 +8,7 @@ public interface OrderService {
 	Map<String, Object> list(OrderVO orderVo);
 	// Mypage > order > detail
 	OrderVO orderInfo(OrderVO orderVO);
-	List<OrderDetailVO> orderDetailInfo(OrderVO orderVO);
+	OrderDetailVO orderDetailInfo(OrderDetailVO orderVO);
+	List<OrderDetailVO> orderDetailList(OrderVO orderVO);
 	boolean orderConfirm(OrderDetailVO vo);
 }
