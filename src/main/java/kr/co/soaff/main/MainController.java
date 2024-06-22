@@ -19,12 +19,6 @@ public class MainController {
 		return "/user/main/index";
 	}
 
-	@GetMapping("/cart")
-	public String cart(HttpSession session, Model model) {
-
-		return "/user/order/cart";
-	}
-
 	@GetMapping("/login")
 	public String login() {
 		return "user/user/login";

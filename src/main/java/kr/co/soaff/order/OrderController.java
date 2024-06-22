@@ -66,16 +66,33 @@ public class OrderController {
 
 		model.addAttribute("map", service.order(vo));
 
-		return "/user/order/order";
+		return "user/order/order";
 	}
 
 	@GetMapping("/order/success")
 	public String success() {
-		return "/user/order/success";
+		return "user/order/success";
+	}
+//	@GetMapping("/order/success")
+//	public String success(HttpServletRequest req, HttpServletResponse res, Model model) throws Exception {
+//		RequestDispatcher dispatcher = req.getRequestDispatcher("user/order/success");
+//		dispatcher.forward(req, res);
+//		
+//		return "user/order/success";
+//	}
+
+	@ResponseBody
+	@PostMapping(value = "/order/insert", produces = "application/text; charset=utf8")
+	public String orderInsert(@RequestBody OrderVO vo) {
+		vo.setUser_no(1); // 세션처리
+		String msg = "";
+		if (service.orderInsert(vo)) {
+			msg = "success";
+		} else {
+			msg = "fail";
+		}
+		return msg;
+
 	}
 
-	@PostMapping("payment/complete")
-	public int paymentComplete(@RequestBody OrderVO vo, Model model) {
-		return service.updateOrder(vo);
-	}
 }

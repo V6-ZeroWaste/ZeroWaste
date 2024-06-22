@@ -17,5 +17,6 @@ public interface OrderService {
 	// Order
 	Map<String, Object> order(OrderVO vo);
 
-	int updateOrder(OrderVO vo);
+	boolean orderInsert(OrderVO vo);
+
 }
