@@ -152,6 +152,7 @@
 	</select>
 	
 	<!-- updateDB -->
+	<!-- order부분 -->
 	<insert id="orderInsert" parameterType="kr.co.soaff.order.OrderVO">		
 		INSERT INTO `order`(
 			user_no, payment_date, payment_price, payment_method,
@@ -167,9 +168,19 @@
 				#{buyer_name}, #{buyer_email}, #{buyer_tel}, #{delivery_status}
 			)
 		
-		<selectKey keyProperty="order_no" order="AFTER" resultType="int">
+		<selectKey keyProperty="orderNo" order="AFTER" resultType="int">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
+	</insert>
+	<!-- order detail 부분 -->
+	<insert id="orderDetailInsert" parameterType="kr.co.soaff.order.OrderVO">		
+		INSERT INTO `order`(
+			order_no, user_no, amount, 
+			price, item_no
+			) VALUES (
+			#{orderNo},#{user_no}, #{amount},
+			#{price},#{item_no}
+			)
 	</insert>
 		
 	<insert id="pointPlus" parameterType="kr.co.soaff.order.OrderVO">
@@ -178,7 +189,7 @@
 				point_date, order_no
 			) VALUES (
 				#{user_no},#{pointPlusContent},#{pointPlus},
-				NOW(),#{order_no}
+				NOW(),#{orderNo}
 		
 			)
 	
@@ -190,7 +201,7 @@
 				point_date, order_no
 			) VALUES (
 				#{user_no},#{pointContent},#{point},
-				NOW(),#{order_no}
+				NOW(),#{orderNo}
 		
 			)
 	
