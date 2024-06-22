@@ -75,8 +75,7 @@ public class OrderAdminController {
 	@ResponseBody
 	@PostMapping(value = "/admin/order/detail/updateDeliveryStatus", produces = "application/text; charset=utf8")
 	public String updateDeliveryStatus(@RequestBody OrderVO orderVO) {
-		System.out.println(orderVO.toString());
-
+//		System.out.println(orderVO.toString());
 		return service.updateDeliveryStatus(orderVO) + "";
 	}
 

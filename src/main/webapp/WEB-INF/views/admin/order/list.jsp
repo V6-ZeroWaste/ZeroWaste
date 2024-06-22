@@ -72,7 +72,7 @@
                		
                		// 페이지네이션 출력
                		// 총 개수
-               		$(".datatable-info").html("Showing "+((page-1)*20+1)+" to "+(page*20<=resp.total? page*20 : resp.total)+" of "+resp.total+" entries"); 
+               		$(".datatable-info").html("Showing "+((page-1)*20+1)+" to "+(page*20<=resp.count? page*20 : resp.count)+" of "+resp.count+" entries");
                		// 페이지네이션
                		let printPage = "";
                		if(resp.isPrev){
@@ -87,9 +87,9 @@
                		}
                		if(resp.isNext){
                			printPage += '<li class="datatable-pagination-list-item">';
-               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
                			printPage += '<li class="datatable-pagination-list-item">';
-               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
                		}
                		$(".datatable-pagination-list").html(printPage);
                		

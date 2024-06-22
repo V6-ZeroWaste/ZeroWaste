@@ -4,30 +4,64 @@
 	
 	<sql id="searchSql">
 		<where>
-			<if test="start_date != null and start_date != '' and end_date != null and end_date != ''">
-				AND `order`.payment_date BETWEEN #{start_date} AND #{end_date}
+			user_no = #{user_no}
+			<if test="start_date != null and start_date != ''">
+				AND `order`.payment_date >= #{start_date}
 			</if>
-			<if test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
-				AND `order`.payment_date BETWEEN #{start_date} AND NOW()
+			<if test="end_date != null and end_date != ''">
+				AND #{end_date} >= `order`.payment_date
 			</if>
-			<if test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
-				<![CDATA[
-					and `order`.payment_date <= #{end_date}
-				]]>
+			<if test="filter != null and filter != ''">
+				<choose>
+					<when test="filter=='상품준비중'">
+						AND order_status = 0
+					</when>
+					<when test="filter=='배송중'">
+						AND order_status = 1
+					</when>
+					<when test="filter=='배송완료'">
+						AND order_status = 2
+					</when>
+ 					<when test="filter=='구매확정'">
+ 						AND confirm_date is not null
+					</when>
+					<when test="filter=='취소요청/완료'">
+						AND cancel_status IS NOT NULL
+					</when>
+				</choose>
 			</if>
 		</where>
 	</sql>
 	
-	<!-- list -->
-	<select id="orderList" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.order.OrderVO">
+	<!-- 마이페이지>주문 -->
+	<select id="list" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.order.OrderVO">
 		SELECT 
-			od.order_no, user_no, payment_date, delivery_status, total_item_price,
+			od.order_no, payment_date, total_item_price,
 			cancel_status,total_amount,
+			if(od.confirm_date is null,delivery_status, 3) as order_status,
 			IF(item_amount > 1, CONCAT(item.name ,' 외 ',item_amount - 1,'개'), item.name ) AS order_name,
-		    item_amount
+		    item_amount, cancel_count, item_img
 		FROM (
 			SELECT 
-				order_no, MIN(item_no) AS item_no, SUM(price) AS total_item_price,
+				order_no, MIN(item_no) AS item_no, SUM(price) AS total_item_price, max(confirm_date) as confirm_date,
+				SUM(amount) AS total_amount, MIN(cancel_status) AS cancel_status, COUNT(*) AS item_amount, COUNT(cancel_status) as cancel_count
+			FROM order_detail
+			GROUP BY order_no
+		    ) od
+		JOIN item
+		ON item.item_no = od.item_no
+		JOIN `order`
+		ON `order`.order_no = od.order_no
+		<include refid="searchSql"/>
+		ORDER BY payment_date DESC
+	</select>
+	
+	<!-- 마이페이지>주문 (총 개수) -->
+	<select id="count" parameterType="kr.co.soaff.order.OrderVO" resultType="int">
+		SELECT COUNT(DISTINCT(`order`.order_no))
+		FROM (
+			SELECT 
+				order_no, MIN(item_no) AS item_no, SUM(price) AS total_item_price, max(confirm_date) as confirm_date,
 				SUM(amount) AS total_amount, MIN(cancel_status) AS cancel_status, COUNT(*) AS item_amount
 			FROM order_detail
 			GROUP BY order_no
@@ -36,54 +70,154 @@
 		ON item.item_no = od.item_no
 		JOIN `order`
 		ON `order`.order_no = od.order_no
-		ORDER BY payment_date DESC
-	</select>
-	
-	<!-- count -->
-	<select id="count" parameterType="kr.co.soaff.order.OrderVO" resultType="int">
-		SELECT COUNT(DISTINCT(`order`.order_no))
-		FROM `order` 
-		JOIN user ON `order`.user_no = user.user_no
-		JOIN order_detail ON `order`.order_no = order_detail.order_no
-		JOIN item ON order_detail.item_no = item.item_no
 		<include refid="searchSql"/>
-		<include refid="orderBySql"/>
+		ORDER BY payment_date DESC
+		LIMIT #{startIdx}, 10
 	</select>
 	
-	<!-- detail -->
+	<!-- 마이페이지>주문>상세> (주문 정보) -->
 	<!-- OrderVO에 담는 정보 -->
-	<select id="detailFromOrderVO" parameterType="kr.co.soaff.order.OrderVO">
-		SELECT 
-			order_no,
-			payment_date,
-		    receiver_name,
-		    receiver_tel,
-		    addr,
-		    addr_detail,
-		    delivery_request,
-		    delivery_status,
-			delivery_price,
-		    point,
-		    payment_method,
-		    payment_price
-   		FROM `order`
-		WHERE order_no = #{order_no}
+	<select id="orderInfo" parameterType="kr.co.soaff.order.OrderVO">
+		SELECT
+			order_no, delivery_status,
+		    payment_method, payment_date,  point, payment_price, delivery_price,
+		    receiver_name, receiver_tel, zipcode, addr, addr_detail, delivery_request
+		FROM `order`
+		WHERE order_no = #{order_no} and `order`.user_no = #{user_no};
 	</select>
+	<!-- 마이페이지>주문>상세> (주문 상세 정보) -->
 	<!-- OrderDetailVO에 담는 정보 -->
-	<select id="detailFromOrderDetailVO" parameterType="kr.co.soaff.order.OrderDetailVO">
+	<select id="orderDetailInfo" parameterType="kr.co.soaff.order.OrderDetailVO">
 		SELECT 
-			item.item_img,
-			item.name as item_name,
-			order_detail.price,
-			order_detail.cancel_status
-			
-		FROM order_detail 
-		JOIN item ON order_detail.item_no = item.item_no
-		WHERE order_detail.order_no = #{order_no};
+			order_detail_no,
+		    od.amount, od.price,
+		    cancel_status, confirm_date,
+		    od.item_no, item_img, item.name as item_name,
+		    (select review_no from review where order_detail_no = od.order_detail_no and user_no = od.user_no) as review_no
+		FROM order_detail AS od
+			JOIN item
+		    ON item.item_no = od.item_no
+		WHERE order_no = #{order_no} and od.user_no = #{user_no}
+	</select>
+	<update id="orderConfirm" parameterType="kr.co.soaff.order.OrderDetailVO">
+		UPDATE order_detail SET
+						confirm_date = current_timestamp()
+		WHERE order_detail_no = #{order_detail_no} and user_no = #{user_no}
+	</update>
+	
+	<!-- 봉욱 주문페이지에서 사용하는 쿼리-->
+	<!-- start -->
+	<!-- Order, delivery Info에 들어갈 정보 (list) -->
+	<select id="info" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.order.OrderVO">
+		SELECT tel as buyer_tel,
+	   		   email as buyer_email, 
+      	   	   zipcode,
+               addr, addr_detail
+		FROM user
+		WHERE user_no=#{user_no}
 	</select>
 	
-	<!-- 배송정보 업데이트 -->
-	<update id="updateDeliveryStatus" parameterType="kr.co.soaff.order.OrderVO">
-		UPDATE `order` SET delivery_status=#{delivery_status} WHERE order_no=#{order_no}
-	</update>
+	<!-- 잔여 적립금 조회(point)-->
+	<select id="point" parameterType="kr.co.soaff.order.OrderVO" resultType="int">
+		SELECT sum(point) as point FROM point WHERE user_no=#{user_no}
+	</select>
+	
+	<!-- 카트 정보 조회 -->
+	<!-- cart list -->
+	<select id="cartList" parameterType="kr.co.soaff.order.OrderVO" resultType="kr.co.soaff.cart.CartVO">
+		SELECT c.cart_no, c.user_no, c.amount, c.packing_status,
+		c.item_no, i.name, i.price, i.discounted_price,
+		i.item_img, i.amount as inventory
+		FROM cart c
+		JOIN item i ON c.item_no = i.item_no
+		WHERE c.user_no = #{user_no}
+		AND c.cart_no IN
+		<foreach item="cartNo" collection="checkedCartNo" open="(" separator="," close=")">
+			#{cartNo}
+		</foreach>
+		ORDER BY c.cart_no;
+	</select>
+
+	
+		
+	<!-- cart count -->
+	<select id="cartCount" parameterType="kr.co.soaff.order.OrderVO" resultType="int">
+		SELECT count(*)
+		FROM cart
+		WHERE user_no = #{user_no}
+		AND cart_no IN
+		<foreach item="cartNo" collection="checkedCartNo" open="(" separator="," close=")">
+			#{cartNo}
+		</foreach>
+	</select>
+	
+	<!-- updateDB -->
+	<!-- order부분 -->
+	<insert id="orderInsert" parameterType="kr.co.soaff.order.OrderVO">		
+		INSERT INTO `order`(
+			user_no, payment_date, payment_price, payment_method,
+			payment_id, imp_uid, point, order_status, 
+			order_name, receiver_name, zipcode, addr, 
+			addr_detail, receiver_tel, delivery_request, delivery_price, 
+			buyer_name, buyer_email, buyer_tel, delivery_status
+			) VALUES (
+				#{user_no}, NOW(), #{payment_price}, #{payment_method}, 
+				#{payment_id}, #{imp_uid}, #{point}, #{order_status}, 
+				#{order_name}, #{receiver_name}, #{zipcode}, #{addr}, 
+				#{addr_detail}, #{receiver_tel}, #{delivery_request}, #{delivery_price},
+				#{buyer_name}, #{buyer_email}, #{buyer_tel}, #{delivery_status}
+			)
+		
+		<selectKey keyProperty="orderNo" order="AFTER" resultType="int">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<!-- order detail 부분 -->
+	<insert id="orderDetailInsert" parameterType="kr.co.soaff.order.OrderVO">		
+		INSERT INTO `order`(
+			order_no, user_no, amount, 
+			price, item_no
+			) VALUES (
+			#{orderNo},#{user_no}, #{amount},
+			#{price},#{item_no}
+			)
+	</insert>
+		
+	<insert id="pointPlus" parameterType="kr.co.soaff.order.OrderVO">
+		INSERT INTO `point`(
+				user_no, content, point, 
+				point_date, order_no
+			) VALUES (
+				#{user_no},#{pointPlusContent},#{pointPlus},
+				NOW(),#{orderNo}
+		
+			)
+	
+	</insert>
+	
+		<insert id="pointMinus" parameterType="kr.co.soaff.order.OrderVO">
+		INSERT INTO `point`(
+				user_no, content, point, 
+				point_date, order_no
+			) VALUES (
+				#{user_no},#{pointContent},#{point},
+				NOW(),#{orderNo}
+		
+			)
+	
+	</insert>
+	
+	<!-- 항목 삭제 -->
+	<delete id="deleteCartAfterOrder" parameterType="kr.co.soaff.order.OrderVO">
+	    DELETE FROM cart
+		WHERE user_no = #{user_no}
+		AND cart_no IN
+		<foreach item="cartNo" collection="checkedCartNo" open="(" separator="," close=")">
+			#{cartNo}
+		</foreach>
+	</delete>
+	
+	
+	<!-- end -->
+	
 </mapper>

@@ -31,11 +31,17 @@ public class OrderVO {
 	private int payment_price;
 	private String payment_method;
 	private int total_item_price;
+	private int[] checkedCartNo;
+	private int checkedCartCount;
+	// 포인트 관련
+	private String pointPlusContent;
+	private String pointContent;
+	private int pointPlus;
 
-	// 주문 총 수량
-	private int total_amount;
-	
-	private int cancel_status;
+	private int total_amount; // 주문 총 수량
+	private Integer cancel_status;
+	private Integer cancel_count; // 상품 취소 수량
+	private String item_img; // 상품 이미지
 
 	// 사용자로부터 전송되어지는 값(검색, 페이징, 필터링(조건))
 	private String searchWord;
