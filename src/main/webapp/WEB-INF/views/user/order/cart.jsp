@@ -400,11 +400,25 @@
                                 </div>
                                 <div class="col-4 col-lg-2 text-center">
 
-                                    <del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</del>
-
-                                    <p class="cart-item-price" id="discountedPrice${vo.cart_no}"><fmt:formatNumber
-                                            value="${vo.discounted_price}"
-                                            type="number" pattern="#,##0"/>원</p>
+            
+                                            
+                                     <!-- `discountedPrice`가 비어 있으면 -->
+									<c:if test="${empty vo.discounted_price}">
+									    <p class="cart-item-price" id="itemPrice${vo.cart_no}">
+									    <fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</p>
+									</c:if>
+									
+									<!-- `discountedPrice`가 비어 있지 않으면 -->
+									<c:if test="${!empty vo.discounted_price}">
+									    <del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</del>
+									    <p class="cart-item-price" id="itemPrice${vo.cart_no}">
+									        <fmt:formatNumber value="${vo.discounted_price}" type="number" pattern="#,##0"/>원
+									    </p>
+									</c:if>       
+                                            
+                                            
+                                            
+                                            
                                 </div>
                                 <div class="col-4 col-lg-2 text-center">
                                     <div class="counter">
@@ -420,10 +434,23 @@
                                     </div>
                                 </div>
                                 <div class="col-4 col-lg-2 text-center">
-                                    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                          cart_no="${vo.cart_no}"><fmt:formatNumber
-                                            value="${vo.amount*vo.discounted_price}" type="number"
-                                            pattern="#,##0"/>원</span>
+                                
+                                <!-- `discountedPrice`가 비어 있으면 -->
+									<c:if test="${empty vo.discounted_price}">						    
+									    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
+	                                      cart_no="${vo.cart_no}"><fmt:formatNumber
+	                                        value="${vo.amount*vo.price}" type="number"
+	                                        pattern="#,##0"/>원</span>
+									</c:if>
+									
+									<!-- `discountedPrice`가 비어 있지 않으면 -->
+									<c:if test="${!empty vo.discounted_price}">
+									    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
+	                                      cart_no="${vo.cart_no}"><fmt:formatNumber
+	                                        value="${vo.amount*vo.discounted_price}" type="number"
+	                                        pattern="#,##0"/>원</span>
+									</c:if>
+
 
                                 </div>
                                 <a class="cart-item-close"><i class="icon-x" onclick="deleteCart(this);"

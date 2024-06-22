@@ -56,7 +56,7 @@ public class orderTest {
 	public void updateDb() {
 		OrderVO vo = new OrderVO();
 		vo.setUser_no(1);
-		vo.setPayment_date("2024-06-22");
+//		vo.setPayment_date("2024-06-22");
 		vo.setPoint(-50);
 		vo.setPayment_id("5836-1719015301044");
 		vo.setPayment_price(300);
