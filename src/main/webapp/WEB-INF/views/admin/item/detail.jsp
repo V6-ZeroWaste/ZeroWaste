@@ -99,77 +99,78 @@ pageEncoding="UTF-8" isELIgnored="false" %>
 
     </script>
     <script>
-        var itemNo = "${item.item_no}";
+		var itemNo = "${item.item_no}";
 
 
-        function deleteItem(){
-            if(confirm("정말 삭제하시겠습니까?")){
-                $.ajax({
-                    url : "/admin/item/delete",
-                    type : "POST",
-                    data : {itemNo : itemNo},
-                    success : function(response){
-                        alert(response);
-                        document.location.href = 'list';
-                    },
-                    error: function(xhr, status, error){
-                        alert(response);
-                    }
-                });
-            }
-        }
+		function deleteItem() {
+			if (confirm("정말 삭제하시겠습니까?")) {
+				$.ajax({
+					url: "/admin/item/delete",
+					type: "POST",
+					data: {itemNo: itemNo},
+					success: function (response) {
+						alert(response);
+						document.location.href = 'list';
+					},
+					error: function (xhr, status, error) {
+						alert(response);
+					}
+				});
+			}
+		}
 
-        function deleteImg(){
-            if(confirm("정말 삭제하시겠습니까?")){
-                $.ajax({
-                    url : "/admin/item/deleteImg",
-                    type : "POST",
-                    data : {itemNo : itemNo },
-                    success : function(response){
-                        alert(response);
+		function deleteImg() {
+			if (confirm("정말 삭제하시겠습니까?")) {
+				$.ajax({
+					url: "/admin/item/deleteImg",
+					type: "POST",
+					data: {itemNo: itemNo},
+					success: function (response) {
+						alert(response);
 						$('#existingImageContainer').removeClass().hide();
-                    },
-                    error: function(xhr, status, error){
-                        alert(response);
-                    }
-                });
-            }
-        }
+						$('#file').val('');
+					},
+					error: function (xhr, status, error) {
+						alert(response);
+					}
+				});
+			}
+		}
 
-        function deleteNewImg(){
+		function deleteNewImg() {
 			var imgUrl = $('#uploadedImage').attr('src');
-            if(confirm("정말 삭제하시겠습니까?")){
-                $.ajax({
-                    url : "/admin/item/deleteNewImg",
-                    type : "POST",
-                    data : {imgUrl : imgUrl },
-                    success : function(response){
-                        alert(response);
+			if (confirm("정말 삭제하시겠습니까?")) {
+				$.ajax({
+					url: "/admin/item/deleteNewImg",
+					type: "POST",
+					data: {imgUrl: imgUrl},
+					success: function (response) {
+						alert(response);
 						$('#uploadedImageContainer').removeClass().hide();
 						$('#file').val('');
-                    },
-                    error: function(xhr, status, error){
-                        alert(response);
-                    }
-                });
-            }
-        }
+					},
+					error: function (xhr, status, error) {
+						alert(response);
+					}
+				});
+			}
+		}
 
 
-		function goBack(){
+		function goBack() {
 			location.href = "list";
 		}
-    </script>
+	</script>
 
-    <script>
-        $(function(){
-            var itemImg = "${item.item_img}";
-            var deleteButton = $("input[name='x']");
+	<script>
+		$(function () {
+			var itemImg = "${item.item_img}";
+			var deleteButton = $("input[name='x']");
 
-            if(itemImg == null || itemImg.trim() === ""){
-                deleteButton.css("display", "none");
-            } else {
-                deleteButton.css("display", "block");
+			if (itemImg == null || itemImg.trim() === "") {
+				deleteButton.css("display", "none");
+			} else {
+				deleteButton.css("display", "block");
             }
         })
     </script>
