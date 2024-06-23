@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.soaff.item.ItemVO;
 import util.S3Uploader;
 
 @Controller
@@ -21,7 +22,7 @@ import util.S3Uploader;
 public class QnaController {
 	@Autowired
 	private QnaService service;
-	
+
 	@Autowired
 	private S3Uploader s3Uploader;
 
@@ -77,7 +78,9 @@ public class QnaController {
 
 	@PostMapping("/updateQna")
 	@ResponseBody
-	public int updateQna(@RequestParam int qna_no, @RequestParam("title") String title, @RequestParam("content") String content, @RequestParam(value = "qna_img", required = false) MultipartFile qna_img) {
+	public int updateQna(@RequestParam int qna_no, @RequestParam("title") String title,
+			@RequestParam("content") String content,
+			@RequestParam(value = "qna_img", required = false) MultipartFile qna_img) {
 		QnaVO vo = new QnaVO();
 		vo.setQna_no(qna_no);
 		vo.setTitle(title);
@@ -107,7 +110,7 @@ public class QnaController {
 		QnaVO vo = new QnaVO();
 		vo.setQna_no(qna_no);
 		QnaVO qna = service.detail(vo);
-		
+
 		String qnaImgUrl = qna.getQna_img();
 		int result = service.delete(qna_no);
 		if (result > 0 && qnaImgUrl != null && !qnaImgUrl.isEmpty()) {
@@ -118,7 +121,55 @@ public class QnaController {
 				return 0;
 			}
 		}
-		
+
 		return result;
 	}
+
+	@GetMapping("/post")
+	public String write(Model model, @RequestParam int item_no) {
+		ItemVO vo = new ItemVO();
+		model.addAttribute("vo", service.write(vo));
+		return "/user/qna/post";
+	}
+
+	@PostMapping("/postQna")
+	@ResponseBody
+	public String post(@RequestParam("title") String title, @RequestParam("content") String content,
+	                   @RequestParam(value = "qna_img", required = false) MultipartFile qna_img,
+	                   @RequestParam("item_no") int item_no, Model model) {
+
+	    // 전달된 파라미터 값 로그 출력
+	    System.out.println("Received item_no: " + item_no);
+
+	    int user_no = 1;
+	    String user_id = "user01";
+	    QnaVO vo = new QnaVO();
+	    vo.setTitle(title.trim());
+	    vo.setContent(content.trim());
+	    vo.setUser_no(user_no);
+	    vo.setUser_id(user_id);
+	    vo.setItem_no(item_no);
+
+	    if (qna_img != null && !qna_img.isEmpty()) {
+	        try {
+	            String imgUrl = s3Uploader.uploadFile(qna_img);
+	            vo.setQna_img(imgUrl);
+	        } catch (IOException e) {
+	            model.addAttribute("error", "이미지 업로드에 실패했습니다.");
+	            System.out.println("문의 등록 요청 실패: " + System.currentTimeMillis());
+	            return "0";
+	        }
+	    } else {
+	        vo.setQna_img(null);
+	    }
+
+	    int result = service.post(vo);
+
+	    if (result > 0) {
+	        return "1";
+	    } else {
+	        return "0";
+	    }
+	}
+
 }

@@ -76,8 +76,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	
 	@Override
-	public ReviewVO write(ReviewVO vo) {
-		return mapper.write(vo);
+	public ReviewVO write(int item_no) {
+		return mapper.write(item_no);
 	}
 
 	

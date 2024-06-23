@@ -89,8 +89,6 @@
 	<select id="write" parameterType="kr.co.soaff.review.ReviewVO"
 		resultType="kr.co.soaff.review.ReviewVO">
 		SELECT
-		#{user_no} AS user_no,
-		u.id AS user_id,
 		i.item_no AS
 		item_no,
 		i.name AS item_name,

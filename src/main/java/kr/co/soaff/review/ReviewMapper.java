@@ -8,7 +8,7 @@ import kr.co.soaff.qna.QnaVO;
 @Mapper
 public interface ReviewMapper {
 	List<ReviewVO> list(ReviewVO vo);
-	ReviewVO write(ReviewVO vo);
+	ReviewVO write(int item_no);
 	ReviewVO detail(ReviewVO vo);
 	int count (ReviewVO vo);
 	int update(ReviewVO vo);

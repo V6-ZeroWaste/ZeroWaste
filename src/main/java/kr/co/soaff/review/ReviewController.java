@@ -67,11 +67,7 @@ public class ReviewController {
 
 	@GetMapping("/post")
 	public String write(Model model, @RequestParam int item_no, int order_detail_no) {
-		ReviewVO vo = new ReviewVO();
-		vo.setUser_no(1);
-		vo.setItem_no(item_no);
-		vo.setOrder_detail_no(order_detail_no);
-		model.addAttribute("vo", service.write(vo));
+		model.addAttribute("vo", service.write(item_no));
 		return "/user/review/post";
 	}
 
@@ -82,8 +78,6 @@ public class ReviewController {
 			@RequestParam(value = "review_img", required = false) MultipartFile review_img,
 			@RequestParam("order_no") int order_no, @RequestParam("order_detail_no") int order_detail_no,
 			@RequestParam("item_no") int item_no, Model model) {
-
-		System.out.println("리뷰 등록 요청 시작: " + System.currentTimeMillis());
 
 		int user_no = 1;
 		String user_id = "user01";
@@ -111,12 +105,7 @@ public class ReviewController {
 			vo.setReview_img(null);
 		}
 
-		System.out.println("제목: " + vo.getTitle());
-		System.out.println("내용: " + vo.getContent());
-
 		int result = service.post(vo);
-
-		System.out.println("리뷰 등록 요청 완료: " + System.currentTimeMillis());
 
 		if (result > 0) {
 			return "1";
