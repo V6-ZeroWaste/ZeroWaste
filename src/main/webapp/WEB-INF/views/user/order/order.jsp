@@ -72,6 +72,7 @@
 
 
     let isValid;
+
     //let paymentResult;
 
     function fieldCheck() {
@@ -159,8 +160,9 @@
         aboutTotalPrice();
         telFormat();
         paymentInfo();
-        let orderName = portOneOrderName();
-        console.log(orderName);
+        console.log("amount", itemAmountArray());
+        console.log("price", priceArray());
+        console.log("item_no", itemNoArray());
 
         $("#receiverName, #zipcode, #addr, #addrDetail, #receiverTel1, #receiverTel2, #receiverTel3, #paymentMethod, #agree").on("change", fieldCheck);
 
@@ -192,16 +194,16 @@
             var agree = $("#agree").is(":checked");
 
             if (fieldCheck()) {
-                
+
                 request_pay();
-                
+
 
             }
-            
-             if (!agree) {
-                 alert("주문 동의가 필요합니다");
-                 $("#agree").focus();
-            
+
+            if (!agree) {
+                alert("주문 동의가 필요합니다");
+                $("#agree").focus();
+
             }
 
 
@@ -309,18 +311,19 @@
         let pointContent = order_name + "주문시 적립금 사용";
         let pointPlus = parseFloat($('#estimatedPoint').text().replace(/[^0-9.-]/g, '')) || 0;
         //orderDetail
-        //let amount = 
-       	//let price = 
-       	//let item_no = 
+        let amount = itemAmountArray();
+        let price = priceArray();
+        let item_no = itemNoArray();
+ 
 
-        
+
         let data = {
             //payment_date: payment_date,
             // order 정보
             payment_price: payment_price,
             payment_method: payMethod,
             payment_id: paymentId,
-            imp_uid : impUid,
+            imp_uid: impUid,
             point: point,
             order_status: order_status,
             order_name: order_name,
@@ -339,10 +342,10 @@
             pointContent: pointContent,
             pointPlus: pointPlus,
             // orderDetail 정보
-            //amount : amount,
-            //price : price,
-            //item_no : item_no
-            
+            amountArray: amount,
+            priceArray: price,
+            itemNoArray: item_no
+
 
         };
 
@@ -352,37 +355,63 @@
             data: JSON.stringify(data), // 전송할 데이터를 JSON 문자열로 변환
             contentType: "application/json ; charset=UTF-8", // 요청 데이터의 Content-Type을 JSON으로 설정
             success: function (resp) {
-            	
-            	
-            	//console.log(resp);
-            	if(resp == 'success'){
-            		//paymentResult = true;
-            		deleteCart();
 
-                  	
-            	}
-            	else{
-            		//paymentResult =false;
-            	}
-            	
-            	
+
+                //console.log(resp);
+                if (resp == 'success') {
+                    //paymentResult = true;
+                    deleteCart();
+
+
+                } else {
+                    //paymentResult =false;
+                }
+
+
             },
             error: function (data, textStatus) {
                 $('#fail').html("관리자에게 문의하세요."); // 서버오류
                 console.log('error', data, textStatus);
             }
         })
-        
-        
 
 
     }
 
-    function addOrderdetail(){
-    	
-    
+    function itemAmountArray() {
+
+        let amountElements = document.querySelectorAll("span[id^='itemAmount']");
+        let amount = Array.from(amountElements, element => parseInt(element.textContent));
+        return amount
+
     }
-    
+
+    function itemNoArray() {
+        let h5Elements = document.querySelectorAll("h5");
+        let itemNo = Array.from(h5Elements)
+            .filter(element => element.hasAttribute("item_no"))
+            .map(element => parseInt(element.getAttribute("item_no"), 10))
+            .filter(itemNo => !isNaN(itemNo)); // 숫자로 변환된 값이 유효한지 체크
+
+        return itemNo;
+    }
+
+    function priceArray() {
+        let priceElements = document.querySelectorAll("p[id^='itemPrice']");
+
+        let itemPrice = Array.from(priceElements, element => {
+            let text = element.textContent.trim(); // 텍스트 양 끝의 공백 제거
+
+            // 원 단위와 천단위 구분 기호(,) 제거
+            text = text.replace('원', '').replace(/,/g, '');
+
+            // 숫자로 변환 후 반환, parseInt의 두 번째 인자를 통해 10진수로 변환
+            return parseInt(text, 10);
+        });
+
+        return itemPrice; // 배열 반환
+    }
+
     function deleteCart() {
         let spans = document.querySelectorAll('span[id^="itemTotalPrice"]');
 
@@ -410,30 +439,31 @@
             url: "/order/deleteCartAfterOrder", // 요청할 URL
             traditional: true, // 배열 데이터 전송 시 필요한 옵션
             data: data, // 전송할 데이터
-            success: function(resp) {
+            success: function (resp) {
                 if (resp === 'success') {
                     console.log("return true");
                     location.href = "/order/success";
-                    
+
                     // 성공적으로 처리된 경우
                 }
             },
-            error: function(data, textStatus) {
+            error: function (data, textStatus) {
                 $('#fail').html("관리자에게 문의하세요."); // 에러 메시지 출력
                 console.log('error', data, textStatus);
             }
         });
     }
 
+
     function currDate() {
-    	const date = new Date();
-    	const year = date.getFullYear();
+        const date = new Date();
+        const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = date.getDate().toString().padStart(2, '0');
         const hours = date.getHours().toString().padStart(2, '0'); // 24시간 형식
         const minutes = date.getMinutes().toString().padStart(2, '0');
         const seconds = date.getSeconds().toString().padStart(2, '0');
-        const result = year + "-" + month + "-" + day+" "+hours+ ":" +minutes+ ":" +seconds;
+        const result = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 
         return result;
     }
@@ -451,7 +481,7 @@
                 total += value;
             }
         });
-		console.log(total)
+        console.log(total)
         // 합계 결과를 포맷팅하여 출력 (여기서는 '원'을 추가)
         $('#sumItemTotal').text(total.toLocaleString() + "원");
         $('#orderSummarySumItemTotal').text(total.toLocaleString() + "원");
@@ -462,11 +492,11 @@
         total += 3000;
 
         // $('#sumDeliveryPrice')인 h4 태그 사이에 결과 출력
-        $('#sumDeliveryPrice').text("= "+total.toLocaleString() + "원");
+        $('#sumDeliveryPrice').text("= " + total.toLocaleString() + "원");
         $('#orderSummarySumDeliveryPrice').text(total.toLocaleString() + "원");
         $('#paymentPrice').text(total.toLocaleString() + "원");
         $('#goPay').text(total.toLocaleString() + "원 결제하기");
-        
+
     }
 
     function telFormat() {
@@ -659,7 +689,7 @@
                                     <div class="media media-product">
                                         <img src="${vo.item_img}" alt="Image">
                                         <div class="media-body">
-                                            <h5 class="media-title">${vo.name}</h5>
+                                            <h5 class="media-title" item_no="${vo.item_no }">${vo.name}</h5>
                                             <c:if test="${vo.packing_status eq 1}">
                                                 <span class="small">포장O (+2,000원)</span>
                                             </c:if>
@@ -668,20 +698,22 @@
                                     </div>
                                 </div>
                                 <div class="col-4 col-lg-2 text-center">
-                                
-                                <!-- `discountedPrice`가 비어 있으면 -->
-								<c:if test="${empty vo.discounted_price}">
-								    <p class="cart-item-price" id="itemPrice${vo.cart_no}">
-								    <fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</p>
-								</c:if>
-								
-								<!-- `discountedPrice`가 비어 있지 않으면 -->
-								<c:if test="${!empty vo.discounted_price}">
-								    <del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</del>
-								    <p class="cart-item-price" id="itemPrice${vo.cart_no}">
-								        <fmt:formatNumber value="${vo.discounted_price}" type="number" pattern="#,##0"/>원
-								    </p>
-								</c:if>
+
+                                    <!-- `discountedPrice`가 비어 있으면 -->
+                                    <c:if test="${empty vo.discounted_price}">
+                                        <p class="cart-item-price" id="itemPrice${vo.cart_no}">
+                                            <fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</p>
+                                    </c:if>
+
+                                    <!-- `discountedPrice`가 비어 있지 않으면 -->
+                                    <c:if test="${!empty vo.discounted_price}">
+                                        <del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원
+                                        </del>
+                                        <p class="cart-item-price" id="itemPrice${vo.cart_no}">
+                                            <fmt:formatNumber value="${vo.discounted_price}" type="number"
+                                                              pattern="#,##0"/>원
+                                        </p>
+                                    </c:if>
 
                                 </div>
                                 <div class="col-4 col-lg-2 text-center">
@@ -690,22 +722,22 @@
                                     </div>
                                 </div>
                                 <div class="col-4 col-lg-2 text-center">
-	                                
-	                                <!-- `discountedPrice`가 비어 있으면 -->
-									<c:if test="${empty vo.discounted_price}">						    
+
+                                    <!-- `discountedPrice`가 비어 있으면 -->
+                                    <c:if test="${empty vo.discounted_price}">
 									    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-	                                      cart_no="${vo.cart_no}"><fmt:formatNumber
-	                                        value="${vo.amount*vo.price}" type="number"
-	                                        pattern="#,##0"/>원</span>
-									</c:if>
-									
-									<!-- `discountedPrice`가 비어 있지 않으면 -->
-									<c:if test="${!empty vo.discounted_price}">
+                                              cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                value="${vo.amount*vo.price}" type="number"
+                                                pattern="#,##0"/>원</span>
+                                    </c:if>
+
+                                    <!-- `discountedPrice`가 비어 있지 않으면 -->
+                                    <c:if test="${!empty vo.discounted_price}">
 									    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-	                                      cart_no="${vo.cart_no}"><fmt:formatNumber
-	                                        value="${vo.amount*vo.discounted_price}" type="number"
-	                                        pattern="#,##0"/>원</span>
-									</c:if>
+                                              cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                value="${vo.amount*vo.discounted_price}" type="number"
+                                                pattern="#,##0"/>원</span>
+                                    </c:if>
 
                                 </div>
                             </div>
@@ -892,7 +924,7 @@
                             <th class="text-danger"><b>최종 결제 금액</b></th>
                             <td id="paymentPrice" class="text-danger"></td>
                         </tr>
-                        
+
                         </tbody>
                     </table>
 
@@ -962,8 +994,7 @@
                 <button id="goPay" type="button" class="form-control btn btn-primary"
                         style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;"
                 ></button>
-                
-                
+
 
             </div>
 

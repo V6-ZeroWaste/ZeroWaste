@@ -38,4 +38,9 @@ public class ReviewVO {
 //		return (page-1) * 20;
 //	}
 	
+	public ReviewVO withReview_no(int review_no) {
+        this.review_no = review_no;
+        return this;
+    }
+	
 }

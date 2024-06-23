@@ -1,11 +1,5 @@
 package kr.co.soaff.item;
 
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import kr.co.soaff.qna.QnaVO;
@@ -64,11 +58,5 @@ public class ItemController {
 	public Map<String, Object> getQnaList(QnaVO vo) {
 		Map<String, Object> map = itemService.qnaList(vo);
 		return map;
-	}
-
-	public String getFormattedQuestionDate(Timestamp time) {
-		Date questionDate = new Date(time.getTime());
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		return formatter.format(questionDate);
 	}
 }

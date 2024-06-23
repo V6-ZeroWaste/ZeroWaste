@@ -38,4 +38,7 @@ public interface OrderMapper {
 	int pointMinus(OrderVO vo);
 
 	int deleteCartAfterOrder(OrderVO vo);
+
+//	int orderDetailInsert(OrderVO vo);
+	int orderDetailInsert(List<OrderVO> list);
 }

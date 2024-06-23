@@ -22,4 +22,7 @@ public interface OrderService {
 
 	int deleteCartAfterOrder(OrderVO vo);
 
+//	int orderDetailInsert(OrderVO vo);
+//	int orderDetailInsert(List<OrderVO> list);
+
 }

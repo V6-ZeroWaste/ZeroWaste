@@ -54,43 +54,57 @@ input {
 }
 </style>
 <script type="text/javascript">
-var qna_no = ${vo.qna_no};
-
-function updateQna(qna_no,title,content){
-	 var title = $('#title').val();
-	    var content = $('#content').val();
-	if(confirm("정말 등록하시겠습니까?")){
-		$.ajax({
-			type: "POST",
-			url: "/mypage/qna/postQna",
-			data: {
-				title: title,
-				content: content,
-				qna_no: qna_no
-			},
-			success: function(response){
-				if(response===1){
-					alert("문의가 등록되었습니다.");
-					window.location.href = '/mypage/qna/list';
-				}else{
-					alert("문의 등록에 실패하였습니다.");
-				}
-			},
-			error: function(){
-				alert("서버와의 통신 중 오류가 발생했습니다.");
-			}
-		});
-	}
-}
-
-function handleUpdate() {
+function postQna() {
+    var formData = new FormData(document.getElementById('qnaForm'));
     var title = document.getElementById('title').value;
     var content = document.getElementById('content').value;
-    updateQna(${vo.qna_no}, title, content);
+    var qna_img = document.getElementById('file').files[0];
+    var user_no = document.querySelector('input[name="user_no"]').value;
+    var item_no = document.querySelector('input[name="item_no"]').value;
+
+    if (!title || !content) {
+        alert("모든 필수 항목을 입력해주세요.");
+        return;
+    }
+
+    formData.append("user_no", user_no);
+    formData.append("item_no", item_no);
+
+    if (qna_img) {
+        formData.append("qna_img", qna_img);
+    }
+
+    // formData의 값 확인
+    for (var pair of formData.entries()) {
+        console.log(pair[0]+ ': ' + pair[1]); 
+    }
+
+    if (confirm("정말 등록하시겠습니까?")) {
+        $.ajax({
+            type: "POST",
+            url: "/mypage/qna/postQna",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response === "1") {
+                    alert("문의가 등록되었습니다.");
+                    window.location.href = '/mypage/qna/list';
+                } else {
+                    alert("문의 등록에 실패하였습니다.");
+                }
+            },
+            error: function() {
+                alert("서버와의 통신 중 오류가 발생했습니다.");
+            }
+        });
+    }
 }
-	</script>
+
+</script>
 </head>
 <body>
+
 	<div style="width: 700px; margin: auto;">
 		<!-- content -->
 		<div class="row">
@@ -113,7 +127,7 @@ function handleUpdate() {
 							</a>
 						</div>
 						<div style="width: 400px">
-							<h3 class="order-number">${vo.item_name}</h3>
+							<h3 class="order-number">${vo.name}</h3>
 						</div>
 						<div style="width: 130px">
 							<!-- 상품 바로가기 링크 -->
@@ -123,38 +137,44 @@ function handleUpdate() {
 				</div>
 			</div>
 			<div class="col-12">
-				<div style="border: 1px solid #dddddd;">
-					<table class="table table-borderless">
-						<tbody>
-							<tr>
-								<th scope="row">Title</th>
-								<td colspan="2"><input type="text" id="title"
-									class="form-control" value="${vo.title}"></td>
-							</tr>
-							<tr>
-								<th>Content</th>
-								<td colspan="2">
-									<div>
-										<textarea id="content" class="form-control"
-											style="height: 200px">${vo.content}</textarea>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th>Image</th>
-								<td colspan="2"><input class="form-control" type="file"
-									name="file" id="file" class="wid100" /></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="col-12" style="text-align: center">
-				<button id="post" class="btn btn-primary"
-					onclick="handlePost();">등록</button>
+				<form id="qnaForm" enctype="multipart/form-data">
+					<input type="hidden" name="user_no" value="${vo.user_no}" /> <input
+						type="hidden" name="item_no" value="${vo.item_no}" />
+					<div style="border: 1px solid #dddddd;">
+						<table class="table table-borderless">
+							<tbody>
+								<tr>
+									<th scope="row">Title</th>
+									<td colspan="2"><input type="text" id="title" name="title"
+										class="form-control" value="${vo.title}"></td>
+								</tr>
+								<tr>
+									<th>Content</th>
+									<td colspan="2">
+										<div>
+											<textarea id="content" name="content" class="form-control"
+												style="height: 200px">${vo.content}</textarea>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>Image</th>
+									<td colspan="2"><input class="form-control" type="file"
+										name="qna_img" id="file" class="wid100" /></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="col-12" style="text-align: center">
+						<button id="post" type="button" class="btn btn-primary"
+							onclick="postQna();">등록</button>
+					</div>
+					<!-- /content -->
+				</form>
 			</div>
 		</div>
-		<!-- /content -->
 	</div>
+
 </body>
 </html>

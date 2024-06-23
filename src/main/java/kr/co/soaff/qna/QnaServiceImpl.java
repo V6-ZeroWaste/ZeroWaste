@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.co.soaff.cancel.CancelAdminListVO;
+import kr.co.soaff.item.ItemVO;
 
 @Service
 public class QnaServiceImpl implements QnaService {
@@ -54,4 +54,16 @@ public class QnaServiceImpl implements QnaService {
 		return mapper.delete(qna_no);
 	}
 	
+	@Override
+	public ItemVO write(ItemVO vo) {
+		return mapper.write(vo);
+	}
+	
+	@Override
+	public int post(QnaVO vo) {
+		vo.setTitle(vo.getTitle().trim());
+	    vo.setContent(vo.getContent().trim());
+		return mapper.post(vo);
+	}
+		
 }

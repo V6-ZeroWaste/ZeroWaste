@@ -36,10 +36,16 @@ public class AdminController {
 			out.print("<script>alert('아이디, 비밀번호를 확인하세요'); history.go(-1)");
 			out.print("</script>");
 		} else {
-			session.setAttribute("login", login);
-			out.print("<script>location.href='/admin/index'");
+			session.setAttribute("adminLogin", login);
+			out.print("<script>location.href='/admin'");
 			out.print("</script>");
 		}
+	}
+
+	@GetMapping("/logout")
+	public String logout(HttpSession sess){
+		sess.invalidate();
+		return "redirect:/admin/login";
 	}
 
 }
