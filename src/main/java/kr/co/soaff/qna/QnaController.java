@@ -38,40 +38,35 @@ public class QnaController {
 	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(QnaVO vo, HttpSession session) {
-		Integer user_no = (Integer) session.getAttribute("user_no");
-		if (user_no == null) {
-			return null;
-		}
-		vo.setUser_no(user_no);
-		vo.setPageSize(10);
-		Map<String, Object> map = service.list(vo);
-		String printList = "";
-		List<QnaVO> qnaList = (List<QnaVO>) map.get("list");
-		if (qnaList.size() == 0) {
-			printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
-		}
-		for (QnaVO qnaVO : qnaList) {
-			printList += "<tr onclick=\"location.href='/user/qna/detail?qna_no=" + qnaVO.getQna_no() + "'\">";
-			printList += "<td>" + (qnaVO.getQna_img() == null ? "" : ("<img src='" + qnaVO.getQna_img() + "'/>"))
-					+ "</td>";
-			printList += "<td>" + qnaVO.getItem_name() + "</td>";
-			printList += "<td>" + qnaVO.getTitle() + "</td>";
-			printList += "<td>" + qnaVO.getUser_id() + "</td>";
-			printList += "<td>" + qnaVO.getQuestion_date() + "</td>";
-
-			if (qnaVO.getReply_date() != null) {
-				qnaVO.setReplyState("답변 완료");
-				printList += "<td>" + qnaVO.getReplyState() + "</td>";
-			} else {
-				qnaVO.setReplyState("답변 대기");
-				printList += "<td>" + qnaVO.getReplyState() + "</td>";
-			}
-
-			printList += "</tr>";
-		}
-		map.put("printList", printList);
-		return map;
+	    Integer user_no = (Integer) session.getAttribute("user_no");
+	    if (user_no == null) {
+	        return null;
+	    }
+	    vo.setUser_no(user_no);
+	    vo.setPageSize(10);
+	    Map<String, Object> map = service.list(vo);
+	    String printList = "";
+	    List<QnaVO> qnaList = (List<QnaVO>) map.get("list");
+	    if (qnaList.size() == 0) {
+	        printList = "<td class='first' colspan='6' style='text-align: center;'>등록된 글이 없습니다.</td>";
+	    } else {
+	        for (QnaVO qnaVO : qnaList) {
+	            qnaVO.setReplyState(qnaVO.getReply_date() != null ? "답변 완료" : "답변 대기");
+	            printList += "<tr onclick=\"location.href='/mypage/qna/detail?qna_no=" + qnaVO.getQna_no() + "'\">";
+	            printList += "<td>" + (qnaVO.getQna_img() == null ? "" : ("<img src='" + qnaVO.getQna_img() + "'/>")) + "</td>";
+	            printList += "<td>" + qnaVO.getItem_name() + "</td>";
+	            printList += "<td>" + qnaVO.getTitle() + "</td>";
+	            printList += "<td>" + qnaVO.getUser_id() + "</td>";
+	            printList += "<td>" + qnaVO.getQuestion_date() + "</td>";
+	            printList += "<td>" + qnaVO.getReplyState() + "</td>";
+	            printList += "</tr>";
+	        }
+	    }
+	    map.put("printList", printList);
+	    return map;
 	}
+
+
 
 	@GetMapping("/detail")
 	public String detail(Model model, QnaVO vo, HttpSession session) {
@@ -140,22 +135,15 @@ public class QnaController {
 
 	@GetMapping("/post")
 	public String write(Model model, @RequestParam int item_no) {
-		// Item 정보 가져오기
 		ItemVO itemVo = new ItemVO();
 		itemVo.setItem_no(item_no);
 		ItemVO itemInfo = service.write(itemVo);
 
-		// QnaVO 객체 생성 및 Item 정보 설정
 		QnaVO qnaVo = new QnaVO();
 		qnaVo.setItem_no(item_no);
 		qnaVo.setItem_name(itemInfo.getName());
 		qnaVo.setItem_img(itemInfo.getItem_img());
 
-		// user_no 및 user_id를 설정 (예시로 설정, 실제 값으로 변경 필요)
-		qnaVo.setUser_no(1); // 예시 user_no
-		qnaVo.setUser_id("user01"); // 예시 user_id
-
-		// 모델에 QnaVO와 ItemVO 추가
 		model.addAttribute("qnaVo", qnaVo);
 		model.addAttribute("itemVo", itemInfo);
 		return "/user/qna/post";

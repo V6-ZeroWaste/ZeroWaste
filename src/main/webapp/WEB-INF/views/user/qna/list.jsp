@@ -151,13 +151,13 @@
 									<div>
 										<label> <select id="orderBy" name="orderBy"
 											class="datatable-selector" onchange="applyCondition();">
-												<option value="">===정렬===</option>
+												<option value="" hidden>정렬</option>
 												<option value="최신순">최신순</option>
 												<option value="오래된순">오래된순</option>
 										</select>
 										</label> <label> <select id="filter" name="filter"
 											class="datatable-selector" onchange="applyCondition();">
-												<option value="">==필터==</option>
+												<option value="">전체보기</option>
 												<option value="답변대기">답변대기</option>
 												<option value="답변완료">답변완료</option>
 										</select>
@@ -190,7 +190,7 @@
 												<a href="product-1.html"
 													title="Fawn Wool / Natural Mammoth Chair"
 													data-toggle="tooltip" data-placement="top"> <img
-													src="${list.item_img }"
+													src="${list.item_img}"
 													alt="Fawn Wool / Natural Mammoth Chair">
 												</a>
 											</div>
@@ -198,9 +198,9 @@
 												<h3 class="order-number">${list.item_name}</h3>
 											</div>
 											<div class="col-lg-4">
-												<span class="qna-info">${list.question_date }</span> <br>
-												<span class="qna-info">${list.title } </span> <br> <span
-													class="qna-info">${list.replyState }</span>
+												<span class="qna-info">${list.question_date}</span> <br>
+												<span class="qna-info">${list.title}</span> <br> <span
+													class="qna-info">${list.replyState}</span>
 											</div>
 											<div class="col-lg-2">
 												<a href="#!" class="action eyebrow underline"
@@ -213,41 +213,42 @@
 						</div>
 					</div>
 
-				<!-- /list -->
+					<!-- /list -->
 
-				<!-- pagination -->
-				<div class="row">
-					<div class="col">
-						<ul class="pagination">
-							<c:if test="${map.isPrev}">
-								<li class="page-item"><a class="page-link"
-									href="/mypage/qna/list?page=1">‹‹</a></li>
-								<li class="page-item"><a class="page-link"
-									href="/mypage/qna/list?page=${map.startPage-1}">‹</a></li>
-							</c:if>
-							<c:forEach var="i" begin="${map.startPage}" end="${map.endPage }">
-								<c:if test="${map.currentPage==i}">
-									<li class="page-item active"><a class="page-link">${i }<span
-											class="sr-only">(current)</span></a></li>
-								</c:if>
-								<c:if test="${map.currentPage!=i}">
+					<!-- pagination -->
+					<div class="row">
+						<div class="col">
+							<ul class="pagination">
+								<c:if test="${map.isPrev}">
 									<li class="page-item"><a class="page-link"
-										href="/mypage/qna/list?page=${i}">${i }</a></li>
+										href="/mypage/qna/list?page=1">‹‹</a></li>
+									<li class="page-item"><a class="page-link"
+										href="/mypage/qna/list?page=${map.startPage-1}">‹</a></li>
 								</c:if>
-							</c:forEach>
-							<c:if test="${map.isNext}">
-								<li class="page-item"><a class="page-link"
-									href="/mypage/qna/list?page=${map.endPage+1}">›</a></li>
-								<li class="page-item"><a class="page-link"
-									href="/mypage/qna/list?page=${map.totalPage}">››</a></li>
-							</c:if>
-						</ul>
+								<c:forEach var="i" begin="${map.startPage}"
+									end="${map.endPage }">
+									<c:if test="${map.currentPage==i}">
+										<li class="page-item active"><a class="page-link">${i }<span
+												class="sr-only">(current)</span></a></li>
+									</c:if>
+									<c:if test="${map.currentPage!=i}">
+										<li class="page-item"><a class="page-link"
+											href="/mypage/qna/list?page=${i}">${i }</a></li>
+									</c:if>
+								</c:forEach>
+								<c:if test="${map.isNext}">
+									<li class="page-item"><a class="page-link"
+										href="/mypage/qna/list?page=${map.endPage+1}">›</a></li>
+									<li class="page-item"><a class="page-link"
+										href="/mypage/qna/list?page=${map.totalPage}">››</a></li>
+								</c:if>
+							</ul>
+						</div>
 					</div>
+					<!-- /pagination -->
 				</div>
-				<!-- /pagination -->
+				<!-- /content -->
 			</div>
-			<!-- /content -->
-		</div>
 		</div>
 	</section>
 	<%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
