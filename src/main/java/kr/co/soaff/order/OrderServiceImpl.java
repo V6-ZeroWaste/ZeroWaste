@@ -1,5 +1,6 @@
 package kr.co.soaff.order;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,12 +90,41 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public boolean orderInsert(OrderVO vo) {
-		String result = "";
 		int orderInsertResult = mapper.orderInsert(vo);
+		int orderNo = vo.getOrder_no();
 		int pointInsertResult = mapper.pointMinus(vo);
 		int pointPlusResult = mapper.pointPlus(vo);
+		int[] amountArray = vo.getAmountArray();
+		int[] priceArray = vo.getPriceArray();
+		int[] itemNoArray = vo.getItemNoArray();
+		List<OrderVO> list = new ArrayList<OrderVO>();
+		for (int i = 0; i < amountArray.length; i++) {
+			OrderVO orderVO = new OrderVO();
+			orderVO.setOrder_no(orderNo);
+			orderVO.setUser_no(vo.getUser_no());
+			orderVO.setAmount(amountArray[i]);
+			orderVO.setPrice(priceArray[i]);
+			orderVO.setItem_no(itemNoArray[i]);
+			list.add(orderVO);
+		}
+		int orderDetailInsertResult = mapper.orderDetailInsert(list);
+//		int orderDetailInsertResult = 0;
+//
+//		int[] amountArray = vo.getAmountArray();
+//		int[] priceArray = vo.getPriceArray();
+//		int[] itemNoArray = vo.getItemNoArray();
+//		for (int i = 0; i < amountArray.length; i++) {
+//			OrderVO orderVO = new OrderVO();
+//			orderVO.setUser_no(vo.getUser_no());
+//			orderVO.setAmount(amountArray[i]);
+//			orderVO.setPrice(priceArray[i]);
+//			orderVO.setItem_no(itemNoArray[i]);
+//			orderDetailInsertResult += mapper.orderDetailInsert(orderVO);
+//		}
 
-		return orderInsertResult > 0 && pointInsertResult > 0 && pointPlusResult > 0 ? true : false;
+		return orderInsertResult > 0 && pointInsertResult > 0 && pointPlusResult > 0 && orderDetailInsertResult > 0
+				? true
+				: false;
 
 	}
 

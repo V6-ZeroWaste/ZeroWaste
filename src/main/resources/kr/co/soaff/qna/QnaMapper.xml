@@ -61,7 +61,9 @@
 		SELECT
 		qna.qna_no,
 		qna.qna_img,
-		item.name AS item_name,
+		item.item_img AS item_img,
+		item.name AS
+		item_name,
 		qna.title,
 		qna.type,
 		user.id AS user_id,
@@ -113,8 +115,47 @@
 		UPDATE qna
 		SET
 		title = #{title},
-		content = #{content}
+		content = #{content},
+		qna_img = #{qna_img}
 		WHERE
 		qna_no = #{qna_no};
 	</update>
+
+	<insert id="post" parameterType="kr.co.soaff.qna.QnaVO">
+		INSERT INTO qna(
+		user_no,
+		user_id,
+		type,
+		title,
+		content,
+		qna_img,
+		question_date,
+		item_no,
+		reply,
+		reply_date
+		)
+		VALUES (
+		#{user_no},
+		#{user_id},
+		#{type},
+		#{title},
+		#{content},
+		#{qna_img},
+		CURRENT_TIMESTAMP,
+		#{item_no},
+		#{reply},
+		#{reply_date}
+		)
+	</insert>
+
+	<select id="write" parameterType="int">
+		SELECT
+		i.item_img AS item_img,
+		i.item_no AS item_no,
+		i.name AS item_name
+		FROM qna q
+		JOIN item i ON q.item_no = i.item_no
+		WHERE q.item_no = #{item_no}
+	</select>
+
 </mapper>

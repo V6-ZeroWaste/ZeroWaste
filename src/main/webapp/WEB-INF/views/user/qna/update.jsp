@@ -54,20 +54,26 @@ input {
 }
 </style>
 <script type="text/javascript">
-var qna_no = ${vo.qna_no};
-
-function updateQna(qna_no,title,content){
-	 var title = $('#title').val();
-	    var content = $('#content').val();
+function updateQna(qna_no){
+    var title = document.getElementById('title').value;
+    var content = document.getElementById('content').value;
+    var fileInput = document.getElementById('file');
+    var file = fileInput.files[0];
+    
+    var formData = new FormData();
+	formData.append("qna_no",qna_no);
+	formData.append("title", title);
+    formData.append("content", content);
+    if(file) {
+        formData.append("qna_img", file);
+    }
 	if(confirm("정말 수정하시겠습니까?")){
 		$.ajax({
 			type: "POST",
 			url: "/mypage/qna/updateQna",
-			data: {
-				title: title,
-				content: content,
-				qna_no: qna_no
-			},
+			data: formData,
+			processData: false,
+	        contentType: false,
 			success: function(response){
 				if(response===1){
 					alert("문의가 수정되었습니다.");
@@ -84,9 +90,7 @@ function updateQna(qna_no,title,content){
 }
 
 function handleUpdate() {
-    var title = document.getElementById('title').value;
-    var content = document.getElementById('content').value;
-    updateQna(${vo.qna_no}, title, content);
+	  updateQna(${vo.qna_no});
 }
 	</script>
 </head>
@@ -109,7 +113,7 @@ function handleUpdate() {
 							<a href="product-1.html"
 								title="Fawn Wool / Natural Mammoth Chair" data-toggle="tooltip"
 								data-placement="top"> <img class="item-img"
-								src="${vo.qna_img}" alt="Fawn Wool / Natural Mammoth Chair">
+								src="${vo.item_img}" alt="Fawn Wool / Natural Mammoth Chair">
 							</a>
 						</div>
 						<div style="width: 400px">

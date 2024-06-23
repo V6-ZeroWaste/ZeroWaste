@@ -90,7 +90,7 @@ function deleteReview() {
                               <!-- 상품이미지 -->
                               <a href="product-1.html" title="Fawn Wool / Natural Mammoth Chair"
                                  data-toggle="tooltip" data-placement="top">
-                                 <img src="${vo.review_img}" alt="Fawn Wool / Natural Mammoth Chair">
+                                 <img src="${vo.item_img}" alt="Fawn Wool / Natural Mammoth Chair">
                               </a>
                            </div>
                            <div class="col-lg-4">

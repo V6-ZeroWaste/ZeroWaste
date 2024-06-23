@@ -20,6 +20,7 @@ public class QnaVO {
 	private int item_no;
 	private String item_name;
 	
+	private String item_img;
 	private String replyState;
 	private String searchWord;
 	private String orderBy;

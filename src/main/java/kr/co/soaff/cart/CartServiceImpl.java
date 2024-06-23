@@ -1,5 +1,6 @@
 package kr.co.soaff.cart;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,5 +53,24 @@ public class CartServiceImpl implements CartService {
 	public int delete(CartVO vo) {
 		return mapper.delete(vo);
 	}
+
+	public List<Integer> insert(CartItemDTO dto, int user_no) {
+		List<Integer> itemNoArray = dto.getItem_no_array();
+		List<Integer> packingStatusArray = dto.getPacking_status_array();
+		List<Integer> amountArray = dto.getAmount_array();
+		int size = itemNoArray.size();
+		List<Integer> cartNos = new ArrayList<>();
+		for(int i=0; i<size; i++) {
+			CartVO vo = new CartVO();
+			vo.setUser_no(user_no);
+			vo.setItem_no(itemNoArray.get(i));
+			vo.setPacking_status(packingStatusArray.get(i));
+			vo.setAmount(amountArray.get(i));
+			if(mapper.insert(vo)!=0){
+				cartNos.add(vo.getCart_no());
+			}
+		}
+		return cartNos;
+    }
 
 }

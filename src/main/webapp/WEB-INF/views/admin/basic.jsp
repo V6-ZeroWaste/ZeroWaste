@@ -29,7 +29,7 @@
         		
         		
         		</main>
-                <%@ include file="/WEB-INF/views/admin//include/footer.jsp" %>
+                <%@ include file="/WEB-INF/views/admin/include/footer.jsp" %>
             </div>
         </div>
         

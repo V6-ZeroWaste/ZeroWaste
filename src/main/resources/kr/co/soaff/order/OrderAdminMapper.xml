@@ -113,6 +113,13 @@
 	
 	<!-- 배송정보 업데이트 -->
 	<update id="updateDeliveryStatus" parameterType="kr.co.soaff.order.OrderVO">
-		UPDATE `order` SET delivery_status=#{delivery_status} WHERE order_no=#{order_no}
-	</update>
+	    <![CDATA[
+	    UPDATE `order`
+	    SET
+	        delivery_status = #{delivery_status},
+	        delivery_date = CASE WHEN #{delivery_status} = 2 THEN NOW() ELSE delivery_date END
+	    WHERE
+	        order_no = #{order_no}
+	    ]]>
+</update>
 </mapper>
