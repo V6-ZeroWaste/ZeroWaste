@@ -250,12 +250,6 @@
     }
 
 
-</script>
-
-
-<script>
-
-
     function goOrder() {
         if (con) {
             $('#frm').submit();

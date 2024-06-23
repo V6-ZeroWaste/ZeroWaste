@@ -68,13 +68,6 @@ public class OrderController {
 	public String success(HttpSession session) {
 		return "user/order/success";
 	}
-//	@GetMapping("/order/success")
-//	public String success(HttpServletRequest req, HttpServletResponse res, Model model) throws Exception {
-//		RequestDispatcher dispatcher = req.getRequestDispatcher("user/order/success");
-//		dispatcher.forward(req, res);
-//		
-//		return "user/order/success";
-//	}
 
 	@ResponseBody
 	@PostMapping(value = "/order/insert", produces = "application/text; charset=utf8")
