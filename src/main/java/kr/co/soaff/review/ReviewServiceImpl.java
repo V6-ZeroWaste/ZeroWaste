@@ -16,41 +16,37 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public Map<String, Object> list(ReviewVO vo) {
-		Map<String, Object> map = new HashMap();
+	    Map<String, Object> map = new HashMap<>();
+	    int pageSize = 10;
+	    int total = mapper.count(vo);
+	    map.put("total", total);
 
-		// 총개수
-		int total = mapper.count(vo);
-		map.put("total", total);
+	    int totalPage = total / pageSize;
+	    if (total % pageSize > 0) {
+	        totalPage++;
+	    }
+	    map.put("totalPage", totalPage);
 
-		// 총 페이지수
-		int totalPage = total / 20;
-		if (total % 20 > 0) {
-			totalPage++;
-		}
-		map.put("totalPage", totalPage);
+	    int endPage = (int) (Math.ceil(vo.getPage() / 10.0) * 10);
+	    int startPage = endPage - 9;
+	    if (endPage > totalPage) {
+	        endPage = totalPage;
+	    }
+	    boolean isPrev = startPage > 1;
+	    boolean isNext = endPage < totalPage;
 
-		// 페이지 네이션 정보
-		int endPage = (int) (Math.ceil(vo.getPage() / 10.0) * 10);
-		int startPage = endPage - 9;
-		if (endPage > totalPage) {
-			endPage = totalPage;
-		}
-		boolean isPrev = startPage > 1;
-		boolean isNext = endPage < totalPage;
+	    map.put("startPage", startPage);
+	    map.put("endPage", endPage);
+	    map.put("isPrev", isPrev);
+	    map.put("isNext", isNext);
 
-		map.put("startPage", startPage);
-		map.put("endPage", endPage);
-		map.put("isPrev", isPrev);
-		map.put("isNext", isNext);
+	    vo.setStartIdx((vo.getPage() - 1) * pageSize);
+	    List<ReviewVO> list = mapper.list(vo);
+	    map.put("list", list);
 
-		List<ReviewVO> list = mapper.list(vo);
-		map.put("list", list);
-
-		System.out.println("조회된 리뷰 개수: " + list.size());
-		System.out.println("조회된 리뷰: " + list);
-
-		return map;
+	    return map;
 	}
+
 
 	@Override
 	public ReviewVO detail(ReviewVO vo) {

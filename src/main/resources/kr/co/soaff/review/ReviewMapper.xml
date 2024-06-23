@@ -41,8 +41,9 @@
 		review.user_no = user.user_no
 		<include refid="calendar" />
 		<include refid="orderBySql" />
-		LIMIT #{startIdx}, 20
+		LIMIT #{startIdx}, 10
 	</select>
+
 
 	<!-- 리뷰 개수 조회 -->
 	<select id="count" parameterType="kr.co.soaff.review.ReviewVO"
@@ -92,17 +93,20 @@
 		i.item_no AS
 		item_no,
 		i.name AS item_name,
-		i.item_img AS item_img,
+		i.item_img AS
+		item_img,
 		#{order_detail_no}
 		AS order_detail_no,
 		od.order_no AS order_no,
 		1 AS exposed_status
 		FROM
 		item i
-		JOIN order_detail od ON i.item_no = od.item_no
+		JOIN order_detail od ON i.item_no =
+		od.item_no
 		JOIN user u ON
 		u.user_no = #{user_no}
-		WHERE i.item_no = #{item_no} AND
+		WHERE i.item_no =
+		#{item_no} AND
 		od.order_detail_no = #{order_detail_no}
 	</select>
 
@@ -128,7 +132,8 @@
 		item.item_img as item_img,
 		user.id as user_id
 		FROM
-		review JOIN item ON review.item_no =
+		review JOIN item ON
+		review.item_no =
 		item.item_no
 		JOIN
 		user ON review.user_no = user.user_no
@@ -147,7 +152,8 @@
 	<update id="update" parameterType="kr.co.soaff.review.ReviewVO">
 		UPDATE review
 		SET
-		title = #{title},
+		title =
+		#{title},
 		content = #{content},
 		review_img = #{review_img}
 		WHERE

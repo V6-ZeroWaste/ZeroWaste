@@ -29,6 +29,7 @@ public class ReviewVO {
 	private int startIdx; // limit 앞에 들어갈 시작인덱스값
 	private String item_name; // item.name
 	private String category_name; // category.name
+	private int pageSize;
 	
 	public ReviewVO() {
 		this.page = 1;
