@@ -14,11 +14,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -26,6 +22,7 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import util.AdminLoginInterceptor;
 
 @Configuration
 @ComponentScan(basePackages = { "kr.co.soaff","util"})
@@ -77,11 +74,16 @@ public class MvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry reg) {
 		reg.addViewController("/user/basic");
-		reg.addViewController("/user/login/login");
-		reg.addViewController("/user/login/loginFind");
+		reg.addViewController("/user/user/find");
+		reg.addViewController("/user/user/profile");
+		reg.addViewController("/user/user/pwFindResubmit");
+		reg.addViewController("/user/user/pwFindEmail");
+		reg.addViewController("/user/user/signUp");
+		reg.addViewController("/user/user/idFindSuccess");
 		reg.addViewController("/user/basic-mypage");
 		reg.addViewController("/user/test");
-		reg.addViewController("/user/login/passwordFind");
+		reg.addViewController("/user/user/passwordFind");
+		reg.addViewController("/user/order/cancelForm2");
 
 	}
 
@@ -118,22 +120,18 @@ public class MvcConfig implements WebMvcConfigurer {
 		return dtm;
 	}
 
-//	// 로그인인터셉터 빈등록
-//	@Bean
-//	public LoginInterceptor loginInterception() {
-//		return new LoginInterceptor();
-//	}
+	// 어드민 로그인 인터셉터 빈등록
+	@Bean
+	public AdminLoginInterceptor AdminLoginInterception() {
+		return new AdminLoginInterceptor();
+	}
 
-	// 인터셉터 설정
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		// url 설정
-//		registry.addInterceptor(loginInterception()).addPathPatterns("/reply/**").excludePathPatterns("/reply/index.do")
-//				.excludePathPatterns("/reply/view.do").addPathPatterns("/member/edit.do");
-//		/*
-//		 * 관리자페이지 .addPathPatterns("/admin/**") .excludePathPatterns("/admin/login.do")
-//		 */
-//	}
+	// 어드민 로그인 인터셉터 설정
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// url 설정
+		registry.addInterceptor(AdminLoginInterception()).addPathPatterns("/admin/**") .excludePathPatterns("/admin/login");
+	}
 
 	// properties 설정
 	@Bean

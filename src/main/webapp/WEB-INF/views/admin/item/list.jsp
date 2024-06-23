@@ -87,7 +87,7 @@
 	                dataType: "json", // 응답 받을 데이터 type
 	                success : function(resp){
 	                   	// 데이터 리스트 출력
-	               		$("#printList").html(resp.printList);
+					   renderItemList(resp.items);
 	               		
 	               		// 페이지네이션 출력
 	               		// 총 개수
@@ -106,9 +106,9 @@
 	               		}
 	               		if(resp.isNext){
 	               			printPage += '<li class="datatable-pagination-list-item">';
-	               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+	               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
 	               			printPage += '<li class="datatable-pagination-list-item">';
-	               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+	               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
 	               		}
 	               		$(".datatable-pagination-list").html(printPage);
 	               		
@@ -117,10 +117,51 @@
 	                },
 	                error:function (data, textStatus) {
 	                    $('#fail').html("관리자에게 문의하세요.") // 서버오류
-	                    console.log('error', data, textStatus);
 	                }
 	           	})
 	        	
+			}
+
+			function renderItemList(items) {
+				var printList = "";
+
+				if (items.length > 0) {
+					items.forEach(function(item) {
+						printList += "<tr class='itemRow' onclick=\"location.href='/admin/item/detail?item_no=" + item.item_no + "'\">";
+						printList += "<td class=\"col-item-no\">" + item.item_no + "</td>";
+
+						printList += "<td class=\"col-item-img\">";
+						printList += "<div class='img-container'>";
+						if (item.item_img != null && item.item_img !== "") {
+							printList += "<img src='" + item.item_img + "' class='fixed-size-img'/>";
+						}
+						printList += "</div>";
+						printList += "</td>";
+
+						printList += "<td class=\"col-item-name\">" + item.name + "</td>";
+						printList += "<td class=\"col-item-price\">" + item.price + "</td>";
+
+						printList += "<td class=\"col-item-discount\">";
+						printList += item.discounted_price;
+						printList += item.discount_rate == 0 ? "(-)" : "(" + item.discount_rate + "%)";
+						printList += "</td>";
+
+						printList += "<td class=\"col-item-category\">" + item.category_name + "</td>";
+						printList += "<td class=\"col-item-amount\">" + item.amount + "</td>";
+
+						printList += "<td class=\"col-item-exposed\">";
+						printList += item.exposed_status ? "O" : "X";
+						printList += "</td>";
+
+						printList += "<td class=\"col-item-exposed\">";
+						printList += item.sales_amount;
+						printList += "</td>";
+
+						printList += "</tr>";
+					});
+
+					$("#printList").html(printList);
+				}
 			}
         </script>
     </head>
@@ -214,7 +255,7 @@
                         </div>
                     </div>
         		</main>
-                <%@ include file="/WEB-INF/views/admin//include/footer.jsp" %>
+                <%@ include file="/WEB-INF/views/admin/include/footer.jsp" %>
             </div>
         </div>
         

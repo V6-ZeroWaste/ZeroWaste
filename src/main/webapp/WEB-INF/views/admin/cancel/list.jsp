@@ -30,6 +30,7 @@
 <script type="text/javascript">
 	let page = 1;
 	let filter = null;
+
 	
 	window.onload = function() {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -42,6 +43,7 @@
 		getList();
 	}
 	
+
 	function applyCondition() {
 		page = 1;
 		getList();
@@ -52,6 +54,7 @@
 	}
 	function getList() {
 		var filterValue = $('#filter').val();
+
 		var data = {
 			searchWord : $('#searchWord').val(),
 			orderBy : $('#orderBy').val(),
@@ -63,8 +66,7 @@
 			page : page,
 		}
 
-		$
-				.ajax({
+		$.ajax({
 					method : "GET",
 					url : "/admin/cancel/getList",
 					data : data,
@@ -114,10 +116,12 @@
 									+ '" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
 						}
 						$(".datatable-pagination-list").html(printPage);
+
 						
 						const newUrl = '/admin/cancel/list?filter=' + data.filter;
 						history.pushState(null, '', newUrl);
 					},
+
 					error : function(data, textStatus) {
 						$('#fail').html("관리자에게 문의하세요.");
 						console.log('error', data, textStatus);
@@ -158,11 +162,11 @@
 								</select>
 								</label> <label> <select id="filter" name="filter"
 									class="datatable-selector" onchange="applyCondition();">
-										<option value="">전체보기</option>
-										<option value="0">취소 요청</option>
-										<option value="1">취소 승인</option>
-										<option value="3">취소 거절</option>
-										<option value="2">취소 완료</option>
+										<option value=""<c:if test="${cancelAdminListVO.filter}== ''">selected</c:if>>전체보기</option>
+										<option value="0"<c:if test="${param.filter}== 0">selected</c:if>>취소 요청</option>
+										<option value="1"<c:if test="${cancelAdminListVO.filter}== 1">selected</c:if>>취소 승인</option>
+										<option value="3"<c:if test="${cancelAdminListVO.filter}== 3">selected</c:if>>취소 거절</option>
+										<option value="2"<c:if test="${cancelAdminListVO.filter}== 2">selected</c:if>>취소 완료</option>
 								</select>
 								</label>
 							</div>

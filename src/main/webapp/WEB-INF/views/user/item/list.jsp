@@ -9,11 +9,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
     <link rel="stylesheet" href="/user/css/vendor.css" />
     <link rel="stylesheet" href="/user/css/style.css" />
+      <style>
+          .product-price{
+              white-space: nowrap;
+          }
+          .datatable-info{
+              font-size: 12px;
+          }
+      </style>
 	  <script>
 
 		  let page = 1;
 		  window.onload=function(){
 			  getList();
+              const offset = $("#items-container").offset();
+              $('html, body').animate({scrollTop : offset.top}, 500);
 		  }
 		  function applyCondition(){
 			  page = 1;
@@ -33,20 +43,19 @@
 				  page: page,
 
 			  }
-              console.log(data.filter);
+
 			  $.ajax({
 				  type: "GET", // method type
 				  url: "/item/getItemList", // 요청할 url
 				  data: data, // 전송할 데이터
 				  dataType: "json", // 응답 받을 데이터 type
 				  success : function(resp){
-					  console.log("성공");
 					  // 데이터 리스트 출력
-					  $("#printList").html(resp.printList);
+                      renderItemList(resp.items);
 
 					  // 페이지네이션 출력
 					  // 총 개수
-					  $(".datatable-info").html("("+resp.total+"개)");
+					  $(".datatable-info").html("&nbsp;"+resp.total+"개");
 					  // 페이지네이션
 					  let printPage = "";
 					  if(resp.isPrev){
@@ -65,22 +74,53 @@
 						  printPage += '<li class="datatable-pagination-list-item page-item">';
 						  printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹</a></li>';
 					  }
-					  console.log(printPage);
 					  $(".datatable-pagination-list").html(printPage);
 
 
 
 				  },
 				  error:function (data, textStatus) {
-					  console.log("실패");
 					  $('#fail').html("관리자에게 문의하세요.") // 서버오류
-					  console.log('error', data, textStatus);
 				  }
 			  })
 
 		  }
+
+          function renderItemList(items) {
+              var printList = "";
+
+              if (items.length > 0) {
+                  items.forEach(function(item) {
+                      printList += "<div class='col-6 col-lg-3'>";
+                      printList += "<div class='product'>";
+                      printList += "<figure class='product-image'>";
+                      printList += "<a href='detail?item_no=" + item.item_no + "'>";
+                      printList += "<img src='" + item.item_img + "' alt='Image'>";
+                      printList += "</a>";
+                      printList += "</figure>";
+                      printList += "<div class='product-meta'>";
+                      printList += "<h3 class='product-title'><a href='detail?item_no=" + item.item_no + "'>"
+                          + item.name;
+                      if (item.discount_rate != 0) {
+                          printList += "&nbsp;&nbsp;<span class='text-red text-sm-center'>"+ item.discount_rate +"%</span>";
+                      }
+                      printList += "</a></h3>";
+                      printList += "<div class='product-price'>";
+                      if (item.discount_rate != 0) {
+                          printList += "<span><s class='text-muted'>" + item.price.toLocaleString() + "원 </s>&nbsp</span>";
+                      }
+                      printList += "<span>" + item.discounted_price.toLocaleString() + "원</span>";
+                      printList += "</div>";
+                      printList += "</div>";
+                      printList += "</div>";
+                      printList += "</div>";
+                  });
+
+                  $("#printList").html(printList);
+              }
+          }
 	  </script>
-    <title>soaff</title>
+    <title>soaff items</title>
   </head>
     <body>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
@@ -134,7 +174,7 @@
 
 	<!-- latest products -->
 	<section>
-		<div class="container">
+		<div class="container" id="items-container">
 			<div class="row">
                 <div class="col text-center">
                     <c:if test="${item.category_name == null || item.category_name == ''}">
@@ -158,25 +198,11 @@
                             <option value="낮은가격순" <c:if test="${param.orderBy == '낮은가격순'}">selected</c:if>>낮은가격순</option>
                         </select>
                     </label>
-<%--                    <label>--%>
-<%--                        <select name="filter" id="filter" class="datatable-selector form-control-sm" onchange="applyCondition();">--%>
-<%--                            <option value="">모든 카테고리</option>--%>
-<%--                            <c:forEach var="category" items="${categories}">--%>
-<%--                                <c:if test="${param.filter == category.category_no}">--%>
-<%--                                    <option value="${category.category_no}" selected>${category.name}</option>--%>
-<%--                                </c:if>--%>
-<%--                                <c:if test="${param.filter != category.category_no}">--%>
-<%--                                    <option value="${category.category_no}">${category.name}</option>--%>
-<%--                                </c:if>--%>
-<%--                            </c:forEach>--%>
-<%--                        </select>--%>
-<%--                    </label>--%>
                     <label class="text-sm-center datatable-info">
                          <!-- 리스트에 보이는 부분 말고 검색된 상품의 모든 개수 -->
                     </label>
                 </div>
 				<div class="col-md-1"></div>
-                <!-- search-container 를 searchWord가 있을 때만 보이도록 수정 스크립트로 search-container 영역 [].css("display", "none"); / block -->
                 <div class="col-md-3 d-flex justify-content-end">
                     <div class="form-inline search-container">
                         <input name="searchWord" id="searchWord" class="form-control form-control-sm " type="search"

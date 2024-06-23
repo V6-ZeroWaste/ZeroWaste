@@ -187,5 +187,17 @@
 		#{cancel_reason_detail}
 		WHERE order_detail_no = #{order_detail_no}
 	</update>
+	
+	<!-- 유저 active -->
+	 <!-- 유저: 취소 신청 -->
+	 <update id="requestCancel" parameterType="kr.co.soaff.cancel.CancelAdminDetailVO">
+	 	UPDATE order_detail
+		SET cancel_status = 0,
+		cancel_reason_type = #{cancel_reason_type},
+		cancel_request_date = CURRENT_TIMESTAMP,
+		cancel_reason_detail = #{cancel_reason_detail}
+		WHERE order_detail_no = #{order_detail_no} and user_no = #{user_no}
+	</update>
+	
 
 </mapper>

@@ -21,52 +21,58 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script type="text/javascript">
         let page = 1;
-        let filter = "${orderVO.filter}";
-        window.onload=function(){
-        	if (filter) {
-        		getList();
-        	} else {
-        		filter = $('#filter').val();
-	        	getList();
-        	}
-        	}
+        let filter = null;
+        
+ 	   window.onload = function() {
+ 	      const urlParams = new URLSearchParams(window.location.search);
+ 	      filter = urlParams.get('filter');
+ 	      if (filter !== null) {
+ 	         $('#filter').val(filter);
+ 	      } else {
+ 	         $('#filter').val("");  // 전체보기 시 필터를 빈 문자열로 설정
+ 	      }
+ 	      getList();
+ 	   }
+        
         function applyCondition(){
        		page = 1;
        		getList();
+       		
         }
         function changePage(obj){
        		page = obj.getAttribute("data-page");
        		getList();
         }
         function getList(){
-        	var data = {
-        			searchWord: $('#searchWord').val(),
-        			orderBy: $('#orderBy').val(),
-        			filter: filter,
-        			start_date: $('#start_date').val(),
-        			end_date: $('#end_date').val(),
-        			page: page,
+
+    	  var filterValue = $('#filter').val();
+  	      var data = {
+  	        searchWord : $('#searchWord').val(),
+  	        orderBy : $('#orderBy').val(),
+  	        filter : filterValue !== "" ? parseInt(filterValue) : null, 
+  			start_date: $('#start_date').val(),
+  			end_date: $('#end_date').val(),
+  			page: page,
         		
         	}
-            
+            console.log(data);
            	$.ajax({
 				type: "GET", // method type
 				url: "/admin/order/getList", // 요청할 url
                 data: data, // 전송할 데이터
                 dataType: "json", // 응답 받을 데이터 type
                 success : function(resp){
-                   	console.log(resp)
                    	// 데이터 리스트 출력
                    	let printList = "";
                    	if(resp.list.length == 0){
-                   		printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
+                   		printList = "<td class='first' colspan='6' style='text-align: center;'>등록된 글이 없습니다.</td>";
                    	}
                    	
                		$("#printList").html(resp.printList);
                		
                		// 페이지네이션 출력
-               		// 총 개수Showing
-               		$(".datatable-info").html("Showing "+resp.page+" to "+resp.totalPage+" of "+resp.count+" entries"); 
+               		// 총 개수
+               		$(".datatable-info").html("Showing "+((page-1)*20+1)+" to "+(page*20<=resp.count? page*20 : resp.count)+" of "+resp.count+" entries");
                		// 페이지네이션
                		let printPage = "";
                		if(resp.isPrev){
@@ -81,9 +87,9 @@
                		}
                		if(resp.isNext){
                			printPage += '<li class="datatable-pagination-list-item">';
-               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+               			printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
                			printPage += '<li class="datatable-pagination-list-item">';
-               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+               			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
                		}
                		$(".datatable-pagination-list").html(printPage);
                		
@@ -132,9 +138,9 @@
 													<label>
 														<select id="filter" name="filter" class="datatable-selector" onchange="applyCondition();">
 															<option value="" <c:if test="${empty orderVO.filter}">selected</c:if>>전체보기</option>
-															<option value="2" <c:if test="${orderVO.filter}== 2">selected</c:if>>상품준비중</option>
-															<option value="3" <c:if test="${orderVO.filter}== 3">selected</c:if>>배송중</option>
-															<option value="4" <c:if test="${orderVO.filter}== 4">selected</c:if>>배송완료</option>
+															<option value= 0 <c:if test="${orderVO.filter}== 0">selected</c:if>>상품준비중</option>
+															<option value=1 <c:if test="${orderVO.filter}== 1">selected</c:if>>배송중</option>
+															<option value=2 <c:if test="${orderVO.filter}== 2">selected</c:if>>배송완료</option>
 														</select>
 													</label>
 												</div>

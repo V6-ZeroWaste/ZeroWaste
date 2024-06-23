@@ -50,6 +50,7 @@ public class QnaController {
 			printList += "<td>" + qnaVO.getUser_id() + "</td>";
 			printList += "<td>" + qnaVO.getQuestion_date() + "</td>";
 
+
 			if (qnaVO.getReply_date() != null) {
 				qnaVO.setReplyState("답변 완료");
 				printList += "<td>" + qnaVO.getReplyState() + "</td>";

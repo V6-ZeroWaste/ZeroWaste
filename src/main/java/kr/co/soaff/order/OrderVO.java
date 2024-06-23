@@ -25,15 +25,34 @@ public class OrderVO {
 	private String buyer_name;
 	private String buyer_email;
 	private String buyer_tel;
-	private int delivery_status;
+	private Integer delivery_status;
 	private Timestamp delivery_date;
 	private String id;
 	private int payment_price;
 	private String payment_method;
 	private int total_item_price;
+	private int refund_price;
+	private int[] checkedCartNo;
+	private int checkedCartCount;
+	// orderDeatil 관련정보
+	private int[] amountArray;
+	private int[] itemNoArray;
+	private int[] priceArray;
+	private int amount;
+	private int item_no;
+	private int price;
+	// 포인트 관련
+	private String pointPlusContent;
+	private String pointContent;
+	private int pointPlus;
 
-	// 주문 총 수량
-	private int total_amount;
+
+	private int total_amount; // 주문 총 수량
+	private int item_amount; // 주문 총 수량
+	private Integer cancel_status;
+	private Integer cancel_count; // 상품 취소 수량
+	private String item_img; // 상품 이미지
+	private Timestamp last_cancel_date;
 
 	// 사용자로부터 전송되어지는 값(검색, 페이징, 필터링(조건))
 	private String searchWord;

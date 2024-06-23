@@ -19,7 +19,7 @@ public class SalesServiceImpl implements SalesService {
 		if (totalCount % 20 > 0)
 			totalPage++;
 		// 시작인덱스
-		int startIdx = (vo.getPage() - 1) * 10;
+		int startIdx = (vo.getPage() - 1) * 20;
 		vo.setStartIdx(startIdx); // sql문에 파라미터로 넣어줌
 		List<SalesVO> list = mapper.list(vo);
 
@@ -38,8 +38,8 @@ public class SalesServiceImpl implements SalesService {
 		map.put("list", list);
 		map.put("endPage", endPage);
 		map.put("startPage", startPage);
-		map.put("prev", prev);
-		map.put("next", next);
+		map.put("isPrev", prev);
+		map.put("isNext", next);
 		return map;
 	};
 
