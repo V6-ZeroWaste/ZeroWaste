@@ -11,10 +11,9 @@
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
 
-<title>Reviews</title>
+<title>mypage Qna List</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
-	rel="stylesheet" />
 	rel="stylesheet" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

@@ -35,7 +35,8 @@
 		review.score
 		FROM
 		review
-		JOIN item ON review.item_no = item.item_no
+		JOIN item ON review.item_no =
+		item.item_no
 		JOIN user ON
 		review.user_no = user.user_no
 		<include refid="calendar" />
@@ -56,34 +57,61 @@
 
 	<insert id="post" parameterType="kr.co.soaff.review.ReviewVO">
 		INSERT INTO review (
-		review_no,
 		user_no,
 		user_id,
-		item_no,
-		item_name,
+		score,
 		title,
 		content,
-		score,
 		review_img,
-		regist_date
+		regist_date,
+		exposed_status,
+		order_detail_no,
+		item_no,
+		order_no,
+		item_img
 		)
 		VALUES (
-		#{review_no},
 		#{user_no},
 		#{user_id},
-		#{item_no},
-		#{item_name},
+		#{score},
 		#{title},
 		#{content},
-		#{score},
 		#{review_img},
-		CURRENT_TIMESTAMP
+		CURRENT_TIMESTAMP,
+		#{exposed_status},
+		#{order_detail_no},
+		#{item_no},
+		#{order_no},
+		#{item_img}
 		)
 	</insert>
 
-	<select id="getItemName" parameterType="int"
-		resultType="String">
-		SELECT name FROM items WHERE item_no = #{item_no}
+	<select id="write" parameterType="kr.co.soaff.review.ReviewVO"
+		resultType="kr.co.soaff.review.ReviewVO">
+		SELECT
+		i.item_no AS
+		item_no,
+		i.name AS item_name,
+		i.item_img AS item_img,
+		#{order_detail_no}
+		AS order_detail_no,
+		od.order_no AS order_no,
+		1 AS exposed_status
+		FROM
+		item i
+		JOIN order_detail od ON i.item_no = od.item_no
+		JOIN user u ON
+		u.user_no = #{user_no}
+		WHERE i.item_no = #{item_no} AND
+		od.order_detail_no = #{order_detail_no}
+	</select>
+
+
+
+	<select id="getItemName" parameterType="int" resultType="String">
+		SELECT
+		COUNT(*)
+		FROM item WHERE item_no = #{item_no}
 	</select>
 
 	<!-- 리뷰 상세 조회 -->
@@ -97,6 +125,7 @@
 		review.score,
 		review.regist_date,
 		item.name as item_name,
+		item.item_img as item_img,
 		user.id as user_id
 		FROM
 		review JOIN item ON review.item_no =
@@ -118,12 +147,13 @@
 	<update id="update" parameterType="kr.co.soaff.review.ReviewVO">
 		UPDATE review
 		SET
-		title =
-		#{title},
-		content = #{content}
+		title = #{title},
+		content = #{content},
+		review_img = #{review_img}
 		WHERE
 		review_no = #{review_no};
 	</update>
+
 
 
 </mapper>
