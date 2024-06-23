@@ -5,12 +5,26 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.http.*;
+import kr.co.soaff.order.OrderMapper;
+import kr.co.soaff.order.OrderVO;
 
 @Service
 public class CancelAdminServiceImpl implements CancelAdminService {
 	@Autowired
-	private CancelAdminMapper mapper;
+	private CancelAdminMapper mapper;	
+	@Autowired
+	private OrderMapper orderMapper;
+	
+	@Value("${imp.accessToken}")
+    private String accessToken;
 
 	@Override
 	public Map<String, Object> list(CancelAdminListVO vo) {
@@ -51,13 +65,10 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		int totalOrderItems = mapper.countOrderItems(orderDetail.getOrder_no());
 		int remainingItems = totalOrderItems - orderDetail.getAmount(); // 현재 취소 요청 중인 상품을 제외한 나머지 상품 수량
 
-		int refundPrice;
-		if (remainingItems == 0) {
-			// 모든 상품을 취소하는 경우
-			refundPrice = orderDetail.getPrice() * orderDetail.getAmount() + order.getDelivery_price() - refundPoint;
-		} else {
-			// 일부 상품만 취소하는 경우
-			refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
+		int refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
+		if ((orderDetail.getCancel_request_date()).equals(order.getLast_cancel_date())) {
+			// 마지막 취소 요청 상품
+			refundPrice += order.getDelivery_price();
 		}
 
 		// VO에 필요한 데이터 설정
@@ -74,6 +85,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("cancelDetail", orderDetail);
+		map.put("payment_id", order.getPayment_Id());
 
 		return map;
 	}
@@ -93,10 +105,35 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 	}
 
 	@Override
+	@Transactional
 	public int completeCancel(int order_detail_no) {
-		CancelAdminDetailVO vo = new CancelAdminDetailVO();
-		vo.setOrder_detail_no(order_detail_no);
-		return mapper.completeCancel(vo);
+		// 환불에 필요한 정보 가져오기 
+		CancelAdminDetailVO orderDetail = mapper.detailFromOrderDetailVO(order_detail_no);
+		CancelAdminOrderVO order = mapper.detailFromOrderVO(orderDetail.getOrder_no());
+
+		int refundPoint = (int) (((double) orderDetail.getPrice() * orderDetail.getAmount())
+				/ ((order.getPayment_price() - order.getDelivery_price())) * order.getPoint());
+		int refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
+		if ((orderDetail.getCancel_request_date()).equals(order.getLast_cancel_date())) {
+			refundPrice += order.getDelivery_price(); //마지막 취소 상품
+		}
+		int reason_type = orderDetail.getCancel_reason_type();
+		String reason = reason_type == 0 ? "배송지연" : (reason_type == 1 ? "제품불량" : "단순변심");
+		
+		// 포트원 결제 취소 
+		if (cancelPortone( order.getPayment_Id(),  reason,  refundPrice)) { // 결제 취소 완료 시
+			// order_detail 결제 취소 정보 UPDATE 
+			mapper.completeCancel(orderDetail);
+			// order 취소 금액 UPDATE
+			
+			// point 취소 금액 UPDATE
+			
+			
+			
+		}else {
+			return 0;
+		}
+		return 1;
 	}
 	
 	@Override
@@ -147,4 +184,38 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		return map;
 	}
+	
+	
+	public boolean cancelPortone(String paymengt_id, String reason, int amount) {
+		try {
+			
+			String apiUrl = "https://api.portone.io/"+paymengt_id+"/cancel";
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "Bearer " + accessToken);
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			
+			
+			RestTemplate restTemplate = new RestTemplate();
+			Map<String, Object> keyMap = new HashMap<>();
+			keyMap.put("amount", amount);
+			keyMap.put("reason", reason);
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+            String keyJson = objectMapper.writeValueAsString(keyMap);
+            HttpEntity<String> requestEntity = new HttpEntity<>(keyJson, headers); // HttpEntity 객체 생성
+            ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
+
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                return true;
+            } else {
+                return false;
+            }
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("err msg : "+e.getMessage());
+			return false;
+		}
+	}
+	
 }

@@ -83,7 +83,7 @@
 		    payment_method, payment_date,  point, payment_price, delivery_price, refund_price
 		    receiver_name, receiver_tel, zipcode, addr, addr_detail, delivery_request,
 		    (select count(*) - count(cancel_status) from order_detail where order_no = #{order_no} ) as cancel_count,
-		    (select max(cancel_request_date) from order_detail where order_no = #{order_no}) as last_cancel_date
+		    (select max(if(cancel_status is null,current_timestamp(), cancel_request_date)) from order_detail where order_no = 10) as last_cancel_date
 		FROM `order`
 		WHERE order_no = #{order_no} and `order`.user_no = #{user_no};
 	</select>
@@ -183,28 +183,29 @@
 				#{buyer_name}, #{buyer_email}, #{buyer_tel}, #{delivery_status}
 			)
 		
-		<selectKey keyProperty="orderNo" order="AFTER" resultType="int">
+		<selectKey keyProperty="order_no" order="AFTER" resultType="int">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 	</insert>
 	<!-- order detail 부분 -->
-	<insert id="orderDetailInsert" parameterType="kr.co.soaff.order.OrderVO">		
-		INSERT INTO `order`(
-			order_no, user_no, amount, 
-			price, item_no
-			) VALUES (
-			#{orderNo},#{user_no}, #{amount},
-			#{price},#{item_no}
-			)
+	<insert id="orderDetailInsert" parameterType="java.util.List">
+	    <foreach collection="list" item="orderDetail" separator=";">
+	        INSERT INTO `order_detail` (
+	            order_no, user_no, amount, price, item_no
+	        ) VALUES (
+	            #{orderDetail.order_no}, #{orderDetail.user_no}, #{orderDetail.amount},
+	            #{orderDetail.price}, #{orderDetail.item_no}
+	        )
+	    </foreach>
 	</insert>
-		
+
 	<insert id="pointPlus" parameterType="kr.co.soaff.order.OrderVO">
 		INSERT INTO `point`(
 				user_no, content, point, 
 				point_date, order_no
 			) VALUES (
 				#{user_no},#{pointPlusContent},#{pointPlus},
-				NOW(),#{orderNo}
+				NOW(),#{order_no}
 		
 			)
 	
@@ -216,7 +217,7 @@
 				point_date, order_no
 			) VALUES (
 				#{user_no},#{pointContent},#{point},
-				NOW(),#{orderNo}
+				NOW(),#{order_no}
 		
 			)
 	

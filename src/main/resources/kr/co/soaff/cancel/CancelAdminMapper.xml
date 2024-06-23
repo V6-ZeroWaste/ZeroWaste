@@ -121,7 +121,8 @@
 		imp_uid,
 		payment_price,
 		payment_method,
-		delivery_price
+		delivery_price,
+		(select max(if(cancel_status is null,current_timestamp(), cancel_request_date)) from order_detail where order_no = 10)  as last_cancel_date
 		FROM `order`
 		WHERE
 		order_no = #{order_no}
