@@ -126,12 +126,20 @@ public class QnaController {
 		return result;
 	}
 
+//	@GetMapping("/post")
+//	public String write(Model model, @RequestParam int item_no) {
+//		ItemVO vo = new ItemVO();
+//		model.addAttribute("vo", service.write(vo));
+//		return "/user/qna/post";
+//	}
+	
 	@GetMapping("/post")
 	public String write(Model model, @RequestParam int item_no) {
-		ItemVO vo = new ItemVO();
-		model.addAttribute("vo", service.write(vo));
-		return "/user/qna/post";
+	    ItemVO vo = service.write(item_no); // 서비스에서 item 정보를 가져오는 메서드 호출
+	    model.addAttribute("vo", vo);
+	    return "/user/qna/post";
 	}
+
 
 	@PostMapping("/postQna")
 	@ResponseBody

@@ -190,7 +190,7 @@
 												<a href="product-1.html"
 													title="Fawn Wool / Natural Mammoth Chair"
 													data-toggle="tooltip" data-placement="top"> <img
-													src="${list.qna_img }"
+													src="${list.item_img }"
 													alt="Fawn Wool / Natural Mammoth Chair">
 												</a>
 											</div>

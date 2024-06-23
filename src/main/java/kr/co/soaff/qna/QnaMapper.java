@@ -10,7 +10,7 @@ import kr.co.soaff.item.ItemVO;
 public interface QnaMapper {
 	List<QnaVO> list(QnaVO vo);
 
-	ItemVO write(ItemVO vo);
+	ItemVO write(int item_no);
 
 	QnaVO detail(QnaVO vo);
 

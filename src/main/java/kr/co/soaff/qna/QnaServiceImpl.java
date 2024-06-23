@@ -55,8 +55,8 @@ public class QnaServiceImpl implements QnaService {
 	}
 	
 	@Override
-	public ItemVO write(ItemVO vo) {
-		return mapper.write(vo);
+	public ItemVO write(int item_no) {
+		return mapper.write(item_no);
 	}
 	
 	@Override

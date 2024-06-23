@@ -123,7 +123,7 @@ function postQna() {
 							<a href="product-1.html"
 								title="Fawn Wool / Natural Mammoth Chair" data-toggle="tooltip"
 								data-placement="top"> <img class="item-img"
-								src="${vo.qna_img}" alt="Fawn Wool / Natural Mammoth Chair">
+								src="${vo.item_img}" alt="Fawn Wool / Natural Mammoth Chair">
 							</a>
 						</div>
 						<div style="width: 400px">

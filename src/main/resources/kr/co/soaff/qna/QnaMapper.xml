@@ -148,14 +148,15 @@
 		)
 	</insert>
 
-	<select id="write" parameterType="int">
+	<select id="write" parameterType="int"
+		resultType="kr.co.soaff.item.ItemVO">
 		SELECT
 		i.item_img AS item_img,
 		i.item_no AS item_no,
-		i.name AS item_name
-		FROM qna q
-		JOIN item i ON q.item_no = i.item_no
-		WHERE q.item_no = #{item_no}
+		i.name AS
+		item_name
+		FROM item i
+		WHERE i.item_no = #{item_no}
 	</select>
 
 </mapper>
