@@ -23,7 +23,7 @@
 	crossorigin="anonymous"></script>
 <script src="/admin/js/datatables-simple-demo.js"></script>
 
-<title>Review</title>
+<title>Review Post</title>
 
 <style>
 .review-info {
@@ -118,103 +118,112 @@ input {
 </script>
 </head>
 <body>
-	<div style="width: 700px; margin: auto;">
-		<!-- content -->
-		<div class="row">
-			<!-- title -->
-			<div class="col-12">
-				<h3 class="mb-0">Review Post</h3>
-			</div>
-			<!-- /title -->
+	<%@ include file="/WEB-INF/views/user/include/header.jsp"%>
+	<%@ include file="/WEB-INF/views/user/include/mypageInfo.jsp"%>
+	<section class="pt-5">
+		<div class="container">
+			<div class="row gutter-4 justify-content-between">
+				<%@ include file="/WEB-INF/views/user/include/mypageNav.jsp"%>
+				<div class="col-lg-9">
+					<!-- content -->
+					<div class="row">
+						<!-- title -->
+						<div class="col-12">
+							<h3 class="mb-0">Review Post</h3>
+						</div>
+						<!-- /title -->
 
-			<!-- item info card -->
-			<div class="col-12">
-				<div style="border: 1px solid #dddddd;">
-					<div class="row align-items-center" style="min-height: 100px">
-						<div style="width: 140px; text-align: center">
-							<!-- 상품이미지 -->
-							<a href="product-1.html"
-								title="Fawn Wool / Natural Mammoth Chair" data-toggle="tooltip"
-								data-placement="top"> <img class="item-img"
-								src="${vo.item_img}" alt="Fawn Wool / Natural Mammoth Chair">
-							</a>
+						<!-- item info card -->
+						<div class="col-12">
+							<div style="border: 1px solid #dddddd;">
+								<div class="row align-items-center" style="min-height: 100px">
+									<div style="width: 140px; text-align: center">
+										<!-- 상품이미지 -->
+										<a href="product-1.html"
+											title="Fawn Wool / Natural Mammoth Chair"
+											data-toggle="tooltip" data-placement="top"> <img
+											class="item-img" src="${vo.item_img}"
+											alt="Fawn Wool / Natural Mammoth Chair">
+										</a>
+									</div>
+									<div style="width: 400px">
+										<h3 class="order-number">${vo.item_name}</h3>
+									</div>
+									
+								</div>
+							</div>
 						</div>
-						<div style="width: 400px">
-							<h3 class="order-number">${vo.item_name}</h3>
-						</div>
-						<div style="width: 130px">
-							<!-- 상품 바로가기 링크 -->
-							<a href="#!" class="action eyebrow underline">View Item</a>
+						<!-- /review info card -->
+
+						<!-- review detail card -->
+						<div class="col-12">
+							<form id="reviewForm" enctype="multipart/form-data">
+								<!-- Hidden fields -->
+								<input type="hidden" name="user_no" value="${vo.user_no}">
+								<input type="hidden" name="user_id" value="${vo.user_id}">
+								<input type="hidden" name="order_detail_no"
+									value="${vo.order_detail_no}"> <input type="hidden"
+									name="item_no" value="${vo.item_no}"> <input
+									type="hidden" name="order_no" value="${vo.order_no}">
+
+								<div style="border: 1px solid #dddddd;">
+									<table class="table table-borderless">
+										<tbody>
+											<tr>
+												<th scope="row">Rating</th>
+												<td colspan="2">
+													<div class="star-rating">
+														<input type="radio" id="5-stars" name="rating" value="5" /><label
+															for="5-stars" class="star">&#9733;</label> <input
+															type="radio" id="4-stars" name="rating" value="4" /><label
+															for="4-stars" class="star">&#9733;</label> <input
+															type="radio" id="3-stars" name="rating" value="3" /><label
+															for="3-stars" class="star">&#9733;</label> <input
+															type="radio" id="2-stars" name="rating" value="2" /><label
+															for="2-stars" class="star">&#9733;</label> <input
+															type="radio" id="1-stars" name="rating" value="1" /><label
+															for="1-stars" class="star">&#9733;</label>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th scope="row">Title</th>
+												<td colspan="2"><input type="text" id="title"
+													name="title" class="form-control"></td>
+											</tr>
+											<tr>
+												<th>Content</th>
+												<td colspan="2">
+													<div>
+														<textarea id="content" name="content" class="form-control"
+															style="height: 200px"></textarea>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th>Image</th>
+												<td colspan="2"><input class="form-control" type="file"
+													name="review_img" id="file" class="wid100" /></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="col-12" style="text-align: center">
+									<button id="post" class="btn btn-primary" type="button"
+										onclick="postReview()">등록</button>
+								</div>
+							</form>
+
+
+
 						</div>
 					</div>
+					<!-- /content -->
 				</div>
 			</div>
-			<!-- /review info card -->
-
-			<!-- review detail card -->
-			<div class="col-12">
-				<form id="reviewForm" enctype="multipart/form-data">
-					<!-- Hidden fields -->
-					<input type="hidden" name="user_no" value="${vo.user_no}">
-					<input type="hidden" name="user_id" value="${vo.user_id}">
-					<input type="hidden" name="order_detail_no"
-						value="${vo.order_detail_no}"> <input type="hidden"
-						name="item_no" value="${vo.item_no}"> <input type="hidden"
-						name="order_no" value="${vo.order_no}">
-
-					<div style="border: 1px solid #dddddd;">
-						<table class="table table-borderless">
-							<tbody>
-								<tr>
-									<th scope="row">Rating</th>
-									<td colspan="2">
-										<div class="star-rating">
-											<input type="radio" id="5-stars" name="rating" value="5" /><label
-												for="5-stars" class="star">&#9733;</label> <input
-												type="radio" id="4-stars" name="rating" value="4" /><label
-												for="4-stars" class="star">&#9733;</label> <input
-												type="radio" id="3-stars" name="rating" value="3" /><label
-												for="3-stars" class="star">&#9733;</label> <input
-												type="radio" id="2-stars" name="rating" value="2" /><label
-												for="2-stars" class="star">&#9733;</label> <input
-												type="radio" id="1-stars" name="rating" value="1" /><label
-												for="1-stars" class="star">&#9733;</label>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">Title</th>
-									<td colspan="2"><input type="text" id="title" name="title"
-										class="form-control"></td>
-								</tr>
-								<tr>
-									<th>Content</th>
-									<td colspan="2">
-										<div>
-											<textarea id="content" name="content" class="form-control"
-												style="height: 200px"></textarea>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<th>Image</th>
-									<td colspan="2"><input class="form-control" type="file"
-										name="review_img" id="file" class="wid100" /></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="col-12" style="text-align: center">
-						<button id="post" class="btn btn-primary" type="button"
-							onclick="postReview()">등록</button>
-					</div>
-				</form>
-
-
-
-			</div>
 		</div>
-		<!-- /content -->
-	</div>
+
+	</section>
+	<%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
 </body>
 </html>

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
 
-<title>soaff</title>
+<title>mypage review</title>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
