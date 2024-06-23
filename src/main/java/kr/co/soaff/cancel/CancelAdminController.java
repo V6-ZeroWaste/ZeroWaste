@@ -94,7 +94,7 @@ public class CancelAdminController {
 
 	@PostMapping("/cancel/approve/{order_detail_no}")
 	public ResponseEntity<Map<String, String>> approveCancel(@PathVariable int order_detail_no) {
-		int r = service.approveCancel(order_detail_no);
+		int r = service.completeCancel(order_detail_no);
 		Map<String, String> response = new HashMap<>();
 		if (r == 1) {
 			response.put("status", "success");

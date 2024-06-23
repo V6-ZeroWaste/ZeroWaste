@@ -13,15 +13,16 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.http.*;
-import kr.co.soaff.order.OrderMapper;
 import kr.co.soaff.order.OrderVO;
+import kr.co.soaff.point.PointMapper;
+import kr.co.soaff.point.PointVO;
 
 @Service
 public class CancelAdminServiceImpl implements CancelAdminService {
 	@Autowired
 	private CancelAdminMapper mapper;	
 	@Autowired
-	private OrderMapper orderMapper;
+	private PointMapper pointMapper;
 	
 	@Value("${imp.accessToken}")
     private String accessToken;
@@ -58,8 +59,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		// 최종 결제 정보 공식 계산
 		int total_price = order.getPayment_price() - order.getDelivery_price() + order.getPoint();
-		int refundPoint = (int) (((double) orderDetail.getPrice() * orderDetail.getAmount())
-				/ ((order.getPayment_price() - order.getDelivery_price())) * order.getPoint());
+		int refundPoint = (int) (order.getPoint() * (( (double) orderDetail.getPrice() * orderDetail.getAmount())
+				/ (order.getPayment_price() - order.getDelivery_price() + order.getPoint())));
 
 		// 주문 상품 총 개수 및 남은 개수 가져오기
 		int totalOrderItems = mapper.countOrderItems(orderDetail.getOrder_no());
@@ -85,7 +86,6 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("cancelDetail", orderDetail);
-		map.put("payment_id", order.getPayment_Id());
 
 		return map;
 	}
@@ -111,8 +111,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		CancelAdminDetailVO orderDetail = mapper.detailFromOrderDetailVO(order_detail_no);
 		CancelAdminOrderVO order = mapper.detailFromOrderVO(orderDetail.getOrder_no());
 
-		int refundPoint = (int) (((double) orderDetail.getPrice() * orderDetail.getAmount())
-				/ ((order.getPayment_price() - order.getDelivery_price())) * order.getPoint());
+		int refundPoint = (int) (order.getPoint() * (( (double) orderDetail.getPrice() * orderDetail.getAmount())
+				/ (order.getPayment_price() - order.getDelivery_price() + order.getPoint())));
 		int refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
 		if ((orderDetail.getCancel_request_date()).equals(order.getLast_cancel_date())) {
 			refundPrice += order.getDelivery_price(); //마지막 취소 상품
@@ -121,19 +121,25 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		String reason = reason_type == 0 ? "배송지연" : (reason_type == 1 ? "제품불량" : "단순변심");
 		
 		// 포트원 결제 취소 
+		int result = 0;
 		if (cancelPortone( order.getPayment_Id(),  reason,  refundPrice)) { // 결제 취소 완료 시
 			// order_detail 결제 취소 정보 UPDATE 
-			mapper.completeCancel(orderDetail);
+			result += mapper.completeCancel(orderDetail);
 			// order 취소 금액 UPDATE
-			
+			order.setRefund_price(refundPrice);
+			result += mapper.cancelOrderUpdate(order);
 			// point 취소 금액 UPDATE
-			
+			PointVO pointVo =  new PointVO();
+			pointVo.setContent("환불 적립금");
+			pointVo.setPoint(refundPoint);
+			pointVo.setOrder_no(order.getOrder_no());
+			result += pointMapper.insert(pointVo);
 			
 			
 		}else {
 			return 0;
 		}
-		return 1;
+		return result==3 ? 1: 0;
 	}
 	
 	@Override
@@ -152,7 +158,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		// 최종 결제 정보 공식 계산
 		int total_price = order.getPayment_price() - order.getDelivery_price() + order.getPoint();
 		int refundPoint = (int) (((double) orderDetail.getPrice() * orderDetail.getAmount())
-				/ ((order.getPayment_price() - order.getDelivery_price())) * order.getPoint());
+				/ ((order.getPayment_price() - order.getDelivery_price() + order.getPoint())) * order.getPoint());
 
 		// 주문 상품 총 개수 및 남은 개수 가져오기
 		int totalOrderItems = mapper.countOrderItems(orderDetail.getOrder_no());
@@ -189,7 +195,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 	public boolean cancelPortone(String paymengt_id, String reason, int amount) {
 		try {
 			
-			String apiUrl = "https://api.portone.io/"+paymengt_id+"/cancel";
+			String apiUrl = "https://api.portone.io/payments/"+paymengt_id+"/cancel";
+			System.out.println("[api url] : "+ apiUrl);
 			HttpHeaders headers = new HttpHeaders();
 			headers.set("Authorization", "Bearer " + accessToken);
 			headers.setContentType(MediaType.APPLICATION_JSON);

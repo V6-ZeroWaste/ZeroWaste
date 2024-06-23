@@ -83,7 +83,7 @@
 		    payment_method, payment_date,  point, payment_price, delivery_price, refund_price
 		    receiver_name, receiver_tel, zipcode, addr, addr_detail, delivery_request,
 		    (select count(*) - count(cancel_status) from order_detail where order_no = #{order_no} ) as cancel_count,
-		    (select max(if(cancel_status is null,current_timestamp(), cancel_request_date)) from order_detail where order_no = 10) as last_cancel_date
+		    (select max(if(cancel_status is null,current_timestamp(), cancel_request_date)) from order_detail where order_no = #{order_no}) as last_cancel_date
 		FROM `order`
 		WHERE order_no = #{order_no} and `order`.user_no = #{user_no};
 	</select>
