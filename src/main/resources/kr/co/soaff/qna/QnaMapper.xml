@@ -97,6 +97,7 @@
 		qna.user_id,
 		qna.content,
 		item.name AS item_name,
+		item.item_img as item_img,
 		qna.reply,
 		qna.reply_date
 		FROM
@@ -153,7 +154,7 @@
 		SELECT
 		i.item_img AS item_img,
 		i.item_no AS item_no,
-		i.name AS item_name
+		i.name AS name
 		FROM item i
 		WHERE i.item_no = #{item_no}
 	</select>
