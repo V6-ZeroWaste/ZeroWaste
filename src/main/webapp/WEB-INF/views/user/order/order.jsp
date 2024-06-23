@@ -293,7 +293,7 @@
         }
 
         // db `order` 업데이트 정보
-        let point = (parseFloat($('#pointToUse').val().replace(/[^0-9.-]/g, '')) * -1) || 0;
+        let point = parseFloat($('#pointToUse').val().replace(/[^0-9.]/g, '')) || 0;
         let order_status = 2
         let receiver_name = $('#receiverName').val();
         let zipcode = $('#zipcode').val();
