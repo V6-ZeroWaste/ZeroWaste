@@ -647,10 +647,6 @@
                     }
                 }
             });
-            $('#toQna').on('click', () => {
-
-            })
-
         });
 
 
@@ -844,7 +840,7 @@
                 <div class="col-md-9 text-left" id="qna-total">
                 </div>
                 <div class="col-md-3 d-flex align-items-center justify-content-end">
-                    <input type="button" value="문의하기" class="btn btn-primary btn-sm" id="toQna">
+                    <input type="button" value="문의하기" class="btn btn-primary btn-sm" id="toQna" onclick="location.href='/mypage/qna/post?item_no=${item.item_no}'">
                 </div>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center" style="font-size: 14px;">
