@@ -173,7 +173,7 @@
 									</div>
 								</div>
 								<div>
-									<span><strong>총 ${map.count}개</strong></span>
+									<span class="eyebrow">${map.count } entries</span>
 								</div>
 							</div>
 						</div>
@@ -203,37 +203,50 @@
 													class="qna-info">${list.replyState }</span>
 											</div>
 											<div class="col-lg-2">
-												<a href="#!" class="action eyebrow underline" onclick="redirectToDetail(${list.qna_no})">View
-													Detail</a>
+												<a href="#!" class="action eyebrow underline"
+													onclick="redirectToDetail(${list.qna_no})">View Detail</a>
 											</div>
 										</div>
 									</div>
 								</div>
-								</c:forEach>
-								</div>
-								</div>
-								</div>
-								
-						<!-- /list -->
-						
-						<!-- pagination -->
-						<div class="row">
-							<div class="col">
-								<ul class="pagination">
-									<li class="page-item active"><a class="page-link"
-										href="#!">1 <span class="sr-only">(current)</span></a></li>
-									<li class="page-item" aria-current="page"><a
-										class="page-link" href="#!">2</a></li>
-									<li class="page-item"><a class="page-link" href="#!">3</a></li>
-									<li class="page-item"><a class="page-link" href="#!">4</a></li>
-								</ul>
-							</div>
+							</c:forEach>
 						</div>
-						<!-- /pagination -->
 					</div>
-					<!-- /content -->
+
+				<!-- /list -->
+
+				<!-- pagination -->
+				<div class="row">
+					<div class="col">
+						<ul class="pagination">
+							<c:if test="${map.isPrev}">
+								<li class="page-item"><a class="page-link"
+									href="/mypage/qna/list?page=1">‹‹</a></li>
+								<li class="page-item"><a class="page-link"
+									href="/mypage/qna/list?page=${map.startPage-1}">‹</a></li>
+							</c:if>
+							<c:forEach var="i" begin="${map.startPage}" end="${map.endPage }">
+								<c:if test="${map.currentPage==i}">
+									<li class="page-item active"><a class="page-link">${i }<span
+											class="sr-only">(current)</span></a></li>
+								</c:if>
+								<c:if test="${map.currentPage!=i}">
+									<li class="page-item"><a class="page-link"
+										href="/mypage/qna/list?page=${i}">${i }</a></li>
+								</c:if>
+							</c:forEach>
+							<c:if test="${map.isNext}">
+								<li class="page-item"><a class="page-link"
+									href="/mypage/qna/list?page=${map.endPage+1}">›</a></li>
+								<li class="page-item"><a class="page-link"
+									href="/mypage/qna/list?page=${map.totalPage}">››</a></li>
+							</c:if>
+						</ul>
+					</div>
 				</div>
+				<!-- /pagination -->
 			</div>
+			<!-- /content -->
 		</div>
 		</div>
 	</section>
