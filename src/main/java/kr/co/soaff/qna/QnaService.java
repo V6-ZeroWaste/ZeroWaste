@@ -7,7 +7,7 @@ import kr.co.soaff.item.ItemVO;
 public interface QnaService {
 	Map<String, Object> list(QnaVO vo);
 
-	ItemVO write(int item_no);
+	ItemVO write(ItemVO vo);
 
 	QnaVO detail(QnaVO vo);
 

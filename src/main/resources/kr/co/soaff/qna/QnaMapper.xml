@@ -148,13 +148,12 @@
 		)
 	</insert>
 
-	<select id="write" parameterType="int"
+	<select id="write" parameterType="kr.co.soaff.item.ItemVO"
 		resultType="kr.co.soaff.item.ItemVO">
 		SELECT
 		i.item_img AS item_img,
 		i.item_no AS item_no,
-		i.name AS
-		item_name
+		i.name AS item_name
 		FROM item i
 		WHERE i.item_no = #{item_no}
 	</select>

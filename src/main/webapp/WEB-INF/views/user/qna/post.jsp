@@ -100,7 +100,6 @@ function postQna() {
         });
     }
 }
-
 </script>
 </head>
 <body>
@@ -120,14 +119,14 @@ function postQna() {
 					<div class="row align-items-center" style="min-height: 100px">
 						<div style="width: 140px; text-align: center">
 							<!-- 상품이미지 -->
-							<a href="product-1.html"
-								title="Fawn Wool / Natural Mammoth Chair" data-toggle="tooltip"
-								data-placement="top"> <img class="item-img"
-								src="${vo.item_img}" alt="Fawn Wool / Natural Mammoth Chair">
+							<a href="product-1.html" title="${itemVo.name}"
+								data-toggle="tooltip" data-placement="top"> <img
+								class="item-img" src="${itemVo.item_img}"
+								alt="${itemVo.name}">
 							</a>
 						</div>
 						<div style="width: 400px">
-							<h3 class="order-number">${vo.name}</h3>
+							<h3 class="order-number">${itemVo.name}</h3>
 						</div>
 						<div style="width: 130px">
 							<!-- 상품 바로가기 링크 -->
@@ -138,22 +137,22 @@ function postQna() {
 			</div>
 			<div class="col-12">
 				<form id="qnaForm" enctype="multipart/form-data">
-					<input type="hidden" name="user_no" value="${vo.user_no}" /> <input
-						type="hidden" name="item_no" value="${vo.item_no}" />
+					<input type="hidden" name="user_no" value="${qnaVo.user_no}" /> <input
+						type="hidden" name="item_no" value="${itemVo.item_no}" />
 					<div style="border: 1px solid #dddddd;">
 						<table class="table table-borderless">
 							<tbody>
 								<tr>
 									<th scope="row">Title</th>
 									<td colspan="2"><input type="text" id="title" name="title"
-										class="form-control" value="${vo.title}"></td>
+										class="form-control" value="${qnaVo.title}"></td>
 								</tr>
 								<tr>
 									<th>Content</th>
 									<td colspan="2">
 										<div>
 											<textarea id="content" name="content" class="form-control"
-												style="height: 200px">${vo.content}</textarea>
+												style="height: 200px">${qnaVo.content}</textarea>
 										</div>
 									</td>
 								</tr>

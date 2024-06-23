@@ -133,12 +133,36 @@ public class QnaController {
 //		return "/user/qna/post";
 //	}
 	
+//	@GetMapping("/post")
+//	public String write(Model model, @RequestParam int item_no) {
+//	    ItemVO vo = service.write(item_no); // 서비스에서 item 정보를 가져오는 메서드 호출
+//	    model.addAttribute("vo", vo);
+//	    return "/user/qna/post";
+//	}
+	
 	@GetMapping("/post")
 	public String write(Model model, @RequestParam int item_no) {
-	    ItemVO vo = service.write(item_no); // 서비스에서 item 정보를 가져오는 메서드 호출
-	    model.addAttribute("vo", vo);
+	    // Item 정보 가져오기
+	    ItemVO itemVo = new ItemVO();
+	    itemVo.setItem_no(item_no);
+	    ItemVO itemInfo = service.write(itemVo);
+
+	    // QnaVO 객체 생성 및 Item 정보 설정
+	    QnaVO qnaVo = new QnaVO();
+	    qnaVo.setItem_no(item_no);
+	    qnaVo.setItem_name(itemInfo.getName());
+	    qnaVo.setItem_img(itemInfo.getItem_img());
+
+	    // user_no 및 user_id를 설정 (예시로 설정, 실제 값으로 변경 필요)
+	    qnaVo.setUser_no(1); // 예시 user_no
+	    qnaVo.setUser_id("user01"); // 예시 user_id
+
+	    // 모델에 QnaVO와 ItemVO 추가
+	    model.addAttribute("qnaVo", qnaVo);
+	    model.addAttribute("itemVo", itemInfo);
 	    return "/user/qna/post";
 	}
+
 
 
 	@PostMapping("/postQna")
