@@ -17,40 +17,39 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class OrderController {
 
-	
-    @Autowired
-    private OrderService service;
+	@Autowired
+	private OrderService service;
 
-    @GetMapping("/mypage/order/list")
-    public String index(Model model, OrderVO vo, HttpSession session) {
-    	// session에서 user_no 가져오기
-    	vo.setUser_no((int) session.getAttribute("user_no"));
-    	model.addAttribute("map", service.list(vo));
-    	
-      return "/user/order/list";
-    }
+	@GetMapping("/mypage/order/list")
+	public String index(Model model, OrderVO vo, HttpSession session) {
+		// session에서 user_no 가져오기
+		vo.setUser_no((int) session.getAttribute("user_no"));
+		model.addAttribute("map", service.list(vo));
 
-    @GetMapping("/mypage/order/detail")
-    public String detail(Model model, OrderVO vo, HttpSession session) {
-    	// session에서 user_no 가져오기
-    	vo.setUser_no((int) session.getAttribute("user_no"));
-    	OrderVO orderVo = service.orderInfo(vo);
-    	if(orderVo == null || orderVo.getOrder_no() == 0) {
-    		return "/user/include/404";
-    	}
-    	orderVo.setUser_no((int) session.getAttribute("user_no"));
-    	model.addAttribute("order", orderVo);
-    	model.addAttribute("list", service.orderDetailList(orderVo));
-    	return "/user/order/detail";
-    }	
-    @PostMapping( value = "/mypage/order/detail/confirm", produces = "application/text; charset=utf8")
-    @ResponseBody
-    public String confirm(@RequestBody OrderDetailVO vo, HttpSession session) {
-    	// session에서 user_no 가져오기
-    	vo.setUser_no((int) session.getAttribute("user_no"));
-    	String msg = "";
-    	if(service.orderConfirm(vo)) {
-    		msg = "처리 완료";
+		return "/user/order/list";
+	}
+
+	@GetMapping("/mypage/order/detail")
+	public String detail(Model model, OrderVO vo, HttpSession session) {
+		// session에서 user_no 가져오기
+		vo.setUser_no((int) session.getAttribute("user_no"));
+		OrderVO orderVo = service.orderInfo(vo);
+		if (orderVo == null || orderVo.getOrder_no() == 0) {
+			return "/user/include/404";
+		}
+		orderVo.setUser_no((int) session.getAttribute("user_no"));
+		model.addAttribute("order", orderVo);
+		model.addAttribute("list", service.orderDetailList(orderVo));
+		return "/user/order/detail";
+	}
+
+	@PostMapping(value = "/mypage/order/detail/confirm", produces = "application/text; charset=utf8")
+	@ResponseBody
+	public String confirm(@RequestBody OrderDetailVO vo, HttpSession session) {
+		vo.setUser_no((int) session.getAttribute("user_no"));
+		String msg = "";
+		if (service.orderConfirm(vo)) {
+			msg = "처리 완료";
 		} else {
 			msg = "처리 실패";
 		}
@@ -59,20 +58,15 @@ public class OrderController {
 
 	@PostMapping("/order")
 	public String goOrder(OrderVO vo, Model model, HttpSession session) {
-//		session에서 user_no 가져오기
 		vo.setUser_no((int) session.getAttribute("user_no"));
 		vo.setBuyer_name((String) session.getAttribute("user_name"));
-//		vo.setUser_no(1); // 세션 사용시 지울것
-//		vo.setBuyer_name("테스트0"); // 세션 사용시 지울것
-
 		model.addAttribute("map", service.order(vo));
-
 		return "user/order/order";
 	}
 
 	@GetMapping("/order/success")
 	public String success(HttpSession session) {
-		return "/user/order/success";
+		return "user/order/success";
 	}
 //	@GetMapping("/order/success")
 //	public String success(HttpServletRequest req, HttpServletResponse res, Model model) throws Exception {
@@ -102,7 +96,6 @@ public class OrderController {
 	@ResponseBody
 	@GetMapping("/order/deleteCartAfterOrder")
 	public String deleteCartAfterOrder(@RequestParam("checkedCartNo") int[] checkedCartNo, HttpSession session) {
-//		session에서 user_no 가져오기
 		OrderVO vo = new OrderVO();
 		vo.setCheckedCartNo(checkedCartNo);
 		vo.setUser_no((int) session.getAttribute("user_no"));

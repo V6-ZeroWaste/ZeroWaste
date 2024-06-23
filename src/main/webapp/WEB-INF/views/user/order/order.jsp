@@ -160,9 +160,7 @@
         aboutTotalPrice();
         telFormat();
         paymentInfo();
-        console.log("amount", itemAmountArray());
-        console.log("price", priceArray());
-        console.log("item_no", itemNoArray());
+
 
         $("#receiverName, #zipcode, #addr, #addrDetail, #receiverTel1, #receiverTel2, #receiverTel3, #paymentMethod, #agree").on("change", fieldCheck);
 
@@ -426,7 +424,7 @@
             }
         });
 
-        console.log(cartNoList);
+        //console.log(cartNoList);
 
         // 데이터 객체 생성
         var data = {
@@ -441,14 +439,13 @@
             data: data, // 전송할 데이터
             success: function (resp) {
                 if (resp === 'success') {
-                    console.log("return true");
                     location.href = "/order/success";
 
                     // 성공적으로 처리된 경우
                 }
             },
             error: function (data, textStatus) {
-                $('#fail').html("관리자에게 문의하세요."); // 에러 메시지 출력
+                //$('#fail').html("관리자에게 문의하세요."); // 에러 메시지 출력
                 console.log('error', data, textStatus);
             }
         });
@@ -481,7 +478,6 @@
                 total += value;
             }
         });
-        console.log(total)
         // 합계 결과를 포맷팅하여 출력 (여기서는 '원'을 추가)
         $('#sumItemTotal').text(total.toLocaleString() + "원");
         $('#orderSummarySumItemTotal').text(total.toLocaleString() + "원");
