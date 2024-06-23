@@ -205,8 +205,7 @@
                             		<div class="datatable-dropdown">
 							            <label>
 							                <select id="orderBy" class="datatable-selector" onchange="applyCondition();">
-								                <option value="주문량높은순" selected="">===정렬===</option>
-								                <option value="주문량높은순">주문량높은순</option>
+								                <option value="주문량높은순" selected>주문량높은순</option>
 								                <option value="주문량낮은순">주문량낮은순</option>
 								                <option value="판매량높은순">판매량높은순</option>
 								                <option value="판매량낮은순">판매량낮은순</option>
