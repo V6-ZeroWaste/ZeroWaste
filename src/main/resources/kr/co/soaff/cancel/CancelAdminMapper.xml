@@ -181,7 +181,7 @@
 	<update id="adminCancel"
 		parameterType="kr.co.soaff.cancel.CancelAdminDetailVO">
 		UPDATE order_detail
-		SET cancel_status = 2,
+		SET cancel_status = 1,
 		cancel_reason_type = 1,
 		cancel_request_date = CURRENT_TIMESTAMP,
 		cancel_approve_date = CURRENT_TIMESTAMP,

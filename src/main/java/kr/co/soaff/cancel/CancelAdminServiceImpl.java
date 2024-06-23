@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.http.*;
-import kr.co.soaff.order.OrderVO;
 import kr.co.soaff.point.PointMapper;
 import kr.co.soaff.point.PointVO;
 
@@ -24,8 +23,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 	@Autowired
 	private PointMapper pointMapper;
 	
-	@Value("${imp.accessToken}")
-    private String accessToken;
+	@Value("${imp.apiSecret}")
+    private String apiSecret;
 
 	@Override
 	public Map<String, Object> list(CancelAdminListVO vo) {
@@ -50,7 +49,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 	    map.put("isNext", isNext);
 	    return map;
 	}
-
+	
 
 	@Override
 	public Map<String, Object> cancelDetail(int order_detail_no) {
@@ -147,7 +146,11 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		CancelAdminDetailVO cancelDetail = new CancelAdminDetailVO();
 		cancelDetail.setOrder_detail_no(order_detail_no);
 		cancelDetail.setCancel_reason_detail(cancel_reason_detail);
-		return mapper.adminCancel(cancelDetail);
+		if(mapper.adminCancel(cancelDetail) > 0) {
+			return completeCancel(order_detail_no);
+		}else {
+			return 0;
+		}
 	}
 	
 	@Override
@@ -196,9 +199,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		try {
 			
 			String apiUrl = "https://api.portone.io/payments/"+paymengt_id+"/cancel";
-			System.out.println("[api url] : "+ apiUrl);
 			HttpHeaders headers = new HttpHeaders();
-			headers.set("Authorization", "Bearer " + accessToken);
+			headers.set("Authorization", "PortOne " + apiSecret);
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			
 			
