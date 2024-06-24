@@ -89,6 +89,18 @@
         console.log(isValid);
         return isValid;
     }
+
+    $(document).ready(() => {
+        $('#login').on('click',() => {
+            formcheck();
+        });
+
+        $('#login-form').on('keypress', ( e ) => {
+            if(e.key === 'Enter' || e.keyCode === '13'){
+                $('#login').click();
+            }
+        })
+    })
 </script>
 
 <body>
@@ -109,7 +121,7 @@
 
                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
                                  data-parent="#accordionExample">
-                                <div class="card-body">
+                                <div class="card-body" id="login-form">
                                     <div class="row mt-2">
                                         <div class="form-group col-12">
                                             <label for="id">ID</label>
@@ -137,7 +149,7 @@
                                             <a href="/user/user/pwFind" style="color: #555555;">비밀번호 찾기</a>
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <input type="button" value="LOG IN" alt="LOG IN" onclick="formcheck();"
+                                            <input type="button" value="LOG IN" alt="LOG IN" id="login"
                                                    class="btn btn-block btn-primary"/>
                                             <div id="submitCheckMsg" class="invalid-feedback"></div>
                                         </div>
