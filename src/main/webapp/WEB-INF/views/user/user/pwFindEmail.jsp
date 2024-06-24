@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -14,22 +15,19 @@
   <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
   <script>
     let timerInterval;
+    let key = '';
 
     function startTimer(duration) {
       let time = duration;
-      let min = "";
-      let sec = "";
-
       timerInterval = setInterval(function () {
-        min = parseInt(time / 60);
-        sec = time % 60;
-
+        let min = parseInt(time / 60);
+        let sec = time % 60;
         document.getElementById("timer2").innerHTML = min + "분 " + sec + "초";
         time--;
-
         if (time < 0) {
           clearInterval(timerInterval);
           document.getElementById("timer2").innerHTML = "시간초과";
+          key = 'expired';
         }
       }, 1000);
     }
@@ -41,42 +39,89 @@
 
     window.onload = function (){
       startTimer(180);
+      sendemail();
     };
 
     $(function() {
       $('#emailCheck_btn').on('click', function() {
-        resetTimer(); // 타이머를 재시작합니다.
+        resetTimer();
         $('#emailVerification').show();
       });
 
       $('#submitBtn').on('click', function() {
-        validateEmailCode();
+        checkemail();
+      });
+
+      $('#email_btn').on('click', function () {
+        if (!$('#email_id').val() || !$('#email_domain').val()) {
+          $('#email_idErrorMsg').html('이메일을 입력해주세요').css("display", "block");
+        } else {
+          $('#email_idErrorMsg').css("display", "none");
+          $(this).text('재전송');
+          $('#emailVerification').show();
+          sendemail();
+          resetTimer();
+        }
       });
     });
 
-    function validateEmailCode() {
-      let emailCode = $('#emailcheck_id').val();
-      let errorMsg = $('#pwFindEmailSubmitErrorMsg');
-      errorMsg.css("display", "none");
-
-      if (!emailCode) {
-        errorMsg.html("인증코드를 입력해 주세요");
-        errorMsg.css("display", "block");
+    function checkemail() {
+      let email = "<c:out value='${find.email}'/>";
+      let insertKey = $('#emailcheck_id').val();
+      if (key === 'expired') {
+        $('#emailcheck_idErrorMsg').html("만료된 인증코드입니다").css("display", "block");
+        $('#emailcheck_id').focus();
         return;
       }
-
+      if (key === 'asigned') {
+        $('#emailcheck_idErrorMsg').html("이미 승인되었습니다").css("display", "block");
+        return;
+      }
+      if (!insertKey) {
+        $('#emailcheck_idErrorMsg').html("인증코드를 입력해 주세요").css("display", "block");
+        return;
+      }
       $.ajax({
-        type: 'POST',
-        url: '/user/login/verifyEmailCode',
-        data: { code: emailCode },
-        success: function(res) {
-          if (res == '0') {
-            errorMsg.html("인증코드가 일치하지 않습니다");
-            errorMsg.css("display", "block");
+        url: '/email/checkMail',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          email: email,
+          insertKey: insertKey,
+          key: key
+        }),
+        success: function (res) {
+          if (res === "1") {
+            $('#emailcheck_idErrorMsg').css("display", "none");
+            alert("인증 성공");
+            clearInterval(timerInterval);
+            key = 'asigned';
+            alert("다음페이지로 이동")
+            $("#frmPwFindEmail").submit();
           } else {
-            // Handle success scenario (e.g., navigate to the next page or show success message)
-            window.location.href = '/nextPage'; // replace with your actual success action
+            $('#emailcheck_idErrorMsg').html("인증코드가 다릅니다").css("display", "block");
+            $('#emailcheck_id').focus();
           }
+        },
+        error: function (err) {
+          $('#emailcheck_idErrorMsg').html("인증 처리 중 오류가 발생했습니다").css("display", "block");
+        }
+      });
+    }
+
+    function sendemail() {
+      let email = "<c:out value='${find.email}'/>";
+      $.ajax({
+        url: '/email/sendMail',
+        method: 'POST',
+        contentType: 'text/plain',
+        data: email,
+        success: function (res) {
+          alert("인증코드가 발송되었습니다.");
+          key = res;
+        },
+        error: function (err) {
+          alert("이메일 전송 중 오류가 발생했습니다.");
         }
       });
     }
@@ -90,7 +135,7 @@
         <div class="card active">
           <div class="card-header" id="headingOne">
             <h6 class="mb-0">
-              <p style="color: #68ae68"><strong>이메일 인증</strong></p>
+              <p style="color: #68ae68"><strong>Email Verification</strong></p>
             </h6>
           </div>
           <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
@@ -98,17 +143,17 @@
               <div class="form-group">
                 <ul class="list-group list-group-minimal mb-2">
                   <li class="list-group-item d-flex justify-content-center align-items-center">
-                    <span class="fs-18 mb-0" style="color: #3d733d"><strong>이메일</strong></span>
+                    <span class="fs-18 mb-0" style="color: #3d733d"><strong>Email</strong></span>
                   </li>
                   <li class="list-group-item d-flex justify-content-center align-items-center">
-                    <span class="fs-18 mb-0" style="color: #3d733d"><strong>(${vo.email}shseo232@gmail.com)로</strong></span>
+                    <span class="fs-18 mb-0" style="color: #3d733d" id="email"><strong>${find.email}로</strong></span>
                   </li>
                   <li class="list-group-item d-flex justify-content-center align-items-center">
                     <span class="fs-18 mb-0" style="color: #3d733d"><strong>인증번호를 발송했습니다</strong></span>
                   </li>
                 </ul>
               </div>
-              <form>
+              <form id="frmPwFindEmail" method="post" action="/user/user/pwFindResubmit">
                 <div class="form-group">
                   <ul class="list-group list-group-minimal mb-2">
                     <li class="list-group-item d-flex justify-content-center align-items-center">
@@ -117,12 +162,12 @@
                     <li class="list-group-item d-flex justify-content-sm-center align-items-center mb-2">
                       <input type="text" class="form-control col-6" id="emailcheck_id" required>
                       <span id='timer2' class="col-3 d-flex justify-content-sm-center align-items-center" style="margin-left: 0px;"></span>
-                      <button type="button" class="btn btn-primary btn-rounded pr col-3" id="emailCheck_btn">재전송</button>
+                      <button type="button" class="btn btn-primary btn-rounded pr col-3" id="emailCheck_btn">Resend</button>
                     </li>
                     <li class="list-group-item d-flex justify-content-center align-items-center">
-                      <button class="btn btn-block btn-primary" id="submitBtn" type="button">확인</button>
-                      <div class="invalid-feedback" id="pwFindEmailSubmitErrorMsg"></div>
+                      <button class="btn btn-block btn-primary col-12" id="submitBtn" type="button">Verify</button>
                     </li>
+                      <div class="invalid-feedback col-12 d-flex align-items-center justify-content-center" id="emailcheck_idErrorMsg"></div>
                   </ul>
                 </div>
               </form>

@@ -20,6 +20,7 @@ public class QnaVO {
 	private int item_no;
 	private String item_name;
 	
+	private String item_img;
 	private String replyState;
 	private String searchWord;
 	private String orderBy;
@@ -28,9 +29,11 @@ public class QnaVO {
 	private String end_date;
 	private int page;
 	private int startIdx; // limit 앞에 들어갈 시작인덱스값
-
+	private int pageSize;
+	
 	public QnaVO() {
 		this.page = 1;
+		this.orderBy = "최신순";
 	}
 
 //	public int getStartIdx() {

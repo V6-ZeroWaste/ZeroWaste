@@ -58,7 +58,7 @@ public class CancelController {
     	int refund_price = orderDetail.getPrice() * orderDetail.getAmount() - refund_point;
     	if(("form".equals(type) && order.getCancel_count() <= 1)
     		||("info".equals(type) && (order.getLast_cancel_date()).equals(orderDetail.getCancel_request_date()))) {
-    		refund_price = order.getPayment_price() - order.getRefund_price() - refund_point;
+    		refund_price += order.getDelivery_price();
     	}
     	model.addAttribute("origin_price", origin_price);
     	model.addAttribute("refund_point", refund_point);

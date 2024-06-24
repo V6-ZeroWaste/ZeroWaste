@@ -160,6 +160,10 @@
         aboutTotalPrice();
         telFormat();
         paymentInfo();
+        console.log("amount", itemAmountArray());
+        console.log("price", priceArray());
+        console.log("item_no", itemNoArray());
+        
 
 
         $("#receiverName, #zipcode, #addr, #addrDetail, #receiverTel1, #receiverTel2, #receiverTel3, #paymentMethod, #agree").on("change", fieldCheck);

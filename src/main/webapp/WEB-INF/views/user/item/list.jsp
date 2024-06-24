@@ -120,7 +120,7 @@
               }
           }
 	  </script>
-    <title>soaff</title>
+    <title>soaff items</title>
   </head>
     <body>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>

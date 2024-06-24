@@ -1,5 +1,7 @@
 package config;
 
+import java.util.Properties;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -11,14 +13,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -26,6 +26,7 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import util.AdminLoginInterceptor;
 
 @Configuration
 @ComponentScan(basePackages = { "kr.co.soaff","util"})
@@ -123,28 +124,24 @@ public class MvcConfig implements WebMvcConfigurer {
 		return dtm;
 	}
 
-//	// 로그인인터셉터 빈등록
-//	@Bean
-//	public LoginInterceptor loginInterception() {
-//		return new LoginInterceptor();
-//	}
+	// 어드민 로그인 인터셉터 빈등록
+	@Bean
+	public AdminLoginInterceptor AdminLoginInterception() {
+		return new AdminLoginInterceptor();
+	}
 
-	// 인터셉터 설정
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		// url 설정
-//		registry.addInterceptor(loginInterception()).addPathPatterns("/reply/**").excludePathPatterns("/reply/index.do")
-//				.excludePathPatterns("/reply/view.do").addPathPatterns("/member/edit.do");
-//		/*
-//		 * 관리자페이지 .addPathPatterns("/admin/**") .excludePathPatterns("/admin/login.do")
-//		 */
-//	}
+	// 어드민 로그인 인터셉터 설정
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// url 설정
+		registry.addInterceptor(AdminLoginInterception()).addPathPatterns("/admin/**") .excludePathPatterns("/admin/login");
+	}
 
 	// properties 설정
 	@Bean
 	public static PropertyPlaceholderConfigurer propreties() {
 		PropertyPlaceholderConfigurer config = new PropertyPlaceholderConfigurer();
-		config.setLocations(new ClassPathResource("db.properties"), new ClassPathResource("s3.properties"));
+		config.setLocations(new ClassPathResource("db.properties"), new ClassPathResource("s3.properties"), new ClassPathResource("pay.properties"), new ClassPathResource("mail.properties"));
 
 		return config;
 	}
@@ -155,5 +152,50 @@ public class MvcConfig implements WebMvcConfigurer {
 				.credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
 				.build();
 	}
+	
+	// 메일 설정
+	   @Value("${spring.mail.host}")
+	   private String mailHost;
+	   @Value("${spring.mail.port}")
+	   private int mailPort;
+	   @Value("${spring.mail.username}")
+	   private String mailUsername;
+	   @Value("${spring.mail.password}")
+	   private String mailPassword;
+	   @Value("${spring.mail.properties.mail.smtp.auth}")
+	   private boolean mailSmtpAuth;
+	   @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
+	   private boolean mailStarttlsEnable;
+	   @Value("${spring.mail.properties.mail.smtp.starttls.required}")
+	   private boolean mailStarttlsRequired;
+	   @Value("${spring.mail.properties.mail.smtp.connectiontimeout}")
+	   private int mailConnectionTimeout;
+	   @Value("${spring.mail.properties.mail.smtp.timeout}")
+	   private int mailTimeout;
+	   @Value("${spring.mail.properties.mail.smtp.writetimeout}")
+	   private int mailWriteTimeout;
+
+	
+	@Bean
+	   public JavaMailSender javaMailSender() {
+	       JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+	       mailSender.setHost(mailHost);
+	       mailSender.setPort(mailPort);
+	       mailSender.setUsername(mailUsername);
+	       mailSender.setPassword(mailPassword);
+	       mailSender.setDefaultEncoding("UTF-8");
+
+	       Properties mailProperties = new Properties();
+	       mailProperties.put("mail.smtp.auth", mailSmtpAuth);
+	       mailProperties.put("mail.smtp.starttls.enable", mailStarttlsEnable);
+	       mailProperties.put("mail.smtp.starttls.required", mailStarttlsRequired);
+	       mailProperties.put("mail.smtp.connectiontimeout", mailConnectionTimeout);
+	       mailProperties.put("mail.smtp.timeout", mailTimeout);
+	       mailProperties.put("mail.smtp.writetimeout", mailWriteTimeout);
+
+	       mailSender.setJavaMailProperties(mailProperties);
+	       return mailSender;
+	   }
+
 
 }

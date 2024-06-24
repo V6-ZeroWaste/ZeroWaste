@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class UserLoginController {
+
 	@Autowired
-	private UserService userService;
+	private UserLoginService userLoginService;
 
 	@GetMapping("/user/user/login")
 	public String login(Model model, @CookieValue(value = "saved_id", required = false) String id) {
@@ -31,14 +32,17 @@ public class UserLoginController {
 	public String login(@RequestBody UserVO vo, HttpSession session, HttpServletResponse res) throws IOException {
 //        res.setContentType("text/html;charset=utf-8");
 //        PrintWriter out = res.getWriter();
-		UserVO login = userService.login(vo);
 
+		UserVO login = userLoginService.login(vo);
 		System.out.println(vo);
-		String result = "1";
 		if (login != null) {
+			if (login.getDelete() != null) {
+				return "2";
+			}
 			session.setAttribute("user_id", login.getId());
 			session.setAttribute("user_name", login.getName());
 			session.setAttribute("user_no", login.getUser_no());
+			session.setAttribute("vo", login);
 
 			String saved_id = vo.getIdSaveCheck();
 			if ("yes".equals(saved_id)) { // Check if rememberMe is checked
@@ -50,10 +54,11 @@ public class UserLoginController {
 				cookie.setMaxAge(0); // 쿠키 삭제
 				res.addCookie(cookie);
 			}
-			result = "0";// 성공
+			return "0";// 성공
 		} else {
-			result = "1"; // 실패
+
 		}
-		return result;
+		return "1";
 	}
+
 }

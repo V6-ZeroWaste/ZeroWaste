@@ -126,3 +126,4 @@ workspace.xml
 *.idea
 
 /src/test
+pay.properties

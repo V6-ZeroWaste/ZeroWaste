@@ -30,13 +30,13 @@
           <div class="card-body" style="border : 1px #c2c2c2 solid">
             <div class="card-title py-2 px-3">
               <div class="row align-items-center">
-                <div class="col" >
-                  <h3 class="fs-28 mb-0">${vo.id}아이디가 들어갈 곳</h3>
+                <div class="col justify-content-center align-items-center d-flex" >
+                  <h3 class="fs-28 mb-0">${find.id}</h3>
                 </div>
               </div>
             </div>
             <div class="col-12 mt-3">
-              <a href="#!" class="btn btn-block btn-primary">메인 페이지로 이동</a>
+              <a href="/user/user/login" class="btn btn-block btn-primary">Go to Login Page</a>
             </div>
             <div class="col-12 mt-2" style="text-align: right;">
             </div>
@@ -51,4 +51,3 @@
 </body>
 </html>
 
-<

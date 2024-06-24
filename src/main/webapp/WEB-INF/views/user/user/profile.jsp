@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
     <link rel="stylesheet" href="/user/css/vendor.css" />
     <link rel="stylesheet" href="/user/css/style.css" />
-    <!-- jQuery 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <title>soaff</title>
@@ -26,8 +25,7 @@
         let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
         $(function (){
-            // 입력 필드 변경 시 유효성 검사
-            $("#pwd, #pwd_check").on("input", function (){
+            $("#pw").on("input", function (){
                 pwdRegex();
             });
             $("#tel1, #tel2, #tel3").on("input", function (){
@@ -37,6 +35,15 @@
             $('#adr_btn').on('click', function () {
                 zipcode();
             });
+            $("#pw").on("change", function (){
+                if($("#pw").val() !== $("#pwd_check").val() ){
+                    $("pwd_checkErrorMsg").html("일치하지 않습니다").css("display","block");
+                    isValid = false;
+                }else{
+                    $("pwd_checkErrorMsg").css("display","none")
+                }
+            });
+
         });
 
         function telRegex() {
@@ -70,23 +77,63 @@
         }
 
         function pwdRegex() {
-            let pwd = $("#pwd");
+            let pw = $("#pw");
             let pwdErrorMsg = $("#pwdErrorMsg");
 
-            pwdErrorMsg.css("display", "none");
-
-            if (!passwordRegex.test(pwd.val()) && pwd.val() !== '') {
+            if (!passwordRegex.test(pw.val()) && pw.val() !== '') {
                 pwdErrorMsg.html("8자리 이상/대문자/소문자/특수문자/숫자가 포함됩니다");
                 pwdErrorMsg.css("display", "block");
                 return false;
+            } else {
+                pwdErrorMsg.css("display", "none");
             }
             return true;
         }
 
         function goProfile(event) {
             event.preventDefault();
-            if (fieldCheckProfile()) {
-                $("#frm").submit();
+            isValid = fieldCheckProfile();
+            if (isValid) {
+                let tel = $("#tel1").val() + $("#tel2").val() + $("#tel3").val();
+                let pw = $("#pw").val();
+                let zipcode = $("#zipcode").val();
+                let addr = $("#addr1").val();
+                let addr_detail = $("#addr_detail").val();
+
+                if (pw === '' || pw === null) {
+                    pw = "default";
+                }
+                console.log(tel);
+                console.log(pw);
+                console.log(zipcode);
+                console.log(addr);
+                console.log(addr_detail);
+
+                $.ajax({
+                    url: "/user/user/updateInfo",
+                    method: 'post',
+                    contentType: "application/json",
+                    dataType: "json",
+                    async: false,
+                    data: JSON.stringify({
+                        "tel": tel,
+                        "pw": pw,
+                        "zipcode": zipcode,
+                        "addr": addr,
+                        "addr_detail": addr_detail
+                    }),
+                    success: function (response) {
+                        console.log(response)
+                        if(response == '0'){
+                            console.log("안녕")
+                            alert("실패");
+                        } else{
+                            console.log("제발")
+                            alert("성공");
+                            location.href="/user/user/profile";
+                        }
+                    }
+                });
             }
         }
 
@@ -94,7 +141,7 @@
             let tel1 = $("#tel1");
             let tel2 = $("#tel2");
             let tel3 = $("#tel3");
-            let pwd = $("#pwd");
+            let pw = $("#pw");
             let pwd_check = $("#pwd_check");
             let zipcode = $("#zipcode");
             let addr1 = $("#addr1");
@@ -119,20 +166,14 @@
                 isValid = false;
             }
 
-            if (!pwd.val() || !pwdRegex()) {
+            if (!pw.val() && pwd_check.val()) {
                 pwdErrorMsg.html("비밀번호를 입력해 주세요");
                 pwdErrorMsg.css("display", "block");
                 isValid = false;
             }
 
-            if (!pwd_check.val()) {
+            if (!pwd_check.val() && pw.val()) {
                 pwd_checkErrorMsg.html("비밀번호 확인을 입력해 주세요");
-                pwd_checkErrorMsg.css("display", "block");
-                isValid = false;
-            }
-
-            if (pwd.val() !== pwd_check.val()) {
-                pwd_checkErrorMsg.html("비밀번호와 일치해야 합니다");
                 pwd_checkErrorMsg.css("display", "block");
                 isValid = false;
             }
@@ -152,10 +193,35 @@
             return isValid;
         }
 
+
+
+
+
         function goDelete(event) {
             event.preventDefault();
-            if (fieldCheckDelete()) {
-                $("#frm2").submit();
+            let pw = $("#wdPwd").val();
+            let wdPwdErrorMsg = $("#wdPwdErrorMsg");
+            isValid = fieldCheckDelete()
+            if (isValid) {
+                $.ajax({
+                    url: "/user/user/deletecheck",
+                    method: 'post',
+                    contentType: "application/json",
+                    dataType: "json",
+                    async: false,
+                    data: JSON.stringify({
+                        "pw" : pw,
+                    }),
+                    success: function (response) {
+                        console.log(response)
+                        if(response == '0'){
+                            wdPwdErrorMsg.html("비밀번호가 맞지 않습니다").css("display","block");
+                        } else{
+                            // console.log(response);
+                            $("#frmDelete").submit();
+                        }
+                    }
+                });
             }
         }
 
@@ -172,31 +238,27 @@
                 wdPwdErrorMsg.css("display", "block");
                 isValid = false;
             }
-
             return isValid;
         }
 
         function zipcode() {
             new daum.Postcode({
                 oncomplete: function (data) {
-                    var roadAddr = data.roadAddress; // 도로명 주소 변수
-                    var extraRoadAddr = ''; // 참고 항목 변수
+                    var roadAddr = data.roadAddress;
+                    var extraRoadAddr = '';
 
-                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
                     if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
                         extraRoadAddr += data.bname;
                     }
-                    // 건물명이 있고, 공동주택일 경우 추가한다.
+
                     if (data.buildingName !== '' && data.apartment === 'Y') {
                         extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
                     }
-                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+
                     if (extraRoadAddr !== '') {
                         extraRoadAddr = ' (' + extraRoadAddr + ')';
                     }
 
-                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
                     $('#zipcode').val(data.zonecode);
                     $('#addr1').val(roadAddr);
                 }
@@ -227,13 +289,10 @@
                 </div>
             </aside>
 
-            <!------------------>
-            <!-- content -->
             <div class="col-lg-9">
                 <div class="row">
                     <div class="col">
                         <div class="tab-content" id="myTabContent">
-                            <!-- profile -->
                             <div class="tab-pane fade show active" id="sidebar-1-1" role="tabpanel" aria-labelledby="sidebar-1-1">
                                 <div class="row mb-2">
                                     <div class="col-12">
@@ -244,13 +303,13 @@
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="id">아이디</label>
-                                            <input id="id" name="id" value="${vo.a}" type="text" class="form-control" placeholder="" readonly>
+                                            <input id="id" name="id" value="${vo.id}" type="text" class="form-control" placeholder="" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="email">이메일</label>
-                                            <input id="email" name="email" type="text" class="form-control" placeholder="" readonly>
+                                            <input id="email" name="email" type="text" class="form-control" placeholder="" readonly value="${vo.email}">
                                         </div>
                                     </div>
                                     <div class="col-md-8 align-content-between">
@@ -258,18 +317,18 @@
                                             <label>전화번호</label>
                                         </div>
                                         <div class="form-group d-flex align-items-center justify-content-between">
-                                            <input type="number" class="form-control col-3 mr-1" name="receiverTel1" id="tel1" placeholder="">
+                                            <input type="number" class="form-control col-3 mr-1" name="receiverTel1" id="tel1" value="${tel1}">
                                             <p class="d-flex justify-content-center align-items-center col-1 mr-0 mb-0"> - </p>
-                                            <input type="number" class="form-control col-3 mx-1" name="receiverTel2" id="tel2" placeholder="">
+                                            <input type="number" class="form-control col-3 mx-1" name="receiverTel2" id="tel2" value="${tel2}">
                                             <p class="d-flex justify-content-center align-items-center col-1 mr-0 mb-0"> - </p>
-                                            <input type="number" class="form-control col-3 ml-1" name="receiverTel3" id="tel3" placeholder="">
+                                            <input type="number" class="form-control col-3 ml-1" name="receiverTel3" id="tel3" value="${tel3}">
                                         </div>
                                         <div class="invalid-feedback" id="tel1ErrorMsg"></div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label for="pwd">새로운 비밀번호</label>
-                                            <input id="pwd" type="password" class="form-control" placeholder="">
+                                            <label for="pw">새로운 비밀번호</label>
+                                            <input id="pw" type="password" class="form-control" placeholder="" value="">
                                             <div class="invalid-feedback" id="pwdErrorMsg"></div>
                                         </div>
                                     </div>
@@ -284,7 +343,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="zipcode">우편번호</label>
-                                            <input id="zipcode" type="text" class="form-control" placeholder="" readonly>
+                                            <input id="zipcode" type="text" class="form-control" value="${vo.zipcode}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-4 d-flex justify-content-lg-start align-items-sm-end">
@@ -297,14 +356,14 @@
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label for="addr1"></label>
-                                            <input id="addr1" type="text" class="form-control" readonly>
-                                            <div class="invalid-feedback" id="addr1ErrorMsg"></div>
+                                            <input id="addr1" type="text" class="form-control" value="${vo.addr}" readonly>
+                                            <div class="invalid-feedback" id="addr1ErrorMsg" ></div>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <label for="addr2"></label>
-                                            <input id="addr2" type="text" class="form-control">
+                                            <label for="addr_detail"></label>
+                                            <input id="addr_detail" type="text" class="form-control" value="${vo.addr_detail}">
                                         </div>
                                     </div>
                                     <div class="col-md-8">
@@ -320,7 +379,11 @@
                                 </form>
                             </div>
 
-                            <!------------------------------------------------------------------->
+
+
+
+
+
                             <div class="modal modal fade" id="exampleModal-2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -330,11 +393,11 @@
                                         <div style="padding: 15px" class="d-flex align-items-center justify-content-center">
                                             <div><strong>비밀번호 확인 후 탈퇴가 진행됩니다.</strong></div>
                                         </div>
-                                        <form id="frm2">
+                                            <form id="frmDelete" action="http:/user/user/delete" method="get">
                                             <div class="modal-body">
                                                 <div class="form-group">
                                                     <label for="wdPwd">비밀번호</label>
-                                                    <input type="password" id="wdPwd" class="form-control form-control-lg" placeholder="password" aria-label="pwd">
+                                                    <input type="password" id="wdPwd" class="form-control form-control-lg" placeholder="password" aria-label="wdPwd" name="pw">
                                                 </div>
                                                 <div style="padding: 10px" class="d-flex align-items-center justify-content-center">
                                                     <div class="invalid-feedback" id="wdPwdErrorMsg">비밀번호를 확인해 주세요</div>
@@ -352,11 +415,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
+                                            </form>
                                     </div>
                                 </div>
                             </div>
-                            <!------------------------------------------------------------------->
                         </div>
                     </div>
                 </div>
