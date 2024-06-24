@@ -709,7 +709,7 @@
                                         <div class="media-body">
                                             <h5 class="media-title" item_no="${vo.item_no }">${vo.name}</h5>
                                             <c:if test="${vo.packing_status eq 1}">
-                                                <span class="small">포장O (+2,000원)</span>
+                                                <span class="small">포장(+2,000원)</span>
                                             </c:if>
 
                                         </div>
@@ -747,7 +747,7 @@
                                     	<c:if test="${vo.packing_status eq 1}">
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
                                               cart_no="${vo.cart_no}"><fmt:formatNumber
-                                                value="${(vo.amount*vo.price)+2000}" type="number"
+                                                value="${vo.amount*(vo.price+2000)}" type="number"
                                                 pattern="#,##0"/>원</span>
                                     	</c:if>
                                     	
@@ -768,7 +768,7 @@
                                     	
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
                                               cart_no="${vo.cart_no}"><fmt:formatNumber
-                                                value="${(vo.amount*vo.discounted_price)+2000}" type="number"
+                                                value="${vo.amount*(vo.discounted_price+2000)}" type="number"
                                                 pattern="#,##0"/>원</span>
                                     
                                     	</c:if>
