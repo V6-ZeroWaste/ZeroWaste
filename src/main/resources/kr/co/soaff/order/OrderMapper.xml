@@ -211,7 +211,7 @@
 	
 	</insert>
 	
-		<insert id="pointMinus" parameterType="kr.co.soaff.order.OrderVO">
+	<insert id="pointMinus" parameterType="kr.co.soaff.order.OrderVO">
 		INSERT INTO `point`(
 				user_no, content, point, 
 				point_date, order_no
