@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ProfileMapper {
 	int updateInfo(UserVO vo);
-	UserVO updateSession(int user_no);
+	UserVO getInfo(int user_no);
 	int deleteCheck(UserVO vo);
 	int delete(UserVO vo);
 }

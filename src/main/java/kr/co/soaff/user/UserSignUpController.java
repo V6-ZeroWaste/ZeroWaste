@@ -37,6 +37,7 @@ public class UserSignUpController {
     public String idCheck(@RequestBody UserVO vo) {
         int i = service.idCheck(vo);
         String result = Integer.toString(i);
+//        System.out.println(result + "sdad");
         return result;
     }
 

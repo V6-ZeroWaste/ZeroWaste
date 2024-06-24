@@ -94,7 +94,7 @@
             event.preventDefault();
             isValid = fieldCheckProfile();
             if (isValid) {
-                let tel = $("#tel1").val() + $("#tel2").val() + $("#tel3").val();
+                let tel = $("#tel1").val() +"-"+ $("#tel2").val()+"-"+ $("#tel3").val();
                 let pw = $("#pw").val();
                 let zipcode = $("#zipcode").val();
                 let addr = $("#addr1").val();

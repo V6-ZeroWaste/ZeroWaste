@@ -24,6 +24,7 @@
     let emailbtnClickedCheck = false;
     let idbtnClickedCheck = false;
     let key ='';
+    let idRegex = /^[a-zA-Z0-9_-]{3,16}$/;
     let tel1Regex = /^[0-9]{3}$/;
     let tel2Regex = /^[0-9]{3,4}$/;
     let tel3Regex = /^[0-9]{4}$/;
@@ -37,9 +38,8 @@
       isValid = true;
       isValid = fieldCheck();
       if (isValid) {
-        let tel = $("#tel1").val()+$("#tel2").val()+$("#tel3").val();
+        let tel = $("#tel1").val()+"-"+$("#tel2").val()+"-"+$("#tel3").val();
         let email = $("#email_id").val()+"@"+$("#email_domain").val();
-        console.log("축하합니다!");
         $.ajax({
           url: '/user/user/signUp',
           method: 'post',
@@ -60,6 +60,7 @@
             if (res === '0') {
               location.href="/user/user/signUp"; // 실패
             } else {
+              alert("회원가입 성공");
               location.href="/user/user/login"; // 성공
             }
           }
@@ -121,6 +122,11 @@
           idErrorMsg.css("display", "block");
           isValid = false;
         }
+        if(!idRegex.test(id.val()) && id.val() !== ''){
+          idErrorMsg.html("올바른 아이디를 입력해주세요");
+          idErrorMsg.css("display", "block");
+          isValid = false;
+        }
 
         if (!pw.val()) {
           pwdErrorMsg.html("비밀번호를 입력해주세요");
@@ -141,7 +147,7 @@
         }
 
         if (!passwordRegex.test(pw.val()) && pw.val() !== '') {
-          pwdErrorMsg.html("8자리 이상/대문자/소문자/특수문자/숫자가 포함됩니다");
+          pwdErrorMsg.html("8자리 이상/대문자/소문자/특수문자/숫자가 포함되어야합니다");
           pwdErrorMsg.css("display", "block");
           isValid = false;
         }
@@ -257,7 +263,7 @@
                 $("#idErrorMsg").html("중복된 아이디입니다").css("display", "block");
                 isValid = false;
               } else {
-                $("#idErrorMsg").css("display", "none");
+                $("#idErrorMsg").html("사용가능한 아이디입니다").css("display", "block");
                 isValid = true;
               }
             }
@@ -272,6 +278,11 @@
 
 
       function sendemail() {
+        $("#email_id").prop("readonly", true);
+        $("#email_domain").prop("readonly", true);
+        $('#emailSel').off("change",addEmailSelEvent);
+        eventdisable();
+
         let email = $('#email_id').val() + "@" + $('#email_domain').val();
         $.ajax({
           url: '/email/sendMail',
@@ -284,6 +295,12 @@
           },
           error: function (err) {
             alert("이메일 전송 중 오류가 발생했습니다.");
+            $("#email_id").prop("readonly", false);
+            $("#email_domain").prop("readonly", false);
+            eventEnable();
+            $('#emailSel').on("change",addEmailSelEvent);
+
+
           }
         });
       }
@@ -297,6 +314,10 @@
         if (key !== '' && key === 'expired') {
           $('#emailcheck_idErrorMsg').html("만료된 인증코드입니다").css("display", "block");
           $('#emailcheck_id').focus();
+          $("#email_id").prop("readonly", false);
+          $("#email_domain").prop("readonly", false);
+          $('#emailSel').on("change",addEmailSelEvent);
+          eventEnable();
         }
         if(key !== '' && key === 'asigned'){
           $('#emailcheck_idErrorMsg').html("이미 승인되었습니다").css("display", "block");
@@ -318,6 +339,10 @@
                 clearInterval(timerInterval);
                 key ='asigned';
               } else {
+                $("#email_id").prop("readonly", false);
+                $("#email_domain").prop("readonly", false);
+                $('#emailSel').on("change",addEmailSelEvent);
+                eventEnable();
                 $('#emailcheck_idErrorMsg').html("인증코드가 다릅니다").css("display", "block");
                 $('#emailcheck_id').focus();
               }
@@ -353,6 +378,40 @@
         }, 1000);
       }
 
+    function addEmailSelEvent () {
+      var emailSel = $(this).val();
+      var email_domain = $("#email_domain");
+      if (emailSel !== "직접입력") {
+        email_domain.val(emailSel);
+        document.getElementById("email_domain").readOnly = true
+      } else {
+        emailSel = null;
+        email_domain.removeAttr("readonly");       // readonly 삭제
+      }
+    }
+
+    function eventdisable(){
+      $('#emailSel option[value="직접입력"]').attr('disabled', 'disabled');
+      $('#emailSel option[value="naver.com"]').attr('disabled', 'disabled');
+      $('#emailSel option[value="gmail.com"]').attr('disabled', 'disabled');
+      $('#emailSel option[value="hanmail.net"]').attr('disabled', 'disabled');
+      $('#emailSel option[value="hotmail.com"]').attr('disabled', 'disabled');
+      $('#emailSel option[value="korea.com"]').attr('disabled', 'disabled');
+      $('#emailSel option[value="nate.com"]').attr('disabled', 'disabled');
+      $('#emailSel option[value="yahoo.com"]').attr('disabled', 'disabled');
+    }
+
+    function eventEnable() {
+      $('#emailSel option[value="직접입력"]').removeAttr('disabled');
+      $('#emailSel option[value="naver.com"]').removeAttr('disabled');
+      $('#emailSel option[value="gmail.com"]').removeAttr('disabled');
+      $('#emailSel option[value="hanmail.net"]').removeAttr('disabled');
+      $('#emailSel option[value="hotmail.com"]').removeAttr('disabled');
+      $('#emailSel option[value="korea.com"]').removeAttr('disabled');
+      $('#emailSel option[value="nate.com"]').removeAttr('disabled');
+      $('#emailSel option[value="yahoo.com"]').removeAttr('disabled');
+    }
+
       $(function () {
         //아이디
         $('#id_btn').on('click', function () {
@@ -361,6 +420,13 @@
         });
 
         $('#id').on('change', function () {
+          if (!idRegex.test($('#id').val()) && $('#id').val() !== '') {
+            $("#idErrorMsg").html("올바른 아이디를 입력해주세요");
+            $("#idErrorMsg").css("display", "block");
+            isValid = false;
+          }else{
+            $("#idErrorMsg").css("display", "none");
+          }
           idbtnClickedCheck = false;
         });
 
@@ -376,7 +442,7 @@
 
         $('#pw').on('change', function () {
           if (!passwordRegex.test($('#pw').val()) && $('#pw').val() !== '') {
-            $('#pwdErrorMsg').html("8자리 이상/대문자/소문자/특수문자/숫자가 포함됩니다");
+            $('#pwdErrorMsg').html("8자리 이상/대문자/소문자/특수문자/숫자가 포함되어야합니다");
             $('#pwdErrorMsg').css("display", "block");
             isValid = false;
           } else {
@@ -385,17 +451,9 @@
         });
 
         //이메일
-        $('#emailSel').change(function () {
-          var emailSel = $(this).val();
-          var email_domain = $("#email_domain");
-          if (emailSel !== "직접입력") {
-            email_domain.val(emailSel);
-            document.getElementById("email_domain").readOnly = true
-          } else {
-            emailSel = null;
-            email_domain.removeAttr("readonly");       // readonly 삭제
-          }
-        });
+        $('#emailSel').on("change",addEmailSelEvent);
+
+
 
         $('#email_btn').on('click', function () {
           if (!$('#email_id').val() || !$('#email_domain').val()) {
@@ -544,15 +602,15 @@
             <td colspan="3" class="col-4">
               <div class="form-row">
                 <div class="col">
-                  <input type="number" class="form-control" id="tel1" placeholder="010">
+                  <input type="number" class="form-control" id="tel1" placeholder="">
                   <div class="invalid-feedback" id="tel1ErrorMsg"></div>
                 </div>
                 <div class="col">
-                  <input type="number" class="form-control" id="tel2" placeholder="1234">
+                  <input type="number" class="form-control" id="tel2" placeholder="">
                   <div class="invalid-feedback" id="tel2ErrorMsg"></div>
                 </div>
                 <div class="col">
-                  <input type="number" class="form-control" id="tel3" placeholder="5678">
+                  <input type="number" class="form-control" id="tel3" placeholder="">
                   <div class="invalid-feedback" id="tel3ErrorMsg"></div>
                 </div>
               </div>

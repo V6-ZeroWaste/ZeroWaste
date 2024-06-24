@@ -18,8 +18,8 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public UserVO updateSession(int user_no) {
-		return mapper.updateSession(user_no);
+	public UserVO getInfo(int user_no) {
+		return mapper.getInfo(user_no);
 	}
 
 	@Override

@@ -13,7 +13,7 @@
 			user_no = #{user_no};
 	</update>
 
-	<select id="updateSession" parameterType="int" resultType="int">
+	<select id="getInfo" parameterType="int" resultType="kr.co.soaff.user.UserVO">
 		SELECT * from `user` where user_no = #{user_no};
 	</select>
 
