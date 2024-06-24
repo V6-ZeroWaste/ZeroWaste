@@ -71,14 +71,19 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Map<String, Object> order(OrderVO orderVO) {
+	public Map<String, Object> order(OrderVO orderVO, String type, int[] amountArray) {
 		Map<String, Object> map = new HashMap<>();
-
 		List<CartVO> cartList = mapper.cartList(orderVO);
 		int point = mapper.point(orderVO);
 		int cartCount = mapper.cartCount(orderVO);
 		OrderVO info = mapper.info(orderVO);
 
+		//type = buy 일 때 amountArray에 있는 값으로 보내기
+		if(type!=null && type.equals("buy")){
+			for(int i = 0 ; i < cartList.size(); i++){
+				cartList.get(i).setAmount(amountArray[i]);
+			}
+		}
 		map.put("cartList", cartList);
 		map.put("point", point);
 		map.put("info", info);
@@ -88,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public boolean orderInsert(OrderVO vo) {
+	public Integer orderInsert(OrderVO vo) {
 		int orderInsertResult = mapper.orderInsert(vo);
 		int orderNo = vo.getOrder_no();
 		int pointTouse = vo.getPoint() * -1;
@@ -123,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
 //			orderDetailInsertResult += mapper.orderDetailInsert(orderVO);
 //		}
 
-		return orderInsertResult > 0 && pointInsertResult > 0 && orderDetailInsertResult > 0 ? true : false;
+		return orderInsertResult > 0 && pointInsertResult > 0 && orderDetailInsertResult > 0 ? orderNo : null;
 
 	}
 

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
 
-<title>soaff mypage review</title>
+<title>soaff mypage Review</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
 	rel="stylesheet" />
@@ -48,6 +48,10 @@
 .pagination .page-item.active .page-link {
 	border: 2px solid #000; 
 	font-weight: bold; 
+}
+
+.disable-link {
+	pointer-events: none;
 }
 </style>
 <script type="text/javascript">
@@ -171,7 +175,7 @@
 											<div class="col-lg-2 order-preview justify-content-center">
 												<!-- 상품이미지 -->
 												<a href="product-1.html"
-													title="Fawn Wool / Natural Mammoth Chair"
+													title="${list.item_name }"  class="disable-link"
 													data-toggle="tooltip" data-placement="top"> <img
 													src="${list.item_img}">
 												</a>

@@ -1,9 +1,6 @@
 package kr.co.soaff.cart;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -53,8 +50,10 @@ public class CartController {
 	public Map<String, Object> addItem(@RequestBody CartItemDTO dto, HttpSession session) {
 		List<Integer> cartNos = service.insert(dto, (Integer)session.getAttribute("user_no"));
 		Map<String, Object> map = new HashMap<>();
+
 		map.put("status", dto.getStatus());
 		map.put("cartNos", cartNos);
+		map.put("amountArray",dto.getAmount_array());
 		return map;
 	}
 

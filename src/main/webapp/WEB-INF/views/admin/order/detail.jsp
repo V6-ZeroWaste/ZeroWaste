@@ -145,7 +145,7 @@
 		                                       		  <tr>
 		                                       		  	  <td>${vo.order_detail_no }</td>
 			                                       		  <td>${vo.item_name} </td>
-			                                       		  <td><img src="${vo.item_img}" ></img></td>
+			                                       		  <td><img src="${vo.item_img}" style="max-width: 100px; max-height: 100px;"></img></td>
 				                                          <td>${vo.price*vo.amount}(${vo.amount}) </td>
 				                                          <td>${vo.amount} </td>
 		                                                  <td id="cancel_status">

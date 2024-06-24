@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
 
-<title>Qna Post</title>
+<title>soaff QnA Post</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
 	rel="stylesheet" />
@@ -58,9 +58,11 @@ function postQna() {
     var formData = new FormData(document.getElementById('qnaForm'));
     var title = document.getElementById('title').value;
     var content = document.getElementById('content').value;
+    var type = document.getElementById('type').value
     var qna_img = document.getElementById('file').files[0];
     var user_no = document.querySelector('input[name="user_no"]').value;
     var item_no = document.querySelector('input[name="item_no"]').value;
+   
 
     if (!title || !content) {
         alert("모든 필수 항목을 입력해주세요.");
@@ -110,72 +112,81 @@ function postQna() {
 			<div class="row gutter-4 justify-content-between">
 				<%@ include file="/WEB-INF/views/user/include/mypageNav.jsp"%>
 				<div class="col-lg-9">
-				<!-- content -->
-				<div class="row">
-					<!-- title -->
-					<div class="col-12">
-						<h3 class="mb-0">Qna Post</h3>
-					</div>
-					<!-- /title -->
+					<!-- content -->
+					<div class="row">
+						<!-- title -->
+						<div class="col-12">
+							<h3 class="mb-0">QnA Post</h3>
+						</div>
+						<!-- /title -->
 
-					<!-- item info card -->
-					<div class="col-12">
-						<div style="border: 1px solid #dddddd;">
-							<div class="row align-items-center" style="min-height: 100px">
-								<div style="width: 140px; text-align: center">
-									<!-- 상품이미지 -->
-									<a href="product-1.html" title="${itemVo.name}"
-										data-toggle="tooltip" data-placement="top"> <img
-										class="item-img" src="${itemVo.item_img}" alt="${itemVo.name}">
-									</a>
-								</div>
-								<div style="width: 400px">
-									<h3 class="order-number">${itemVo.name}</h3>
-								</div>
+						<!-- item info card -->
+						<div class="col-12">
+							<div style="border: 1px solid #dddddd;">
+								<div class="row align-items-center" style="min-height: 100px">
+									<div style="width: 140px; text-align: center">
+										<!-- 상품이미지 -->
+										<a href="product-1.html" title="${itemVo.name}"
+											data-toggle="tooltip" data-placement="top"> <img
+											class="item-img" src="${itemVo.item_img}"
+											alt="${itemVo.name}">
+										</a>
+									</div>
+									<div style="width: 400px">
+										<h3 class="order-number">${itemVo.name}</h3>
+									</div>
 
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-12">
-						<form id="qnaForm" enctype="multipart/form-data">
-							<input type="hidden" name="user_no" value="${qnaVo.user_no}" />
-							<input type="hidden" name="item_no" value="${itemVo.item_no}" />
-							<div style="border: 1px solid #dddddd;">
-								<table class="table table-borderless">
-									<tbody>
-										<tr>
-											<th scope="row">Title</th>
-											<td colspan="2"><input type="text" id="title"
-												name="title" class="form-control" value="${qnaVo.title}"></td>
-										</tr>
-										<tr>
-											<th>Content</th>
-											<td colspan="2">
-												<div>
-													<textarea id="content" name="content" class="form-control"
-														style="height: 200px">${qnaVo.content}</textarea>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<th>Image</th>
-											<td colspan="2"><input class="form-control" type="file"
-												name="qna_img" id="file" class="wid100" /></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+						<div class="col-12">
+							<form id="qnaForm" enctype="multipart/form-data">
+								<input type="hidden" name="user_no" value="${qnaVo.user_no}" />
+								<input type="hidden" name="item_no" value="${itemVo.item_no}" />
+								<div style="border: 1px solid #dddddd;">
+									<table class="table table-borderless">
+										<tbody>
+											<tr>
+												<th scope="row">Title</th>
+												<td colspan="2"><input type="text" id="title"
+													name="title" class="form-control" value="${qnaVo.title}"></td>
+											</tr>
+											<tr>
+												<th>Type</th>
+												<td colspan="2"><select id="type" name="type"
+													class="datatable-selector">
+														<option value="교환/환불문의">교환/환불문의</option>
+														<option value="상품상세문의">상품상세문의</option>
+												</select></td>
+											</tr>
+											<tr>
+												<th>Content</th>
+												<td colspan="2">
+													<div>
+														<textarea id="content" name="content" class="form-control"
+															style="height: 200px">${qnaVo.content}</textarea>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th>Image</th>
+												<td colspan="2"><input class="form-control" type="file"
+													name="qna_img" id="file" class="wid100" /></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 
-							<div class="col-12" style="text-align: center">
-								<button id="post" type="button" class="btn btn-primary"
-									onclick="postQna();">등록</button>
-							</div>
-							<!-- /content -->
-						</form>
+								<div class="col-12" style="text-align: center">
+									<button id="post" type="button" class="btn btn-primary" style="margin-top:10px"
+										onclick="postQna();">등록</button>
+								</div>
+								<!-- /content -->
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 	</section>
 	<%@ include file="/WEB-INF/views/user/include/footer.jsp"%>

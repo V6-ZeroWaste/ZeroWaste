@@ -24,7 +24,7 @@
                 <span><h1 class="display-1 font-weight-bold">Thank you for practicing</h1><h1 class="display-1 font-weight-bold">zero-waste!</h1></span>
                 <p class="lead"></p>
                 <p><a href="/" class="btn btn-primary">메인페이지로 이동</a>
-                    <a href="#" class="btn btn-primary">주문 내역 확인</a></p>
+                    <a href="/mypage/order/detail?order_no=${orderVO.order_no }" class="btn btn-primary">주문 내역 확인</a></p>
             </div>
         </div>
     </div>
