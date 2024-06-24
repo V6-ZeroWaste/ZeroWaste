@@ -94,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
 		int pointTouse = vo.getPoint() * -1;
 		vo.setPoint(pointTouse);
 		int pointInsertResult = mapper.pointMinus(vo);
-		int pointPlusResult = mapper.pointPlus(vo);
+		// int pointPlusResult = mapper.pointPlus(vo);
 		int[] amountArray = vo.getAmountArray();
 		int[] priceArray = vo.getPriceArray();
 		int[] itemNoArray = vo.getItemNoArray();
@@ -123,9 +123,7 @@ public class OrderServiceImpl implements OrderService {
 //			orderDetailInsertResult += mapper.orderDetailInsert(orderVO);
 //		}
 
-		return orderInsertResult > 0 && pointInsertResult > 0 && pointPlusResult > 0 && orderDetailInsertResult > 0
-				? true
-				: false;
+		return orderInsertResult > 0 && pointInsertResult > 0 && orderDetailInsertResult > 0 ? true : false;
 
 	}
 

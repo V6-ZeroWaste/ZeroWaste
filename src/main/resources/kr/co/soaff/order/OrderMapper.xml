@@ -134,7 +134,7 @@
 	
 	<!-- 잔여 적립금 조회(point)-->
 	<select id="point" parameterType="kr.co.soaff.order.OrderVO" resultType="int">
-		SELECT sum(point) as point FROM point WHERE user_no=#{user_no}
+		SELECT ifnull(sum(point),0) as point FROM point WHERE user_no=#{user_no}
 	</select>
 	
 	<!-- 카트 정보 조회 -->
