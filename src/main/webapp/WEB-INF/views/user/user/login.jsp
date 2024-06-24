@@ -74,11 +74,12 @@
                     console.log(res);
                     if (res == '1') {
                         $("#submitCheckMsg").html("아이디와 비밀번호를 다시 확인해주세요").css("display", "block");
-                        isValid = false;
+                        return;
                     }
                     if (res == '2') {
                         alert("탈퇴하신 계정입니다");
-                        isValid = false;
+                        $("#submitCheckMsg").html("아이디와 비밀번호를 다시 확인해주세요").css("display", "block");
+                        return;
                     }
                     else {
                         location.href="/"
@@ -127,13 +128,13 @@
                                         <div class="form-group col-12">
                                             <label for="id">ID</label>
                                             <input type="text" class="form-control"
-                                                   id="id" name="id" onchange="loginCheck();" value="${saved_id}">
+                                                   id="id" name="id"  value="${saved_id}">
                                             <div id="idCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
                                             <label for="pw">Password</label>
                                             <input type="password" class="form-control"
-                                                   id="pw" name="pw" onchange="loginCheck();">
+                                                   id="pw" name="pw">
                                             <div id="pwdCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="col-12 mt-1">
@@ -156,7 +157,7 @@
                                         </div>
                                         <div class="col-12 mt-2">
                                             <a href="/user/user/signUp" class="btn btn-block btn-primary"
-                                               style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;">계정 생성</a>
+                                               style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;">SIGN UP</a>
                                         </div>
                                     </div>
                                 </div>

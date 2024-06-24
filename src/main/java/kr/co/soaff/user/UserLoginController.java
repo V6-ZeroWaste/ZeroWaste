@@ -28,7 +28,7 @@ public class UserLoginController {
 //        res.setContentType("text/html;charset=utf-8");
 //        PrintWriter out = res.getWriter();
         UserVO login = userLoginService.login(vo);
-        System.out.println(vo);
+        System.out.println(login);
         if (login != null) {
             if(login.getDelete() != null) {
                 return "2";
@@ -49,8 +49,8 @@ public class UserLoginController {
                 res.addCookie(cookie);
             }
             return "0";//성공
-        }else{
-
+        } else if (login == null) {
+            return "1";
         }
         return "1";
     }
