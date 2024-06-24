@@ -123,3 +123,6 @@ workspace.xml
 .idea
 .idea/*.xml
 *.idea
+
+/src/test
+pay.properties

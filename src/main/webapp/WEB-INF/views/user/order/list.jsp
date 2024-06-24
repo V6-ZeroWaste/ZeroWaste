@@ -73,7 +73,7 @@
 						   		</div>
 				                <div class="dorpdown">
 									<select id="orderBy" name="orderBy" class="btn btn-outline-secondary btn-sm dropdown-toggle" onchange="applyCondition();">
-										<option value="">주문상태</option>
+										<option value="">전체상태</option>
 										<option value="상품준비중">상품준비중</option>
 										<option value="배송중">배송중</option>
 										<option value="배송완료">배송완료</option>
@@ -114,29 +114,36 @@
 								   		</div>
 					
 								        <div class="col-lg-3">
-								        	<c:if test="${vo.total_amount != vo.cancel_count}">
+								        	<c:if test="${vo.item_amount != vo.cancel_count}">
 									        	<c:if test="${vo.order_status==0}">
-									        		<span class="order-status">상품준비</span>
+									        		<span class="order-status">상품준비</span><br>
 									        	</c:if>
 									        	<c:if test="${vo.order_status==1}">
-									        		<span class="order-status shipping">배송중</span>
+									        		<span class="order-status shipping">배송중</span><br>
 									        	</c:if>
 									        	<c:if test="${vo.order_status==2}">
-									        		<span class="order-status sent">배송완료</span>
+									        		<span class="order-status sent">배송완료</span><br>
 									        	</c:if>
 									        	<c:if test="${vo.order_status==3}">
-									        		<span class="order-status sent">구매확정</span>
+									        		<span class="order-status sent">구매확정</span><br>
 									        	</c:if>
 									        </c:if>
-									        <br>
-								        	<c:if test="${vo.cancel_status==0 and vo.cancel_count!=0}">
-									        	<span class="order-status canceled">취소요청</span>
+									        <c:if test="${vo.cancel_count!=0 }">
+									        <script>
+									        	console.log(${vo.cancel_status})
+									        </script>
+									        	<c:if test="${vo.cancel_status==0}">
+									        	<script>
+									        	console.log(${vo.cancel_status})
+									        	</script>
+										        	<span class="order-status canceled">취소요청</span>
+									        	</c:if>
+												<c:if test="${vo.cancel_status==2}">
+										        	<span class="order-status canceled">취소완료</span>
+									        	</c:if>
 								        	</c:if>
-											<c:if test="${vo.cancel_status==1 and vo.cancel_count!=0}">
-									        	<span class="order-status canceled">취소완료</span>
-								        	</c:if>
-									        <br>
-								        	<br><br><br>
+									        <br><br><br><br><br>
+								        	
 								        	
 								        	<a href="/mypage/order/detail?order_no=${vo.order_no}" class="action eyebrow underline">View Order</a>
 								   		</div>
@@ -161,7 +168,7 @@
 			            		</c:if>
 			            		<c:forEach var="i" begin="${map.startPage}" end="${map.endPage }">
 			            			<c:if test="${map.currentPage==i}">
-			            				<li class="page-item active"><a class="page-link" href="#!">${i }<span class="sr-only">(current)</span></a></li>
+			            				<li class="page-item active"><a class="page-link">${i }<span class="sr-only">(current)</span></a></li>
 			            			</c:if>
 			            			<c:if test="${map.currentPage!=i}">
 			            				<li class="page-item"><a class="page-link" href="/mypage/order/list?page=${i}">${i }</a></li>

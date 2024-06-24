@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/user/css/style.css"/>
     <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <title>Order Cancel</title>
+    <title>soaff mypage</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 
     <style>
@@ -25,7 +25,7 @@
 		}
 		
 		th{
-			width: 150px;
+			width: 170px;
 		}
 	
 		.item-img{
@@ -33,9 +33,41 @@
 		}
     	
     </style>
-
+    <c:if test="${type == 'form'}">
+    	<script>
+    	function submit() {
+            if (confirm("취소 요청을 하시겠습니까?")) {
+                $.ajax({
+                    url: '/order/cancel/form',
+                    method: 'post',
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        "cancel_reason_detail": $("#cancel_reason_detail").val(),
+                        "cancel_reason_type": document.querySelector('input[name="cancelType"]:checked').value,
+                        "order_detail_no": ${detail.order_detail_no}
+                    }),
+                    async: false,
+                    success: function (res) {
+                        if (res) {
+                           	alert("취소 요청 완료");
+                           	location.href="/order/cancel/info?order_detail_no=${detail.order_detail_no}"
+                        } else {
+                        	alert("취소 요청 실패");
+                            
+                        }
+                    }
+                });
+            }
+        }
+    	</script>
+    	</c:if>
   </head>
     <body>
+    
+    
+    
+    
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 	<%@ include file="/WEB-INF/views/user/include/mypageInfo.jsp" %>
 	<section class="pt-5">
@@ -53,8 +85,9 @@
     <!-- content -->
 	<div class="row">
 		<!-- title -->
-    	<div class="col-12">
+    	<div class="col-12" style="display:flex;justify-content: space-between;">
    			<h3 class="mb-0">Cancel</h3>
+   			<button class="btn btn-primary" onclick="location.href='/mypage/order/detail?order_no=${order.order_no}'">go order</button>
    		</div>
    		<!-- /title -->
    		
@@ -66,15 +99,15 @@
                   <div class="col-lg-2 order-preview justify-content-center">
                   	<!-- 상품이미지 -->
                   	<a href="product-1.html" title="Fawn Wool / Natural Mammoth Chair" data-toggle="tooltip" data-placement="top">
-                  		<img class="item-img" src="/user/images/demo/product-1.jpg" alt="Fawn Wool / Natural Mammoth Chair">
+                  		<img class="item-img" src="${detail.item_img}" alt="item-img">
                   	</a>
                   </div>
                   <div class="col-8">
-                    <h3 class="order-number">Item name</h3>
+                    <h3 class="order-number">${detail.item_name}</h3>
                   </div>
                   <div class="col-2">
                   	<!-- 상품 바로가기 링크 -->
-                    <a href="#!" class="action eyebrow underline">View Item</a>
+                    <a href="/item/detail?item_no=${detail.item_no}" target="_blank" class="action eyebrow underline">View Item</a>
                   </div>
                 </div>
               </div>
@@ -90,16 +123,40 @@
                       	<tr>
                       		<th colspan="2"><h4 class="mb-0">Cancel Info</h4></th>
                       	</tr>
+                        <tr>
+	                      	<c:if test="${detail.cancel_status != null}">
+	                      		<th>신청 날짜</th>
+	                        	<td><fmt:formatDate value="${detail.cancel_request_date}" pattern="yyyy-MM-dd HH:mm:ss" type="date"/></td>
+	                      	</c:if>
+                        </tr>
                       	<tr>
 							<td colspan="2">
-								<div class="custom-control custom-radio mb-2">
-			                        <input type="radio" name="custom-radio-2" class="custom-control-input" id="cancelType1" checked disabled>
+								<div class="custom-control custom-radio mb-2" style="display: flex;">
+									<div>
+				                        <input type="radio" name="cancelType" class="custom-control-input" id="cancelType1" value="0" ${detail.cancel_reason_type==0?"checked" : ""} ${type=="info" ? "disabled" : ""}>
 			                        	<label class="custom-control-label" for="cancelType1">배송지연</label>
+		                        	</div>
 			                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			                        	<input type="radio" name="custom-radio-2" class="custom-control-input" id="cancelType2" disabled>
-			                        	<label class="custom-control-label" for="cancelType2">단순변심</label>
-			                    	</div>
-			                    	<input type="text" class="form-control" placeholder="상세 사유를 입력하세요" disabled="disabled">
+		                        	<div>
+		                        		<input type="radio" name="cancelType" class="custom-control-input" id="cancelType2" value="2" ${detail.cancel_reason_type==2?"checked" : ""} ${type=="info" ? "disabled" : ""}>
+		                        		<label class="custom-control-label" for="cancelType2">단순변심</label>
+		                        	</div>
+		                        	<c:if test="${type == 'info'}">
+			                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                        	<div>
+			                        		<input type="radio" name="cancelType" class="custom-control-input" id="cancelType3" value="1" ${detail.cancel_reason_type==1?"checked" : ""} disabled>
+			                        		<label class="custom-control-label" for="cancelType3">제품불량</label>
+		                        		</div>
+		                        	</c:if>
+		                    	</div>
+			                    <div>
+			                    	<c:if test="${type == 'info'}">
+			                    		<pre  style="height:150px" class="form-control">${detail.cancel_reason_detail}</pre>
+			                    	</c:if>
+			                    	<c:if test="${type != 'info'}">
+			                    		<textarea style="height:150px" id="cancel_reason_detail" class="form-control" placeholder="상세 사유를 입력하세요"></textarea>
+			                    	</c:if>
+		                    	</div>
 							️</td>
                         </tr>
                         <!-- 결제 정보 -->
@@ -108,19 +165,19 @@
                       	</tr>
                         <tr>
                         	<th>총 상품금액</th>
-                        	<td>10000 원</td>
+                        	<td><fmt:formatNumber value="${origin_price}" pattern="#,###" /> 원</td>
                         </tr>
                         <tr>
-                        	<th>총 할인금액</th>
-                        	<td>300 원</td>
-                        </tr>
-                        <tr>
-                        	<th>적립금 사용</th>
-                        	<td>700 원</td>
+                        	<th>배송비</th>
+                        	<td><fmt:formatNumber value="${order.delivery_price}" pattern="#,###" /> 원</td>
                         </tr>
                         <tr>
                         	<th>적립금 사용</th>
-                        	<td>700 원</td>
+                        	<td><fmt:formatNumber value="${order.point}" pattern="#,###" /> 원</td>
+                        </tr>                    
+                        <tr>
+                        	<th>최종 결제 금액</th>
+                        	<td><fmt:formatNumber value="${order.payment_price}" pattern="#,###" /> 원</td>
                         </tr>
                         <!-- 환불 정보 -->
                         <tr>
@@ -128,27 +185,32 @@
                       	</tr>
                         <tr>
                         	<th>환불 수단</th>
-                        	<td>카카오페이</td>
+                        	<td>${order.payment_method}</td>
                         </tr>
                         <tr>
                         	<th>환불 금액</th>
-                        	<td>6700 원</td>
+                        	<td><fmt:formatNumber value="${refund_price}" pattern="#,###" /> 원</td>
                         </tr>
                         <tr>
                         	<th>환불 적립금</th>
-                        	<td>700원</td>
+                        	<td><fmt:formatNumber value="${refund_point}" pattern="#,###" /> 원</td>
                         </tr>
                       </tbody>
                     </table>
             	</div>
          	</div>
          	<div class="col-12" style="text-align: center">
-         		<button class="btn btn-primary">확인</button>
+         		<c:if test="${type != 'info'}">
+         			<button class="btn btn-primary" onclick="submit();">확인</button>
+         		</c:if>
          	</div>
          	
          	
          	
 				</div>
+				<script type="text/javascript">
+				console.log($("#cancel_reason_detail").val());
+				</script>
 				<!-- /content -->
 							
 						</div>
@@ -157,10 +219,5 @@
 			</div>
 		</div>
 	</section>
-	<script>
-		if(window.location.pathname == '/order/cancelRequest'){
-			
-		}
-	</script>
     </body>
 </html>  

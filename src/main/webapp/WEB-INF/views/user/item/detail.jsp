@@ -102,7 +102,7 @@
         }
     </style>
 
-    <title>soaff</title>
+    <title>${item.name}</title>
     <script>
         // 스크롤 이동
         function scrollToSection(sectionId) {
@@ -126,8 +126,6 @@
                 itemPrice = itemPrice.toLocaleString();
                 itemPrice += '원';
             }
-
-            console.log(itemPrice.toString().toLocaleString());
 
             $(".selected-item-name").each(function () {
                 selectedItems.push($(this).text());
@@ -155,7 +153,7 @@
             html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
             html+="id='button-minus-0' onClick='decreaseValue(this)'>-";
             html+="</button>";
-            html+="<input type='number' class='form-control form-control-sm input-full-width mt-3 input-count' min='1'";
+            html+="<input type='number' class='form-control form-control-sm input-full-width mt-3 input-count selected-item-amount' min='1'";
             html+="max='9' value='1' readonly />";
             html+="<button class='btn btn-outline-secondary btn-sm btn-full-width mt-3' type='button'";
             html+="id='button-plus-0' onClick='increaseValue(this)'>+";
@@ -272,7 +270,18 @@
             observer.observe(document.getElementById('qnaSection'));
         });
     </script>
+    <script>
+        function getFormattedQuestionDate(timestamp) {
+            // timestamp를 Date 객체로 변환
+            var questionDate = new Date(timestamp);
+            // 날짜를 "yyyy-MM-dd" 형식으로 포맷팅
+            var year = questionDate.getFullYear();
+            var month = String(questionDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+            var day = String(questionDate.getDate()).padStart(2, '0');
 
+            return year + '-' + month + '-' + day;
+        }
+    </script>
     <!-- 리뷰 -->
     <script>
         let reviewPage = 1;
@@ -304,16 +313,14 @@
                 filter: $('#photo-check-box').is(':checked') ? '사진' : '',
                 page: reviewPage,
             }
-            console.log(data.photoCheck);
             $.ajax({
                 type: "GET", // method type
                 url: "/item/getReviewList", // 요청할 url
                 data: data, // 전송할 데이터
                 dataType: "json", // 응답 받을 데이터 type
                 success : function(resp){
-                    console.log("리뷰 성공");
                     // 데이터 리스트 출력
-                    $("#reviewPrintList").html(resp.printList);
+                    renderReviewList(resp.reviews);
                     $("#review-total").html("후기("+resp.total.toLocaleString()+"개)");
                     $("#avgScore").html(resp.avgScore);
                     //
@@ -342,12 +349,68 @@
 
                 },
                 error:function (data, textStatus) {
-                    console.log("리뷰 실패");
                     $('#fail').html("관리자에게 문의하세요.") // 서버오류
-                    console.log('error', data, textStatus);
                 }
             })
 
+        }
+
+        function renderReviewList(reviews) {
+            var printList = "";
+
+            if (reviews.length > 0) {
+                reviews.forEach(function(review) {
+                    printList += "<div class='row gutter-2 gutter-lg-4 mb-0'>";
+                    printList += "<div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>";
+                    printList += "<div class='accordion accordion-minimal' id='review-" + review.review_no + "' style='width: 100%; margin: 0;'>";
+                    printList += "<div class='card'>";
+                    printList += "<div class='card-header' id='review-heading-" + review.review_no + "'>";
+                    printList += "<h5 class='mb-0'>";
+                    printList += "<button class='btn btn-link' type='button' data-toggle='collapse' data-target='#review-detail-" + review.review_no + "' aria-expanded='false' aria-controls='review-detail-" + review.review_no + "' style='padding-bottom: 0;'>";
+                    printList += "<div class='row w-100 align-items-center'>";
+                    printList += "<div class='col-2'>";
+                    printList += "<span class='rating'>";
+                    if (review.review_img) {
+                        printList += "<span class='photo-status'>📸</span>";
+                    } else {
+                        printList += "<span class='photo-status' style='visibility:hidden;'>📸</span>";
+                    }
+                    for (var i = 0; i < review.score; i++) {
+                        printList += "⭐";
+                    }
+                    printList += "</span>";
+                    printList += "</div>";
+                    printList += "<div class='col-6 review-title'>" + review.title + "</div>";
+                    printList += "<div class='col-2 user-id'>" + review.user_id + "</div>";
+                    printList += "<div class='col-2 date'>" + getFormattedQuestionDate(review.regist_date) + "</div>";
+                    printList += "</div>";
+                    printList += "</button>";
+                    printList += "</h5>";
+                    printList += "</div>";
+                    printList += "<div id='review-detail-" + review.review_no + "' class='collapse' aria-labelledby='review-heading-" + review.review_no + "' data-parent='#review-" + review.review_no + "' style='background: #fafafa;'>";
+                    printList += "<div class='card-body text-left content-box'>";
+                    printList += "<div class='d-flex align-items-start'>";
+                    if (review.review_img) {
+                        printList += "<img src='" + review.review_img + "' style='max-width: 20%; margin-right: 20px;' >";
+                    }
+                    printList += "<p>" + review.content + "</p>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                });
+            } else {
+                printList += "<div class='row gutter-2 gutter-lg-4 mb-0'>";
+                printList += "<div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>";
+                printList += "아직 작성된 리뷰가 없습니다.";
+                printList += "</div>";
+                printList += "</div>";
+            }
+
+            $("#reviewPrintList").html(printList);
         }
     </script>
 
@@ -361,6 +424,13 @@
         function changeQnaPage(obj){
             qnaPage = obj.getAttribute("data-page");
             getQnaList();
+            scrollToQnaSection();
+        }
+
+        function scrollToQnaSection(){
+            $('html, body').animate({
+                scrollTop: $('#qnaSection').offset().top
+            }, 500);
         }
 
         function getQnaList(){
@@ -375,9 +445,8 @@
                 data: data, // 전송할 데이터
                 dataType: "json", // 응답 받을 데이터 type
                 success : function(resp){
-                    console.log("문의 성공");
                     // 데이터 리스트 출력
-                    $("#qnaPrintList").html(resp.printList);
+                    renderQnaList(resp.qnas);
                     $("#qna-total").html("상품 문의("+resp.total.toLocaleString()+"개)");
                     //
                     // // 페이지네이션 출력
@@ -399,20 +468,189 @@
                         printPage += '<li class="datatable-pagination-list-item page-item">';
                         printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹</a></li>';
                     }
-                    // console.log(printPage);
                     $(".qna-pagination-list").html(printPage);
 
 
 
                 },
                 error:function (data, textStatus) {
-                    console.log("문의 실패");
                     $('#fail').html("관리자에게 문의하세요.") // 서버오류
-                    console.log('error', data, textStatus);
                 }
             })
 
         }
+
+        function renderQnaList(qnas) {
+            var printList = "";
+
+            if (qnas.length > 0) {
+                qnas.forEach(function(qna) {
+                    printList += "<div class='row gutter-2 gutter-lg-4 mb-0'>";
+                    printList += "<div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>";
+                    printList += "<div class='accordion accordion-minimal' id='qna-" + qna.qna_no + "' style='width: 100%; margin: 0;'>";
+                    printList += "<div class='card'>";
+                    printList += "<div class='card-header' id='qna-heading-" + qna.qna_no + "'>";
+                    printList += "<h5 class='mb-0'>";
+                    printList += "<button class='btn btn-link' type='button' data-toggle='collapse' data-target='#qna-detail-"
+                        + qna.qna_no + "' aria-expanded='false' aria-controls='qna-detail-" + qna.qna_no
+                        + "' style='padding-bottom: 0;'>";
+                    printList += "<div class='row w-100 align-items-center'>";
+                    printList += "<div class='col-1 reply-status text-center'>";
+                    printList += qna.reply_date == null ? "답변대기" : "답변완료";
+                    printList += "</div>";
+                    printList += "<div class='col-2 reply-type text-center'>";
+                    printList += qna.type == 0 ? "교환/환불문의" : "상품상세문의";
+                    printList += "</div>";
+                    printList += "<div class='col-5 reply-title text-left'>";
+                    printList += qna.title;
+                    printList += "</div>";
+                    printList += "<div class='col-2 user-id text-center'>";
+                    printList += qna.user_id;
+                    printList += "</div>";
+                    printList += "<div class='col-2 date text-center'>";
+                    printList += getFormattedQuestionDate(qna.question_date);
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</button>";
+                    printList += "</h5>";
+                    printList += "</div>";
+                    printList += "<div id='qna-detail-" + qna.qna_no + "' class='collapse' aria-labelledby='qna-heading-"+ qna.qna_no +"' data-parent='#qna-"+ qna.qna_no +"' style='background: #fafafa '>";
+                    printList += "<div class='card-body text-left content-box'>";
+                    printList += "<h4>Q</h4>";
+                    printList += "<div class='d-flex align-items-start'>";
+                    if (qna.qna_img != null && qna.qna_img !== '') {
+                        printList += "<img src='" + qna.qna_img + "' style='max-width: 20%; margin-right: 20px;'>";
+                    }
+                    printList += "<p>";
+                    printList += qna.content;
+                    printList += "</p>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    if(qna.reply_date != null){
+                        printList += "<div class='card-body text-left content-box border-top'>";
+                        printList += "<br>";
+                        printList += "<h4>A</h4>";
+                        printList += "<p>";
+                        printList += qna.reply;
+                        printList += "</p>";
+                        printList += "</div>";
+                    }
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                    printList += "</div>";
+                });
+            } else {
+                printList += "<div class='row gutter-2 gutter-lg-4 mb-0'>";
+                printList += "<div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>";
+                printList += "작성된 문의가 없습니다.";
+                printList += "</div>";
+                printList += "</div>";
+            }
+
+            $("#qnaPrintList").html(printList);
+        }
+    </script>
+
+    <!-- 장바구니, 바로 구매 연결 -->
+    <script>
+        function addToCart(status){
+            var selectedItemNo = [];
+            var selectedItemPackingStatus = [];
+            var selectedItemAmount = [];
+            $('.selected-item-name').each((index, item) => {
+                selectedItemNo.push(${item.item_no});
+                if($(item).text().includes('포장')){
+                    selectedItemPackingStatus.push('1');
+                }else{
+                    selectedItemPackingStatus.push('0');
+                }
+            });
+            $('.selected-item-amount').each((index, element) => {
+                selectedItemAmount.push($(element).val());
+            });
+
+            var data = {
+                item_no_array : selectedItemNo,
+                packing_status_array : selectedItemPackingStatus,
+                amount_array : selectedItemAmount,
+                status :  status
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/cart/addItem",
+                contentType: "application/json", // JSON 형식으로 설정
+                data: JSON.stringify(data), // JSON 문자열로 변환하여 전송
+                success: function(resp){
+                    //상품의 상태가 buy 일 때와 cart 일 때
+                    if (resp.status === "buy") {
+                        sendData(resp.cartNos, '/order')
+                    } else if (resp.status === "cart") {
+                        if (confirm("상품이 장바구니에 담겼습니다 바로 이동하시겠습니까?")) {
+                            location.href = "/cart";
+                        }
+                    }
+                },
+                error: function (resp){
+                    alert("접근 실패");
+                }
+            });
+        }
+
+        function sendData(cartNos, url) {
+
+            const form = document.createElement('form'); // form 태그 생성
+            form.setAttribute('method', 'post'); // 전송 방식 결정 (get or post)
+            form.setAttribute('action', url); // 전송할 url 지정
+
+            for (var cartNo of cartNos) {
+                const data = document.createElement('input');
+                data.setAttribute('type', 'hidden');
+                data.setAttribute('name', 'checkedCartNo');
+                data.setAttribute('value', cartNo);
+                form.appendChild(data);
+            }
+
+            document.body.appendChild(form);
+
+            form.submit();
+
+        }
+
+        $(document).on('ready', () => {
+            const isLoggedIn = <c:out value="${not empty user_id}" />;
+            $('#buy').on('click',() => {
+                if($('.selected-item-name').length === 0){
+                    alert('상품을 선택해주세요');
+                }else{
+                    if (!isLoggedIn) {
+                        if(confirm('로그인이 필요한 기능입니다. \n로그인 하시겠습니까?')){
+                            location.href = '/user/user/login';
+                        }
+                    } else {
+                        addToCart("buy");
+                    }
+                }
+            });
+            $('#addToCart').on('click', () => {
+                if($('.selected-item-name').length === 0){
+                    alert('상품을 선택해주세요');
+                }else{
+                    if (!isLoggedIn) {
+                        if(confirm('로그인이 필요한 기능입니다. \n로그인 하시겠습니까?')){
+                            location.href = '/user/user/login';
+                        }
+                    } else {
+                        addToCart("cart");
+                    }
+                }
+            });
+        });
+
+
+
     </script>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
@@ -468,10 +706,10 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="button" class="btn btn-block btn-lg btn-primary" value="장바구니">
+                            <input type="button" class="btn btn-block btn-lg btn-primary" id="addToCart" value="장바구니">
                         </div>
                         <div class="col-md-6">
-                            <input type="button" class="btn btn-block btn-lg btn-primary" value="바로 구매">
+                            <input type="button" class="btn btn-block btn-lg btn-primary" id="buy" value="바로 구매">
                         </div>
                     </div>
 
@@ -553,10 +791,10 @@
             <br>
             <br>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <div id="review-total">후기(6,404 개)</div>
+                <div id="review-total">후기(0개)</div>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
-                <h2><b id="avgScore">4.3</b> / 5</h2>
+                <h2><b id="avgScore">0</b> / 5</h2>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0">
                 <div class="col-md-8">
@@ -574,8 +812,12 @@
                     </select>
                 </div>
             </div>
-
             <div id="reviewPrintList"> <!-- 리뷰 리스트 -->
+                <div class='row gutter-2 gutter-lg-4 mb-0'>
+                    <div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>
+                        아직 작성된 리뷰가 없습니다.
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col text-center">
@@ -598,7 +840,7 @@
                 <div class="col-md-9 text-left" id="qna-total">
                 </div>
                 <div class="col-md-3 d-flex align-items-center justify-content-end">
-                    <input type="button" value="문의하기" class="btn btn-primary btn-sm">
+                    <input type="button" value="문의하기" class="btn btn-primary btn-sm" id="toQna" onclick="location.href='/mypage/qna/post?item_no=${item.item_no}'">
                 </div>
             </div>
             <div class="row gutter-2 gutter-lg-4 mb-0 d-flex justify-content-center align-items-center text-center" style="font-size: 14px;">
@@ -624,6 +866,11 @@
             </div>
             <br>
             <div id="qnaPrintList"> <!-- 문의 리스트 -->
+                <div class='row gutter-2 gutter-lg-4 mb-0'>
+                    <div class='col-md-12 d-flex justify-content-center align-items-center text-center' style='width: 100%;'>
+                        작성된 문의가 없습니다.
+                    </div>
+                </div>
             </div>
             <!-- 문의 끝 -->
             <div class="row">

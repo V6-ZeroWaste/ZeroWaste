@@ -110,31 +110,6 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 		int r = mapper.insert(vo);
 		return r;
 	}
-//	@Override
-//	public int insert(ItemVO vo, MultipartFile file, HttpServletRequest request) {
-//		if (!file.isEmpty()) {
-//			String org = file.getOriginalFilename();
-//			String ext = org.substring(org.lastIndexOf("."));
-//			String real = System.currentTimeMillis() + ext;
-//			String uploadDir = request.getRealPath("/upload/item_img/");
-//			String path = uploadDir + real;
-//
-//			File dir = new File(uploadDir);
-//			if (!dir.exists()) {
-//				dir.mkdirs();
-//			}
-//
-//			try {
-//				file.transferTo(new File(path));
-//			} catch (Exception e) {
-//			}
-//			vo.setItem_img(real);
-//		}
-//		vo.setDiscount_rate((int) (((vo.getPrice() - vo.getDiscounted_price()) / (float) vo.getPrice()) * 100));
-//
-//		int r = mapper.insert(vo);
-//		return r;
-//	}
 
 	@Transactional
 	@Override
@@ -145,6 +120,9 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 			List<String> uploadedImages = new ArrayList<>();
 			for (String imageUrl : strings) {
 				try {
+					if(!imageUrl.startsWith("http://soaff")){
+						s3Uploader.deleteFile(imageUrl);
+					}
 					MultipartFile fileFromUrl = getFileFromUrl(imageUrl);
 					String uploadImage = s3Uploader.uploadFile(fileFromUrl);
 					uploadedImages.add(uploadImage);
@@ -184,35 +162,6 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 		vo.setDiscount_rate((int) (((vo.getPrice() - vo.getDiscounted_price()) / (float) vo.getPrice()) * 100));
 		return mapper.update(vo);
 	}
-//	@Transactional
-//	@Override
-//	public int update(ItemVO vo, MultipartFile file, HttpServletRequest request) {
-//		if (!file.isEmpty()) {
-//			String org = file.getOriginalFilename();
-//			String ext = org.substring(org.lastIndexOf("."));
-//			String real = System.currentTimeMillis() + ext;
-//			String uploadDir = request.getRealPath("/upload/item_img/");
-//			String path = uploadDir + real;
-//
-//			File dir = new File(uploadDir);
-//			if (!dir.exists()) {
-//				dir.mkdirs();
-//			}
-//
-//			try {
-//				file.transferTo(new File(path));
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			vo.setItem_img(real);
-//		}
-//		else{
-//			ItemVO detail = mapper.detail(vo);
-//			vo.setItem_img(detail.getItem_img());
-//		}
-//		vo.setDiscount_rate((int) (((vo.getPrice() - vo.getDiscounted_price()) / (float) vo.getPrice()) * 100));
-//		return mapper.update(vo);
-//	}
 
 	@Override
 	public int delete(ItemVO vo, HttpServletRequest request) {
@@ -222,41 +171,19 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 		}
 		return mapper.delete(data.getItem_no());
 	}
-//	@Override
-//	public int delete(ItemVO vo, HttpServletRequest request) {
-//		ItemVO data = mapper.detail(vo);
-//		if (data.getItem_img() != null && !"".equals(data.getItem_img())) {
-//			File f = new File(request.getRealPath("/upload/item_img/") + data.getItem_img());
-//			f.delete();
-//		}
-//		return mapper.delete(data.getItem_no());
-//	}
 
 	@Override
-	public int deleteImg(ItemVO vo, HttpServletRequest request) {
-		ItemVO data = mapper.detail(vo);
-		s3Uploader.deleteFile(data.getItem_img());
-		data.setItem_img("");
-		return mapper.update(data);
+	public int deleteImg(ItemVO vo) {
+		ItemVO detail = mapper.detail(vo);
+		s3Uploader.deleteFile(detail.getItem_img());
+		detail.setItem_img("");
+		return mapper.update(detail);
 	}
-//	@Override
-//	public int deleteImg(ItemVO vo, HttpServletRequest request) {
-//		ItemVO data = mapper.detail(vo);
-//		if (data.getItem_img() != null && !"".equals(data.getItem_img())) {
-//			File f = new File(request.getRealPath("/upload/item_img/") + data.getItem_img());
-//			if (f.exists() && f.isFile()) {
-//				if (f.delete()) {
-//					System.out.println("File deleted successfully");
-//				} else {
-//					System.out.println("File deletion failed");
-//				}
-//			} else {
-//				System.out.println("File does not exist or is not a file");
-//			}
-//		}
-//		data.setItem_img("");
-//		return mapper.update(data);
-//	}
+
+	@Override
+	public void deleteNewImg(String imgUrl) {
+		s3Uploader.deleteFile(imgUrl);
+	}
 
 	@Override
 	public int count(ItemVO vo) {

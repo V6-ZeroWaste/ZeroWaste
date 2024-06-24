@@ -44,7 +44,7 @@ public class ReviewAdminController {
 			for(ReviewVO reviewVo: reviewList) {
 				printList += "<tr onclick=\"location.href='/admin/review/detail?review_no="+ reviewVo.getReview_no() + "'\">";
 				printList += "<td>" + reviewVo.getReview_no() + "</td>";
-				printList += "<td>" + (reviewVo.getReview_img() == null ? "" : ("<img src='/upload/item_img/" + reviewVo.getReview_img() + "'/>"))+"</td>";
+				printList += "<td>" + (reviewVo.getReview_img() == null ? "" : ("<img src='" + reviewVo.getReview_img() + "'/>"))+"</td>";
 	       		printList += "<td>" + reviewVo.getItem_name() + "</td>";
 	       		printList += "<td>" + reviewVo.getTitle() + "</td>";
 	       		printList += "<td>" + reviewVo.getScore() + "</td>";

@@ -121,7 +121,9 @@
 		imp_uid,
 		payment_price,
 		payment_method,
-		delivery_price
+		delivery_price,
+		refund_price,
+		(select max(if(cancel_status is null,current_timestamp(), cancel_request_date)) from order_detail where order_no = #{order_no})  as last_cancel_date
 		FROM `order`
 		WHERE
 		order_no = #{order_no}
@@ -179,7 +181,7 @@
 	<update id="adminCancel"
 		parameterType="kr.co.soaff.cancel.CancelAdminDetailVO">
 		UPDATE order_detail
-		SET cancel_status = 2,
+		SET cancel_status = 1,
 		cancel_reason_type = 1,
 		cancel_request_date = CURRENT_TIMESTAMP,
 		cancel_approve_date = CURRENT_TIMESTAMP,
@@ -187,5 +189,25 @@
 		#{cancel_reason_detail}
 		WHERE order_detail_no = #{order_detail_no}
 	</update>
+	
+	<!-- order 테이블에 refund_price 업데이트 -->
+	<update id="cancelOrderUpdate"
+		parameterType="kr.co.soaff.cancel.CancelAdminOrderVO">
+		UPDATE `order`
+		SET refund_price = IF(refund_price IS NULL, 0 , refund_price) + #{refund_price}
+		WHERE order_no = #{order_no}
+	</update>
+	
+	<!-- 유저 active -->
+	 <!-- 유저: 취소 신청 -->
+	 <update id="requestCancel" parameterType="kr.co.soaff.cancel.CancelAdminDetailVO">
+	 	UPDATE order_detail
+		SET cancel_status = 0,
+		cancel_reason_type = #{cancel_reason_type},
+		cancel_request_date = CURRENT_TIMESTAMP,
+		cancel_reason_detail = #{cancel_reason_detail}
+		WHERE order_detail_no = #{order_detail_no} and user_no = #{user_no}
+	</update>
+	
 
 </mapper>

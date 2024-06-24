@@ -111,8 +111,8 @@ function goToList() {
 						</div>
 						<div class="card-body">
 							<div class="datatable-container">
-								<p><b>주문번호: ${cancelDetail.order_no}</p>
-								<p><b>주문상세번호: ${cancelDetail.order_detail_no }</p>
+								<p><b>주문번호:</b> ${cancelDetail.order_no}</p>
+								<p><b>주문상세번호:</b> ${cancelDetail.order_detail_no }</p>
 								<label class="btn btn-primary"> <input type="radio"
 									name="cancel_reason" value="1"
 									<c:if test="${cancelDetail.cancel_reason_type == 1}">checked disabled</c:if>
@@ -145,16 +145,16 @@ function goToList() {
 						</div>
 						<div class="card-body">
 							<div class="datatable-container">
-								<b>총 주문 금액: ${cancelDetail.total_price}원
+								<b>총 주문 금액:</b> ${cancelDetail.total_price}원
 									</p>
 									<p>
-										<b>적립금 사용: ${cancelDetail.point}원 
+										<b>적립금 사용:</b> ${cancelDetail.point}원 
 									</p>
 									<p>
-										<b>배송비 : ${cancelDetail.delivery_price}원 
+										<b>배송비:</b> ${cancelDetail.delivery_price}원 
 									</p>
 									<p>
-										<b>최종 결제금액: ${cancelDetail.payment_price}원 
+										<b>최종 결제금액:</b> ${cancelDetail.payment_price}원 
 									</p>
 							</div>
 						</div>
@@ -167,13 +167,13 @@ function goToList() {
 						<div class="card-body">
 							<div class="datatable-container">
 
-								<b>환불수단: ${cancelDetail.payment_method}
+								<b>환불수단:</b> ${cancelDetail.payment_method}
 									</p>
 									<p>
-										<b>환불금액: ${cancelDetail.refund_price}원 
+										<b>환불금액:</b> ${cancelDetail.refund_price}원 
 									</p>
 									<p>
-										<b>환불 적립금: ${cancelDetail.refund_point}원 
+										<b>환불 적립금:</b> ${cancelDetail.refund_point}원 
 									</p>
 							</div>
 						</div>

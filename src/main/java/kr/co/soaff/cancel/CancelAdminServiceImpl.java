@@ -5,12 +5,26 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.http.*;
+import kr.co.soaff.point.PointMapper;
+import kr.co.soaff.point.PointVO;
 
 @Service
 public class CancelAdminServiceImpl implements CancelAdminService {
 	@Autowired
-	private CancelAdminMapper mapper;
+	private CancelAdminMapper mapper;	
+	@Autowired
+	private PointMapper pointMapper;
+	
+	@Value("${imp.apiSecret}")
+    private String apiSecret;
 
 	@Override
 	public Map<String, Object> list(CancelAdminListVO vo) {
@@ -35,7 +49,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 	    map.put("isNext", isNext);
 	    return map;
 	}
-
+	
 
 	@Override
 	public Map<String, Object> cancelDetail(int order_detail_no) {
@@ -44,20 +58,17 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		// 최종 결제 정보 공식 계산
 		int total_price = order.getPayment_price() - order.getDelivery_price() + order.getPoint();
-		int refundPoint = (int) (((double) orderDetail.getPrice() * orderDetail.getAmount())
-				/ ((order.getPayment_price() - order.getDelivery_price())) * order.getPoint());
+		int refundPoint = (int) (order.getPoint() * (( (double) orderDetail.getPrice() * orderDetail.getAmount())
+				/ (order.getPayment_price() - order.getDelivery_price() + order.getPoint())));
 
 		// 주문 상품 총 개수 및 남은 개수 가져오기
 		int totalOrderItems = mapper.countOrderItems(orderDetail.getOrder_no());
 		int remainingItems = totalOrderItems - orderDetail.getAmount(); // 현재 취소 요청 중인 상품을 제외한 나머지 상품 수량
 
-		int refundPrice;
-		if (remainingItems == 0) {
-			// 모든 상품을 취소하는 경우
-			refundPrice = orderDetail.getPrice() * orderDetail.getAmount() + order.getDelivery_price() - refundPoint;
-		} else {
-			// 일부 상품만 취소하는 경우
-			refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
+		int refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
+		if ((orderDetail.getCancel_request_date()).equals(order.getLast_cancel_date())) {
+			// 마지막 취소 요청 상품
+			refundPrice += order.getDelivery_price();
 		}
 
 		// VO에 필요한 데이터 설정
@@ -93,10 +104,41 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 	}
 
 	@Override
+	@Transactional
 	public int completeCancel(int order_detail_no) {
-		CancelAdminDetailVO vo = new CancelAdminDetailVO();
-		vo.setOrder_detail_no(order_detail_no);
-		return mapper.completeCancel(vo);
+		// 환불에 필요한 정보 가져오기 
+		CancelAdminDetailVO orderDetail = mapper.detailFromOrderDetailVO(order_detail_no);
+		CancelAdminOrderVO order = mapper.detailFromOrderVO(orderDetail.getOrder_no());
+
+		int refundPoint = (int) (order.getPoint() * (( (double) orderDetail.getPrice() * orderDetail.getAmount())
+				/ (order.getPayment_price() - order.getDelivery_price() + order.getPoint())));
+		int refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
+		if ((orderDetail.getCancel_request_date()).equals(order.getLast_cancel_date())) {
+			refundPrice += order.getDelivery_price(); //마지막 취소 상품
+		}
+		int reason_type = orderDetail.getCancel_reason_type();
+		String reason = reason_type == 0 ? "배송지연" : (reason_type == 1 ? "제품불량" : "단순변심");
+		
+		// 포트원 결제 취소 
+		int result = 0;
+		if (cancelPortone( order.getPayment_Id(),  reason,  refundPrice)) { // 결제 취소 완료 시
+			// order_detail 결제 취소 정보 UPDATE 
+			result += mapper.completeCancel(orderDetail);
+			// order 취소 금액 UPDATE
+			order.setRefund_price(refundPrice);
+			result += mapper.cancelOrderUpdate(order);
+			// point 취소 금액 UPDATE
+			PointVO pointVo =  new PointVO();
+			pointVo.setContent("환불 적립금");
+			pointVo.setPoint(refundPoint);
+			pointVo.setOrder_no(order.getOrder_no());
+			result += pointMapper.insert(pointVo);
+			
+			
+		}else {
+			return 0;
+		}
+		return result==3 ? 1: 0;
 	}
 	
 	@Override
@@ -104,7 +146,11 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		CancelAdminDetailVO cancelDetail = new CancelAdminDetailVO();
 		cancelDetail.setOrder_detail_no(order_detail_no);
 		cancelDetail.setCancel_reason_detail(cancel_reason_detail);
-		return mapper.adminCancel(cancelDetail);
+		if(mapper.adminCancel(cancelDetail) > 0) {
+			return completeCancel(order_detail_no);
+		}else {
+			return 0;
+		}
 	}
 	
 	@Override
@@ -115,7 +161,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		// 최종 결제 정보 공식 계산
 		int total_price = order.getPayment_price() - order.getDelivery_price() + order.getPoint();
 		int refundPoint = (int) (((double) orderDetail.getPrice() * orderDetail.getAmount())
-				/ ((order.getPayment_price() - order.getDelivery_price())) * order.getPoint());
+				/ ((order.getPayment_price() - order.getDelivery_price() + order.getPoint())) * order.getPoint());
 
 		// 주문 상품 총 개수 및 남은 개수 가져오기
 		int totalOrderItems = mapper.countOrderItems(orderDetail.getOrder_no());
@@ -147,4 +193,38 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		return map;
 	}
+	
+	
+	public boolean cancelPortone(String paymengt_id, String reason, int amount) {
+		try {
+			
+			String apiUrl = "https://api.portone.io/payments/"+paymengt_id+"/cancel";
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization", "PortOne " + apiSecret);
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			
+			
+			RestTemplate restTemplate = new RestTemplate();
+			Map<String, Object> keyMap = new HashMap<>();
+			keyMap.put("amount", amount);
+			keyMap.put("reason", reason);
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+            String keyJson = objectMapper.writeValueAsString(keyMap);
+            HttpEntity<String> requestEntity = new HttpEntity<>(keyJson, headers); // HttpEntity 객체 생성
+            ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
+
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                return true;
+            } else {
+                return false;
+            }
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("err msg : "+e.getMessage());
+			return false;
+		}
+	}
+	
 }

@@ -149,7 +149,7 @@
                                     	<td colspan='3'>
                                     		<div>
                                     			<c:if test="${vo.review_img != null}">
-                                    				<img id="review_img" src="/upload/item_img/${vo.review_img}"/>
+                                    				<img id="review_img" src="${vo.review_img}"/>
                                     			</c:if>
                                     		</div>
                                     		<div>
