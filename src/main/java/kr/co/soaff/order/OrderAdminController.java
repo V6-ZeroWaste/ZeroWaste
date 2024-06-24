@@ -1,6 +1,5 @@
 package kr.co.soaff.order;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,34 +32,7 @@ public class OrderAdminController {
 	@GetMapping("/admin/order/getList")
 	@ResponseBody
 	public Map<String, Object> list(OrderVO orderVO) {
-		Map<String, Object> map = service.list(orderVO);
-		String printList = "";
-		List<OrderVO> orderList = (List<OrderVO>) map.get("list");
-		if (orderList.size() == 0) {
-			printList = "<td class='first' colspan='6' style='text-align: center;'>등록된 글이 없습니다.</td>";
-		}
-		for (OrderVO vo : orderList) {
-			printList += "<tr onclick=location.href='/admin/order/detail?order_no=" + vo.getOrder_no() + "&id="
-					+ vo.getId() + "'>";
-			printList += "<td>" + vo.getOrder_no() + "</td>";
-			printList += "<td>" + (vo.getPayment_date() + "").substring(0, 19) + "</td>";
-
-			printList += "<td>" + vo.getId() + "</td>";
-			printList += "<td>" + vo.getPayment_price() + "</td>";
-			printList += "<td>" + vo.getTotal_amount() + "</td>";
-			String delivery_status = "";
-			if (vo.getDelivery_status() == 0) {
-				delivery_status = "상품준비중";
-			} else if (vo.getDelivery_status() == 1) {
-				delivery_status = "배송중";
-			} else if (vo.getDelivery_status() == 2) {
-				delivery_status = "배송완료";
-			}
-			printList += "<td>" + delivery_status + "</td>";
-			printList += "</tr>";
-		}
-		map.put("printList", printList);
-		return map;
+		return service.list(orderVO);
 	}
 
 //	@ResponseBody
