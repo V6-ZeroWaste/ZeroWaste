@@ -14,8 +14,20 @@
     	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script>
-        
-        function goSave(){
+            $(document).ready(() => {
+                $('#login').on('click', () => {
+                    goSave();
+                });
+
+                $('#frm').on('keypress', (e) => {
+                    if(e.key === 'Enter' || e.keyCode === '13'){
+                        $('#login').click();
+                    }
+                });
+            });
+
+
+            function goSave(){
     		if($("#id").val().trim() == ''){
     			alert("아이디를 입력하세요.");
     			$("#id").focus();
@@ -59,7 +71,7 @@
                                             </div>
                                             <div class="d-flex align-items-center justify-content-center mt-4 mb-0">
                                                 <!-- <a class="btn btn-primary" href="index.html">Login</a> -->
-                                                <a class="btn btn-primary" href="javascript:;" class="btn" onclick="goSave();">Login</a>
+                                                <a class="btn btn-primary" href="javascript:;" class="btn" id='login' onclick="goSave();">Login</a>
                                                 <!-- <input class="btn btn-primary" type="submit" value="Login"/> -->
                                             </div>
                                         </form>
