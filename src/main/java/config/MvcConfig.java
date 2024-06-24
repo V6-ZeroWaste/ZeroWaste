@@ -27,6 +27,7 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import util.AdminLoginInterceptor;
+import util.UserLoginInterceptor;
 
 @Configuration
 @ComponentScan(basePackages = { "kr.co.soaff","util"})
@@ -129,13 +130,24 @@ public class MvcConfig implements WebMvcConfigurer {
 	public AdminLoginInterceptor AdminLoginInterception() {
 		return new AdminLoginInterceptor();
 	}
+	// 유저 로그인 인터셉터 빈등록
+	@Bean
+	public UserLoginInterceptor UserLoginInterception() {
+		return new UserLoginInterceptor();
+	}
 
-	// 어드민 로그인 인터셉터 설정
+	//인터셉터 설정
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		// url 설정
+		// 어드민 로그인 인터셉터 설정
 		registry.addInterceptor(AdminLoginInterception()).addPathPatterns("/admin/**") .excludePathPatterns("/admin/login");
+		// 어드민 로그인 인터셉터 설정
+		registry.addInterceptor(UserLoginInterception()).addPathPatterns("/order/**").addPathPatterns("/mypage/**").addPathPatterns("/cart/**");
 	}
+	
+
+
 
 	// properties 설정
 	@Bean
