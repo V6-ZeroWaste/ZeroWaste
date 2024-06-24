@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,41 +28,47 @@ public class ReviewController {
 	private S3Uploader s3Uploader;
 
 	@GetMapping("/list")
-	public String index(Model model, ReviewVO vo) {
+	public String index(Model model, ReviewVO vo, HttpSession session) {
+		vo.setUser_no((int) session.getAttribute("user_no"));
 		model.addAttribute("map", service.list(vo));
 		return "/user/review/list";
 	}
 
-	// 회원 상세 페이지 - 리스트 불러오기 (ajax)
-	@GetMapping("/getList") // Do: 회원가입 id 중복 체크
+	@GetMapping("/getList")
 	@ResponseBody
-	public Map<String, Object> listAjax(ReviewVO vo) {
-		Map<String, Object> map = service.list(vo);
-		String printList = "";
-		List<ReviewVO> reviewList = (List<ReviewVO>) map.get("list");
-		if (reviewList.size() == 0) {
-			printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
-		}
-		for (ReviewVO reviewVo : reviewList) {
-			printList += "<tr onclick=\"location.href='/user/review/detail?review_no=" + reviewVo.getReview_no()
-					+ "'\">";
-			printList += "<td>"
-					+ (reviewVo.getReview_img() == null ? "" : ("<img src='" + reviewVo.getReview_img() + "'/>"))
-					+ "</td>";
-			printList += "<td>" + reviewVo.getItem_name() + "</td>";
-			printList += "<td>" + reviewVo.getTitle() + "</td>";
-			printList += "<td>" + reviewVo.getUser_id() + "</td>";
-			printList += "<td>" + (reviewVo.getRegist_date() + "").substring(0, 10) + "<br>"
-					+ (reviewVo.getRegist_date() + "").substring(11, 19) + "</td>";
-			printList += "<td>" + reviewVo.getScore() + "</td>";
-			printList += "</tr>";
-		}
-		map.put("printList", printList);
-		return map;
+	public Map<String, Object> listAjax(ReviewVO vo, HttpSession session) {
+	    Integer user_no = (Integer) session.getAttribute("user_no");
+	    if (user_no == null) {
+	        return null;
+	    }
+	    vo.setUser_no(user_no);
+	    vo.setPageSize(10);
+	    vo.setStartIdx((vo.getPage() - 1) * vo.getPageSize()); // 페이지 시작 인덱스 설정
+	    Map<String, Object> map = service.list(vo);
+	    String printList = "";
+	    List<ReviewVO> reviewList = (List<ReviewVO>) map.get("list");
+	    if (reviewList.size() == 0) {
+	        printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
+	    } else {
+	        for (ReviewVO reviewVo : reviewList) {
+	            printList += "<tr onclick=\"location.href='/user/review/detail?review_no=" + reviewVo.getReview_no() + "'\">";
+	            printList += "<td>" + (reviewVo.getReview_img() == null ? "" : ("<img src='" + reviewVo.getReview_img() + "'/>")) + "</td>";
+	            printList += "<td>" + reviewVo.getItem_name() + "</td>";
+	            printList += "<td>" + reviewVo.getTitle() + "</td>";
+	            printList += "<td>" + reviewVo.getUser_id() + "</td>";
+	            printList += "<td>" + reviewVo.getRegist_date().toString().substring(0, 10) + "<br>" + reviewVo.getRegist_date().toString().substring(11, 19) + "</td>";
+	            printList += "<td>" + reviewVo.getScore() + "</td>";
+	            printList += "</tr>";
+	        }
+	    }
+	    map.put("printList", printList);
+	    return map;
 	}
 
+
 	@GetMapping("/detail")
-	public String detail(Model model, ReviewVO vo) {
+	public String detail(Model model, ReviewVO vo, HttpSession session) {
+		vo.setUser_no((int) session.getAttribute("user_no"));
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/review/detail";
 	}
@@ -77,11 +85,12 @@ public class ReviewController {
 			@RequestParam("score") int score,
 			@RequestParam(value = "review_img", required = false) MultipartFile review_img,
 			@RequestParam("order_no") int order_no, @RequestParam("order_detail_no") int order_detail_no,
-			@RequestParam("item_no") int item_no, Model model) {
+			@RequestParam("item_no") int item_no, Model model, HttpSession session) {
 
-		int user_no = 1;
-		String user_id = "user01";
+		Integer user_no = (Integer) session.getAttribute("user_no");
+		String user_id = (String) session.getAttribute("user_id");
 		ReviewVO vo = new ReviewVO();
+
 		vo.setTitle(title.trim());
 		vo.setContent(content.trim());
 		vo.setScore(score);
@@ -113,43 +122,48 @@ public class ReviewController {
 			return "0";
 		}
 	}
-	
+
 	@GetMapping("/update")
-	public String detail2(Model model, ReviewVO vo) {
+	public String detail2(Model model, ReviewVO vo, HttpSession session) {
+		vo.setUser_no((int) session.getAttribute("user_no"));
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/review/update";
 	}
 
 	@PostMapping("/updateReview")
 	@ResponseBody
-	public int updateReview(@RequestParam int review_no, @RequestParam("title") String title, @RequestParam("content") String content, @RequestParam(value = "review_img", required = false) MultipartFile review_img) {
-	   ReviewVO vo = new ReviewVO();
-	   vo.setReview_no(review_no);
-	   vo.setTitle(title.trim());
-	   vo.setContent(content.trim());
+	public int updateReview(@RequestParam int review_no, @RequestParam("title") String title,
+			@RequestParam("content") String content,
+			@RequestParam(value = "review_img", required = false) MultipartFile review_img, HttpSession session) {
+		Integer user_no = (Integer) session.getAttribute("user_no");
+		ReviewVO vo = new ReviewVO();
+		vo.setReview_no(review_no);
+		vo.setTitle(title.trim());
+		vo.setContent(content.trim());
 
-	   ReviewVO existingReview = service.detail(vo);
-	   String oldReviewImgUrl = existingReview.getReview_img();
+		ReviewVO existingReview = service.detail(vo);
+		String oldReviewImgUrl = existingReview.getReview_img();
 
-	   if (review_img != null && !review_img.isEmpty()) {
-	      try {
-	         String newImgUrl = s3Uploader.updateFile(oldReviewImgUrl, review_img);
-	         vo.setReview_img(newImgUrl);
-	      } catch (IOException e) {
-	         e.printStackTrace();
-	         return 0;
-	      }
-	   } else {
-	      vo.setReview_img(oldReviewImgUrl);
-	   }
+		if (review_img != null && !review_img.isEmpty()) {
+			try {
+				String newImgUrl = s3Uploader.updateFile(oldReviewImgUrl, review_img);
+				vo.setReview_img(newImgUrl);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return 0;
+			}
+		} else {
+			vo.setReview_img(oldReviewImgUrl);
+		}
 
-	   int result = service.update(vo);
-	   return result > 0 ? 1 : 0;
+		int result = service.update(vo);
+		return result > 0 ? 1 : 0;
 	}
-	
+
 	@PostMapping("/delete")
 	@ResponseBody
-	public int delete(@RequestParam int review_no) {
+	public int delete(@RequestParam int review_no, HttpSession session) {
+		Integer user_no = (Integer) session.getAttribute("user_no");
 		ReviewVO vo = new ReviewVO();
 		vo.setReview_no(review_no);
 		ReviewVO review = service.detail(vo);

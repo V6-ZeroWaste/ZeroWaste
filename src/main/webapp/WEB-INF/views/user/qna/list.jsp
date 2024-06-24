@@ -42,7 +42,16 @@
 </style>
 <script type="text/javascript">
 	let page = 1;
+	let filter = null;
+	
 	window.onload = function() {
+		const urlParams = new URLSearchParams(window.location.search);
+		filter = urlParams.get('filter');
+		if (filter !== null) {
+			$('#filter').val(filter);
+		} else {
+			$('#filter').val("");
+		}
 		getList();
 	}
 	
@@ -62,7 +71,7 @@
 		var data = {
 			searchWord : $('#searchWord').val(),
 			orderBy : $('#orderBy').val(),
-			filter : $('#filter').val(),
+			filter : filterValue !== "" ? parseInt(filterValue) : null, 
 			start_date : $('#start_date').val(),
 			end_date : $('#end_date').val(),
 			page : page,
@@ -119,6 +128,9 @@
 									+ '" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
 						}
 						$(".datatable-pagination-list").html(printPage);
+						
+						const newUrl = '/mypage/qna/list?filter=' + data.filter;
+						history.pushState(null, '', newUrl);
 					},
 					error : function(data, textStatus) {
 						$('#fail').html("관리자에게 문의하세요.");
@@ -151,13 +163,15 @@
 									<div>
 										<label> <select id="orderBy" name="orderBy"
 											class="datatable-selector" onchange="applyCondition();">
-												<option value="">===정렬===</option>
-												<option value="최신순">최신순</option>
-												<option value="오래된순">오래된순</option>
+												<option value="" hidden>정렬</option>
+												<option value="최신순"
+											<c:if test="${qnaVO.orderBy == '최신순'}">selected</c:if>>최신순</option>
+										<option value="오래된순"
+											<c:if test="${qnaVO.orderBy == '오래된순'}">selected</c:if>>오래된순</option>
 										</select>
 										</label> <label> <select id="filter" name="filter"
 											class="datatable-selector" onchange="applyCondition();">
-												<option value="">==필터==</option>
+												<option value="">전체보기</option>
 												<option value="답변대기">답변대기</option>
 												<option value="답변완료">답변완료</option>
 										</select>
@@ -173,7 +187,7 @@
 									</div>
 								</div>
 								<div>
-									<span><strong>총 ${map.count}개</strong></span>
+									<span class="eyebrow">${map.count } entries</span>
 								</div>
 							</div>
 						</div>
@@ -190,7 +204,7 @@
 												<a href="product-1.html"
 													title="Fawn Wool / Natural Mammoth Chair"
 													data-toggle="tooltip" data-placement="top"> <img
-													src="${list.qna_img }"
+													src="${list.item_img}"
 													alt="Fawn Wool / Natural Mammoth Chair">
 												</a>
 											</div>
@@ -198,43 +212,57 @@
 												<h3 class="order-number">${list.item_name}</h3>
 											</div>
 											<div class="col-lg-4">
-												<span class="qna-info">${list.question_date }</span> <br>
-												<span class="qna-info">${list.title } </span> <br> <span
-													class="qna-info">${list.replyState }</span>
+												<span class="qna-info">${list.question_date}</span> <br>
+												<span class="qna-info">${list.title}</span> <br> <span
+													class="qna-info">${list.replyState}</span>
 											</div>
 											<div class="col-lg-2">
-												<a href="#!" class="action eyebrow underline" onclick="redirectToDetail(${list.qna_no})">View
-													Detail</a>
+												<a href="#!" class="action eyebrow underline"
+													onclick="redirectToDetail(${list.qna_no})">View Detail</a>
 											</div>
 										</div>
 									</div>
 								</div>
-								</c:forEach>
-								</div>
-								</div>
-								</div>
-								
-						<!-- /list -->
-						
-						<!-- pagination -->
-						<div class="row">
-							<div class="col">
-								<ul class="pagination">
-									<li class="page-item active"><a class="page-link"
-										href="#!">1 <span class="sr-only">(current)</span></a></li>
-									<li class="page-item" aria-current="page"><a
-										class="page-link" href="#!">2</a></li>
-									<li class="page-item"><a class="page-link" href="#!">3</a></li>
-									<li class="page-item"><a class="page-link" href="#!">4</a></li>
-								</ul>
-							</div>
+							</c:forEach>
 						</div>
-						<!-- /pagination -->
 					</div>
-					<!-- /content -->
+
+					<!-- /list -->
+
+					<!-- pagination -->
+					<div class="row">
+						<div class="col">
+							<ul class="pagination">
+								<c:if test="${map.isPrev}">
+									<li class="page-item"><a class="page-link"
+										href="/mypage/qna/list?page=1">‹‹</a></li>
+									<li class="page-item"><a class="page-link"
+										href="/mypage/qna/list?page=${map.startPage-1}">‹</a></li>
+								</c:if>
+								<c:forEach var="i" begin="${map.startPage}"
+									end="${map.endPage }">
+									<c:if test="${map.currentPage==i}">
+										<li class="page-item active"><a class="page-link">${i }<span
+												class="sr-only">(current)</span></a></li>
+									</c:if>
+									<c:if test="${map.currentPage!=i}">
+										<li class="page-item"><a class="page-link"
+											href="/mypage/qna/list?page=${i}">${i }</a></li>
+									</c:if>
+								</c:forEach>
+								<c:if test="${map.isNext}">
+									<li class="page-item"><a class="page-link"
+										href="/mypage/qna/list?page=${map.endPage+1}">›</a></li>
+									<li class="page-item"><a class="page-link"
+										href="/mypage/qna/list?page=${map.totalPage}">››</a></li>
+								</c:if>
+							</ul>
+						</div>
+					</div>
+					<!-- /pagination -->
 				</div>
+				<!-- /content -->
 			</div>
-		</div>
 		</div>
 	</section>
 	<%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
