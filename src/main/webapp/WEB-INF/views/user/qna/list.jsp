@@ -187,7 +187,8 @@
 								<div class="d-flex align-items-center justify-content-between">
 									<div>
 										<label> <select id="orderBy" name="orderBy"
-											class="datatable-selector" onchange="applyCondition();">
+											class="btn btn-outline-secondary btn-sm dropdown-toggle"
+											onchange="applyCondition();">
 												<option value="" hidden>정렬</option>
 												<option value="최신순"
 													<c:if test="${qnaVO.orderBy == '최신순'}">selected</c:if>>최신순</option>
@@ -195,7 +196,8 @@
 													<c:if test="${qnaVO.orderBy == '오래된순'}">selected</c:if>>오래된순</option>
 										</select>
 										</label> <label> <select id="filter" name="filter"
-											class="datatable-selector" onchange="applyCondition();">
+											class="btn btn-outline-secondary btn-sm dropdown-toggle"
+											onchange="applyCondition();">
 												<option value="">전체보기</option>
 												<option value="답변대기">답변대기</option>
 												<option value="답변완료">답변완료</option>
@@ -203,8 +205,8 @@
 										</label>
 									</div>
 									<div class="search-container">
-										<input id="searchWord" name="searchWord"
-											class="datatable-input" type="search" placeholder="상품명/문의 제목"
+										<input id="searchWord" name="searchWord" class="form-control"
+											type="search" placeholder="상품명/문의 제목"
 											<c:if test="${qnaVO.searchWord} != null">value=${qnaVO.searchWord}</c:if>
 											onkeyup="if(window.event.keyCode==13){applyCondition();}"
 											style="width: 250px"> <input type="button" value="검색"
@@ -235,7 +237,10 @@
 												<h3 class="order-number">${list.item_name}</h3>
 											</div>
 											<div class="col-lg-4">
-												<div class="qna-info"><fmt:formatDate value="${list.question_date}" pattern="yyyy-MM-dd"/></div>
+												<div class="qna-info">
+													<fmt:formatDate value="${list.question_date}"
+														pattern="yyyy-MM-dd" />
+												</div>
 												<div class="qna-info">
 													<c:choose>
 														<c:when test="${fn:length(list.title) > 10}">

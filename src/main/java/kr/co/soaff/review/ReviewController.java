@@ -37,38 +37,41 @@ public class ReviewController {
 	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(ReviewVO vo, HttpSession session) {
-	    Integer user_no = (Integer) session.getAttribute("user_no");
-	    if (user_no == null) {
-	        return null;
-	    }
-	    vo.setUser_no(user_no);
-	    vo.setPageSize(10);
-	    vo.setStartIdx((vo.getPage() - 1) * vo.getPageSize()); // 페이지 시작 인덱스 설정
-	    Map<String, Object> map = service.list(vo);
-	    String printList = "";
-	    List<ReviewVO> reviewList = (List<ReviewVO>) map.get("list");
-	    if (reviewList.size() == 0) {
-	        printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
-	    } else {
-	        for (ReviewVO reviewVo : reviewList) {
-	            String title = reviewVo.getTitle();
-	            if (title.length() > 10) {
-	                title = title.substring(0, 10) + "...";
-	            }
-	            printList += "<tr onclick=\"location.href='/user/review/detail?review_no=" + reviewVo.getReview_no() + "'\">";
-	            printList += "<td>" + (reviewVo.getReview_img() == null ? "" : ("<img src='" + reviewVo.getReview_img() + "'/>")) + "</td>";
-	            printList += "<td>" + reviewVo.getItem_name() + "</td>";
-	            printList += "<td>" + title + "</td>";
-	            printList += "<td>" + reviewVo.getUser_id() + "</td>";
-	            printList += "<td>" + reviewVo.getRegist_date().toString().substring(0, 10) + "<br>" + reviewVo.getRegist_date().toString().substring(11, 19) + "</td>";
-	            printList += "<td>" + reviewVo.getScore() + "</td>";
-	            printList += "</tr>";
-	        }
-	    }
-	    map.put("printList", printList);
-	    return map;
+		Integer user_no = (Integer) session.getAttribute("user_no");
+		if (user_no == null) {
+			return null;
+		}
+		vo.setUser_no(user_no);
+		vo.setPageSize(10);
+		vo.setStartIdx((vo.getPage() - 1) * vo.getPageSize()); // 페이지 시작 인덱스 설정
+		Map<String, Object> map = service.list(vo);
+		String printList = "";
+		List<ReviewVO> reviewList = (List<ReviewVO>) map.get("list");
+		if (reviewList.size() == 0) {
+			printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
+		} else {
+			for (ReviewVO reviewVo : reviewList) {
+				String title = reviewVo.getTitle();
+				if (title.length() > 10) {
+					title = title.substring(0, 10) + "...";
+				}
+				printList += "<tr onclick=\"location.href='/user/review/detail?review_no=" + reviewVo.getReview_no()
+						+ "'\">";
+				printList += "<td>"
+						+ (reviewVo.getReview_img() == null ? "" : ("<img src='" + reviewVo.getReview_img() + "'/>"))
+						+ "</td>";
+				printList += "<td>" + reviewVo.getItem_name() + "</td>";
+				printList += "<td>" + title + "</td>";
+				printList += "<td>" + reviewVo.getUser_id() + "</td>";
+				printList += "<td>" + reviewVo.getRegist_date().toString().substring(0, 10) + "<br>"
+						+ reviewVo.getRegist_date().toString().substring(11, 19) + "</td>";
+				printList += "<td>" + reviewVo.getScore() + "</td>";
+				printList += "</tr>";
+			}
+		}
+		map.put("printList", printList);
+		return map;
 	}
-
 
 	@GetMapping("/detail")
 	public String detail(Model model, ReviewVO vo, HttpSession session) {
@@ -77,14 +80,36 @@ public class ReviewController {
 		return "/user/review/detail";
 	}
 
+//	@GetMapping("/post")
+//	public String write(Model model, @RequestParam int item_no, int order_detail_no, HttpSession session) {
+//		Integer user_no = (Integer) session.getAttribute("user_no");
+//		String user_id = (String) session.getAttribute("user_id");
+//		
+//		
+//		model.addAttribute("vo", service.write(item_no));
+//		return "/user/review/post";
+//	}
+
 	@GetMapping("/post")
-	public String write(Model model, @RequestParam int item_no, int order_detail_no, HttpSession session) {
-		Integer user_no = (Integer) session.getAttribute("user_no");
-		String user_id = (String) session.getAttribute("user_id");
-		
-		
-		model.addAttribute("vo", service.write(item_no));
-		return "/user/review/post";
+	public String write(Model model, @RequestParam Integer item_no, @RequestParam Integer order_detail_no, HttpSession session) {
+	    Integer user_no = (Integer) session.getAttribute("user_no");
+	    if (user_no == null) {
+	        return "/user/include/404"; 
+	    }
+
+	    ReviewVO vo = new ReviewVO();
+	    vo.setItem_no(item_no);
+	    vo.setOrder_detail_no(order_detail_no);
+	    vo.setUser_no(user_no);
+
+	    boolean isOrderValid = service.checkOrder(vo);
+	    if (!isOrderValid) {
+	        return "/user/include/404"; 
+	    }
+
+	    ReviewVO existingOrder = service.write(vo);
+	    model.addAttribute("vo", existingOrder);
+	    return "/user/review/post";
 	}
 
 	@PostMapping("/postReview")
@@ -130,6 +155,8 @@ public class ReviewController {
 			return "0";
 		}
 	}
+
+
 
 	@GetMapping("/update")
 	public String detail2(Model model, ReviewVO vo, HttpSession session) {

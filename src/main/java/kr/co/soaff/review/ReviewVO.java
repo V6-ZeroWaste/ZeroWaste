@@ -2,6 +2,8 @@ package kr.co.soaff.review;
 
 import java.sql.Timestamp;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -20,6 +22,7 @@ public class ReviewVO {
 	private String item_img;
 	private int order_no;
 	
+	private MultipartFile file;
 	private String searchWord;
 	private String orderBy;
 	private String startDate;
