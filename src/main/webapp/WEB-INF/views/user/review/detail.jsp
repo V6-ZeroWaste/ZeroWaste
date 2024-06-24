@@ -142,8 +142,8 @@ function deleteReview() {
 										<tr>
 											<th>Content</th>
 											<td colspan="2">
-												<div>${vo.content}</div>
-											</td>
+                                                <textarea rows="5" cols="85" readonly>${vo.content}</textarea>
+                                            </td>
 										</tr>
 										<c:if test="${not empty vo.review_img}">
 											<tr>
