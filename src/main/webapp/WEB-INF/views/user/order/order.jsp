@@ -573,8 +573,8 @@
             return false;
         }
 
-        if (paymentPrice - inputPoints < 1000 && paymentPrice - inputPoints > 0) {
-            alert("최종결제금액이 1000원 이상이어야 합니다.");
+        if (paymentPrice - inputPoints < 3000 && paymentPrice - inputPoints > 0) {
+            alert("최종결제금액이 3000원(배송비) 이상이어야 합니다.");
             return false;
 
         }
