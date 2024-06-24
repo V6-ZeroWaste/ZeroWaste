@@ -273,21 +273,7 @@
 <section class="pt-5">
     <div class="container">
         <div class="row gutter-4 justify-content-between">
-            <aside class="col-lg-3">
-                <div class="nav nav-pills flex-column lavalamp" id="sidebar-1" role="tablist">
-                    <a class="nav-link active" data-toggle="tab" href="#sidebar-1-1" role="tab"  aria-controls="sidebar-1" aria-selected="true">Orders</a>
-                    <a class="nav-link" data-toggle="tab" href="#sidebar-1-2" role="tab" aria-controls="sidebar-1-2" aria-selected="false">Reviews</a>
-                    <a class="nav-link" data-toggle="tab" href="#sidebar-1-3" role="tab" aria-controls="sidebar-1-3" aria-selected="false">QnA</a>
-                    <a class="nav-link" data-toggle="tab" href="#sidebar-1-4" role="tab" aria-controls="sidebar-1-4" aria-selected="false">Profile</a>
-                    <a class="nav-link" data-toggle="tab" href="#sidebar-1-5" role="tab" aria-controls="sidebar-1-5" aria-selected="false">Point</a>
-                </div>
-                <br>
-                <br>
-                <div class="nav nav-pills flex-column" id="sidebar-2" role="tablist">
-                    <p style="text-align:center;margin-bottom: 0; text-decoration-color:#c2c2c2; font-size: x-large; background-color:#79AC78;border-color: #79AC78; color: #FFFFFF;">Withdrawal</p>
-                    <button class="btn"  style="color: rgb(108, 117, 125); font-family: 'Open Sans', sans-serif;" data-toggle="modal" data-target="#exampleModal-2" type="button" role="tab" aria-controls="sidebar-1-2" aria-selected="false">Deactivate Account</button>
-                </div>
-            </aside>
+            <%@ include file="/WEB-INF/views/user/include/mypageNav.jsp" %>
 
             <div class="col-lg-9">
                 <div class="row">
