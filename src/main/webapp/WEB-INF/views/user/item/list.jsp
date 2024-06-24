@@ -59,22 +59,22 @@
 					  // 페이지네이션
 					  let printPage = "";
 					  if(resp.isPrev){
-						  printPage += '<li class="datatable-pagination-list-item page-item">';
-						  printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹‹</a></li>';
-						  printPage += '<li class="datatable-pagination-list-item page-item">';
-						  printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹</a></li>';
+						  printPage += '<li class="page-item">';
+						  printPage += '<a data-page="1" class="page-link" onclick="changePage(this);">‹‹</a></li>';
+						  printPage += '<li class="page-item">';
+						  printPage += '<a data-page="'+(resp.startPage-1)+'" class="page-link" onclick="changePage(this);">‹</a></li>';
 					  }
 					  for(i = resp.startPage; i<=resp.endPage; i++){
-						  printPage += '<li class="datatable-pagination-list-item page-item'+(i==page? ' datatable-active' : '')+'">';
-						  printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">'+i+'</a></li>';
+						  printPage += '<li class="page-item'+(i==page? ' active' : '')+'">';
+						  printPage += '<a data-page="'+ i +'" class="page-link" onclick="changePage(this);">'+i+'</a></li>';
 					  }
 					  if(resp.isNext){
-						  printPage += '<li class="datatable-pagination-list-item page-item">';
-						  printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹‹</a></li>';
-						  printPage += '<li class="datatable-pagination-list-item page-item">';
-						  printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹</a></li>';
+						  printPage += '<li class="page-item">';
+						  printPage += '<a data-page="'+(resp.endPage+1)+'" class="page-link" onclick="changePage(this);">››</a></li>';
+						  printPage += '<li class="page-item">';
+						  printPage += '<a data-page="'+resp.totalPage+'" class="page-link" onclick="changePage(this);">›</a></li>';
 					  }
-					  $(".datatable-pagination-list").html(printPage);
+					  $(".pagination").html(printPage);
 
 
 
@@ -216,10 +216,8 @@
 			<div class="row">
 				<div class="col text-center">
                     <!-- 페이지 네이션 영역 -->
-                    <nav class="datatable-pagination">
-                        <ul class="datatable-pagination-list pagination justify-content-center">
+                        <ul class="pagination justify-content-center">
                         </ul>
-                    </nav>
 				</div>
 			</div>
 		</div>
