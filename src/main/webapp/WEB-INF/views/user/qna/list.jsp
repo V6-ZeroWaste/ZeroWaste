@@ -68,6 +68,13 @@
 		getList();
 	}
 	function getList() {
+		
+		var orderByValue = $('#orderBy').val();
+	    var filterValue = $('#filter').val();
+	    if (orderByValue === "") {
+	        orderByValue = null;
+	    }
+	
 		var data = {
 			searchWord : $('#searchWord').val(),
 			orderBy : $('#orderBy').val(),
@@ -86,7 +93,7 @@
 					success : function(resp) {
 						let printList = "";
 						if (resp.list.length == 0) {
-							printList = "<td class='first' colspan='6' style='text-align: center;'>등록된 글이 없습니다.</td>";
+							printList = "<td class='first' colspan='10' style='text-align: center;'>등록된 글이 없습니다.</td>";
 						}
 
 						$("#printList").html(resp.printList);
@@ -165,9 +172,9 @@
 											class="datatable-selector" onchange="applyCondition();">
 												<option value="" hidden>정렬</option>
 												<option value="최신순"
-											<c:if test="${qnaVO.orderBy == '최신순'}">selected</c:if>>최신순</option>
-										<option value="오래된순"
-											<c:if test="${qnaVO.orderBy == '오래된순'}">selected</c:if>>오래된순</option>
+													<c:if test="${qnaVO.orderBy == '최신순'}">selected</c:if>>최신순</option>
+												<option value="오래된순"
+													<c:if test="${qnaVO.orderBy == '오래된순'}">selected</c:if>>오래된순</option>
 										</select>
 										</label> <label> <select id="filter" name="filter"
 											class="datatable-selector" onchange="applyCondition();">

@@ -93,8 +93,7 @@ input {
 			return;
 		}
 
-		formData.append("title", title);
-		formData.append("content", content);
+		
 		formData.append("score", score);
 		if (review_img) {
 			formData.append("review_img", review_img);
