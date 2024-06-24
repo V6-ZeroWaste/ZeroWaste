@@ -64,6 +64,13 @@
         margin-top: 30px;
         margin-bottom: 10px;
     }
+    
+    /* Chrome, Safari, Edge 및 Opera에서 화살표 제거 */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
 </style>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -138,12 +145,14 @@
             receiverTel1CheckMsg.html("전화번호를 입력해주세요");
             receiverTel1CheckMsg.css("display", "block");
 
+            /*
             if (!receiverTel2.val()) {
                 receiverTel2.focus();
             }
             if (!receiverTel3.val()) {
                 receiverTel3.focus();
             }
+            */
 
         }
         if (!agree) {
@@ -888,19 +897,19 @@
                                     <div>
 
                                         <div class="d-inline-flex col-12" style="padding-left: 0px;">
-                                            <input type="text" class="form-control col-2" name="receiverTel1"
+                                            <input type="number" class="form-control col-2" name="receiverTel1"
                                                    id="receiverTel1"
-                                                   placeholder="">
+                                                   placeholder="" >
                                             <p class="d-flex justify-content-center align-items-center col-1"
                                                style="margin: 0;">-</p>
-                                            <input type="text" class="form-control col-2" name="receiverTel2"
+                                            <input type="number" class="form-control col-2" name="receiverTel2"
                                                    id="receiverTel2"
-                                                   placeholder="">
+                                                   placeholder="" pattern="\d{4}">
                                             <p class="d-flex justify-content-center align-items-center col-1"
                                                style="margin: 0;">-</p>
-                                            <input type="text" class="form-control col-2" name="receiverTel3"
+                                            <input type="number" class="form-control col-2" name="receiverTel3"
                                                    id="receiverTel3"
-                                                   placeholder="">
+                                                   placeholder="" pattern="\d{4}">
 
                                         </div>
                                         <div id="receiverTel1CheckMsg" class="invalid-feedback"></div>
