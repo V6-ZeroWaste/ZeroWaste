@@ -32,12 +32,11 @@ public class UserLoginController {
             return "2";
         }
         System.out.println(vo);
-        String result="-1";
         if (login != null) {
             session.setAttribute("user_id", login.getId());
             session.setAttribute("user_name", login.getName());
             session.setAttribute("user_no", login.getUser_no());
-            session.setAttribute("vo",login);
+            session.setAttribute("vo", login);
 
             String saved_id = vo.getIdSaveCheck();
             if ("yes".equals(saved_id)) { // Check if rememberMe is checked
@@ -49,10 +48,10 @@ public class UserLoginController {
                 cookie.setMaxAge(0); // 쿠키 삭제
                 res.addCookie(cookie);
             }
-            result="0";//성공
-        } else {
-			result="1"; //실패
+            return "0";//성공
+        }else{
+
         }
-        return result;
+        return "1";
     }
 }
