@@ -325,7 +325,7 @@
             payment_price: payment_price,
             payment_method: payMethod,
             payment_id: paymentId,
-            imp_uid: impUid,
+            //imp_uid: impUid,
             point: point,
             order_status: order_status,
             order_name: order_name,
@@ -546,6 +546,9 @@
         // id가 pointToUse인 input 요소의 값을 숫자로 변환하여 가져옴
         var inputPoints = parseFloat($('#pointToUse').val().replace(/[^0-9.-]/g, '')) || 0;
 
+        
+        var paymentPrice = parseFloat($('#paymentPrice').text().replace(/[^0-9.-]/g, ''))
+
         // 입력값이 사용 가능한 포인트보다 큰 경우
         if (inputPoints > availablePoints) {
             // 경고 메시지를 표시
@@ -556,6 +559,12 @@
 
             // 유효성 검사 실패를 나타내는 false 반환
             return false;
+        }
+        
+        if(paymentPrice-inputPoints<1000 && paymentPrice-inputPoints>0){
+        	alert("최종결제금액이 1000원 이상이어야 합니다.");
+        	return false;
+        	
         }
 
         // 유효성 검사 성공을 나타내는 true 반환
