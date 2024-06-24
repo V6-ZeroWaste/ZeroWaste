@@ -46,6 +46,12 @@
 		.order-status.shipping::before {
 			background: #F5BE17; 
 		}
+		.ellipsis {
+			  overflow: hidden;
+			  text-overflow: ellipsis;
+			  white-space:nowrap;
+			  max-width:400px;
+		}
     	
     </style>
   	<script>
@@ -148,7 +154,7 @@
             		printList += "<td class='pointAccum'>"+data.point+"</td>";
             	}
             	
-        		printList += "<td>"+data.content+"</td>";
+        		printList += "<td class='ellipsis'>"+data.content+"</td>";
         		printList += "<td>"+(data.order_no == 0? "" : data.order_no )+"</td>";
         		printList += "<td>" +yyyymmdd(new Date(data.point_date)) + "</td>";
         		printList += "</tr>"
