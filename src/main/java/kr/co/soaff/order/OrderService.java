@@ -16,7 +16,7 @@ public interface OrderService {
 	boolean orderConfirm(OrderDetailVO vo);
 
 	// Order
-	Map<String, Object> order(OrderVO vo);
+	Map<String, Object> order(OrderVO vo, String type, int[] amountArray);
 
 	boolean orderInsert(OrderVO vo);
 

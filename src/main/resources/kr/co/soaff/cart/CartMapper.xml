@@ -18,7 +18,12 @@
 		UPDATE cart SET amount=#{amount} WHERE user_no = #{user_no} and cart_no=#{cart_no};
 	</update>
 
-	
+	<!-- 장바구니 같은 품목 있는지 체크 -->
+	<select id="detail" parameterType="kr.co.soaff.cart.CartVO" resultType="kr.co.soaff.cart.CartVO">
+		SELECT * FROM cart
+		WHERE packing_status = #{packing_status} AND item_no = #{item_no} AND user_no = #{user_no}
+	</select>
+
 	<!-- 항목 삭제 -->
 	<delete id="delete" parameterType="kr.co.soaff.cart.CartVO">
 	    DELETE FROM cart

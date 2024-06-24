@@ -60,17 +60,30 @@ public class CartServiceImpl implements CartService {
 		List<Integer> amountArray = dto.getAmount_array();
 		int size = itemNoArray.size();
 		List<Integer> cartNos = new ArrayList<>();
+
 		for(int i=0; i<size; i++) {
 			CartVO vo = new CartVO();
 			vo.setUser_no(user_no);
 			vo.setItem_no(itemNoArray.get(i));
 			vo.setPacking_status(packingStatusArray.get(i));
 			vo.setAmount(amountArray.get(i));
-			if(mapper.insert(vo)!=0){
-				cartNos.add(vo.getCart_no());
+			Integer amount = amountArray.get(i);
+
+			//장바구니에 해당 상품이 존재하지 않을 때
+			CartVO existCartVo = mapper.detail(vo);
+			if(existCartVo == null){
+				if(mapper.insert(vo)!=0){
+					cartNos.add(vo.getCart_no());
+				}
+			}else{
+				existCartVo.setAmount(existCartVo.getAmount() + amount);
+				if(mapper.updateAmount(existCartVo)!=0){
+					cartNos.add(existCartVo.getCart_no());
+				}
 			}
 		}
 		return cartNos;
     }
+
 
 }
