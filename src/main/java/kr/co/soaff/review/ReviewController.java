@@ -37,34 +37,37 @@ public class ReviewController {
 	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(ReviewVO vo, HttpSession session) {
-	    Integer user_no = (Integer) session.getAttribute("user_no");
-	    if (user_no == null) {
-	        return null;
-	    }
-	    vo.setUser_no(user_no);
-	    vo.setPageSize(10);
-	    vo.setStartIdx((vo.getPage() - 1) * vo.getPageSize()); // 페이지 시작 인덱스 설정
-	    Map<String, Object> map = service.list(vo);
-	    String printList = "";
-	    List<ReviewVO> reviewList = (List<ReviewVO>) map.get("list");
-	    if (reviewList.size() == 0) {
-	        printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
-	    } else {
-	        for (ReviewVO reviewVo : reviewList) {
-	            printList += "<tr onclick=\"location.href='/user/review/detail?review_no=" + reviewVo.getReview_no() + "'\">";
-	            printList += "<td>" + (reviewVo.getReview_img() == null ? "" : ("<img src='" + reviewVo.getReview_img() + "'/>")) + "</td>";
-	            printList += "<td>" + reviewVo.getItem_name() + "</td>";
-	            printList += "<td>" + reviewVo.getTitle() + "</td>";
-	            printList += "<td>" + reviewVo.getUser_id() + "</td>";
-	            printList += "<td>" + reviewVo.getRegist_date().toString().substring(0, 10) + "<br>" + reviewVo.getRegist_date().toString().substring(11, 19) + "</td>";
-	            printList += "<td>" + reviewVo.getScore() + "</td>";
-	            printList += "</tr>";
-	        }
-	    }
-	    map.put("printList", printList);
-	    return map;
+		Integer user_no = (Integer) session.getAttribute("user_no");
+		if (user_no == null) {
+			return null;
+		}
+		vo.setUser_no(user_no);
+		vo.setPageSize(10);
+		vo.setStartIdx((vo.getPage() - 1) * vo.getPageSize()); // 페이지 시작 인덱스 설정
+		Map<String, Object> map = service.list(vo);
+		String printList = "";
+		List<ReviewVO> reviewList = (List<ReviewVO>) map.get("list");
+		if (reviewList.size() == 0) {
+			printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
+		} else {
+			for (ReviewVO reviewVo : reviewList) {
+				printList += "<tr onclick=\"location.href='/user/review/detail?review_no=" + reviewVo.getReview_no()
+						+ "'\">";
+				printList += "<td>"
+						+ (reviewVo.getReview_img() == null ? "" : ("<img src='" + reviewVo.getReview_img() + "'/>"))
+						+ "</td>";
+				printList += "<td>" + reviewVo.getItem_name() + "</td>";
+				printList += "<td>" + reviewVo.getTitle() + "</td>";
+				printList += "<td>" + reviewVo.getUser_id() + "</td>";
+				printList += "<td>" + reviewVo.getRegist_date().toString().substring(0, 10) + "<br>"
+						+ reviewVo.getRegist_date().toString().substring(11, 19) + "</td>";
+				printList += "<td>" + reviewVo.getScore() + "</td>";
+				printList += "</tr>";
+			}
+		}
+		map.put("printList", printList);
+		return map;
 	}
-
 
 	@GetMapping("/detail")
 	public String detail(Model model, ReviewVO vo, HttpSession session) {
