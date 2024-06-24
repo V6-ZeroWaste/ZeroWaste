@@ -118,7 +118,6 @@
 		payment_date,
 		point,
 		payment_id,
-		imp_uid,
 		payment_price,
 		payment_method,
 		delivery_price,
