@@ -121,6 +121,20 @@
             var itemPrice = $("#item-price").text();
             var selectedItems = [];
 
+            // 현재 추가된 아이템의 수량 합계를 계산
+            var totalQuantity = 0;
+            $(".selected-item-amount").each(function () {
+                totalQuantity += parseInt($(this).val());
+            });
+
+            // 재고 확인
+            var itemStock = ${item.amount};
+            if (totalQuantity >= itemStock) {
+                alert("재고가 부족합니다.");
+                $("#select-product").val("");
+                return;
+            }
+
             if(itemName.includes('포장')){
                 itemPrice=${item.discounted_price + item.packing_price};
                 itemPrice = itemPrice.toLocaleString();
@@ -173,6 +187,16 @@
         function increaseValue(button){
             var input = $(button).siblings('input[type="number"]');
             var currentValue = parseInt(input.val());
+
+            var totalQuantity = totalCount();
+            var amount = ${item.amount};
+            console.log(totalQuantity);
+            console.log(amount);
+            if(amount < totalQuantity+1){
+                alert("재고가 부족합니다");
+                return false;
+            }
+
             if (currentValue < 9) {
                 input.val(currentValue + 1);
             }
@@ -211,6 +235,10 @@
                 }
             });
             $('#total-price').html(totalPrice.toLocaleString()+'원');
+            var totalQuantity = totalCount();
+            var amount = ${item.amount};
+            console.log(totalQuantity);
+            console.log(amount);
         }
 
         function calcItemPrice(button) {
@@ -229,6 +257,23 @@
             }
         }
 
+        function totalCount(){
+            var totalQuantity = 0;
+            $(".selected-item-price").each(function () {
+                var priceText = $(this).data('unit-price');
+                if (typeof priceText !== 'string') {
+                    priceText = String(priceText); // 문자열로 변환
+                }
+                priceText = priceText.replace(/\D/g, '');
+                var price = parseInt(priceText);
+                if (!isNaN(price)) {
+                    var quantityText = $(this).closest(".row").find("input[type=number]").val();
+                    var quantity = parseInt(quantityText);
+                    totalQuantity+=quantity;
+                }
+            });
+            return totalQuantity;
+        }
         $(document).ready(function() {
             // 처음에는 detailBtn에 active-border 클래스 추가
             $('#detailBtn').addClass('active-border');
@@ -700,17 +745,28 @@
                             <c:if test="${item.discount_rate!=0}">
                                 <span class="item-price"><s class="text-muted"><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.price}" /></s><span class="text-red">${item.discount_rate}%</span></span>
                             </c:if>
-                            <div class="item-price" id="item-price"><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.discounted_price}" />원</div>
+                            <div class="item-price" id="item-price"><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.discounted_price}" />원 </div>
+                            <c:if test="${item.amount<=5}">
+                                <br>
+                                <div>남은 수량 ${item.amount}개</div>
+                            </c:if>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <select name="select-product" id="select-product" class="form-control" onchange="addItem();">
                                 <option value="" disabled selected>상품 선택</option>
-                                <option value="${item.name}"> ${item.name} </option>
-                                <c:if test="${item.packable_option}">
-<%--                                    <option value="포장(<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.discounted_price+item.packing_price}" />원)"> ${item.name} 포장 (+<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) </option>--%>
-                                    <option value="${item.name} (포장) "> ${item.name} 포장 (+<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) </option>
+                                <c:if test="${item.amount == 0}">
+                                    <option value="${item.name}" disabled> ${item.name} (품절)</option>
+                                    <c:if test="${item.packable_option}">
+                                        <option value="${item.name} (포장) " disabled> ${item.name} 포장 (+<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) (품절)</option>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${item.amount != 0}">
+                                    <option value="${item.name}"> ${item.name} </option>
+                                    <c:if test="${item.packable_option}">
+                                        <option value="${item.name} (포장) "> ${item.name} 포장 (+<fmt:formatNumber type="number" maxFractionDigits="3" value="${item.packing_price}" />원) </option>
+                                    </c:if>
                                 </c:if>
                             </select>
                         </div>
