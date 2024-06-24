@@ -709,7 +709,7 @@
                                         <div class="media-body">
                                             <h5 class="media-title" item_no="${vo.item_no }">${vo.name}</h5>
                                             <c:if test="${vo.packing_status eq 1}">
-                                                <span class="small">포장O (+2,000원)</span>
+                                                <span class="small">포장(+2,000원)</span>
                                             </c:if>
 
                                         </div>
