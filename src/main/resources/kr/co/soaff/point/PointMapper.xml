@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.point.PointMapper">
+
+	<sql id="searchAndCal">
+            <if test="startDate != null and startDate != ''">
+               and point_date >= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+            	<![CDATA[
+                and point_date < DATE_ADD(STR_TO_DATE(#{endDate}, '%Y-%m-%d'), INTERVAL 1 DAY)
+                ]]>
+            </if>
+    </sql>
 	
 	<!-- 적립금 리스트 -->
 	<select id="list" parameterType="kr.co.soaff.point.PointVO">
 		SELECT * FROM point	
 		WHERE user_no = #{user_no}	
+		<include refid="searchAndCal"/>
 		ORDER BY point_date DESC
 		LIMIT #{startIdx}, 10
 	</select>
@@ -14,6 +26,7 @@
 	<select id="count" parameterType="kr.co.soaff.point.PointVO" resultType="int">
 		SELECT COUNT(*) FROM point
 		WHERE user_no = #{user_no}
+		<include refid="searchAndCal"/>
 	</select>
 		
 	<!--  보유 적립 -->

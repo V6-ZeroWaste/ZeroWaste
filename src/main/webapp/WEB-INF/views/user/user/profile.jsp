@@ -255,7 +255,7 @@
 <section class="pt-5">
     <div class="container">
         <div class="row gutter-4 justify-content-between">
-            <%@ include file="/WEB-INF/views/user/include/mypageNav.jsp"%>
+            <%@ include file="/WEB-INF/views/user/include/mypageNav.jsp" %>
             <div class="col-lg-9">
                 <div class="row">
                     <div class="col">
