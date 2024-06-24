@@ -693,9 +693,9 @@
 
                     <c:if test="${empty map.cartList}">
                         <div class="cart-item">
-                            <div class="row align-items-center col-12 eyebrow" style="text-align : center;">
-                                Empty
-                            </div>
+                            <div class="row align-items-center col-12" style="text-align : center;">
+                            <span>Empty</span>
+                        </div>
                         </div>
                     </c:if>
 
