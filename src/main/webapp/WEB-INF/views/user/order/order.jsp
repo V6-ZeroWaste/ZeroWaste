@@ -325,7 +325,7 @@
             payment_price: payment_price,
             payment_method: payMethod,
             payment_id: paymentId,
-            imp_uid: impUid,
+            //imp_uid: impUid,
             point: point,
             order_status: order_status,
             order_name: order_name,
