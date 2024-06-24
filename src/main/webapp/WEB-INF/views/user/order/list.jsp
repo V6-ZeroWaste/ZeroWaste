@@ -102,8 +102,8 @@
 									</div>
 									<div class="row align-items-center">
 										<div class="order-itemImgBox col-lg-3">
-											<%-- <img class="order-itemImg" src="${vo.item_img}" alt="item-img"> --%>
-											<img class="order-itemImg" src="/upload/item_img/${vo.item_img}" alt="item-img">
+											<img class="order-itemImg" src="${vo.item_img}" alt="item-img">
+											<%-- <img class="order-itemImg" src="/upload/item_img/${vo.item_img}" alt="item-img"> --%>
 										</div>
 										
 								        <div class="col-lg-6">

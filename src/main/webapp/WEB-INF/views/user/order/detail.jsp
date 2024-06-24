@@ -119,8 +119,8 @@
  	                      	<c:forEach var="vo" items="${list}">
 	                      		<tr>
 	                      			<td>
-	                      				<a href="/item/detail?item_no=${vo.item_no}"><img class="order-itemImg" src="/upload/item_img/${vo.item_img}" alt="item-img"></a>
-	                      				<%-- <img class="order-itemImg" src="${vo.item_img}" alt="item-img"> --%>
+	                      				<%-- <a href="/item/detail?item_no=${vo.item_no}"><img class="order-itemImg" src="/upload/item_img/${vo.item_img}" alt="item-img"></a> --%>
+	                      				<img class="order-itemImg" src="${vo.item_img}" alt="item-img">
 	                      			</td>
 	                      			<td>
 			                          	<strong>${vo.item_name}</strong><br>
