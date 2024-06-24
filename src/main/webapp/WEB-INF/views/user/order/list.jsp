@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/user/css/vendor.css" />
     <link rel="stylesheet" href="/user/css/style.css" />
 
-    <title>soaff mypage</title>
+    <title>soaff mypage order</title>
     <style>
     	input[type='date']::before {
 		  content: attr(data-placeholder);
