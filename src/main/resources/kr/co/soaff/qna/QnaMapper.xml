@@ -95,6 +95,7 @@
 		qna.qna_img,
 		qna.question_date,
 		qna.title,
+		qna.type,
 		qna.user_id,
 		qna.content,
 		item.name AS item_name,

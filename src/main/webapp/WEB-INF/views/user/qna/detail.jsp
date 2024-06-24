@@ -116,6 +116,10 @@ function deleteQna() {
 											<td colspan="2">${vo.title}</td>
 										</tr>
 										<tr>
+											<th scope="row">type</th>
+											<td colspan="2">${vo.typeString}</td>
+										</tr>
+										<tr>
 											<th>Content</th>
 											<td colspan="2">
 												<div>${vo.content}</div>

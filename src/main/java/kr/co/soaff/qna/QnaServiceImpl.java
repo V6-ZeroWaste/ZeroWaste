@@ -78,6 +78,7 @@ public class QnaServiceImpl implements QnaService {
 	public int post(QnaVO vo) {
 		vo.setTitle(vo.getTitle().trim());
 		vo.setContent(vo.getContent().trim());
+		vo.setType(vo.getType());
 		return mapper.post(vo);
 	}
 
