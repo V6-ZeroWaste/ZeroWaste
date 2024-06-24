@@ -38,35 +38,30 @@ public class QnaController {
 	@GetMapping("/getList")
 	@ResponseBody
 	public Map<String, Object> listAjax(QnaVO vo, HttpSession session) {
-	    Integer user_no = (Integer) session.getAttribute("user_no");
-	    if (user_no == null) {
-	        return null;
-	    }
-	    vo.setUser_no(user_no);
-	    vo.setPageSize(10);
-	    Map<String, Object> map = service.list(vo);
-	    String printList = "";
-	    List<QnaVO> qnaList = (List<QnaVO>) map.get("list");
-	    if (qnaList.size() == 0) {
-	        printList = "<td class='first' colspan='6' style='text-align: center;'>등록된 글이 없습니다.</td>";
-	    } else {
-	        for (QnaVO qnaVO : qnaList) {
-	            qnaVO.setReplyState(qnaVO.getReply_date() != null ? "답변 완료" : "답변 대기");
-	            printList += "<tr onclick=\"location.href='/mypage/qna/detail?qna_no=" + qnaVO.getQna_no() + "'\">";
-	            printList += "<td>" + (qnaVO.getQna_img() == null ? "" : ("<img src='" + qnaVO.getQna_img() + "'/>")) + "</td>";
-	            printList += "<td>" + qnaVO.getItem_name() + "</td>";
-	            printList += "<td>" + qnaVO.getTitle() + "</td>";
-	            printList += "<td>" + qnaVO.getUser_id() + "</td>";
-	            printList += "<td>" + qnaVO.getQuestion_date() + "</td>";
-	            printList += "<td>" + qnaVO.getReplyState() + "</td>";
-	            printList += "</tr>";
-	        }
-	    }
-	    map.put("printList", printList);
-	    return map;
+		Integer user_no = (Integer) session.getAttribute("user_no");
+		if (user_no == null) {
+			return null;
+		}
+		vo.setUser_no(user_no);
+		vo.setPageSize(10);
+		Map<String, Object> map = service.list(vo);
+
+		List<QnaVO> qnaList = (List<QnaVO>) map.get("list");
+		if (qnaList.size() != 0) {
+			for (QnaVO qnaVO : qnaList) {
+				qnaVO.setReplyState(qnaVO.getReply_date() != null ? "답변 완료" : "답변 대기");
+
+				String typeString = "";
+				if (qnaVO.getType() == 0) {
+					typeString = "교환/환불문의";
+				} else if (qnaVO.getType() == 1) {
+					typeString = "상품상세문의";
+				}
+				qnaVO.setTypeString(typeString);
+			}
+		}
+		return map;
 	}
-
-
 
 	@GetMapping("/detail")
 	public String detail(Model model, QnaVO vo, HttpSession session) {
@@ -153,7 +148,7 @@ public class QnaController {
 	@ResponseBody
 	public String post(@RequestParam("title") String title, @RequestParam("content") String content,
 			@RequestParam(value = "qna_img", required = false) MultipartFile qna_img,
-			@RequestParam("item_no") int item_no, Model model, HttpSession session) {
+			@RequestParam("item_no") int item_no, @RequestParam("type") String type, Model model, HttpSession session) {
 
 		Integer user_no = (Integer) session.getAttribute("user_no");
 		String user_id = (String) session.getAttribute("user_id");
@@ -164,6 +159,11 @@ public class QnaController {
 		vo.setUser_no(user_no);
 		vo.setUser_id(user_id);
 		vo.setItem_no(item_no);
+		if (type.equals("교환/환불문의")) {
+			vo.setType(0);
+		} else if (type.equals("상품상세문의")) {
+			vo.setType(1);
+		}
 
 		if (qna_img != null && !qna_img.isEmpty()) {
 			try {

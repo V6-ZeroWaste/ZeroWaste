@@ -23,7 +23,7 @@
 	crossorigin="anonymous"></script>
 <script src="/admin/js/datatables-simple-demo.js"></script>
 
-<title>Review Post</title>
+<title>soaff Review Post</title>
 
 <style>
 .review-info {
@@ -93,8 +93,7 @@ input {
 			return;
 		}
 
-		formData.append("title", title);
-		formData.append("content", content);
+		
 		formData.append("score", score);
 		if (review_img) {
 			formData.append("review_img", review_img);
@@ -217,7 +216,7 @@ input {
 									</table>
 								</div>
 								<div class="col-12" style="text-align: center">
-									<button id="post" class="btn btn-primary" type="button"
+									<button id="post" class="btn btn-primary" type="button" style="margin-top:10px"
 										onclick="postReview()">등록</button>
 								</div>
 							</form>

@@ -2,60 +2,60 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.soaff.qna.QnaMapper">
 
-	
-	  <sql id="orderBySql">
-        <if test="orderBy == null or orderBy == ''">
-            ORDER BY
-            CASE
-            WHEN qna.reply IS NULL THEN 1
-            WHEN qna.reply IS NOT NULL THEN 2
-            END,
-            qna.question_date DESC
-        </if>
-        <if test="orderBy == '최신순'">
-            ORDER BY
-            CASE
-            WHEN qna.reply IS NULL THEN 1
-            WHEN qna.reply IS NOT NULL THEN 2
-            END,
-            qna.question_date DESC
-        </if>
-        <if test="orderBy == '오래된순'">
-            ORDER BY
-            CASE
-            WHEN qna.reply IS NULL THEN 1
-            WHEN qna.reply IS NOT NULL THEN 2
-            END,
-            qna.question_date ASC
-        </if>
-    </sql>
-    
-    <sql id="filter">
-        <where>
-            1=1
-            <if test="filter == '답변대기'">
-                AND qna.reply IS NULL
-            </if>
-            <if test="filter == '답변완료'">
-                AND qna.reply IS NOT NULL
-            </if>
-            <if test="searchWord != null and searchWord != ''">
-                AND concat_ws("-", item.name, qna.title) LIKE CONCAT('%', #{searchWord}, '%')
-            </if>
-            <if test="start_date != null and start_date != ''">
-                AND qna.question_date >= #{start_date}
-            </if>
-            <if test="end_date != null and end_date != ''">
-                <![CDATA[
-                AND qna.question_date <= DATE_ADD(STR_TO_DATE(#{end_date}, '%Y-%m-%d'), INTERVAL 1 DAY)
-                ]]>
-            </if>
-            <if test="user_no != null">
-                AND qna.user_no = #{user_no}
-            </if>
-        </where>
-    </sql>
-	 
+
+	<sql id="orderBySql">
+		<if test="orderBy == null or orderBy == ''">
+			ORDER BY
+			CASE
+			WHEN qna.reply IS NULL THEN 1
+			WHEN qna.reply IS NOT NULL THEN 2
+			END,
+			qna.question_date DESC
+		</if>
+		<if test="orderBy == '최신순'">
+			ORDER BY
+			CASE
+			WHEN qna.reply IS NULL THEN 1
+			WHEN qna.reply IS NOT NULL THEN 2
+			END,
+			qna.question_date DESC
+		</if>
+		<if test="orderBy == '오래된순'">
+			ORDER BY
+			CASE
+			WHEN qna.reply IS NULL THEN 1
+			WHEN qna.reply IS NOT NULL THEN 2
+			END,
+			qna.question_date ASC
+		</if>
+	</sql>
+
+	<sql id="filter">
+		<where>
+			1=1
+			<if test="filter == '답변대기'">
+				AND qna.reply IS NULL
+			</if>
+			<if test="filter == '답변완료'">
+				AND qna.reply IS NOT NULL
+			</if>
+			<if test="searchWord != null and searchWord != ''">
+				AND concat_ws("-", item.name, qna.title) LIKE CONCAT('%',
+				#{searchWord}, '%')
+			</if>
+			<if test="start_date != null and start_date != ''">
+				AND qna.question_date >= #{start_date}
+			</if>
+			<if test="end_date != null and end_date != ''">
+            <![CDATA[
+            AND qna.question_date <= DATE_ADD(STR_TO_DATE(#{end_date}, '%Y-%m-%d'), INTERVAL 1 DAY)
+            ]]>
+			</if>
+			<if test="user_no != null">
+				AND qna.user_no = #{user_no}
+			</if>
+		</where>
+	</sql>
 
 	<select id="list" parameterType="kr.co.soaff.qna.QnaVO"
 		resultType="kr.co.soaff.qna.QnaVO">
@@ -63,17 +63,15 @@
 		qna.qna_no,
 		qna.qna_img,
 		item.item_img AS item_img,
-		item.name AS
-		item_name,
+		item.name AS item_name,
 		qna.title,
 		qna.type,
 		user.id AS user_id,
 		qna.question_date,
 		qna.reply_date
-		FROM
-		qna JOIN item ON qna.item_no = item.item_no
-		JOIN user
-		ON qna.user_no = user.user_no
+		FROM qna
+		JOIN item ON qna.item_no = item.item_no
+		JOIN user ON qna.user_no = user.user_no
 		<include refid="filter" />
 		<include refid="orderBySql" />
 		LIMIT #{startIdx}, 10
@@ -83,10 +81,10 @@
 		resultType="int">
 		SELECT count(*)
 		FROM qna
-		JOIN item
-		ON qna.item_no = item.item_no
+		JOIN item ON qna.item_no = item.item_no
 		<include refid="filter" />
 	</select>
+
 
 	<select id="detail" parameterType="int"
 		resultType="kr.co.soaff.qna.QnaVO">
@@ -95,14 +93,17 @@
 		qna.qna_img,
 		qna.question_date,
 		qna.title,
+		qna.type,
 		qna.user_id,
 		qna.content,
 		item.name AS item_name,
-		item.item_img as item_img,
+		item.item_img
+		as item_img,
 		qna.reply,
 		qna.reply_date
 		FROM
-		qna JOIN item ON qna.item_no = item.item_no
+		qna JOIN item ON qna.item_no =
+		item.item_no
 		WHERE
 		qna.qna_no = #{qna_no}
 	</select>
@@ -155,7 +156,8 @@
 		SELECT
 		i.item_img AS item_img,
 		i.item_no AS item_no,
-		i.name AS name
+		i.name AS
+		name
 		FROM item i
 		WHERE i.item_no = #{item_no}
 	</select>
