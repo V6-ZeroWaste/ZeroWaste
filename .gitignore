@@ -96,8 +96,11 @@ $RECYCLE.BIN/
 db.properties
 s3.properties
 workspace.xml
+mail.properties
+pay.properties
 /.gitignore
 .factorypath
+
 
 
 

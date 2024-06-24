@@ -77,7 +77,11 @@ public class ReviewController {
 	}
 
 	@GetMapping("/post")
-	public String write(Model model, @RequestParam int item_no, int order_detail_no) {
+	public String write(Model model, @RequestParam int item_no, int order_detail_no, HttpSession session) {
+		Integer user_no = (Integer) session.getAttribute("user_no");
+		String user_id = (String) session.getAttribute("user_id");
+		
+		
 		model.addAttribute("vo", service.write(item_no));
 		return "/user/review/post";
 	}

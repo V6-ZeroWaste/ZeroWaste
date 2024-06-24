@@ -47,6 +47,10 @@ th {
 .disable-link {
 	pointer-events: none;
 }
+
+.order-preview {
+    width: 180px;
+} 
 </style>
 <script type="text/javascript">
 function redirectToUpdate() {
