@@ -328,20 +328,20 @@
                     // // 페이지네이션
                     let printPage = "";
                     if(resp.isPrev){
-                        printPage += '<li class="datatable-pagination-list-item page-item">';
-                        printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
-                        printPage += '<li class="datatable-pagination-list-item page-item">';
-                        printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
+                        printPage += '<li class="page-item">';
+                        printPage += '<a data-page="1" class="page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
+                        printPage += '<li class="page-item">';
+                        printPage += '<a data-page="'+(resp.startPage-1)+'" class="page-link" onclick="changeReviewPage(this);">‹</a></li>';
                     }
                     for(i = resp.startPage; i<=resp.endPage; i++){
-                        printPage += '<li class="datatable-pagination-list-item page-item'+(i==reviewPage? ' datatable-active' : '')+'">';
-                        printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">'+i+'</a></li>';
+                        printPage += '<li class="page-item'+(i==reviewPage? ' active' : '')+'">';
+                        printPage += '<a data-page="'+ i +'" class="page-link" onclick="changeReviewPage(this);">'+i+'</a></li>';
                     }
                     if(resp.isNext){
-                        printPage += '<li class="datatable-pagination-list-item page-item">';
-                        printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹‹</a></li>';
-                        printPage += '<li class="datatable-pagination-list-item page-item">';
-                        printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeReviewPage(this);">‹</a></li>';
+                        printPage += '<li class="page-item">';
+                        printPage += '<a data-page="'+(resp.endPage+1)+'" class="page-link" onclick="changeReviewPage(this);">››</a></li>';
+                        printPage += '<li class="page-item">';
+                        printPage += '<a data-page="'+resp.totalPage+'" class="page-link" onclick="changeReviewPage(this);">›</a></li>';
                     }
                     $(".review-pagination-list").html(printPage);
 
@@ -453,20 +453,20 @@
                     // // 페이지네이션
                     let printPage = "";
                     if(resp.isPrev){
-                        printPage += '<li class="datatable-pagination-list-item page-item">';
-                        printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹‹</a></li>';
-                        printPage += '<li class="datatable-pagination-list-item page-item">';
-                        printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹</a></li>';
+                        printPage += '<li class="page-item">';
+                        printPage += '<a data-page="1" class="page-link" onclick="changeQnaPage(this);">‹‹</a></li>';
+                        printPage += '<li class="page-item">';
+                        printPage += '<a data-page="'+(resp.startPage-1)+'" class="page-link" onclick="changeQnaPage(this);">‹</a></li>';
                     }
                     for(i = resp.startPage; i<=resp.endPage; i++){
-                        printPage += '<li class="datatable-pagination-list-item page-item'+(i==qnaPage? ' datatable-active' : '')+'">';
-                        printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">'+i+'</a></li>';
+                        printPage += '<li class="page-item'+(i==qnaPage? ' active' : '')+'">';
+                        printPage += '<a data-page="'+ i +'" class="page-link" onclick="changeQnaPage(this);">'+i+'</a></li>';
                     }
                     if(resp.isNext){
-                        printPage += '<li class="datatable-pagination-list-item page-item">';
-                        printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹‹</a></li>';
-                        printPage += '<li class="datatable-pagination-list-item page-item">';
-                        printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changeQnaPage(this);">‹</a></li>';
+                        printPage += '<li class="page-item">';
+                        printPage += '<a data-page="'+(resp.endPage+1)+'" class="page-link" onclick="changeQnaPage(this);">››</a></li>';
+                        printPage += '<li class="page-item">';
+                        printPage += '<a data-page="'+resp.totalPage+'" class="page-link" onclick="changeQnaPage(this);">›</a></li>';
                     }
                     $(".qna-pagination-list").html(printPage);
 
