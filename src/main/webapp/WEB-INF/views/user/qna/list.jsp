@@ -39,6 +39,10 @@
 .col-12 {
 	margin-bottom: 10px;
 }
+
+.disable-link {
+	pointer-events: none;
+}
 </style>
 <script type="text/javascript">
 	let page = 1;
@@ -209,7 +213,7 @@
 											<div class="col-lg-2 order-preview justify-content-center">
 												<!-- 상품이미지 -->
 												<a href="product-1.html"
-													title="${list.item_name }"
+													title="${list.item_name }"  class="disable-link"
 													data-toggle="tooltip" data-placement="top"> <img
 													src="${list.item_img}"
 													>

@@ -44,10 +44,8 @@ th {
 	max-width: 70%;
 }
 
-.item-img {
-	max-width: 100%;
-	height: auto;
-	width: 140px; /* a 태그 안에 있던 이미지의 너비를 유지 */
+.disable-link {
+	pointer-events: none;
 }
 </style>
 <script type="text/javascript">
@@ -99,7 +97,7 @@ function deleteQna() {
 								<div class="row align-items-center" style="height: 100px">
 									<div class="col-lg-2 order-preview justify-content-center">
 										<!-- 상품이미지 -->
-										<a href="product-1.html" title="${vo.item_name }"
+										<a href="product-1.html" title="${vo.item_name }" class="disable-link"
 											data-toggle="tooltip" data-placement="top"> <img
 											src="${vo.item_img}" alt="${vo.item_name }">
 										</a>
@@ -142,7 +140,8 @@ function deleteQna() {
 										<c:if test="${not empty vo.qna_img}">
 											<tr>
 												<th>Image</th>
-												<td colspan="2"><img class="qna-img" src="${vo.qna_img}" /></td>
+												<td colspan="2"><img class="qna-img"
+													src="${vo.qna_img}" /></td>
 											</tr>
 										</c:if>
 									</tbody>
