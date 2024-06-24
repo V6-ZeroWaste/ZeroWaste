@@ -69,7 +69,7 @@ public class PointController {
 		return "admin/user/pointForm";
 	}
 	// point 추가
-	@PostMapping(value="/point/insert", produces = "application/tex; charset=utf8")
+	@PostMapping(value="/point/insert", produces = "application/text; charset=utf8")
 	@ResponseBody
 	public String insert(@RequestBody PointVO vo) {
 		String msg = "";
@@ -92,9 +92,7 @@ public class PointController {
 	@ResponseBody
 	public Map<String, Object> userListAjax(PointVO vo, HttpSession session) {
     	vo.setUser_no((int) session.getAttribute("user_no"));
-		Map<String, Object> map = service.userList(vo);
-		List<PointVO> pointList = (List<PointVO>) map.get("list");
-		map.put("dataList", pointList);
+		Map<String, Object> map = service.list(vo);
 		return map;
 	}
 

@@ -59,6 +59,7 @@
 		  getList();
 	  }
 	  function changePage(obj){
+		  
 		  page = obj.getAttribute("data-page");
 		  getList();
 	  }
@@ -84,26 +85,38 @@
 				  // 총 개수
 				  $(".total-cnt").html(resp.total+" entries");
 				  // 페이지네이션
-				  /*
+				  /* <li class="page-item active"><a class="page-link" href="#!">1 <span class="sr-only">(current)</span></a></li>
+				  <li class="page-item active"><a class="page-link" href="#!">1</a></li>
+			      <li class="page-item"><a class="page-link" href="#!">2</a></li>
+			      <li class="page-item"><a class="page-link" href="#!">3</a></li>
+			      <li class="page-item"><a class="page-link" href="#!">4</a></li>
+			       */             
+			                    
+			      console.log(resp)        
 				  let printPage = "";
 				  if(resp.isPrev){
-					  printPage += '<li class="datatable-pagination-list-item page-item">';
-					  printPage += '<a data-page="1" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹‹</a></li>';
-					  printPage += '<li class="datatable-pagination-list-item page-item">';
-					  printPage += '<a data-page="'+(resp.startPage-1)+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹</a></li>';
+					  printPage += `<li class="page-item"><a class="page-link" onclick="changePage(this)" data-page="1">‹‹</a></li>`
+					  printPage += `<li class="page-item"><a class="page-link" onclick="changePage(this)" data-page="`+(resp.startPage-1)+`">‹‹</a></li>`
 				  }
 				  for(i = resp.startPage; i<=resp.endPage; i++){
-					  printPage += '<li class="datatable-pagination-list-item page-item'+(i==page? ' datatable-active' : '')+'">';
-					  printPage += '<a data-page="'+ i +'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">'+i+'</a></li>';
+					  if(page==i){
+						  printPage+=`<li class="page-item active"><a class="page-link">`+i+`</a><span class="sr-only">(current)</span></a></li>`
+						  
+					  }else{
+						  printPage += `<li class="page-item"><a class="page-link" onclick="changePage(this)" data-page="`+i+`">`+i+`</a></li>`
+					  }
+					  
 				  }
 				  if(resp.isNext){
-					  printPage += '<li class="datatable-pagination-list-item page-item">';
-					  printPage += '<a data-page="'+(resp.endPage+1)+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">››</a></li>';
-					  printPage += '<li class="datatable-pagination-list-item page-item">';
-					  printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link page-link" onclick="changePage(this);">‹</a></li>';
+
+					  printPage += `<li class="page-item"><a class="page-link" onclick="changePage(this)" data-page="`+(resp.endPage+1)+`">›</a></li>`
+					  printPage += `<li class="page-item"><a class="page-link" onclick="changePage(this)" data-page="`+(resp.totalPage)+`">››</a></li>`
 				  }
-				  $(".datatable-pagination-list").html(printPage);
-				*/
+				  console.log("printPAge:   ", printPage)
+				  
+				  $(".pagination").html(printPage);
+				  console.log($(".pagination"))
+				
 
 
 			  },
@@ -113,13 +126,20 @@
 		  })
 
 	  }
+	function yyyymmdd(originDate){
+		let year = originDate.getFullYear();
+		let month = originDate.getMonth()+1;
+		let date = originDate.getDate();
+		return year + '-' + (month >= 10? month : '0'+ month ) +'-'+(date >= 10? date : '0'+ date )
+		
+	}
 
     function renderList(dataList) {
         var printList = "";
 
         if (dataList.length > 0) {
         	dataList.forEach(function(data) { //
-            	printList += "<tr>"
+        		printList += "<tr>"
             	if(data.point < 0){
             		printList += "<td class='pointConsume'>사용</td>";
             		printList += "<td class='pointConsume'>"+data.point+"</td>";
@@ -130,7 +150,7 @@
             	
         		printList += "<td>"+data.content+"</td>";
         		printList += "<td>"+(data.order_no == 0? "" : data.order_no )+"</td>";
-        		printList += "<td>" + data.point_date"</td>";
+        		printList += "<td>" +yyyymmdd(new Date(data.point_date)) + "</td>";
         		printList += "</tr>"
             });
 
@@ -159,9 +179,9 @@
    			<!-- search filter -->
    			<div class="search-filter">
 		   		<div>
-		   			<input type="date" class="btn btn-outline-secondary btn-sm" id="startDate">
+		   			<input type="date" class="btn btn-outline-secondary btn-sm" id="startDate" onchange="applyCondition();">
 		   			&nbsp;-&nbsp; 
-		   			<input type="date" class="btn btn-outline-secondary btn-sm" id="endDate"/>
+		   			<input type="date" class="btn btn-outline-secondary btn-sm" id="endDate" onchange="applyCondition();"/>
 		   		</div>
 				<div><span class="eyebrow  total-cnt"></span></div>
    			</div>
@@ -210,10 +230,6 @@
 			   		<div class="row">
 			        	<div class="col">
 			            	<ul class="pagination">
-			                	<li class="page-item active"><a class="page-link" href="#!">1 <span class="sr-only">(current)</span></a></li>
-			                    <li class="page-item" aria-current="page"><a class="page-link" href="#!">2</a></li>
-			                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-			                    <li class="page-item"><a class="page-link" href="#!">4</a></li>
 			                </ul>
 			            </div>
 			        </div>
