@@ -23,6 +23,8 @@ public interface OrderService {
 
 	int deleteCartAfterOrder(OrderVO vo);
 
+	List<Integer> checkAmount(OrderVO vo);
+
 //	int orderDetailInsert(OrderVO vo);
 //	int orderDetailInsert(List<OrderVO> list);
 
