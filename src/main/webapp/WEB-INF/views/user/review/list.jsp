@@ -171,7 +171,7 @@
 											<div class="col-lg-2 order-preview justify-content-center">
 												<!-- 상품이미지 -->
 												<a href="product-1.html"
-													title="Fawn Wool / Natural Mammoth Chair"
+													title="${list.item_name }"
 													data-toggle="tooltip" data-placement="top"> <img
 													src="${list.item_img}">
 												</a>

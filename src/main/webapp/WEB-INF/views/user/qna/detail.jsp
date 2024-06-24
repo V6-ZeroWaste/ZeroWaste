@@ -12,11 +12,19 @@
 <link rel="stylesheet" href="/user/css/style.css" />
 
 <title>mypage Qna Detail</title>
-<link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
+	rel="stylesheet" />
+<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
 .qna-info {
 	position: relative;
@@ -34,6 +42,12 @@ th {
 
 .qna-img {
 	max-width: 70%;
+}
+
+.item-img {
+	max-width: 100%;
+	height: auto;
+	width: 140px; /* a 태그 안에 있던 이미지의 너비를 유지 */
 }
 </style>
 <script type="text/javascript">
@@ -85,10 +99,10 @@ function deleteQna() {
 								<div class="row align-items-center" style="height: 100px">
 									<div class="col-lg-2 order-preview justify-content-center">
 										<!-- 상품이미지 -->
-										<a href="product-1.html" title="Fawn Wool / Natural Mammoth Chair"
-                                 data-toggle="tooltip" data-placement="top">
-                                 <img src="${vo.item_img}" alt="Fawn Wool / Natural Mammoth Chair">
-                              </a>
+										<a href="product-1.html" title="${vo.item_name }"
+											data-toggle="tooltip" data-placement="top"> <img
+											src="${vo.item_img}" alt="${vo.item_name }">
+										</a>
 									</div>
 									<div class="col-lg-4">
 										<h3 class="order-number">${vo.item_name}</h3>
@@ -125,11 +139,12 @@ function deleteQna() {
 												<div>${vo.content}</div>
 											</td>
 										</tr>
-										<tr>
-											<th>Image</th>
-											<td colspan="2"><img class="qna-img"
-												src="${vo.qna_img}" /></td>
-										</tr>
+										<c:if test="${not empty vo.qna_img}">
+											<tr>
+												<th>Image</th>
+												<td colspan="2"><img class="qna-img" src="${vo.qna_img}" /></td>
+											</tr>
+										</c:if>
 									</tbody>
 								</table>
 								<input type="hidden" id="qna_no" value="${vo.qna_no}">
@@ -139,7 +154,7 @@ function deleteQna() {
 							<button class="btn btn-primary" onclick="redirectToUpdate()">수정</button>
 							<button class="btn btn-danger" onclick="deleteQna()">삭제</button>
 						</div>
-						
+
 						<div class="col-12">
 							<div style="border: 1px solid #dddddd;">
 								<table class="table table-borderless">
@@ -153,7 +168,7 @@ function deleteQna() {
 											<th scope="row">Reply</th>
 											<td colspan="2">${vo.reply}</td>
 										</tr>
-										
+
 									</tbody>
 								</table>
 							</div>

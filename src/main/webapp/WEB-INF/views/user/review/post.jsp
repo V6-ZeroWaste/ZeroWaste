@@ -216,7 +216,7 @@ input {
 									</table>
 								</div>
 								<div class="col-12" style="text-align: center">
-									<button id="post" class="btn btn-primary" type="button"
+									<button id="post" class="btn btn-primary" type="button" style="margin-top:10px"
 										onclick="postReview()">등록</button>
 								</div>
 							</form>

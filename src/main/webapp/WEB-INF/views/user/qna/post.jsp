@@ -178,7 +178,7 @@ function postQna() {
 								</div>
 
 								<div class="col-12" style="text-align: center">
-									<button id="post" type="button" class="btn btn-primary"
+									<button id="post" type="button" class="btn btn-primary" style="margin-top:10px"
 										onclick="postQna();">등록</button>
 								</div>
 								<!-- /content -->
