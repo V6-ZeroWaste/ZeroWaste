@@ -70,9 +70,9 @@
 					  }
 					  if(resp.isNext){
 						  printPage += '<li class="page-item">';
-						  printPage += '<a data-page="'+(resp.endPage+1)+'" class="page-link" onclick="changePage(this);">‹‹</a></li>';
+						  printPage += '<a data-page="'+(resp.endPage+1)+'" class="page-link" onclick="changePage(this);">››</a></li>';
 						  printPage += '<li class="page-item">';
-						  printPage += '<a data-page="'+resp.totalPage+'" class="page-link" onclick="changePage(this);">‹</a></li>';
+						  printPage += '<a data-page="'+resp.totalPage+'" class="page-link" onclick="changePage(this);">›</a></li>';
 					  }
 					  $(".pagination").html(printPage);
 
