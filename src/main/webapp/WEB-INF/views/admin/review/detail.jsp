@@ -153,7 +153,7 @@
                                     			</c:if>
                                     		</div>
                                     		<div>
-                                    			<input id="content" class="input-box" value="${vo.content}" disabled="disabled">
+                                    			<pre class="input-box form-control">${vo.content}</pre>
                                     		</div>
                                     	</td>
                                     </tr>
