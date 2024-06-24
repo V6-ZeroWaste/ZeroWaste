@@ -33,6 +33,7 @@ public class QnaVO {
 	
 	public QnaVO() {
 		this.page = 1;
+		this.orderBy = "최신순";
 	}
 
 //	public int getStartIdx() {

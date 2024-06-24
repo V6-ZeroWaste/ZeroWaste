@@ -46,17 +46,16 @@
 }
 
 .pagination .page-item.active .page-link {
-	border: 2px solid #000; /* 진한 테두리 */
-	font-weight: bold; /* 진한 글씨 */
+	border: 2px solid #000; 
+	font-weight: bold; 
 }
 </style>
 <script type="text/javascript">
    let page = 1;
    window.onload = function() {
-      getList();
-      $('#startDate').on('change', applyCondition);
-      $('#endDate').on('change', applyCondition);
-   }
+	    getList();
+	    $('#searchButton').on('click', applyCondition); 
+	};
 
    function redirectToDetail(reviewNo) {
       window.location.href = '/mypage/review/detail?review_no=' + reviewNo;
@@ -150,12 +149,15 @@
 										class="btn btn-outline-secondary btn-sm">
 									&nbsp;-&nbsp; <input type="date" id="endDate"
 										class="btn btn-outline-secondary btn-sm" />
+										<button id="searchButton" class="btn btn-primary btn-sm">검색</button>
 								</div>
 								<div>
 									<div>
 										<span class="eyebrow">${map.total } entries</span>
 									</div>
 								</div>
+								
+								
 							</div>
 							<!-- /search filter -->
 						</div>

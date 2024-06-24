@@ -119,8 +119,8 @@
  	                      	<c:forEach var="vo" items="${list}">
 	                      		<tr>
 	                      			<td>
-	                      				<a href="/item/detail?item_no=${vo.item_no}"><img class="order-itemImg" src="/upload/item_img/${vo.item_img}" alt="item-img"></a>
-	                      				<%-- <img class="order-itemImg" src="${vo.item_img}" alt="item-img"> --%>
+	                      				<%-- <a href="/item/detail?item_no=${vo.item_no}"><img class="order-itemImg" src="/upload/item_img/${vo.item_img}" alt="item-img"></a> --%>
+	                      				<img class="order-itemImg" src="${vo.item_img}" alt="item-img">
 	                      			</td>
 	                      			<td>
 			                          	<strong>${vo.item_name}</strong><br>
@@ -151,7 +151,7 @@
 			                        		<td><span class="order-status sent">구매확정</span></td>
 			                        		<td>
 				                        		<c:if test="${vo.review_no == null}">
-				                        			<button type="button" class="btn btn-primary"  onclick="location.href='/mypage/review/update?order_detail_no=${vo.order_detail_no}'">리뷰작성</button>
+				                        			<button type="button" class="btn btn-primary"  onclick="location.href='/mypage/review/post?order_detail_no=${vo.order_detail_no}&item_no=${vo.item_no}'">리뷰작성</button>
 				                        		</c:if>
 				                        		<c:if test="${vo.review_no != null}">
 				                        			<button type="button" class="btn btn-outline-primary" onclick="location.href='/mypage/review/detail?review_no=${vo.review_no}'">리뷰상세</button>

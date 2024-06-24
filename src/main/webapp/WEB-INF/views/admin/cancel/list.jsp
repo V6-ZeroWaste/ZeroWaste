@@ -143,10 +143,11 @@
 					<div class="card-body">
 						<!-- 리스트 정렬, 필터 검색 영역  -->
 						<div class="datatable-dropdown" style="margin-bottom: 20px">
-							<span>취소 날짜</span> <input type="date" name="startRequestDate"
+							<span>취소 날짜</span> 
+							<input type="date" class="datatable-selector" name="startRequestDate" 
 								id="startRequestDate" placeholder="YYYY-MM-DD"
-								value="${cancelAdminListVO.startRequestDate}"> <input
-								type="date" name="endRequestDate" id="endRequestDate"
+								value="${cancelAdminListVO.startRequestDate}"> - <input
+								type="date" class="datatable-selector" name="endRequestDate" id="endRequestDate"
 								placeholder="YYYY-MM-DD"
 								value="${cancelAdminListVO.endRequestDate}">
 						</div>
