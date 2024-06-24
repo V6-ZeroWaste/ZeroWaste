@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public boolean orderInsert(OrderVO vo) {
+	public Integer orderInsert(OrderVO vo) {
 		int orderInsertResult = mapper.orderInsert(vo);
 		int orderNo = vo.getOrder_no();
 		int pointTouse = vo.getPoint() * -1;
@@ -123,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
 //			orderDetailInsertResult += mapper.orderDetailInsert(orderVO);
 //		}
 
-		return orderInsertResult > 0 && pointInsertResult > 0 && orderDetailInsertResult > 0 ? true : false;
+		return orderInsertResult > 0 && pointInsertResult > 0 && orderDetailInsertResult > 0 ? orderNo : null;
 
 	}
 

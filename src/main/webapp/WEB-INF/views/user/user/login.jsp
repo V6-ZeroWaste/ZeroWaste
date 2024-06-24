@@ -39,18 +39,19 @@
         if (!id.val()) {
             idCheckMsg.html("아이디를 입력해주세요");
             idCheckMsg.css("display", "block");
-            id.focus();
             isValid = false;
+        }else{
+            idCheckMsg.css("display", "none");
         }
 
         if (!pw.val()) {
             pwdCheckMsg.html("비밀번호를 입력해주세요");
             pwdCheckMsg.css("display", "block");
-            if (isValid) {
-                pw.focus();
-            }
             isValid = false;
+        }else{
+            pwdCheckMsg.css("display", "none");
         }
+
 
         return isValid;
     }
