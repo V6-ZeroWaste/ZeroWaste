@@ -189,10 +189,10 @@
 	</insert>
 	<!-- order detail 부분 -->
 	<insert id="orderDetailInsert" parameterType="java.util.List">
-	    <foreach collection="list" item="orderDetail" separator=";">
-	        INSERT INTO `order_detail` (
-	            order_no, user_no, amount, price, item_no
-	        ) VALUES (
+	    INSERT INTO `order_detail` (order_no, user_no, amount, price, item_no)
+	    VALUES
+	    <foreach collection="list" item="orderDetail" separator=",">
+	        (
 	            #{orderDetail.order_no}, #{orderDetail.user_no}, #{orderDetail.amount},
 	            #{orderDetail.price}, #{orderDetail.item_no}
 	        )
