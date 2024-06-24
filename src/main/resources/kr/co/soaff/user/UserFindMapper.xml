@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.user.UserFindMapper">
+
+	<!--  회원 로그인 -->
+	<select id="idFindCheck" parameterType="kr.co.soaff.user.UserVO" resultType="kr.co.soaff.user.UserVO">
+		SELECT * FROM `user` WHERE name=#{name} AND email=#{email}
+	</select>
+
+	<select id="pwFindCheck" parameterType="kr.co.soaff.user.UserVO" resultType="kr.co.soaff.user.UserVO">
+		SELECT * FROM `user` WHERE id=#{id} AND name=#{name}
+	</select>
+
+	<select id="pwNewCheck" parameterType="kr.co.soaff.user.UserVO">
+		SELECT count(*) FROM `user` WHERE user_no=#{user_no} and pw= MD5(#{pw})
+	</select>
+
+	<update id="pwNewInsert" parameterType="kr.co.soaff.user.UserVO">
+		UPDATE `user`
+		SET
+			pw = MD5(#{pw})
+		WHERE
+			user_no = #{user_no};
+	</update>
+
+</mapper>
