@@ -103,10 +103,8 @@ public class MvcConfig implements WebMvcConfigurer {
    @Override
    public void addViewControllers(ViewControllerRegistry reg) {
       reg.addViewController("/user/basic");
-      reg.addViewController("/user/login/loginFind");
       reg.addViewController("/user/basic-mypage");
       reg.addViewController("/user/test");
-      reg.addViewController("/user/login/passwordFind");
       reg.addViewController("/user/order/cancelForm2");
 
    }

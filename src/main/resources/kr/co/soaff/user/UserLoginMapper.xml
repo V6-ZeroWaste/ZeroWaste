@@ -4,6 +4,6 @@
 
 	<!--  회원 로그인 -->
 	<select id="login" parameterType="kr.co.soaff.user.UserVO" resultType="kr.co.soaff.user.UserVO">
-		SELECT * FROM `user` WHERE id=#{id} AND pw =#{pw}
+		SELECT * FROM `user` WHERE id=#{id} AND pw =MD5(#{pw})
 	</select>
 </mapper>

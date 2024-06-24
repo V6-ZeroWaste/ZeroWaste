@@ -30,391 +30,441 @@
     let emailIdRegex = /^[a-zA-Z0-9._%+-]+$/;
     let emailDomainRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    var submitFist = false; // 처음에는 유효성 검사 자동으로 안하게
+
+
     function goLogin(event) {
-      submitFist = true;
       event.preventDefault();
       isValid = true;
-      isValid = idbtnCheck();
       isValid = fieldCheck();
       if (isValid) {
-        $('#frm').submit();
-      }else{
-        $("#id, #pwd, #pwd_check, #name, #tel1, #tel2, #tel3, #email_id, #email_domain, #zipcode, #addr1").on("change", fieldCheck);
-      }
-    }
-    // //else{
-    // $('#email_idErrorMsg').html("이메일을 먼저 입력해주세요");
-    // $('#email_idErrorMsg').css("display", "block");
-    // isValid = false;
-    // }
-    function fieldCheck(){
-      var id = $('#id');
-      let pwd = $('#pwd');
-      let pwd_check = $('#pwd_check');
-      let name = $('#name');
-      let tel1 = $('#tel1');
-      let tel2 = $('#tel2');
-      let tel3 = $('#tel3');
-      let email_id = $('#email_id');
-      let email_domain = $('#email_domain');
-      let zipcode = $('#zipcode');
-      let addr1 = $('#addr1');
-      let emailcheck_id = $('#emailcheck_id');
-
-      let idErrorMsg = $('#idErrorMsg');
-      let pwdErrorMsg = $('#pwdErrorMsg');
-      let pwd_checkErrorMsg = $('#pwd_checkErrorMsg');
-      let nameErrorMsg = $('#nameErrorMsg');
-      let tel1ErrorMsg = $('#tel1ErrorMsg');
-      let tel2ErrorMsg = $('#tel2ErrorMsg');
-      let tel3ErrorMsg = $('#tel3ErrorMsg');
-      let email_idErrorMsg = $('#email_idErrorMsg');
-      let email_domainErrorMsg = $('#email_domainErrorMsg');
-      let zipcodeErrorMsg = $('#zipcodeErrorMsg');
-      let addr1ErrorMsg = $('#addr1ErrorMsg');
-      let emailcheck_idErrorMsg = $('#emailcheck_idErrorMsg');
-      let email_btnErrorMsg = $('#email_btnErrorMsg');
-
-      idErrorMsg.css("display", "none");
-      pwdErrorMsg.css("display", "none");
-      pwd_checkErrorMsg.css("display", "none");
-      nameErrorMsg.css("display", "none");
-      tel1ErrorMsg.css("display", "none");
-      tel2ErrorMsg.css("display", "none");
-      tel3ErrorMsg.css("display", "none");
-      email_idErrorMsg.css("display", "none");
-      email_domainErrorMsg.css("display", "none");
-      zipcodeErrorMsg.css("display", "none");
-      addr1ErrorMsg.css("display", "none");
-      emailcheck_idErrorMsg.css("display", "none");
-      email_btnErrorMsg.css("display", "none");
-
-      let isValid = true;
-
-      if (!id.val()) {
-        idErrorMsg.html("아이디를 입력해주세요");
-        idErrorMsg.css("display", "block");
-        isValid = false;
-      } else if (!idbtnClickedCheck) {
-        idErrorMsg.html("중복확인 버튼을 눌러주세요");
-        idErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!pwd.val()) {
-        pwdErrorMsg.html("비밀번호를 입력해주세요");
-        pwdErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!pwd_check.val()) {
-        pwd_checkErrorMsg.html("비밀번호를 입력해 주세요");
-        pwd_checkErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (pwd.val() !== pwd_check.val() && pwd_check.val() !== '') {
-        pwd_checkErrorMsg.html("비밀번호가 일치하지 않습니다");
-        pwd_checkErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if(!passwordRegex.test(pwd.val()) && pwd.val() !==''){
-        pwdErrorMsg.html("8자리 이상/대문자/소문자/특수문자/숫자가 포함됩니다");
-        pwdErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!name.val()) {
-        nameErrorMsg.html("이름을 입력해 주세요");
-        nameErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!tel1.val()) {
-        tel1ErrorMsg.html("전화번호를 입력해주세요");
-        tel1ErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!tel2.val()) {
-        tel1ErrorMsg.html("전화번호를 입력해주세요");
-        tel1ErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!tel3.val()) {
-        tel1ErrorMsg.html("전화번호를 입력해주세요");
-        tel1ErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if(!tel1Regex.test(tel1.val()) && tel1.val() !==''){
-        tel1ErrorMsg.html("올바른 전화번호를 입력해주세요");
-        tel1ErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if(!tel2Regex.test(tel2.val()) && tel2.val() !== ''){
-        tel2ErrorMsg.html("올바른 전화번호를 입력해주세요");
-        tel2ErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if(!tel3Regex.test(tel3.val()) && tel3.val() !== ''){
-        tel3ErrorMsg.html("올바른 전화번호를 입력해주세요");
-        tel3ErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!email_id.val()) {
-        email_idErrorMsg.html("이메일을 입력해주세요");
-        email_idErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!email_domain.val()) {
-        email_idErrorMsg.html("이메일을 입력해주세요");
-        email_idErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-
-      if(!emailIdRegex.test(email_id.val()) && email_id.val() !== '' ) {
-        email_idErrorMsg.html("올바른 이메일을 입력해주세요");
-        email_idErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if(!emailDomainRegex.test(email_domain.val()) && email_domain.val() !== '' ) {
-        email_idErrorMsg.html("올바른 이메일을 입력해주세요");
-        email_idErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-
-      if (!emailcheck_id.val()) {
-        emailcheck_idErrorMsg.html("인증을 해주세요");
-        emailcheck_idErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!emailbtnClickedCheck && emailcheck_id.val()) {
-        email_btnErrorMsg.html("버튼을 눌러주세요");
-        email_btnErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!zipcode.val()) {
-        zipcodeErrorMsg.html("우편번호를 입력해주세요");
-        zipcodeErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      if (!addr1.val()) {
-        addr1ErrorMsg.html("주소를 입력해주세요");
-        addr1ErrorMsg.css("display", "block");
-        isValid = false;
-      }
-
-      return isValid;
-    }
-
-    function idbtnCheck() {
-      let isValid = false;
-      if($('#id').val())
-      {
+        let tel = $("#tel1").val()+$("#tel2").val()+$("#tel3").val();
+        let email = $("#email_id").val()+"@"+$("#email_domain").val();
+        console.log("축하합니다!");
         $.ajax({
-          url: '/user/user/idcheck',
+          url: '/user/user/signUp',
           method: 'post',
           contentType: "application/json; charset=UTF-8",
           dataType: "json",
           data: JSON.stringify({
             "id": $("#id").val(),
+            "pw": $("#pw").val(),
+            "name": $("#name").val(),
+            "zipcode": $("#zipcode").val(),
+            "addr": $("#addr").val(),
+            "addr_detail": $("#addr_detail").val(),
+            "tel": tel,
+            "email" : email
           }),
           async: false,
-          success: function(res) {
-            if (res == '1') {
-              $("#idErrorMsg").html("중복된 아이디입니다").css("display", "block");
-              isValid = false;
-              console.log(res);
+          success: function (res) {
+            if (res === '0') {
+              location.href="/user/user/signUp"; // 실패
             } else {
-              $("#idErrorMsg").css("display", "none");
-              console.log(res);
-              isValid = true;
+              location.href="/user/user/login"; // 성공
             }
           }
         });
+      }else{
+         $("#id, #pw, #pw_check, #name, #tel1, #tel2, #tel3, #email_id, #email_domain, #zipcode, #addr").on("change", fieldCheck);
       }
-      else {
-        event.preventDefault();
-        isValid = false;
-        $("#idErrorMsg").html("아이디를 먼저 입력해주세요");
-        $("#idErrorMsg").css("display", "block");
-      }
-      return isValid;
     }
+      function fieldCheck() {
+        var id = $('#id');
+        let pw = $('#pw');
+        let pw_check = $('#pw_check');
+        let name = $('#name');
+        let tel1 = $('#tel1');
+        let tel2 = $('#tel2');
+        let tel3 = $('#tel3');
+        let email_id = $('#email_id');
+        let email_domain = $('#email_domain');
+        let zipcode = $('#zipcode');
+        let addr = $('#addr');
+        let emailcheck_id = $('#emailcheck_id');
 
+        let idErrorMsg = $('#idErrorMsg');
+        let pwdErrorMsg = $('#pwdErrorMsg');
+        let pwd_checkErrorMsg = $('#pwd_checkErrorMsg');
+        let nameErrorMsg = $('#nameErrorMsg');
+        let tel1ErrorMsg = $('#tel1ErrorMsg');
+        let tel2ErrorMsg = $('#tel2ErrorMsg');
+        let tel3ErrorMsg = $('#tel3ErrorMsg');
+        let email_idErrorMsg = $('#email_idErrorMsg');
+        let email_domainErrorMsg = $('#email_domainErrorMsg');
+        let zipcodeErrorMsg = $('#zipcodeErrorMsg');
+        let addr1ErrorMsg = $('#addr1ErrorMsg');
+        let emailcheck_idErrorMsg = $('#emailcheck_idErrorMsg');
+        let email_btnErrorMsg = $('#email_btnErrorMsg');
 
-    function sendemail() {
-      let email = $('#email_id').val() + "@" + $('#email_domain').val();
-      $.ajax({
-        url: '/email/sendMail',
-        method: 'POST',
-        contentType: 'text/plain',
-        data: email,
-        success: function(res) {
-          alert("인증코드가 발송되었습니다.");
-           key= res;
-        },
-        error: function(err) {
-          alert("이메일 전송 중 오류가 발생했습니다.");
-          console.log(email);
+        idErrorMsg.css("display", "none");
+        pwdErrorMsg.css("display", "none");
+        pwd_checkErrorMsg.css("display", "none");
+        nameErrorMsg.css("display", "none");
+        tel1ErrorMsg.css("display", "none");
+        tel2ErrorMsg.css("display", "none");
+        tel3ErrorMsg.css("display", "none");
+        email_idErrorMsg.css("display", "none");
+        email_domainErrorMsg.css("display", "none");
+        zipcodeErrorMsg.css("display", "none");
+        addr1ErrorMsg.css("display", "none");
+        emailcheck_idErrorMsg.css("display", "none");
+        email_btnErrorMsg.css("display", "none");
+
+        let isValid = true;
+
+        if (!id.val()) {
+          idErrorMsg.html("아이디를 입력해주세요");
+          idErrorMsg.css("display", "block");
+          isValid = false;
+        } else if (!idbtnClickedCheck) {
+          idErrorMsg.html("중복확인 버튼을 눌러주세요");
+          idErrorMsg.css("display", "block");
+          isValid = false;
         }
-      });
-    }
+
+        if (!pw.val()) {
+          pwdErrorMsg.html("비밀번호를 입력해주세요");
+          pwdErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!pw_check.val()) {
+          pwd_checkErrorMsg.html("비밀번호를 입력해 주세요");
+          pwd_checkErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (pw.val() !== pw_check.val() && pw_check.val() !== '') {
+          pwd_checkErrorMsg.html("비밀번호가 일치하지 않습니다");
+          pwd_checkErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!passwordRegex.test(pw.val()) && pw.val() !== '') {
+          pwdErrorMsg.html("8자리 이상/대문자/소문자/특수문자/숫자가 포함됩니다");
+          pwdErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!name.val()) {
+          nameErrorMsg.html("이름을 입력해 주세요");
+          nameErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!tel1.val()) {
+          tel1ErrorMsg.html("전화번호를 입력해주세요");
+          tel1ErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!tel2.val()) {
+          tel1ErrorMsg.html("전화번호를 입력해주세요");
+          tel1ErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!tel3.val()) {
+          tel1ErrorMsg.html("전화번호를 입력해주세요");
+          tel1ErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!tel1Regex.test(tel1.val()) && tel1.val() !== '') {
+          tel1ErrorMsg.html("올바른 전화번호를 입력해주세요");
+          tel1ErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!tel2Regex.test(tel2.val()) && tel2.val() !== '') {
+          tel2ErrorMsg.html("올바른 전화번호를 입력해주세요");
+          tel2ErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!tel3Regex.test(tel3.val()) && tel3.val() !== '') {
+          tel3ErrorMsg.html("올바른 전화번호를 입력해주세요");
+          tel3ErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!email_id.val() || !email_domain.val()) {
+          email_idErrorMsg.html("이메일을 입력해주세요");
+          email_idErrorMsg.css("display", "block");
+          isValid = false;
+        }else{
+          email_idErrorMsg.css("display", "block").css('display','none');
+        }
 
 
-    function checkemail() {
-      let email = $('#email_id').val() + "@" + $('#email_domain').val();
-      // @RequestBody String key, @RequestBody String insertKey, @RequestBody String email
-      let insertKey = $('#emailcheck_id').val();
-      isValid = false;
-      console.log(email)
-      console.log(insertKey)
-      console.log(key + 'ssdsd')
-      if(key !=='' && key === null){
-        $('#emailcheck_idErrorMsg').html("만료된 인증코드입니다").css("display", "block");
-        $('#emailcheck_id').focus();
+        if (!emailIdRegex.test(email_id.val()) && email_id.val() !== '') {
+          email_idErrorMsg.html("올바른 이메일을 입력해주세요");
+          email_idErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!emailDomainRegex.test(email_domain.val()) && email_domain.val() !== '') {
+          email_idErrorMsg.html("올바른 이메일을 입력해주세요");
+          email_idErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!emailcheck_id.val()) {
+          emailcheck_idErrorMsg.html("인증을 해주세요");
+          emailcheck_idErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!emailbtnClickedCheck) {
+          email_btnErrorMsg.html("버튼을 눌러주세요");
+          email_btnErrorMsg.css("display", "block");
+          isValid = false;
+        }
+
+        if (!zipcode.val()) {
+          zipcodeErrorMsg.html("우편번호를 입력해주세요");
+          zipcodeErrorMsg.css("display", "block");
+          isValid = false;
+        }else{
+          zipcodeErrorMsg.css("display", "none");
+        }
+
+        if (!addr.val()) {
+          addr1ErrorMsg.html("주소를 입력해주세요");
+          addr1ErrorMsg.css("display", "block");
+          isValid = false;
+        }else{
+          addr1ErrorMsg.css("display", "none");
+        }
+
+        return isValid;
       }
-      else {
-        $.ajax({
-          url: '/email/checkMail',
-          method: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify({
-            email: email,
-            insertKey: insertKey,
-            key: key
-          }),
-          success: function (res) {
-            if (res === "1") {
-              alert("인증 성공");
-            } else {
-              $('#emailcheck_idErrorMsg').html("인증코드가 다릅니다").css("display", "block");
-              $('#emailcheck_id').focus();
+
+      function idbtnCheck() {
+        let isValid = false;
+        if ($('#id').val()) {
+          $.ajax({
+            url: '/user/user/idcheck',
+            method: 'post',
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data: JSON.stringify({
+              "id": $("#id").val(),
+            }),
+            async: false,
+            success: function (res) {
+              if (res == '1') {
+                $("#idErrorMsg").html("중복된 아이디입니다").css("display", "block");
+                isValid = false;
+              } else {
+                $("#idErrorMsg").css("display", "none");
+                isValid = true;
+              }
             }
+          });
+        } else {
+          isValid = false;
+          $("#idErrorMsg").html("아이디를 먼저 입력해주세요");
+          $("#idErrorMsg").css("display", "block");
+        }
+        return isValid;
+      }
+
+
+      function sendemail() {
+        let email = $('#email_id').val() + "@" + $('#email_domain').val();
+        $.ajax({
+          url: '/email/sendMail',
+          method: 'POST',
+          contentType: 'text/plain',
+          data: email,
+          success: function (res) {
+            alert("인증코드가 발송되었습니다.");
+            key = res;
           },
           error: function (err) {
-            console.log(res);
+            alert("이메일 전송 중 오류가 발생했습니다.");
           }
         });
       }
-    }
 
 
-    function resetTimer() {
-      clearInterval(timerInterval);
-      startTimer(10);
-    }
-
-    function startTimer(duration) {
-      let time = duration;
-      let min = "";
-      let sec = "";
-
-      timerInterval = setInterval(function () {
-        min = parseInt(time / 60);
-        sec = time % 60;
-
-        document.getElementById("timer2").innerHTML = min + "분 " + sec + "초";
-        time--;
-        console.log(key);
-        if (time < 0) {
-          clearInterval(timerInterval);
-          document.getElementById("timer2").innerHTML = "시간초과";
-          key = null;  // 타이머가 끝나면 인증 코드 사라짐
-          console.log("만료됐어~~~")
-          console.log(key);
-          console.log(key);
-          console.log(key);
+      function checkemail() {
+        let email = $('#email_id').val() + "@" + $('#email_domain').val();
+        // @RequestBody String key, @RequestBody String insertKey, @RequestBody String email
+        let insertKey = $('#emailcheck_id').val();
+        isValid = false;
+        if (key !== '' && key === 'expired') {
+          $('#emailcheck_idErrorMsg').html("만료된 인증코드입니다").css("display", "block");
+          $('#emailcheck_id').focus();
         }
-      }, 1000);
-    }
-
-    $(function() {
-
-      $('#pwd_check').on('input', function () {
-        if ($('#pwd').val() !== $('#pwd_check').val()) {
-          $('#pwd_checkErrorMsg').html("비밀번호가 일치하지 않습니다");
-          $('#pwd_checkErrorMsg').css("display", "block");
-        } else {
-          $('#pwd_checkErrorMsg').css("display", "none");
+        if(key !== '' && key === 'asigned'){
+          $('#emailcheck_idErrorMsg').html("이미 승인되었습니다").css("display", "block");
         }
-      });
+        else {
+          $.ajax({
+            url: '/email/checkMail',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              email: email,
+              insertKey: insertKey,
+              key: key
+            }),
+            success: function (res) {
+              if (res === "1") {
+                $('#emailcheck_idErrorMsg').css("display", "none");
+                alert("인증 성공");
+                clearInterval(timerInterval);
+                key ='asigned';
+              } else {
+                $('#emailcheck_idErrorMsg').html("인증코드가 다릅니다").css("display", "block");
+                $('#emailcheck_id').focus();
+              }
+            },
+            error: function (err) {
+            }
+          });
+        }
+      }
+
+
+      function resetTimer() {
+        clearInterval(timerInterval);
+        startTimer(180);
+      }
+
+      function startTimer(duration) {
+        let time = duration;
+        let min = "";
+        let sec = "";
+
+        timerInterval = setInterval(function () {
+          min = parseInt(time / 60);
+          sec = time % 60;
+
+          document.getElementById("timer2").innerHTML = min + "분 " + sec + "초";
+          time--;
+          if (time < 0) {
+            clearInterval(timerInterval);
+            document.getElementById("timer2").innerHTML = "시간초과";
+            key = 'expired';  // 타이머가 끝나면 인증 코드 사라짐
+          }
+        }, 1000);
+      }
+
+      $(function () {
+        //아이디
+        $('#id_btn').on('click', function () {
+          idbtnClickedCheck = true;
+          idbtnCheck();
+        });
+
+        $('#id').on('change', function () {
+          idbtnClickedCheck = false;
+        });
+
+        //비밀번호
+        $('#pw_check').on('input', function () {
+          if ($('#pw').val() !== $('#pw_check').val()) {
+            $('#pwd_checkErrorMsg').html("비밀번호가 일치하지 않습니다");
+            $('#pwd_checkErrorMsg').css("display", "block");
+          } else {
+            $('#pwd_checkErrorMsg').css("display", "none");
+          }
+        });
+
+        $('#pw').on('change', function () {
+          if (!passwordRegex.test($('#pw').val()) && $('#pw').val() !== '') {
+            $('#pwdErrorMsg').html("8자리 이상/대문자/소문자/특수문자/숫자가 포함됩니다");
+            $('#pwdErrorMsg').css("display", "block");
+            isValid = false;
+          } else {
+            $('#pwdErrorMsg').css("display", "none");
+          }
+        });
+
+        //이메일
         $('#emailSel').change(function () {
           var emailSel = $(this).val();
-          console.log(emailSel);
           var email_domain = $("#email_domain");
           if (emailSel !== "직접입력") {
             email_domain.val(emailSel);
             document.getElementById("email_domain").readOnly = true
-          }else{
+          } else {
             emailSel = null;
             email_domain.removeAttr("readonly");       // readonly 삭제
           }
-
         });
-      if($('#email').val() && $('#email_domain').val()) {
+
         $('#email_btn').on('click', function () {
-          emailbtnClickedCheck = true;
-          $(this).text('재전송');
-          $('#emailVerification').show();
-          sendemail();
-          resetTimer();
+          if (!$('#email_id').val() || !$('#email_domain').val()) {
+            $('#email_idErrorMsg').html('이메일을 입력해주세요').css("display", "block");
+          } else {
+            $('#email_idErrorMsg').css("display", "none");
+            emailbtnClickedCheck = true;
+            $('#email_btnErrorMsg').css("display", "none");
+            $(this).text('재전송');
+            $('#emailVerification').show();
+            sendemail();
+            resetTimer();
+          }
         });
-      }
 
-      $('#adr_btn').on('click', function() {
-        zipcode();
+        //전화번호
+        $('#tel3,#tel2,#tel1').on('change', function () {
+          if (!tel3Regex.test($('#tel3').val()) && $('#tel3').val() !== '') {
+            $('#tel1ErrorMsg').html("올바른 전화번호를 입력해주세요");
+            $('#tel1ErrorMsg').css("display", "block");
+            isValid = false;
+          } else if (!tel1Regex.test($('#tel1').val()) && $('#tel1').val() !== '') {
+            $('#tel1ErrorMsg').html("올바른 전화번호를 입력해주세요");
+            $('#tel1ErrorMsg').css("display", "block");
+            isValid = false;
+          } else if (!tel2Regex.test($('#tel2').val()) && $('#tel2').val() !== '') {
+            $('#tel1ErrorMsg').html("올바른 전화번호를 입력해주세요");
+            $('#tel1ErrorMsg').css("display", "block");
+            isValid = false;
+          } else {
+            $('#tel1ErrorMsg').css("display", "none");
+          }
+        });
+
+        //주소
+        $('#adr_btn').on('click', function () {
+          zipcode();
+        });
+
+        //이메일
+        $('#emailCheck_btn').on('click', function () {
+          checkemail();
+        });
+
+        $('#email').val($('#email_id').val() + "@" + $('#email_domain').val());
+        $('#tel').val($('#tel1').val() + $('#tel2').val() + $('#tel3').val());
       });
 
-      $('#emailCheck_btn').on('click', function () {
-        checkemail();
-      });
+      function zipcode() {
+        new daum.Postcode({
+          oncomplete: function (data) {
+            var roadAddr = data.roadAddress;
+            var extraRoadAddr = '';
 
-      $('#id_btn').on('click', function () {
-        idbtnClickedCheck = true;
-        idbtnCheck();
-      });
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+              extraRoadAddr += data.bname;
+            }
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+              extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            if (extraRoadAddr !== '') {
+              extraRoadAddr = ' (' + extraRoadAddr + ')';
+            }
 
-      $('#relEmail').val($('#email_id').val() + "@" + $('#email_domain').val());
-      $('#relTel').val($('#tel1').val() + $('#tel2').val() + $('#tel3').val());
-      $('#relAdd').val($('#addr1').val() + $('#addr2').val());
-    });
-
-    function zipcode() {
-      new daum.Postcode({
-        oncomplete: function (data) {
-          var roadAddr = data.roadAddress;
-          var extraRoadAddr = '';
-
-          if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-            extraRoadAddr += data.bname;
+            $('#zipcode').val(data.zonecode);
+            $('#addr').val(roadAddr);
           }
-          if (data.buildingName !== '' && data.apartment === 'Y') {
-            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-          }
-          if (extraRoadAddr !== '') {
-            extraRoadAddr = ' (' + extraRoadAddr + ')';
-          }
-
-          $('#zipcode').val(data.zonecode);
-          $('#addr1').val(roadAddr);
-        }
-      }).open();
-    }
+        }).open();
+      };
   </script>
   <style>
     .table {
@@ -456,7 +506,7 @@
 <section class="pt-5">
   <div class="container form-container">
     <div class="form-content">
-      <form action="/user/join" method="POST" name="frm" id="frm">
+<%--      <form action="/user/user/signUp" method="POST" name="frm" id="frm">--%>
         <table class="table">
           <tr>
             <td class="text-center" style="color: #3d733d; width: 30%;"><strong>아이디</strong></td>
@@ -471,14 +521,14 @@
           <tr>
             <td class="text-center" style="color: #3d733d;"><strong>비밀번호</strong></td>
             <td colspan="3" class="col-4">
-              <input type="password" class="form-control" id="pwd">
+              <input type="password" class="form-control" id="pw" name="pw">
               <div class="invalid-feedback" id="pwdErrorMsg"></div>
             </td>
           </tr>
           <tr>
             <td class="text-center" style="color: #3d733d;"><strong>비밀번호 확인</strong></td>
             <td colspan="3" class="col-4">
-              <input type="password" class="form-control" id="pwd_check">
+              <input type="password" class="form-control" id="pw_check">
               <div class="invalid-feedback" id="pwd_checkErrorMsg"></div>
             </td>
           </tr>
@@ -575,14 +625,14 @@
           <tr>
             <td></td>
             <td colspan="3" class="col-4">
-              <input type="text" class="form-control" id="addr1" readonly>
+              <input type="text" class="form-control" id="addr" readonly>
               <div class="invalid-feedback" id="addr1ErrorMsg"></div>
             </td>
           </tr>
           <tr>
             <td></td>
             <td colspan="3" class="col-4">
-              <input type="text" class="form-control" id="addr2">
+              <input type="text" class="form-control" id="addr_detail">
               <div class="valid-feedback"></div>
             </td>
           </tr>
@@ -595,10 +645,7 @@
             </td>
           </tr>
         </table>
-        <input type="hidden" id="relEmail" name="relEmail">
-        <input type="hidden" id="relTel" name="relTel">
-        <input type="hidden" id="relAdd" name="relAdd">
-      </form>
+<%--      </form>--%>
     </div>
   </div>
 </section>

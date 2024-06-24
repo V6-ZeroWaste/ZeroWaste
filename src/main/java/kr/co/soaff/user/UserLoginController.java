@@ -28,13 +28,16 @@ public class UserLoginController {
 //        res.setContentType("text/html;charset=utf-8");
 //        PrintWriter out = res.getWriter();
         UserVO login = userLoginService.login(vo);
-
+        if(login.getDelete() != null) {
+            return "2";
+        }
         System.out.println(vo);
-        String result="1";
+        String result="-1";
         if (login != null) {
             session.setAttribute("user_id", login.getId());
             session.setAttribute("user_name", login.getName());
             session.setAttribute("user_no", login.getUser_no());
+            session.setAttribute("vo",login);
 
             String saved_id = vo.getIdSaveCheck();
             if ("yes".equals(saved_id)) { // Check if rememberMe is checked

@@ -22,17 +22,20 @@ public class UserSignUpController {
     }
 
     @PostMapping("/user/user/signUp")
-    public String userSignUp(Model model, UserVO vo){
-        return "/user/user/signUp";
+    @ResponseBody
+    public String userSignUp(@RequestBody UserVO vo){
+        if(service.userSignUp(vo)){
+            return "0"; //실패
+        }
+        else{
+            return "1"; //성공
+        }
     }
-
 
     @PostMapping("/user/user/idcheck")
     @ResponseBody
     public String idCheck(@RequestBody UserVO vo) {
-        System.out.println(vo + "adsd");
         int i = service.idCheck(vo);
-        System.out.println(i + "sdasd");
         String result = Integer.toString(i);
         return result;
     }

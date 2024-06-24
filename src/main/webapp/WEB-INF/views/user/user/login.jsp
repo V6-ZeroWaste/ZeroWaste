@@ -74,7 +74,12 @@
                     if (res == '1') {
                         $("#submitCheckMsg").html("아이디와 비밀번호를 다시 확인해주세요").css("display", "block");
                         isValid = false;
-                    } else {
+                    }
+                    if (res == '2') {
+                        alert("탈퇴하신 계정입니다");
+                        isValid = false;
+                    }
+                    else {
                         location.href="/"
                         isValid = true;
                     }
@@ -128,8 +133,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
-                                            <a href="/user/user/user/find/idFind" style="color: #555555;">아이디 찾기 | </a>
-                                            <a href="/user/user/user/find/pwdFind" style="color: #555555;">비밀번호 찾기</a>
+                                            <a href="/user/user/idFind" style="color: #555555;">아이디 찾기 | </a>
+                                            <a href="/user/user/pwFind" style="color: #555555;">비밀번호 찾기</a>
                                         </div>
                                         <div class="col-12 mt-2">
                                             <input type="button" value="LOG IN" alt="LOG IN" onclick="formcheck();"
