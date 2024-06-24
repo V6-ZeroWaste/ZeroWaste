@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.user.ProfileMapper">
+	<update id="updateInfo" parameterType="kr.co.soaff.user.UserVO">
+		UPDATE `user`
+		SET
+			pw = MD5(#{pw}),
+			zipcode = #{zipcode},
+			addr = #{addr},
+			addr_detail = #{addr_detail},
+			tel = #{tel}
+		WHERE
+			user_no = #{user_no};
+	</update>
+
+	<select id="getInfo" parameterType="int" resultType="kr.co.soaff.user.UserVO">
+		SELECT * from `user` where user_no = #{user_no};
+	</select>
+
+	<select id="deleteCheck" parameterType="kr.co.soaff.user.UserVO">
+		SELECT  count(*) from `user` where user_no = #{user_no} AND pw = MD5(#{pw});
+	</select>
+
+	<update id="delete" parameterType="kr.co.soaff.user.UserVO">
+		UPDATE `user`
+		SET
+			`delete` = current_timestamp()
+		WHERE
+			user_no = #{user_no}
+		AND
+		    pw = MD5(#{pw});
+	</update>
+
+</mapper>

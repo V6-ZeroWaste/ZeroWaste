@@ -64,6 +64,13 @@
         margin-top: 30px;
         margin-bottom: 10px;
     }
+    
+    /* Chrome, Safari, Edge 및 Opera에서 화살표 제거 */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
 </style>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -138,12 +145,14 @@
             receiverTel1CheckMsg.html("전화번호를 입력해주세요");
             receiverTel1CheckMsg.css("display", "block");
 
+            /*
             if (!receiverTel2.val()) {
                 receiverTel2.focus();
             }
             if (!receiverTel3.val()) {
                 receiverTel3.focus();
             }
+            */
 
         }
         if (!agree) {
@@ -160,6 +169,10 @@
         aboutTotalPrice();
         telFormat();
         paymentInfo();
+        console.log("amount", itemAmountArray());
+        console.log("price", priceArray());
+        console.log("item_no", itemNoArray());
+        
 
 
         $("#receiverName, #zipcode, #addr, #addrDetail, #receiverTel1, #receiverTel2, #receiverTel3, #paymentMethod, #agree").on("change", fieldCheck);
@@ -321,7 +334,7 @@
             payment_price: payment_price,
             payment_method: payMethod,
             payment_id: paymentId,
-            imp_uid: impUid,
+            //imp_uid: impUid,
             point: point,
             order_status: order_status,
             order_name: order_name,
@@ -355,15 +368,13 @@
             success: function (resp) {
 
 
-                //console.log(resp);
-                if (resp == 'success') {
-                    //paymentResult = true;
+                
+                    
                     deleteCart();
+                    location.href = "/order/success?order_no="+resp;
 
 
-                } else {
-                    //paymentResult =false;
-                }
+               
 
 
             },
@@ -437,12 +448,14 @@
             url: "/order/deleteCartAfterOrder", // 요청할 URL
             traditional: true, // 배열 데이터 전송 시 필요한 옵션
             data: data, // 전송할 데이터
-            success: function (resp) {
+            success: function () {
+            	/*
                 if (resp === 'success') {
-                    location.href = "/order/success";
+                    //location.href = "/order/success";
 
                     // 성공적으로 처리된 경우
                 }
+            	*/
             },
             error: function (data, textStatus) {
                 //$('#fail').html("관리자에게 문의하세요."); // 에러 메시지 출력
@@ -542,6 +555,9 @@
         // id가 pointToUse인 input 요소의 값을 숫자로 변환하여 가져옴
         var inputPoints = parseFloat($('#pointToUse').val().replace(/[^0-9.-]/g, '')) || 0;
 
+        
+        var paymentPrice = parseFloat($('#paymentPrice').text().replace(/[^0-9.-]/g, ''))
+
         // 입력값이 사용 가능한 포인트보다 큰 경우
         if (inputPoints > availablePoints) {
             // 경고 메시지를 표시
@@ -552,6 +568,12 @@
 
             // 유효성 검사 실패를 나타내는 false 반환
             return false;
+        }
+        
+        if(paymentPrice-inputPoints<1000 && paymentPrice-inputPoints>0){
+        	alert("최종결제금액이 1000원 이상이어야 합니다.");
+        	return false;
+        	
         }
 
         // 유효성 검사 성공을 나타내는 true 반환
@@ -671,9 +693,9 @@
 
                     <c:if test="${empty map.cartList}">
                         <div class="cart-item">
-                            <div class="row align-items-center col-12 eyebrow" style="text-align : center;">
-                                Empty
-                            </div>
+                            <div class="row align-items-center col-12" style="text-align : center;">
+                            <span>Empty</span>
+                        </div>
                         </div>
                     </c:if>
 
@@ -721,18 +743,44 @@
 
                                     <!-- `discountedPrice`가 비어 있으면 -->
                                     <c:if test="${empty vo.discounted_price}">
-									    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
+                                    
+                                    	<c:if test="${vo.packing_status eq 1}">
+                                    		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
+                                              cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                value="${(vo.amount*vo.price)+2000}" type="number"
+                                                pattern="#,##0"/>원</span>
+                                    	</c:if>
+                                    	
+                                    	<c:if test="${vo.packing_status eq 0}">
+                                    		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
                                               cart_no="${vo.cart_no}"><fmt:formatNumber
                                                 value="${vo.amount*vo.price}" type="number"
                                                 pattern="#,##0"/>원</span>
+                                    	</c:if>
+                                    
+                                    
                                     </c:if>
 
                                     <!-- `discountedPrice`가 비어 있지 않으면 -->
                                     <c:if test="${!empty vo.discounted_price}">
-									    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
+                                    
+                                    	<c:if test="${vo.packing_status eq 1}">
+                                    	
+                                    		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
+                                              cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                value="${(vo.amount*vo.discounted_price)+2000}" type="number"
+                                                pattern="#,##0"/>원</span>
+                                    
+                                    	</c:if>
+                                    	
+                                   		<c:if test="${vo.packing_status eq 0}">
+                                    	
+                                    		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
                                               cart_no="${vo.cart_no}"><fmt:formatNumber
                                                 value="${vo.amount*vo.discounted_price}" type="number"
                                                 pattern="#,##0"/>원</span>
+                                    
+                                    	</c:if>
                                     </c:if>
 
                                 </div>
@@ -849,19 +897,19 @@
                                     <div>
 
                                         <div class="d-inline-flex col-12" style="padding-left: 0px;">
-                                            <input type="text" class="form-control col-2" name="receiverTel1"
+                                            <input type="number" class="form-control col-2" name="receiverTel1"
                                                    id="receiverTel1"
-                                                   placeholder="">
+                                                   placeholder="" >
                                             <p class="d-flex justify-content-center align-items-center col-1"
                                                style="margin: 0;">-</p>
-                                            <input type="text" class="form-control col-2" name="receiverTel2"
+                                            <input type="number" class="form-control col-2" name="receiverTel2"
                                                    id="receiverTel2"
-                                                   placeholder="">
+                                                   placeholder="" pattern="\d{4}">
                                             <p class="d-flex justify-content-center align-items-center col-1"
                                                style="margin: 0;">-</p>
-                                            <input type="text" class="form-control col-2" name="receiverTel3"
+                                            <input type="number" class="form-control col-2" name="receiverTel3"
                                                    id="receiverTel3"
-                                                   placeholder="">
+                                                   placeholder="" pattern="\d{4}">
 
                                         </div>
                                         <div id="receiverTel1CheckMsg" class="invalid-feedback"></div>

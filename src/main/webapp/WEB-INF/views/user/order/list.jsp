@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/user/css/vendor.css" />
     <link rel="stylesheet" href="/user/css/style.css" />
 
-    <title>soaff mypage</title>
+    <title>soaff mypage order</title>
     <style>
     	input[type='date']::before {
 		  content: attr(data-placeholder);
@@ -102,8 +102,8 @@
 									</div>
 									<div class="row align-items-center">
 										<div class="order-itemImgBox col-lg-3">
-											<%-- <img class="order-itemImg" src="${vo.item_img}" alt="item-img"> --%>
-											<img class="order-itemImg" src="/upload/item_img/${vo.item_img}" alt="item-img">
+											<img class="order-itemImg" src="${vo.item_img}" alt="item-img">
+											<%-- <img class="order-itemImg" src="/upload/item_img/${vo.item_img}" alt="item-img"> --%>
 										</div>
 										
 								        <div class="col-lg-6">

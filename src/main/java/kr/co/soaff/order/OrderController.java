@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
+
 @Slf4j
 @Controller
 public class OrderController {
@@ -57,15 +59,17 @@ public class OrderController {
 	}
 
 	@PostMapping("/order")
-	public String goOrder(OrderVO vo, Model model, HttpSession session) {
+	public String goOrder(OrderVO vo, Model model, HttpSession session, @RequestParam(value = "type", required = false) String type,
+						  @RequestParam(value = "amountArray", required = false) int[] amountArray) {
 		vo.setUser_no((int) session.getAttribute("user_no"));
 		vo.setBuyer_name((String) session.getAttribute("user_name"));
-		model.addAttribute("map", service.order(vo));
+		model.addAttribute("map", service.order(vo, type, amountArray));
 		return "user/order/order";
 	}
 
 	@GetMapping("/order/success")
-	public String success(HttpSession session) {
+	public String success(OrderVO vo, HttpSession session) {
+		vo.setUser_no((int) session.getAttribute("user_no"));
 		return "user/order/success";
 	}
 
@@ -74,11 +78,11 @@ public class OrderController {
 	public String orderInsert(@RequestBody OrderVO vo, HttpSession session) {
 		int userNo = (int) session.getAttribute("user_no");
 		vo.setUser_no(userNo);
-		boolean orderInsertResult = service.orderInsert(vo);
+		Integer orderNo = service.orderInsert(vo);
 
 		String msg = "";
-		if (orderInsertResult) {
-			msg = "success";
+		if (orderNo != null) {
+			msg = orderNo + "";
 		} else {
 			msg = "fail";
 		}

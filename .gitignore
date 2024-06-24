@@ -95,6 +95,7 @@ $RECYCLE.BIN/
 /target/
 db.properties
 s3.properties
+mail.properties
 workspace.xml
 mail.properties
 pay.properties

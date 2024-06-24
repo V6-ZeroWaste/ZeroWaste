@@ -9,16 +9,17 @@ public interface OrderService {
 
 	// Mypage > order > detail
 	OrderVO orderInfo(OrderVO orderVO);
-	OrderDetailVO orderDetailInfo(OrderDetailVO orderVO);
-	List<OrderDetailVO> orderDetailList(OrderVO orderVO);
 
+	OrderDetailVO orderDetailInfo(OrderDetailVO orderVO);
+
+	List<OrderDetailVO> orderDetailList(OrderVO orderVO);
 
 	boolean orderConfirm(OrderDetailVO vo);
 
 	// Order
-	Map<String, Object> order(OrderVO vo);
+	Map<String, Object> order(OrderVO vo, String type, int[] amountArray);
 
-	boolean orderInsert(OrderVO vo);
+	Integer orderInsert(OrderVO vo);
 
 	int deleteCartAfterOrder(OrderVO vo);
 

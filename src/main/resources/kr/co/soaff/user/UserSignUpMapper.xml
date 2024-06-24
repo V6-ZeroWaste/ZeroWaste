@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.soaff.user.UserSignUpMapper">
+
+	<!--  회원 로그인 -->
+	<select id="idCheck" parameterType="kr.co.soaff.user.UserVO" resultType="int">
+		SELECT count(*) FROM `user` WHERE id=#{id}
+	</select>
+
+	<insert id="userSignUp" parameterType="kr.co.soaff.user.UserVO">
+		INSERT INTO `user` (id, pw, name, tel, email, zipcode, addr, addr_detail,`delete`)
+		VALUES (#{id}, MD5(#{pw}), #{name}, #{tel}, #{email}, #{zipcode}, #{addr}, #{addr_detail},#{delete , jdbcType=TIMESTAMP})
+		<selectKey order="AFTER" keyProperty="user_no" resultType="int">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+</mapper>

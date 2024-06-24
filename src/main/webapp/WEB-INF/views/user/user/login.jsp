@@ -39,18 +39,19 @@
         if (!id.val()) {
             idCheckMsg.html("아이디를 입력해주세요");
             idCheckMsg.css("display", "block");
-            id.focus();
             isValid = false;
+        }else{
+            idCheckMsg.css("display", "none");
         }
 
         if (!pw.val()) {
             pwdCheckMsg.html("비밀번호를 입력해주세요");
             pwdCheckMsg.css("display", "block");
-            if (isValid) {
-                pw.focus();
-            }
             isValid = false;
+        }else{
+            pwdCheckMsg.css("display", "none");
         }
+
 
         return isValid;
     }
@@ -73,8 +74,14 @@
                     console.log(res);
                     if (res == '1') {
                         $("#submitCheckMsg").html("아이디와 비밀번호를 다시 확인해주세요").css("display", "block");
-                        isValid = false;
-                    } else {
+                        return;
+                    }
+                    if (res == '2') {
+                        alert("탈퇴하신 계정입니다");
+                        $("#submitCheckMsg").html("아이디와 비밀번호를 다시 확인해주세요").css("display", "block");
+                        return;
+                    }
+                    else {
                         location.href="/"
                         isValid = true;
                     }
@@ -84,6 +91,18 @@
         console.log(isValid);
         return isValid;
     }
+
+    $(document).ready(() => {
+        $('#login').on('click',() => {
+            formcheck();
+        });
+
+        $('#login-form').on('keypress', ( e ) => {
+            if(e.key === 'Enter' || e.keyCode === '13'){
+                $('#login').click();
+            }
+        })
+    })
 </script>
 
 <body>
@@ -104,18 +123,18 @@
 
                             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
                                  data-parent="#accordionExample">
-                                <div class="card-body">
+                                <div class="card-body" id="login-form">
                                     <div class="row mt-2">
                                         <div class="form-group col-12">
                                             <label for="id">ID</label>
                                             <input type="text" class="form-control"
-                                                   id="id" name="id" onchange="loginCheck();" value="${saved_id}">
+                                                   id="id" name="id"  value="${saved_id}">
                                             <div id="idCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
                                             <label for="pw">Password</label>
                                             <input type="password" class="form-control"
-                                                   id="pw" name="pw" onchange="loginCheck();">
+                                                   id="pw" name="pw">
                                             <div id="pwdCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="col-12 mt-1">
@@ -128,17 +147,17 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
-                                            <a href="/user/user/user/find/idFind" style="color: #555555;">아이디 찾기 | </a>
-                                            <a href="/user/user/user/find/pwdFind" style="color: #555555;">비밀번호 찾기</a>
+                                            <a href="/user/user/idFind" style="color: #555555;">아이디 찾기 | </a>
+                                            <a href="/user/user/pwFind" style="color: #555555;">비밀번호 찾기</a>
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <input type="button" value="LOG IN" alt="LOG IN" onclick="formcheck();"
+                                            <input type="button" value="LOG IN" alt="LOG IN" id="login"
                                                    class="btn btn-block btn-primary"/>
                                             <div id="submitCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="col-12 mt-2">
                                             <a href="/user/user/signUp" class="btn btn-block btn-primary"
-                                               style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;">계정 생성</a>
+                                               style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;">SIGN UP</a>
                                         </div>
                                     </div>
                                 </div>

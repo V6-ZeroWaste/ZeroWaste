@@ -2,6 +2,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+	$(document).ready(() => {
+		$('#logout').on('click', () => {
+			$.ajax({
+				type: "GET", // method type
+				url: "/logout", // 요청할 url
+                success : function(resp){
+                	location.href = '/';
+                	console.log('success');
+                },
+                error:function (data, textStatus) {
+                    console.log('error');
+                }
+			})
+		})
+	})
+</script>
 <header class="header header-dark header-sticky">
     <div class="container">
         <div class="row">
@@ -44,7 +62,7 @@
 
                             <li class="nav-item">
                                 <c:if test="${!empty user_id}">
-                                    <a class="nav-link" href="/logout">Log Out</a>
+                                    <a class="nav-link" id="logout">Log Out</a>
                                 </c:if>
                                 <c:if test="${empty user_id}">
                                     <a class="nav-link" href="/user/user/login">Log In</a>

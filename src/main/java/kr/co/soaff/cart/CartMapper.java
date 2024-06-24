@@ -16,4 +16,6 @@ public interface CartMapper {
 	int count(CartVO vo);
 
 	int insert(CartVO vo);
+
+	CartVO detail(CartVO vo);
 }
