@@ -118,22 +118,22 @@ function goToList() {
 									<b>주문상세번호:</b> ${cancelDetail.order_detail_no }
 								</p>
 								<label
+									class="btn <c:if test='${cancelDetail.cancel_reason_type != 0}'>btn-secondary</c:if><c:if test='${cancelDetail.cancel_reason_type == 0}'>btn-primary</c:if>">
+									<input type="radio" name="cancel_reason" value="0"
+									<c:if test="${cancelDetail.cancel_reason_type == 0}">checked disabled</c:if>
+									<c:if test="${cancelDetail.cancel_reason_type != 0}">disabled</c:if>>배송
+									지연
+								</label> <label
 									class="btn <c:if test='${cancelDetail.cancel_reason_type != 1}'>btn-secondary</c:if><c:if test='${cancelDetail.cancel_reason_type == 1}'>btn-primary</c:if>">
 									<input type="radio" name="cancel_reason" value="1"
 									<c:if test="${cancelDetail.cancel_reason_type == 1}">checked disabled</c:if>
-									<c:if test="${cancelDetail.cancel_reason_type != 1}">disabled</c:if>>배송
-									지연
+									<c:if test="${cancelDetail.cancel_reason_type != 1}">disabled</c:if>>제품
+									불량
 								</label> <label
 									class="btn <c:if test='${cancelDetail.cancel_reason_type != 2}'>btn-secondary</c:if><c:if test='${cancelDetail.cancel_reason_type == 2}'>btn-primary</c:if>">
 									<input type="radio" name="cancel_reason" value="2"
 									<c:if test="${cancelDetail.cancel_reason_type == 2}">checked disabled</c:if>
-									<c:if test="${cancelDetail.cancel_reason_type != 2}">disabled</c:if>>제품
-									불량
-								</label> <label
-									class="btn <c:if test='${cancelDetail.cancel_reason_type != 3}'>btn-secondary</c:if><c:if test='${cancelDetail.cancel_reason_type == 3}'>btn-primary</c:if>">
-									<input type="radio" name="cancel_reason" value="3"
-									<c:if test="${cancelDetail.cancel_reason_type == 3}">checked disabled</c:if>
-									<c:if test="${cancelDetail.cancel_reason_type != 3}">disabled</c:if>>단순
+									<c:if test="${cancelDetail.cancel_reason_type != 2}">disabled</c:if>>단순
 									변심
 								</label>
 								<div>
