@@ -639,7 +639,7 @@
                 }else{
                     if (!isLoggedIn) {
                         if(confirm('로그인이 필요한 기능입니다. \n로그인 하시겠습니까?')){
-                            location.href = '/user/user/login';
+                            location.href = '/login';
                         }
                     } else {
                         addToCart("buy");
@@ -652,7 +652,7 @@
                 }else{
                     if (!isLoggedIn) {
                         if(confirm('로그인이 필요한 기능입니다. \n로그인 하시겠습니까?')){
-                            location.href = '/user/user/login';
+                            location.href = '/login';
                         }
                     } else {
                         addToCart("cart");

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/user/css/vendor.css" />
   <link rel="stylesheet" href="/user/css/style.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <title>soaff</title>
+  <title>soaff find</title>
   <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
   <script>
     // 전역 변수 선언
@@ -33,7 +33,7 @@
         let pwd_usedErrorMsg = $('#pwd_usedErrorMsg');
         let pw = $('#pwd').val();
         $.ajax({
-          url: "/user/user/pwNewCheck",
+          url: "/pwNewCheck",
           method: 'POST',
           contentType: 'application/json',
           data: JSON.stringify({

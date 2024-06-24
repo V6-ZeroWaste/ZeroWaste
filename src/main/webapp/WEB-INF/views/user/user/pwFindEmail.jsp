@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/user/css/vendor.css" />
   <link rel="stylesheet" href="/user/css/style.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <title>soaff</title>
+  <title>soaff find</title>
   <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
   <script>
     let timerInterval;
@@ -96,7 +96,6 @@
             alert("인증 성공");
             clearInterval(timerInterval);
             key = 'asigned';
-            alert("다음페이지로 이동")
             $("#frmPwFindEmail").submit();
           } else {
             $('#emailcheck_idErrorMsg').html("인증코드가 다릅니다").css("display", "block");
@@ -153,7 +152,7 @@
                   </li>
                 </ul>
               </div>
-              <form id="frmPwFindEmail" method="post" action="/user/user/pwFindResubmit">
+              <form id="frmPwFindEmail" method="post" action="/pwFindResubmit">
                 <div class="form-group">
                   <ul class="list-group list-group-minimal mb-2">
                     <li class="list-group-item d-flex justify-content-center align-items-center">
@@ -162,10 +161,10 @@
                     <li class="list-group-item d-flex justify-content-sm-center align-items-center mb-2">
                       <input type="text" class="form-control col-6" id="emailcheck_id" required>
                       <span id='timer2' class="col-3 d-flex justify-content-sm-center align-items-center" style="margin-left: 0px;"></span>
-                      <button type="button" class="btn btn-primary btn-rounded pr col-3" id="emailCheck_btn">Resend</button>
+                      <button type="button" class="btn btn-primary btn-rounded pr col-3" id="emailCheck_btn">재전송</button>
                     </li>
                     <li class="list-group-item d-flex justify-content-center align-items-center">
-                      <button class="btn btn-block btn-primary col-12" id="submitBtn" type="button">Verify</button>
+                      <button class="btn btn-block btn-primary col-12" id="submitBtn" type="button">전송</button>
                     </li>
                       <div class="invalid-feedback col-12 d-flex align-items-center justify-content-center" id="emailcheck_idErrorMsg"></div>
                   </ul>

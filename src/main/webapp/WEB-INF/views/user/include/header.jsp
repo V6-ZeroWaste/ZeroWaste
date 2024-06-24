@@ -65,10 +65,15 @@
                                     <a class="nav-link" id="logout">Log Out</a>
                                 </c:if>
                                 <c:if test="${empty user_id}">
-                                    <a class="nav-link" href="/user/user/login">Log In</a>
+                                    <a class="nav-link" href="/login">Log In</a>
                                 </c:if>
                             </li>
-                            <c:if test="${!empty user_id}">
+                            <li class="nav-item">
+                                <c:if test="${empty user_id}">
+                                    <a class="nav-link" href="/signUp">Sign Up</a>
+                                </c:if>
+                            </li>
+                                <c:if test="${!empty user_id}">
 	                            <li class="nav-item">
 	                                <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown-10" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="max-height: 21px">
 	                                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16" id="button">
@@ -79,7 +84,7 @@
 	                                    <li><a class="dropdown-item" href="/mypage/order/list">Order</a></li>
 	                                    <li><a class="dropdown-item" href="/mypage/review/list">Reviews</a></li>
 	                                    <li><a class="dropdown-item" href="/mypage/qna/list">QnA</a></li>
-	                                    <li><a class="dropdown-item" href="/user/user/profile">Profile</a></li>
+	                                    <li><a class="dropdown-item" href="/mypage/profile">Profile</a></li>
 	                                    <li><a class="dropdown-item" href="/mypage/point">Point</a></li>
 	                                </ul>
 	                            </li>
