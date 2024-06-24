@@ -586,7 +586,7 @@
                 success: function(resp){
                     //상품의 상태가 buy 일 때와 cart 일 때
                     if (resp.status === "buy") {
-                        sendData(resp.cartNos, '/order')
+                        sendData(resp.cartNos, resp.amountArray, '/order')
                     } else if (resp.status === "cart") {
                         if (confirm("상품이 장바구니에 담겼습니다 바로 이동하시겠습니까?")) {
                             location.href = "/cart";
@@ -599,19 +599,31 @@
             });
         }
 
-        function sendData(cartNos, url) {
+        function sendData(cartNos, amountArray ,url) {
 
             const form = document.createElement('form'); // form 태그 생성
             form.setAttribute('method', 'post'); // 전송 방식 결정 (get or post)
             form.setAttribute('action', url); // 전송할 url 지정
-
-            for (var cartNo of cartNos) {
+            for (var i=0; i<cartNos.length; i++){
                 const data = document.createElement('input');
                 data.setAttribute('type', 'hidden');
                 data.setAttribute('name', 'checkedCartNo');
-                data.setAttribute('value', cartNo);
+                data.setAttribute('value', cartNos[i]);
                 form.appendChild(data);
+
+                const data2 = document.createElement('input');
+                data2.setAttribute('type', 'hidden');
+                data2.setAttribute('name', 'amountArray');
+                data2.setAttribute('value', amountArray[i]);
+                form.appendChild(data2);
+
             }
+            const data3 = document.createElement('input');
+            data3.setAttribute('type', 'hidden');
+            data3.setAttribute('name', 'type');
+            data3.setAttribute('value', "buy");
+            form.appendChild(data3);
+
 
             document.body.appendChild(form);
 
