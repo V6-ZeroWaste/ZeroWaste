@@ -22,7 +22,6 @@ public class ReviewVO {
 	private String item_img;
 	private int order_no;
 	
-	private MultipartFile file;
 	private String searchWord;
 	private String orderBy;
 	private String startDate;
