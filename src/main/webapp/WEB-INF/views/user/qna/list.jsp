@@ -42,7 +42,16 @@
 </style>
 <script type="text/javascript">
 	let page = 1;
+	let filter = null;
+	
 	window.onload = function() {
+		const urlParams = new URLSearchParams(window.location.search);
+		filter = urlParams.get('filter');
+		if (filter !== null) {
+			$('#filter').val(filter);
+		} else {
+			$('#filter').val("");
+		}
 		getList();
 	}
 	
@@ -62,7 +71,7 @@
 		var data = {
 			searchWord : $('#searchWord').val(),
 			orderBy : $('#orderBy').val(),
-			filter : $('#filter').val(),
+			filter : filterValue !== "" ? parseInt(filterValue) : null, 
 			start_date : $('#start_date').val(),
 			end_date : $('#end_date').val(),
 			page : page,
@@ -119,6 +128,9 @@
 									+ '" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
 						}
 						$(".datatable-pagination-list").html(printPage);
+						
+						const newUrl = '/mypage/qna/list?filter=' + data.filter;
+						history.pushState(null, '', newUrl);
 					},
 					error : function(data, textStatus) {
 						$('#fail').html("관리자에게 문의하세요.");
@@ -152,8 +164,10 @@
 										<label> <select id="orderBy" name="orderBy"
 											class="datatable-selector" onchange="applyCondition();">
 												<option value="" hidden>정렬</option>
-												<option value="최신순">최신순</option>
-												<option value="오래된순">오래된순</option>
+												<option value="최신순"
+											<c:if test="${qnaVO.orderBy == '최신순'}">selected</c:if>>최신순</option>
+										<option value="오래된순"
+											<c:if test="${qnaVO.orderBy == '오래된순'}">selected</c:if>>오래된순</option>
 										</select>
 										</label> <label> <select id="filter" name="filter"
 											class="datatable-selector" onchange="applyCondition();">

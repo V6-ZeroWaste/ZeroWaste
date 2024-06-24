@@ -46,94 +46,88 @@
 }
 
 .pagination .page-item.active .page-link {
-    border: 2px solid #000; /* 진한 테두리 */
-    font-weight: bold; /* 진한 글씨 */
+	border: 2px solid #000; /* 진한 테두리 */
+	font-weight: bold; /* 진한 글씨 */
 }
 </style>
 <script type="text/javascript">
    let page = 1;
    window.onload = function() {
       getList();
+      $('#startDate').on('change', applyCondition);
+      $('#endDate').on('change', applyCondition);
    }
-   
+
    function redirectToDetail(reviewNo) {
-	    window.location.href = '/mypage/review/detail?review_no=' + reviewNo;
-	}
-   
+      window.location.href = '/mypage/review/detail?review_no=' + reviewNo;
+   }
+
    function applyCondition() {
       page = 1;
       getList();
    }
+
    function changePage(obj) {
       page = obj.getAttribute("data-page");
       getList();
    }
+
    function getList() {
-      var data = {
-         startDate : $('#startDate').val().trim(),
-         endDate : $('#endDate').val().trim(),
-         page : page,
-      }
+	    var data = {
+	        startDate: $('#startDate').val().trim(),
+	        endDate: $('#endDate').val().trim(),
+	        page: page
+	    }
 
-      $
-            .ajax({
-               type : "GET",
-               url : "/mypage/review/getList",
-               data : data,
-               dataType : "json",
-               success : function(resp) {
-                  // 데이터 리스트 출력
-                  $("#printList").html(resp.printList);
+	    $.ajax({
+	        type: "GET",
+	        url: "/mypage/review/getList",
+	        data: data,
+	        dataType: "json",
+	        success: function(resp) {
+	            $("#printList").html(resp.printList);
+	            
+	            // 페이지네이션 출력
+	            $(".datatable-info").html(
+	                "Showing " +
+	                ((page - 1) * 10 + 1) +
+	                " to " +
+	                (page * 10 <= resp.total ? page * 10 : resp.total) +
+	                " of " +
+	                resp.total + " entries"
+	            );
 
-                  // 페이지네이션 출력
-                  // 총 개수
-                  $(".datatable-info").html(
-                        "Showing "
-                              + ((page - 1) * 20 + 1)
-                              + " to "
-                              + (page * 20 <= resp.total ? page * 20
-                                    : resp.total) + " of "
-                              + resp.total + " entries");
-                  // 페이지네이션
-                  let printPage = "";
-                  if (resp.isPrev) {
-                     printPage += '<li class="datatable-pagination-list-item">';
-                     printPage += '<a data-page="1" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
-                     printPage += '<li class="datatable-pagination-list-item">';
-                     printPage += '<a data-page="'
-                           + (resp.startPage - 1)
-                           + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
-                  }
-                  for (i = resp.startPage; i <= resp.endPage; i++) {
-                     printPage += '<li class="datatable-pagination-list-item'
-                           + (i == page ? ' datatable-active' : '')
-                           + '">';
-                     printPage += '<a data-page="'
-                           + i
-                           + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">'
-                           + i + '</a></li>';
-                  }
-                  if (resp.isNext) {
-                     printPage += '<li class="datatable-pagination-list-item">';
-                     printPage += '<a data-page="'
-                           + (resp.endPage + 1)
-                           + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
-                     printPage += '<li class="datatable-pagination-list-item">';
-                     printPage += '<a data-page="'
-                           + resp.totalPage
-                           + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
-                  }
-                  $(".datatable-pagination-list").html(printPage);
+	            let printPage = "";
+	            if (resp.isPrev) {
+	                printPage += '<li class="datatable-pagination-list-item">';
+	                printPage += '<a data-page="1" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
+	                printPage += '<li class="datatable-pagination-list-item">';
+	                printPage += '<a data-page="' + (resp.startPage - 1) + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+	            }
+	            for (let i = resp.startPage; i <= resp.endPage; i++) {
+	                printPage += '<li class="datatable-pagination-list-item' + (i == page ? ' datatable-active' : '') + '">';
+	                printPage += '<a data-page="' + i + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">' + i + '</a></li>';
+	            }
+	            if (resp.isNext) {
+	                printPage += '<li class="datatable-pagination-list-item">';
+	                printPage += '<a data-page="' + (resp.endPage + 1) + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
+	                printPage += '<li class="datatable-pagination-list-item">';
+	                printPage += '<a data-page="' + resp.totalPage + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
+	            }
+	            $(".datatable-pagination-list").html(printPage);
+	            
+	        },
+	        error: function(data, textStatus) {
+	            $('#fail').html("관리자에게 문의하세요."); // 서버 오류
+	            console.log('error', data, textStatus);
+	        }
+	    });
+	}
 
-               },
-               error : function(data, textStatus) {
-                  $('#fail').html("관리자에게 문의하세요.") // 서버오류
-                  console.log('error', data, textStatus);
-               }
-            })
-
-   }
 </script>
+
+
+
 
 </head>
 <body>
@@ -152,8 +146,9 @@
 							<!-- search filter -->
 							<div class="search-filter">
 								<div>
-									<input type="date" class="btn btn-outline-secondary btn-sm">
-									&nbsp;-&nbsp; <input type="date"
+									<input type="date" id="startDate"
+										class="btn btn-outline-secondary btn-sm">
+									&nbsp;-&nbsp; <input type="date" id="endDate"
 										class="btn btn-outline-secondary btn-sm" />
 								</div>
 								<div>
@@ -203,40 +198,41 @@
 							</c:forEach>
 						</div>
 					</div>
-				<!-- /list -->
+					<!-- /list -->
 
-				<!-- pagination -->
-				<div class="row">
-					<div class="col-auto">
-						<ul class="pagination">
-							<c:if test="${map.isPrev}">
-								<li class="page-item"><a class="page-link"
-									href="/mypage/review/list?page=1">‹‹</a></li>
-								<li class="page-item"><a class="page-link"
-									href="/mypage/review/list?page=${map.startPage-1}">‹</a></li>
-							</c:if>
-							<c:forEach var="i" begin="${map.startPage}" end="${map.endPage }">
-								<c:if test="${map.currentPage==i}">
-									<li class="page-item active"><a class="page-link">${i }<span
-											class="sr-only">(current)</span></a></li>
-								</c:if>
-								<c:if test="${map.currentPage!=i}">
+					<!-- pagination -->
+					<div class="row">
+						<div class="col-auto">
+							<ul class="pagination">
+								<c:if test="${map.isPrev}">
 									<li class="page-item"><a class="page-link"
-										href="/mypage/review/list?page=${i}">${i }</a></li>
+										href="/mypage/review/list?page=1">‹‹</a></li>
+									<li class="page-item"><a class="page-link"
+										href="/mypage/review/list?page=${map.startPage-1}">‹</a></li>
 								</c:if>
-							</c:forEach>
-							<c:if test="${map.isNext}">
-								<li class="page-item"><a class="page-link"
-									href="/mypage/review/list?page=${map.endPage+1}">›</a></li>
-								<li class="page-item"><a class="page-link"
-									href="/mypage/review/list?page=${map.totalPage}">››</a></li>
-							</c:if>
-						</ul>
+								<c:forEach var="i" begin="${map.startPage}"
+									end="${map.endPage }">
+									<c:if test="${map.currentPage==i}">
+										<li class="page-item active"><a class="page-link">${i }<span
+												class="sr-only">(current)</span></a></li>
+									</c:if>
+									<c:if test="${map.currentPage!=i}">
+										<li class="page-item"><a class="page-link"
+											href="/mypage/review/list?page=${i}">${i }</a></li>
+									</c:if>
+								</c:forEach>
+								<c:if test="${map.isNext}">
+									<li class="page-item"><a class="page-link"
+										href="/mypage/review/list?page=${map.endPage+1}">›</a></li>
+									<li class="page-item"><a class="page-link"
+										href="/mypage/review/list?page=${map.totalPage}">››</a></li>
+								</c:if>
+							</ul>
+						</div>
 					</div>
+					<!-- /pagination -->
 				</div>
-				<!-- /pagination -->
 			</div>
-		</div>
 		</div>
 	</section>
 	<%@ include file="/WEB-INF/views/user/include/footer.jsp"%>

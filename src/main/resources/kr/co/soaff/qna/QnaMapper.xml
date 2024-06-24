@@ -10,7 +10,7 @@
             WHEN qna.reply IS NULL THEN 1
             WHEN qna.reply IS NOT NULL THEN 2
             END,
-            qna.question_date ASC
+            qna.question_date DESC
         </if>
         <if test="orderBy == '최신순'">
             ORDER BY

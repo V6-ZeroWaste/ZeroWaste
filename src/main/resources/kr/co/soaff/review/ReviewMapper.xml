@@ -7,22 +7,23 @@
 		</if>
 	</sql>
 	<sql id="calendar">
-		<where>
-			<if test="startDate != null and (startDate != '')">
-                <![CDATA[
-                AND review.regist_date >= #{startDate}
-                ]]>
-			</if>
-			<if test="endDate != null and (endDate != '')">
-                <![CDATA[
-                AND review.regist_date < DATE_ADD(STR_TO_DATE(#{endDate}, '%Y-%m-%d'), INTERVAL 1 DAY)
-                ]]>
-			</if>
-			 <if test="user_no != null">
-                AND review.user_no = #{user_no}
-            </if>
-		</where>
-	</sql>
+    <where>
+        <if test="startDate != null and startDate != ''">
+            <![CDATA[
+            AND review.regist_date >= #{startDate}
+            ]]>
+        </if>
+        <if test="endDate != null and endDate != ''">
+            <![CDATA[
+            AND review.regist_date < DATE_ADD(STR_TO_DATE(#{endDate}, '%Y-%m-%d'), INTERVAL 1 DAY)
+            ]]>
+        </if>
+        <if test="user_no != null">
+            AND review.user_no = #{user_no}
+        </if>
+    </where>
+</sql>
+	
 
 	<!-- 리뷰 목록 조회 -->
 	<select id="list" parameterType="kr.co.soaff.review.ReviewVO"

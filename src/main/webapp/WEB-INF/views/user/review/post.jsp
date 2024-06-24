@@ -53,9 +53,15 @@ input {
 	max-height: 99.98px;
 }
 
+.star-rating-wrapper {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
 .star-rating {
 	display: flex;
-	direction: row;
+	flex-direction: row-reverse;
 	font-size: 1.5em;
 }
 
@@ -170,19 +176,21 @@ input {
 									<table class="table table-borderless">
 										<tbody>
 											<tr>
-												<th scope="row">Rating</th>
+												<th scope="row">Score</th>
 												<td colspan="2">
-													<div class="star-rating">
-														<input type="radio" id="5-stars" name="rating" value="5" /><label
-															for="5-stars" class="star">&#9733;</label> <input
-															type="radio" id="4-stars" name="rating" value="4" /><label
-															for="4-stars" class="star">&#9733;</label> <input
-															type="radio" id="3-stars" name="rating" value="3" /><label
-															for="3-stars" class="star">&#9733;</label> <input
-															type="radio" id="2-stars" name="rating" value="2" /><label
-															for="2-stars" class="star">&#9733;</label> <input
-															type="radio" id="1-stars" name="rating" value="1" /><label
-															for="1-stars" class="star">&#9733;</label>
+												<div class="star-rating-wrapper">
+														<div class="star-rating">
+															<input type="radio" id="5-stars" name="rating" value="5" /><label
+																for="5-stars" class="star">&#9733;</label> <input
+																type="radio" id="4-stars" name="rating" value="4" /><label
+																for="4-stars" class="star">&#9733;</label> <input
+																type="radio" id="3-stars" name="rating" value="3" /><label
+																for="3-stars" class="star">&#9733;</label> <input
+																type="radio" id="2-stars" name="rating" value="2" /><label
+																for="2-stars" class="star">&#9733;</label> <input
+																type="radio" id="1-stars" name="rating" value="1" /><label
+																for="1-stars" class="star">&#9733;</label>
+														</div>
 													</div>
 												</td>
 											</tr>
