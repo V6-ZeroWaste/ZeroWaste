@@ -75,11 +75,11 @@ public class OrderController {
 	public String orderInsert(@RequestBody OrderVO vo, HttpSession session) {
 		int userNo = (int) session.getAttribute("user_no");
 		vo.setUser_no(userNo);
-		boolean orderInsertResult = service.orderInsert(vo);
+		Integer orderNo = service.orderInsert(vo);
 
 		String msg = "";
-		if (orderInsertResult) {
-			msg = "success";
+		if (orderNo != null) {
+			msg = orderNo + "";
 		} else {
 			msg = "fail";
 		}

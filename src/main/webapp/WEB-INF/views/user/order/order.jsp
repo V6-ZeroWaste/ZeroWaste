@@ -359,15 +359,13 @@
             success: function (resp) {
 
 
-                //console.log(resp);
-                if (resp == 'success') {
-                    //paymentResult = true;
+                
+                    
                     deleteCart();
+                    location.href = "/order/success?order_no="+resp;
 
 
-                } else {
-                    //paymentResult =false;
-                }
+               
 
 
             },
@@ -441,12 +439,14 @@
             url: "/order/deleteCartAfterOrder", // 요청할 URL
             traditional: true, // 배열 데이터 전송 시 필요한 옵션
             data: data, // 전송할 데이터
-            success: function (resp) {
+            success: function () {
+            	/*
                 if (resp === 'success') {
-                    location.href = "/order/success";
+                    //location.href = "/order/success";
 
                     // 성공적으로 처리된 경우
                 }
+            	*/
             },
             error: function (data, textStatus) {
                 //$('#fail').html("관리자에게 문의하세요."); // 에러 메시지 출력
