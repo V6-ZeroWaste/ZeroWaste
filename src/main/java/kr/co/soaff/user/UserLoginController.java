@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 @Controller
 public class UserLoginController {
     @Autowired
-    private UserService userService;
+    private UserLoginService userLoginService;
 
     @GetMapping("/user/user/login")
     public String login(Model model, @CookieValue(value = "saved_id", required = false) String id) {
@@ -27,14 +27,17 @@ public class UserLoginController {
     public String login(@RequestBody UserVO vo,HttpSession session, HttpServletResponse res) throws IOException {
 //        res.setContentType("text/html;charset=utf-8");
 //        PrintWriter out = res.getWriter();
-        UserVO login = userService.login(vo);
-
+        UserVO login = userLoginService.login(vo);
+        if(login.getDelete() != null) {
+            return "2";
+        }
         System.out.println(vo);
-        String result="1";
+        String result="-1";
         if (login != null) {
             session.setAttribute("user_id", login.getId());
             session.setAttribute("user_name", login.getName());
             session.setAttribute("user_no", login.getUser_no());
+            session.setAttribute("vo",login);
 
             String saved_id = vo.getIdSaveCheck();
             if ("yes".equals(saved_id)) { // Check if rememberMe is checked

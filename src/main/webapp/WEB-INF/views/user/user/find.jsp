@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,177 +11,141 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>soaff</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
-<script>
+    <script>
+        let emailIdRegex = /^[a-zA-Z0-9._%+-]+$/;
+        let emailDomainRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    let emailIdRegex = /^[a-zA-Z0-9._%+-]+$/;
-    let emailDomainRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        function displayErrorMessage(id, message) {
+            $(id).html(message).css("display", "block");
+        }
 
-    $(function (){
-        $('#emailSel').change(function () {
-            var emailSel = $(this).val();
-            var id_email_domain = $("#id_email_domain");
-            if (emailSel === '직접입력') {
-                id_email_domain.attr('readonly', false);
-                id_email_domain.val('');
-            } else {
-                id_email_domain.attr('readonly', true);
-                id_email_domain.val(emailSel);
-            }
-        });
-    });
+        function clearErrorMessages() {
+            $("#idErrorMsg").css("display", "none");
+            $("#id_nameErrorMsg").css("display", "none");
+            $("#id_email_idErrorMsg").css("display", "none");
+            $("#id_email_domainErrorMsg").css("display", "none");
+            $("#pw_idErrorMsg").css("display", "none");
+            $("#pw_nameErrorMsg").css("display", "none");
+            $("#pw_SubmitErrorMsg").css("display", "none");
+        }
 
-    function goFindId() {
-        let idErrorMsg = $("#idErrorMsg");
-        let dupCheck = false;
-        let id = $("#id_name").val();
-        let email = $('#id_email_id').val() + "@" + $('#id_email_domain').val();
-        if (fieldCheckId()) {
-            $.ajax({
-                url: '/user/join/idCheck.do',
-                data: {
-                    id: id,
-                    email : email
-                },
-                async: false,
-                success: function (res) {
-                    if (res == '1') {
-                        idErrorMsg.html("중복된 아이디입니다").css("display", "block");
-                        dupCheck = false;
-                    } else {
-                        idErrorMsg.css("display", "none");
-                        dupCheck = true;
+
+        function goFindId() {
+            clearErrorMessages();
+            let name = $("#id_name").val();
+            let email = $('#id_email_id').val() + "@" + $('#id_email_domain').val();
+            $('#email').val(email);
+            if (fieldCheckId()) {
+                $.ajax({
+                    url: "/user/user/idFindCheck",
+                    method: 'post',
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        "name": name,
+                        "email": email
+                    }),
+                    success: function (response) {
+                        // console.log(response+"1adasd");
+                        if(response == "0"){
+                            displayErrorMessage("#idErrorMsg", "입력하신 정보가 없습니다");
+                        } else if(response == "1") {
+                            $('#frmFindId').submit();
+                            // console.log("adadasdasda");
+                        }
                     }
-                },
-                error:function (){
-                    console.log(email);
-                    console.log(id);
+                });
+            }
+        }
+
+        function fieldCheckId() {
+            let isValid = true;
+            let id_name = $("#id_name");
+            let id_email_id = $("#id_email_id");
+            let id_email_domain = $("#id_email_domain");
+
+            if (!id_name.val()) {
+                displayErrorMessage("#id_nameErrorMsg", "이름을 입력해주세요");
+                id_name.focus();
+                isValid = false;
+            }
+
+            if (!id_email_id.val()) {
+                displayErrorMessage("#id_email_idErrorMsg", "이메일을 입력해 주세요");
+                id_email_id.focus();
+                isValid = false;
+            }
+
+            if (!id_email_domain.val()) {
+                displayErrorMessage("#id_email_domainErrorMsg", "도메인을 입력해 주세요");
+                id_email_domain.focus();
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function goFindPw() {
+            clearErrorMessages();
+            let id = $('#pw_id').val();
+            let name = $('#pw_name').val();
+            if (fieldCheckPw()) {
+                $.ajax({
+                    url: "/user/user/pwFindCheck",
+                    method: 'post',
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        "id": id,
+                        "name": name
+                    }),
+                    success: function (response) {
+                        // console.log(response+"1adasd");
+                        if(response == "0"){
+                            displayErrorMessage("#pwErrorMsg", "입력하신 정보가 없습니다");
+                        } else if(response == "1") {
+                            $('#frmFindPw').submit();
+                            // console.log("adadasdasda");
+                        }
+                    }
+                });
+            }
+        }
+
+        function fieldCheckPw() {
+            let isValid = true;
+            let pw_id = $("#pw_id");
+            let pw_name = $("#pw_name");
+
+            if (!pw_id.val()) {
+                displayErrorMessage("#pw_idErrorMsg", "아이디를 입력해주세요");
+                pw_id.focus();
+                isValid = false;
+            }
+
+            if (!pw_name.val()) {
+                displayErrorMessage("#pw_nameErrorMsg", "이름을 입력해 주세요");
+                pw_name.focus();
+                isValid = false;
+            }
+
+            return isValid;
+        }
+        $(function (){
+            $('#emailSel').change(function () {
+                var emailSel = $(this).val();
+                var id_email_domain = $("#id_email_domain");
+                if (emailSel !== "직접입력") {
+                    id_email_domain.val(emailSel);
+                    document.getElementById("id_email_domain").readOnly = true
+                } else {
+                    emailSel = null;
+                    id_email_domain.removeAttr("readonly");       // readonly 삭제
                 }
             });
-            if(dupCheck){
-                $('#frmFindId').submit();
-            }
-            else{
-                idErrorMsg.focus();
-            }
-        }
-    }
+        })
 
-
-    function fieldCheckId() {
-        let id_name = $("#id_name");
-        let id_email_id = $("#id_email_id");
-        let id_email_domain = $("#id_email_domain");
-
-        let id_nameErrorMsg = $("#id_nameErrorMsg");
-        let id_email_idErrorMsg = $("#id_email_idErrorMsg");
-        let id_email_domainErrorMsg = $("#id_email_domainErrorMsg");
-
-        id_nameErrorMsg.css("display", "none");
-        id_email_idErrorMsg.css("display", "none");
-        id_email_domainErrorMsg.css("display", "none");
-
-        let isValid = true;
-
-        if (!id_name.val()) {
-            id_nameErrorMsg.html("이름을 입력해주세요");
-            id_nameErrorMsg.css("display", "block");
-            id_name.focus();
-            isValid = false;
-        }
-
-
-        if (!id_email_id.val()) {
-            id_email_idErrorMsg.html("이메일을 입력해 주세요");
-            id_email_idErrorMsg.css("display", "block");
-            id_email_id.focus();
-            isValid = false;
-        }
-
-        if (!id_email_domain.val()) {
-            id_email_domainErrorMsg.html("도메인을 입력해 주세요");
-            id_email_domainErrorMsg.css("display", "block");
-            id_email_domain.focus();
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    function goFindPw() {
-        let pw_SubmitErrorMsg = $("#pw_SubmitErrorMsg");
-        let dupCheck = false;
-
-        if (fieldCheckPw()) {
-            $.ajax({
-                url: '/user/join/idCheck.do',
-                data: {  id: $("#pw_id").val(),
-                         name :  $("#pw_name").val()
-                },
-                async: false,
-                success: function (res) {
-                    if (res == '1') {
-                        pw_SubmitErrorMsg.html("올바른 값을 입력해주세요").css("display", "block");
-                    } else {
-                        pw_SubmitErrorMsg.css("display", "none");
-                        dupCheck = true;
-                    }
-                }
-            });
-            if(dupCheck){
-                $('#frmFindPw').submit();
-            }
-            else{
-                pw_SubmitErrorMsg.focus();
-            }
-        }
-    }
-
-
-    function fieldCheckPw() {
-        let pw_id = $("#pw_id");
-        let pw_name = $("#pw_name");
-
-        let pw_idErrorMsg = $("#pw_idErrorMsg");
-        let pw_nameErrorMsg = $("#pw_nameErrorMsg");
-
-
-        pw_idErrorMsg.css("display", "none");
-        pw_nameErrorMsg.css("display", "none");
-
-        let isValid = true;
-
-        if (!pw_id.val()) {
-            pw_idErrorMsg.html("아이디를 입력해주세요");
-            pw_idErrorMsg.css("display", "block");
-            pw_id.focus();
-            isValid = false;
-        }
-
-
-        if (!pw_name.val()) {
-            pw_nameErrorMsg.html("이름을 입력해 주세요");
-            pw_nameErrorMsg.css("display", "block");
-            pw_name.focus();
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-
-    $(function () {
-
-    });
-    window.onload = function () {
-        $("#name, #email_id, #email_domain").on("change", function (){
-            fieldCheckId();
-        });
-        $("#id, #name").on("change", function (){
-            fieldCheckPw();
-        });
-    }
-
-</script>
+    </script>
 </head>
 <body>
 <section class="py-md-0">
@@ -191,7 +154,7 @@
         <div class="row justify-content-center align-items-center vh-md-100">
             <div class="col-md-10 col-lg-7">
                 <div class="l" id="accordionExample">
-                    <form id="frmFindId">
+                    <form id="frmFindId" method="post" action="/user/user/idFind">
                         <div class="card active">
                             <div class="card-header" id="headingOne">
                                 <h2 class="mb-0">
@@ -200,18 +163,16 @@
                                     </button>
                                 </h2>
                             </div>
-
-                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div id="collapseOne" class="collapse ${find eq 'idFind' ? 'show' : ''}" aria-labelledby="headingOne" data-parent="#accordionExample">
                                 <div class="card-body">
                                     <div class="row mt-2">
                                         <div class="form-group col-12">
                                             <label for="id_name">이름</label>
-                                            <input type="text" class="form-control" id="id_name" name="id_name">
+                                            <input type="text" class="form-control" id="id_name" name="name">
                                             <div class="invalid-feedback" id="id_nameErrorMsg"></div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
                                             <label for="id_email_id">이메일</label>
-                                            <%--                                        --%>
                                             <div class="col-12 div">
                                                 <div class="row">
                                                     <div class="col-md-4" style="padding: 0;">
@@ -223,12 +184,12 @@
                                                         <div class="invalid-feedback" id="id_email_idErrorMsg"></div>
                                                     </div>
                                                     <div class="col-md-4" style="padding: 0;">
-                                                        <input type="text" class="form-control" id="id_email_domain" name="id_email_domain" placeholder="도메인이름" aria-label="도메인이름" readonly >
+                                                        <input type="text" class="form-control" id="id_email_domain" name="id_email_domain" placeholder="도메인이름" aria-label="도메인이름" >
                                                         <div class="valid-feedback"></div>
                                                         <div class="invalid-feedback" id="id_email_domainErrorMsg"></div>
                                                     </div>
                                                     <div class="col-4" style="padding: 0;">
-                                                        <select id="emailSel" class="custom-select" >
+                                                        <select id="emailSel" class="custom-select">
                                                             <option value="직접입력" selected>직접입력</option>
                                                             <option value="naver.com">naver.com</option>
                                                             <option value="gmail.com">gmail.com</option>
@@ -239,12 +200,12 @@
                                                             <option value="yahoo.com">yahoo.com</option>
                                                         </select>
                                                     </div>
-                                                    <input type="hidden" id="relEmail" name="relEmail">
+                                                    <input type="hidden" id="email" name="email">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <div class="invalid-feedback" id="id_SubmitErrorMsg"></div>
+                                            <div class="invalid-feedback" id="idErrorMsg"></div>
                                             <button type="button" class="btn btn-block btn-primary" onclick="goFindId()">Submit</button>
                                         </div>
                                     </div>
@@ -252,7 +213,7 @@
                             </div>
                         </div>
                     </form>
-                    <form id="frmFindPw">
+                    <form id="frmFindPw" action="/user/user/pwFind" method="post">
                         <div class="card">
                             <div class="card-header" id="headingTwo">
                                 <h2 class="mb-0">
@@ -261,21 +222,21 @@
                                     </button>
                                 </h2>
                             </div>
-                            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                            <div id="collapseTwo" class="collapse ${find eq 'pwFind' ? 'show' : ''}" aria-labelledby="headingTwo" data-parent="#accordionExample">
                                 <div class="card-body">
                                     <div class="row mt-2">
                                         <div class="form-group col-12">
                                             <label for="pw_id">아이디</label>
-                                            <input type="text" class="form-control form-control" id="pw_id" name="pw_id">
+                                            <input type="text" class="form-control form-control" id="pw_id" name="id">
                                             <div class="invalid-feedback" id="pw_idErrorMsg"></div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
                                             <label for="pw_name">이름</label>
-                                            <input type="text" class="form-control" id="pw_name" name="pw_name">
+                                            <input type="text" class="form-control" id="pw_name" name="name">
                                             <div class="invalid-feedback" id="pw_nameErrorMsg"></div>
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <div class="invalid-feedback" id="pw_SubmitErrorMsg"></div>
+                                            <div class="invalid-feedback" id="pwErrorMsg"></div>
                                             <button type="button" class="btn btn-block btn-primary" onclick="goFindPw()">Submit</button>
                                         </div>
                                     </div>
