@@ -23,7 +23,7 @@
 	crossorigin="anonymous"></script>
 <script src="/admin/js/datatables-simple-demo.js"></script>
 
-<title>Review Post</title>
+<title>soaff Review Post</title>
 
 <style>
 .review-info {

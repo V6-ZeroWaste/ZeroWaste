@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
 
-<title>mypage Qna Detail</title>
+<title>soaff mypage QnA</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
 	rel="stylesheet" />
@@ -88,7 +88,7 @@ function deleteQna() {
 				<div class="col-lg-9">
 					<div class="row">
 						<div class="col-12">
-							<h3 class="mb-0">Qna Detail</h3>
+							<h3 class="mb-0">QnA Detail</h3>
 						</div>
 
 

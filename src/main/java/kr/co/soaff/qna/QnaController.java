@@ -45,11 +45,9 @@ public class QnaController {
 		vo.setUser_no(user_no);
 		vo.setPageSize(10);
 		Map<String, Object> map = service.list(vo);
-		String printList = "";
+
 		List<QnaVO> qnaList = (List<QnaVO>) map.get("list");
-		if (qnaList.size() == 0) {
-			printList = "<td class='first' colspan='6' style='text-align: center;'>등록된 글이 없습니다.</td>";
-		} else {
+		if (qnaList.size() != 0) {
 			for (QnaVO qnaVO : qnaList) {
 				qnaVO.setReplyState(qnaVO.getReply_date() != null ? "답변 완료" : "답변 대기");
 
@@ -59,19 +57,9 @@ public class QnaController {
 				} else if (qnaVO.getType() == 1) {
 					typeString = "상품상세문의";
 				}
-				printList += "<tr onclick=\"location.href='/mypage/qna/detail?qna_no=" + qnaVO.getQna_no() + "'\">";
-				printList += "<td>" + (qnaVO.getQna_img() == null ? "" : ("<img src='" + qnaVO.getQna_img() + "'/>"))
-						+ "</td>";
-				printList += "<td>" + qnaVO.getItem_name() + "</td>";
-				printList += "<td>" + qnaVO.getTitle() + "</td>";
-				printList += "<td>" + typeString + "</td>";
-				printList += "<td>" + qnaVO.getUser_id() + "</td>";
-				printList += "<td>" + qnaVO.getQuestion_date() + "</td>";
-				printList += "<td>" + qnaVO.getReplyState() + "</td>";
-				printList += "</tr>";
+				qnaVO.setTypeString(typeString);
 			}
 		}
-		map.put("printList", printList);
 		return map;
 	}
 

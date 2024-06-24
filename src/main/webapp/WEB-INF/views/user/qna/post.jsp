@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/user/css/vendor.css" />
 <link rel="stylesheet" href="/user/css/style.css" />
 
-<title>Qna Post</title>
+<title>soaff QnA Post</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
 	rel="stylesheet" />
@@ -116,7 +116,7 @@ function postQna() {
 					<div class="row">
 						<!-- title -->
 						<div class="col-12">
-							<h3 class="mb-0">Qna Post</h3>
+							<h3 class="mb-0">QnA Post</h3>
 						</div>
 						<!-- /title -->
 
