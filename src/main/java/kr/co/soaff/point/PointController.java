@@ -3,6 +3,8 @@ package kr.co.soaff.point;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,6 +87,16 @@ public class PointController {
     public String pointReqForm(Model model, OrderVO orderVO) {
       return "/user/order/pointList";
     }
+    
+    @GetMapping("/mypage/point/list")
+	@ResponseBody
+	public Map<String, Object> userListAjax(PointVO vo, HttpSession session) {
+    	vo.setUser_no((int) session.getAttribute("user_no"));
+		Map<String, Object> map = service.userList(vo);
+		List<PointVO> pointList = (List<PointVO>) map.get("list");
+		map.put("dataList", pointList);
+		return map;
+	}
 
 
 

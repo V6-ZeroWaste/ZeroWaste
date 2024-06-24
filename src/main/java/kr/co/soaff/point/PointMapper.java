@@ -11,4 +11,6 @@ public interface PointMapper {
 	int delete(int point_no);
 	int count(PointVO vo);
 	int total(PointVO vo);
+	List<PointVO> userList(PointVO vo);
+	int userCount(PointVO vo);
 }
