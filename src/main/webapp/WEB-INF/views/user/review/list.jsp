@@ -46,11 +46,6 @@
 	height: 100px;
 }
 
-.pagination .page-item.active .page-link {
-	border: 2px solid #000;
-	font-weight: bold;
-}
-
 .disable-link {
 	pointer-events: none;
 }

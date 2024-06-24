@@ -39,6 +39,7 @@ public class ReviewServiceImpl implements ReviewService {
 	    map.put("endPage", endPage);
 	    map.put("isPrev", isPrev);
 	    map.put("isNext", isNext);
+	    map.put("currentPage", vo.getPage());
 
 	    vo.setStartIdx((vo.getPage() - 1) * pageSize);
 	    List<ReviewVO> list = mapper.list(vo);
