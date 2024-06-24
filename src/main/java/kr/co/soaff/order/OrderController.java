@@ -65,7 +65,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/order/success")
-	public String success(HttpSession session) {
+	public String success(HttpSession session, int order_no) {
 		return "user/order/success";
 	}
 
