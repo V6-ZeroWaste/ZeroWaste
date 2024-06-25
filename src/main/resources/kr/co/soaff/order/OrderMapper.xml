@@ -104,7 +104,7 @@
 	<!-- OrderDetailVO에 담는 정보 -->
 	<select id="orderDetailInfo" parameterType="kr.co.soaff.order.OrderDetailVO">
 		SELECT
-			order_no, order_detail_no,
+			order_no, order_detail_no, packing_status,
 		    od.amount, od.price,
 		    cancel_status, confirm_date, cancel_reason_detail, cancel_reason_type,cancel_request_date,
 		    od.item_no, item_img, item.name as item_name
