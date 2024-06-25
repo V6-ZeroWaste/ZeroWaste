@@ -114,7 +114,7 @@ public class OrderServiceImpl implements OrderService {
 			list.add(orderVO);
 		}
 		int orderDetailInsertResult = mapper.orderDetailInsert(list);
-		int inventoryUpdateResult = mapper.orderDetailInsert(list);
+		int inventoryUpdateResult = mapper.inventoryUpdate(list);
 //		int orderDetailInsertResult = 0;
 //
 //		int[] amountArray = vo.getAmountArray();
