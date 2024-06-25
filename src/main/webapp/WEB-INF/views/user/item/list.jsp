@@ -140,8 +140,6 @@
                         <div class="col-lg-8 text-white" data-swiper-parallax-x="-100%">
                             <h1 class="display-1 mt-1 mb-3 font-weight-light">SOAFF BEST Item <b class="d-block">Greener24</b>
                             </h1>
-                            <a href="listing-full.html" class="btn btn-sm btn-white btn-action">Shop Now <span
-                                    class="icon-arrow-right"></span></a>
                         </div>
                     </div>
                 </div>
