@@ -1,5 +1,7 @@
 package kr.co.soaff.order;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Arrays;
 
 @Slf4j
 @Controller
@@ -59,8 +59,9 @@ public class OrderController {
 	}
 
 	@PostMapping("/order")
-	public String goOrder(OrderVO vo, Model model, HttpSession session, @RequestParam(value = "type", required = false) String type,
-						  @RequestParam(value = "amountArray", required = false) int[] amountArray) {
+	public String goOrder(OrderVO vo, Model model, HttpSession session,
+			@RequestParam(value = "type", required = false) String type,
+			@RequestParam(value = "amountArray", required = false) int[] amountArray) {
 		vo.setUser_no((int) session.getAttribute("user_no"));
 		vo.setBuyer_name((String) session.getAttribute("user_name"));
 		model.addAttribute("map", service.order(vo, type, amountArray));
@@ -106,6 +107,16 @@ public class OrderController {
 			msg = "fail";
 		}
 		return msg;
+
+	}
+
+	@ResponseBody
+	@GetMapping("/order/checkAmount")
+	public List<Integer> checkAmount(@RequestParam("itemNo") int[] itemNo) {
+		OrderVO vo = new OrderVO();
+		vo.setItemNoArray(itemNo);
+
+		return service.checkAmount(vo);
 
 	}
 

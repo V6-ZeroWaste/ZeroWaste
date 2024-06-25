@@ -58,8 +58,15 @@
         var cart_no = e.getAttribute('cart_no');
         var field = e.getAttribute('field');
         var amount = document.getElementById(field).value;
-        if (active == '+') {
+        var inventory = e.getAttribute('inventory');
+        
+        
+        if (active == '+' && inventory >= amount) {
             amount++;
+        }
+        if(active == '+' && inventory < amount) {
+        	alert("주문 불가능한 수량입니다. 다시 시도해주세요.")
+            return location.href = "/cart";
         }
         if (amount > 0 && active == '-') {
             amount--;
@@ -68,6 +75,7 @@
             alert("1개 이상부터 주문이 가능합니다")
             return location.href = "/cart";
         }
+        
 
         var data = {
             cart_no: cart_no,
@@ -378,16 +386,20 @@
 
                                         <!-- id, for 가 일치해야 토글이 됩니다 -->
                                         <div class="custom-control custom-checkbox mb-2">
-                                            <input type="checkbox" class="custom-control-input"
-                                                   id="checkbox${vo.cart_no}" name="checkedCartNo" value="${vo.cart_no}"
-                                                   cart_no="${vo.cart_no}"
-                                                   checked>
-                                            <label class="custom-control-label" for="checkbox${vo.cart_no}"></label>
-                                        </div>
+										    <input type="checkbox" class="custom-control-input"
+										           id="checkbox${vo.cart_no}" name="checkedCartNo" value="${vo.cart_no}"
+										           cart_no="${vo.cart_no}"
+										           <c:if test="${vo.inventory <= 0}">disabled</c:if>
+										           <c:if test="${vo.inventory > 0}">checked</c:if>>
+										    <label class="custom-control-label" for="checkbox${vo.cart_no}"></label>
+										</div>
+
+
 
                                         <a href="/item/detail?${vo.item_no}"><img src="${vo.item_img}" alt="Image"></a>
                                         <div class="media-body">
-                                            <h5 class="media-title">${vo.name}</h5>
+                                            <h5 class="media-title">${vo.name}<c:if test="${vo.inventory <= 0}"><span class="text-danger"> 품절</span></c:if>
+                                            </h5>
                                             <c:if test="${vo.packing_status eq 1}">
                                                 <span class="small">포장 (+2,000원)</span>
                                             </c:if>
@@ -446,32 +458,52 @@
                                 <div class="col-4 col-lg-2 text-center">
                                     <div class="counter">
                                         <span class="counter-minus icon-minus" id='plusAmount${vo.cart_no}'
-                                              field='amount${vo.cart_no}' onclick="chageAmount(this, '-');"
-                                              cart_no="${vo.cart_no}"></span>
+                                              field='amount${vo.cart_no}' <c:if test="${vo.inventory > 0}"> onclick="chageAmount(this, '-');"</c:if>
+                                              cart_no="${vo.cart_no}" inventory="${vo.inventory }"></span>
                                         <input type='text' id='amount${vo.cart_no}'
                                                class="counter-value" value="${vo.amount}"
                                                min="0" max="${vo.inventory}" cart_no="${vo.cart_no}" readonly>
                                         <span class="counter-plus icon-plus" id='minusAmount${vo.cart_no}'
-                                              field='amount${vo.cart_no}' onclick="chageAmount(this, '+');"
-                                              cart_no="${vo.cart_no}"></span>
+                                              field='amount${vo.cart_no}' <c:if test="${vo.inventory > 0}"> onclick="chageAmount(this, '-');"</c:if>
+                                              cart_no="${vo.cart_no}" inventory="${vo.inventory }"></span>
                                     </div>
                                 </div>
                                 <div class="col-4 col-lg-2 text-center">
 
                                     <!-- `discountedPrice`가 비어 있으면 -->
                                     <c:if test="${empty vo.discounted_price}">
-									    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                              cart_no="${vo.cart_no}"><fmt:formatNumber
-                                                value="${vo.amount*vo.price}" type="number"
-                                                pattern="#,##0"/>원</span>
+                                    
+                                    
+                                    	<c:if test="${vo.packing_status eq 1}">
+										    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
+	                                              cart_no="${vo.cart_no}"><fmt:formatNumber
+	                                                value="${vo.amount*(vo.price+2000)}" type="number"
+	                                                pattern="#,##0"/>원</span>
+                                        </c:if>
+                                        
+                                        <c:if test="${vo.packing_status eq 0}">
+										    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
+	                                              cart_no="${vo.cart_no}"><fmt:formatNumber
+	                                                value="${vo.amount*vo.price}" type="number"
+	                                                pattern="#,##0"/>원</span>
+                                        </c:if>
                                     </c:if>
 
                                     <!-- `discountedPrice`가 비어 있지 않으면 -->
                                     <c:if test="${!empty vo.discounted_price}">
-									    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                              cart_no="${vo.cart_no}"><fmt:formatNumber
-                                                value="${vo.amount*vo.discounted_price}" type="number"
-                                                pattern="#,##0"/>원</span>
+									    <c:if test="${vo.packing_status eq 1}">
+										    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
+	                                              cart_no="${vo.cart_no}"><fmt:formatNumber
+	                                                value="${vo.amount*(vo.discounted_price+2000)}" type="number"
+	                                                pattern="#,##0"/>원</span>
+                                        </c:if>
+                                        
+                                        <c:if test="${vo.packing_status eq 0}">
+										    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
+	                                              cart_no="${vo.cart_no}"><fmt:formatNumber
+	                                                value="${vo.amount*vo.discounted_price}" type="number"
+	                                                pattern="#,##0"/>원</span>
+                                        </c:if>
                                     </c:if>
 
 

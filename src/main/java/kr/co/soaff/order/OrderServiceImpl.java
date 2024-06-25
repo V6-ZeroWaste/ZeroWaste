@@ -78,9 +78,9 @@ public class OrderServiceImpl implements OrderService {
 		int cartCount = mapper.cartCount(orderVO);
 		OrderVO info = mapper.info(orderVO);
 
-		//type = buy 일 때 amountArray에 있는 값으로 보내기
-		if(type!=null && type.equals("buy")){
-			for(int i = 0 ; i < cartList.size(); i++){
+		// type = buy 일 때 amountArray에 있는 값으로 보내기
+		if (type != null && type.equals("buy")) {
+			for (int i = 0; i < cartList.size(); i++) {
 				cartList.get(i).setAmount(amountArray[i]);
 			}
 		}
@@ -114,6 +114,7 @@ public class OrderServiceImpl implements OrderService {
 			list.add(orderVO);
 		}
 		int orderDetailInsertResult = mapper.orderDetailInsert(list);
+		int inventoryUpdateResult = mapper.orderDetailInsert(list);
 //		int orderDetailInsertResult = 0;
 //
 //		int[] amountArray = vo.getAmountArray();
@@ -128,13 +129,26 @@ public class OrderServiceImpl implements OrderService {
 //			orderDetailInsertResult += mapper.orderDetailInsert(orderVO);
 //		}
 
-		return orderInsertResult > 0 && pointInsertResult > 0 && orderDetailInsertResult > 0 ? orderNo : null;
+		return orderInsertResult > 0 && pointInsertResult > 0 && orderDetailInsertResult > 0
+				&& inventoryUpdateResult > 0 ? orderNo : null;
 
 	}
 
 	@Override
 	public int deleteCartAfterOrder(OrderVO vo) {
 		return mapper.deleteCartAfterOrder(vo);
+	}
+
+	@Override
+	public List<Integer> checkAmount(OrderVO vo) {
+		List<OrderVO> list = new ArrayList<OrderVO>();
+		int[] itemNoArray = vo.getItemNoArray();
+		for (int i = 0; i < itemNoArray.length; i++) {
+			OrderVO orderVO = new OrderVO();
+			orderVO.setItem_no(itemNoArray[i]);
+			list.add(orderVO);
+		}
+		return mapper.checkAmount(list);
 	}
 
 }

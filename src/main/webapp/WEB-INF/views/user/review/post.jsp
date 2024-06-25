@@ -78,6 +78,10 @@ input {
 	.star-rating label:hover ~ label {
 	color: #f2b600;
 }
+
+.disable-link {
+	pointer-events: none;
+}
 </style>
 
 <script type="text/javascript">
@@ -93,7 +97,6 @@ input {
 			return;
 		}
 
-		
 		formData.append("score", score);
 		if (review_img) {
 			formData.append("review_img", review_img);
@@ -140,21 +143,20 @@ input {
 
 						<!-- item info card -->
 						<div class="col-12">
-							<div style="border: 1px solid #dddddd;">
-								<div class="row align-items-center" style="min-height: 100px">
-									<div style="width: 140px; text-align: center">
+							<div class="order">
+								<div class="row align-items-center" style="height: 100px">
+									<div class="col-lg-2 order-preview justify-content-center">
 										<!-- 상품이미지 -->
-										<a href="product-1.html"
-											title="Fawn Wool / Natural Mammoth Chair"
-											data-toggle="tooltip" data-placement="top"> <img
-											class="item-img" src="${vo.item_img}"
-											alt="Fawn Wool / Natural Mammoth Chair">
+										<a href="product-1.html" title="${vo.item_name }"
+											class="disable-link" data-toggle="tooltip"
+											data-placement="top"> <img src="${vo.item_img}"
+											alt="${vo.item_name }">
 										</a>
 									</div>
-									<div style="width: 400px">
+									<div class="col-lg-4">
 										<h3 class="order-number">${vo.item_name}</h3>
 									</div>
-									
+									<div class="col-lg-4"></div>
 								</div>
 							</div>
 						</div>
@@ -177,7 +179,7 @@ input {
 											<tr>
 												<th scope="row">Score</th>
 												<td colspan="2">
-												<div class="star-rating-wrapper">
+													<div class="star-rating-wrapper">
 														<div class="star-rating">
 															<input type="radio" id="5-stars" name="rating" value="5" /><label
 																for="5-stars" class="star">&#9733;</label> <input
@@ -216,8 +218,8 @@ input {
 									</table>
 								</div>
 								<div class="col-12" style="text-align: center">
-									<button id="post" class="btn btn-primary" type="button" style="margin-top:10px"
-										onclick="postReview()">등록</button>
+									<button id="post" class="btn btn-primary" type="button"
+										style="margin-top: 10px" onclick="postReview()">등록</button>
 								</div>
 							</form>
 
@@ -229,7 +231,6 @@ input {
 				</div>
 			</div>
 		</div>
-
 	</section>
 	<%@ include file="/WEB-INF/views/user/include/footer.jsp"%>
 </body>
