@@ -16,12 +16,12 @@ public class UserSignUpController {
     @Autowired
     private UserSignUpService service;
 
-    @GetMapping("/user/user/signUp")
+    @GetMapping("/signUp")
     public String userSignUp() {
         return "/user/user/signUp";
     }
 
-    @PostMapping("/user/user/signUp")
+    @PostMapping("/signUp")
     @ResponseBody
     public String userSignUp(@RequestBody UserVO vo){
         if(service.userSignUp(vo)){
@@ -32,7 +32,7 @@ public class UserSignUpController {
         }
     }
 
-    @PostMapping("/user/user/idcheck")
+    @PostMapping("/idcheck")
     @ResponseBody
     public String idCheck(@RequestBody UserVO vo) {
         int i = service.idCheck(vo);

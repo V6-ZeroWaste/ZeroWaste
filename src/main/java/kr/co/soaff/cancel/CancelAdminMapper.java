@@ -27,4 +27,6 @@ public interface CancelAdminMapper {
 	int requestCancel(CancelAdminDetailVO vo);
 	
 	int cancelOrderUpdate(CancelAdminOrderVO vo);
+	
+	int updateItemAmount(CancelAdminDetailVO vo);
 }

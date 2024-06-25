@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/user/css/style.css"/>
     <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <title>soaff</title>
+    <title>soaff login</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
 </head>
 <script>
@@ -60,7 +60,7 @@
         let isValid = loginCheck();
         if (isValid) {
             $.ajax({
-                url: '/user/user/login',
+                url: '/login',
                 method: 'post',
                 contentType: "application/json",
                 dataType: "json",
@@ -147,8 +147,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
-                                            <a href="/user/user/idFind" style="color: #555555;">아이디 찾기 | </a>
-                                            <a href="/user/user/pwFind" style="color: #555555;">비밀번호 찾기</a>
+                                            <a href="/idFind" style="color: #555555;" class="eyebrow">FIND ID | </a>
+                                            <a href="/pwFind" style="color: #555555; ">비밀번호 찾기</a>
                                         </div>
                                         <div class="col-12 mt-2">
                                             <input type="button" value="LOG IN" alt="LOG IN" id="login"
@@ -156,7 +156,7 @@
                                             <div id="submitCheckMsg" class="invalid-feedback"></div>
                                         </div>
                                         <div class="col-12 mt-2">
-                                            <a href="/user/user/signUp" class="btn btn-block btn-primary"
+                                            <a href="/signUp" class="btn btn-block btn-primary"
                                                style="background-color: #79AC78; border-bottom-color: #79AC78; border-top-color: #79AC78; border-left-color: #79AC78; border-right-color : #79AC78;">SIGN UP</a>
                                         </div>
                                     </div>

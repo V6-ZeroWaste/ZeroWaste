@@ -7,4 +7,5 @@ public interface PointService {
 	Map<String, Object> list(PointVO vo); 
 	boolean insert(PointVO vo);
 	boolean delete(int point_no);
+	Map<String, Object> userList(PointVO vo);
 } 

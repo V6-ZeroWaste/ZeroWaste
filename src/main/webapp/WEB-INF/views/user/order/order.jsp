@@ -64,7 +64,7 @@
         margin-top: 30px;
         margin-bottom: 10px;
     }
-    
+
     /* Chrome, Safari, Edge 및 Opera에서 화살표 제거 */
     input[type=number]::-webkit-outer-spin-button,
     input[type=number]::-webkit-inner-spin-button {
@@ -169,9 +169,10 @@
         aboutTotalPrice();
         telFormat();
         paymentInfo();
-        console.log("amount", itemAmountArray());
-        console.log("price", priceArray());
-        console.log("item_no", itemNoArray());
+        //console.log("amount", itemAmountArray());
+        //console.log("price", priceArray());
+        //console.log("item_no", itemNoArray());
+        console.log(checkAmount());
         
 
 
@@ -204,9 +205,16 @@
         $("#goPay").on('click', function () {
             var agree = $("#agree").is(":checked");
 
+            var flag = checkAmount();
             if (fieldCheck()) {
+            	if(checkAmount()){
+            		request_pay();
+            	}else{
+            		alert("가능한 주문 수량을 초과했습니다. 주문을 취소합니다.")
+            		location.href="/cart";
+            	}
 
-                request_pay();
+                
 
 
             }
@@ -318,14 +326,13 @@
         let buyer_tel = $('#buyerTel').text();
         let delivery_status = 0;
         //let payment_date = currDate();
-        let pointPlusContent = order_name + "주문건 적립";
-        let pointContent = order_name + "주문시 적립금 사용";
+        let pointPlusContent = "주문 적립";
+        let pointContent = order_name + "적립금 사용";
         let pointPlus = parseFloat($('#estimatedPoint').text().replace(/[^0-9.-]/g, '')) || 0;
         //orderDetail
         let amount = itemAmountArray();
         let price = priceArray();
         let item_no = itemNoArray();
- 
 
 
         let data = {
@@ -368,13 +375,8 @@
             success: function (resp) {
 
 
-                
-                    
-                    deleteCart();
-                    location.href = "/order/success?order_no="+resp;
-
-
-               
+                deleteCart();
+                location.href = "/order/success?order_no=" + resp;
 
 
             },
@@ -449,13 +451,13 @@
             traditional: true, // 배열 데이터 전송 시 필요한 옵션
             data: data, // 전송할 데이터
             success: function () {
-            	/*
+                /*
                 if (resp === 'success') {
                     //location.href = "/order/success";
 
                     // 성공적으로 처리된 경우
                 }
-            	*/
+                */
             },
             error: function (data, textStatus) {
                 //$('#fail').html("관리자에게 문의하세요."); // 에러 메시지 출력
@@ -555,7 +557,7 @@
         // id가 pointToUse인 input 요소의 값을 숫자로 변환하여 가져옴
         var inputPoints = parseFloat($('#pointToUse').val().replace(/[^0-9.-]/g, '')) || 0;
 
-        
+
         var paymentPrice = parseFloat($('#paymentPrice').text().replace(/[^0-9.-]/g, ''))
 
         // 입력값이 사용 가능한 포인트보다 큰 경우
@@ -569,11 +571,11 @@
             // 유효성 검사 실패를 나타내는 false 반환
             return false;
         }
-        
-        if(paymentPrice-inputPoints<1000 && paymentPrice-inputPoints>0){
-        	alert("최종결제금액이 1000원 이상이어야 합니다.");
-        	return false;
-        	
+
+        if (paymentPrice - inputPoints < 3000 && paymentPrice - inputPoints > 0) {
+            alert("최종결제금액이 3000원(배송비) 이상이어야 합니다.");
+            return false;
+
         }
 
         // 유효성 검사 성공을 나타내는 true 반환
@@ -598,6 +600,53 @@
 
         return finalString
     }
+
+    <!--재고 확인-->
+    function checkAmount() {
+
+        let itemNo = itemNoArray();
+        let amount = itemAmountArray();
+
+        // 데이터 객체 생성
+        var data = {
+            itemNo: itemNo // checkedCartNo를 배열로 전달
+        };
+        var flag = true;
+        // AJAX 요청
+        $.ajax({
+            type: "GET", // 요청 메서드 타입
+            url: "/order/checkAmount", // 요청할 URL
+            traditional: true, // 배열 데이터 전송 시 필요한 옵션
+            data: data, // 전송할 데이터
+            success: function (resp) {
+                let dbAmount = resp;
+                console.log(dbAmount);
+
+                for (let i = 0; i < amount.length; i++) {
+                    if (dbAmount[i] < amount[i]) {
+                    	console.log("false");
+                        flag = false;
+                    }
+                }
+                
+                console.log("itemAmount values: ", itemNo);
+                console.log("itemAmount values: ", amount);
+                console.log("dbAmount values: ", dbAmount);
+
+
+            },
+            error: function (data, textStatus) {
+                //$('#fail').html("관리자에게 문의하세요."); // 에러 메시지 출력
+                console.log('error', data, textStatus);
+            }
+        });
+
+        return flag;
+
+    }
+
+    
+    
 
 </script>
 
@@ -694,8 +743,8 @@
                     <c:if test="${empty map.cartList}">
                         <div class="cart-item">
                             <div class="align-items-center col-12" style="text-align : center;">
-                            	Empty
-                        	</div>
+                                Empty
+                            </div>
                         </div>
                     </c:if>
 
@@ -709,7 +758,7 @@
                                         <div class="media-body">
                                             <h5 class="media-title" item_no="${vo.item_no }">${vo.name}</h5>
                                             <c:if test="${vo.packing_status eq 1}">
-                                                <span class="small">포장O (+2,000원)</span>
+                                                <span class="small">포장(+2,000원)</span>
                                             </c:if>
 
                                         </div>
@@ -743,44 +792,44 @@
 
                                     <!-- `discountedPrice`가 비어 있으면 -->
                                     <c:if test="${empty vo.discounted_price}">
-                                    
-                                    	<c:if test="${vo.packing_status eq 1}">
+
+                                        <c:if test="${vo.packing_status eq 1}">
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                              cart_no="${vo.cart_no}"><fmt:formatNumber
-                                                value="${(vo.amount*vo.price)+2000}" type="number"
-                                                pattern="#,##0"/>원</span>
-                                    	</c:if>
-                                    	
-                                    	<c:if test="${vo.packing_status eq 0}">
+                                                  cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                    value="${vo.amount*(vo.price+2000)}" type="number"
+                                                    pattern="#,##0"/>원</span>
+                                        </c:if>
+
+                                        <c:if test="${vo.packing_status eq 0}">
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                              cart_no="${vo.cart_no}"><fmt:formatNumber
-                                                value="${vo.amount*vo.price}" type="number"
-                                                pattern="#,##0"/>원</span>
-                                    	</c:if>
-                                    
-                                    
+                                                  cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                    value="${vo.amount*vo.price}" type="number"
+                                                    pattern="#,##0"/>원</span>
+                                        </c:if>
+
+
                                     </c:if>
 
                                     <!-- `discountedPrice`가 비어 있지 않으면 -->
                                     <c:if test="${!empty vo.discounted_price}">
-                                    
-                                    	<c:if test="${vo.packing_status eq 1}">
+
+                                        <c:if test="${vo.packing_status eq 1}">
                                     	
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                              cart_no="${vo.cart_no}"><fmt:formatNumber
-                                                value="${(vo.amount*vo.discounted_price)+2000}" type="number"
-                                                pattern="#,##0"/>원</span>
-                                    
-                                    	</c:if>
-                                    	
-                                   		<c:if test="${vo.packing_status eq 0}">
+                                                  cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                    value="${vo.amount*(vo.discounted_price+2000)}" type="number"
+                                                    pattern="#,##0"/>원</span>
+
+                                        </c:if>
+
+                                        <c:if test="${vo.packing_status eq 0}">
                                     	
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                              cart_no="${vo.cart_no}"><fmt:formatNumber
-                                                value="${vo.amount*vo.discounted_price}" type="number"
-                                                pattern="#,##0"/>원</span>
-                                    
-                                    	</c:if>
+                                                  cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                    value="${vo.amount*vo.discounted_price}" type="number"
+                                                    pattern="#,##0"/>원</span>
+
+                                        </c:if>
                                     </c:if>
 
                                 </div>
@@ -899,7 +948,7 @@
                                         <div class="d-inline-flex col-12" style="padding-left: 0px;">
                                             <input type="number" class="form-control col-2" name="receiverTel1"
                                                    id="receiverTel1"
-                                                   placeholder="" >
+                                                   placeholder="">
                                             <p class="d-flex justify-content-center align-items-center col-1"
                                                style="margin: 0;">-</p>
                                             <input type="number" class="form-control col-2" name="receiverTel2"

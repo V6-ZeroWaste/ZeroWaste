@@ -122,9 +122,9 @@
                         <!-- 제목 -->
                         <div class="title">
                             <h1 class="mt-4">상품 문의 상세</h1>
-                            <input class="btn btn-primary" type="button" style="height:38px" onclick="location.href = '/admin/qna/list'" value="돌아가기"> 
+                            <input class="btn btn-primary" type="button" style="height:38px" onclick="location.href = '/admin/qna/list'" value="돌아가기">
                         </div>
-                        
+
                         <!-- 문의 영역 -->
                         <div class="card mb-4">
                             <div class="card-header">
@@ -169,9 +169,9 @@
                                         <tr>
                                             <th>문의 내용</th>
                                            	<c:if test="${not empty vo.qna_img}">
-                                            <td colspan="1">                                                
+                                            <td colspan="1">
                                                 <div>
-                                                    <img src="/upload/qna_img/${vo.qna_img}" class="img-fluid"/>	                                                                                                     
+                                                    <img src='${vo.qna_img}' alt='Image' class="img-fluid">
                                                 </div>
                                             </td>
                                             <td colspan="2">
@@ -180,15 +180,15 @@
                                             </c:if>
                                               	<c:if test="${empty vo.qna_img}">
                                             <td colspan="3">
-                                            	${vo.content}                                                 
-                                            </td>                                                	                                      
-                                            </c:if> 
+                                            	${vo.content}
+                                            </td>
+                                            </c:if>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        
+
                         <!-- 수정/등록/취소.. 버튼 -->
                         <div class="behavior">
                             <button id="deleteQna" class="btn btn-danger" onclick="handleDeleteQna();"style="height:38px">삭제</button>
@@ -211,10 +211,10 @@
                                             <td>
                                                 <div>
                                                     <c:if test="${empty vo.reply_date}">
-                                                        <input id="reply" class="input-box" value="">
+                                                        <textarea id="reply" class="input-box" value=""></textarea>
                                                     </c:if>
                                                     <c:if test="${not empty vo.reply_date}">
-                                                        <input id="reply" class="input-box" value="${vo.reply}">
+                                                        <textarea id="reply" class="input-box">${vo.reply}</textarea>
                                                     </c:if>
                                                 </div>
                                             </td>

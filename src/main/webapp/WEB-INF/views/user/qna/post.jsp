@@ -52,6 +52,10 @@ input {
 .item-img {
 	max-height: 99.98px;
 }
+
+.disable-link {
+	pointer-events: none;
+}
 </style>
 <script type="text/javascript">
 function postQna() {
@@ -122,19 +126,20 @@ function postQna() {
 
 						<!-- item info card -->
 						<div class="col-12">
-							<div style="border: 1px solid #dddddd;">
-								<div class="row align-items-center" style="min-height: 100px">
-									<div style="width: 140px; text-align: center">
+							<div class="order">
+								<div class="row align-items-center" style="height: 100px">
+									<div class="col-lg-2 order-preview justify-content-center">
 										<!-- 상품이미지 -->
-										<a href="product-1.html" title="${itemVo.name}"
+										<a href="product-1.html" title="${itemVo.name}" class="disable-link"
 											data-toggle="tooltip" data-placement="top"> <img
-											class="item-img" src="${itemVo.item_img}"
+											src="${itemVo.item_img}"
 											alt="${itemVo.name}">
 										</a>
 									</div>
-									<div style="width: 400px">
+									<div class="col-lg-4">
 										<h3 class="order-number">${itemVo.name}</h3>
 									</div>
+									<div class="col-lg-4"></div>
 
 								</div>
 							</div>

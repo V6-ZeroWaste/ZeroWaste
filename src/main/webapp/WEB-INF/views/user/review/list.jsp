@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,11 +44,6 @@
 
 .order {
 	height: 100px;
-}
-
-.pagination .page-item.active .page-link {
-	border: 2px solid #000; 
-	font-weight: bold; 
 }
 
 .disable-link {
@@ -153,15 +149,15 @@
 										class="btn btn-outline-secondary btn-sm">
 									&nbsp;-&nbsp; <input type="date" id="endDate"
 										class="btn btn-outline-secondary btn-sm" />
-										<button id="searchButton" class="btn btn-primary btn-sm">검색</button>
+									<button id="searchButton" class="btn btn-primary btn-sm">검색</button>
 								</div>
 								<div>
 									<div>
 										<span class="eyebrow">${map.total } entries</span>
 									</div>
 								</div>
-								
-								
+
+
 							</div>
 							<!-- /search filter -->
 						</div>
@@ -174,10 +170,9 @@
 										<div class="row align-items-center">
 											<div class="col-lg-2 order-preview justify-content-center">
 												<!-- 상품이미지 -->
-												<a href="product-1.html"
-													title="${list.item_name }"  class="disable-link"
-													data-toggle="tooltip" data-placement="top"> <img
-													src="${list.item_img}">
+												<a href="product-1.html" title="${list.item_name }"
+													class="disable-link" data-toggle="tooltip"
+													data-placement="top"> <img src="${list.item_img}">
 												</a>
 											</div>
 											<div class="col-lg-4">
@@ -186,13 +181,21 @@
 											<div class="col-lg-4">
 												<span class="review-info"><fmt:formatDate
 														value="${list.regist_date}" pattern="yyyy-MM-dd" /></span> <br>
-												<span class="review-info">${list.title}</span> <br> <span
-													class="review-info"> <c:forEach var="i" begin="1"
-														end="${list.score}">
-                                                ⭐️
-                                             </c:forEach>
+												<span class="review-info"> <c:choose>
+														<c:when test="${fn:length(list.title) > 10}">
+                ${fn:substring(list.title, 0, 10)}...
+            </c:when>
+														<c:otherwise>
+                ${list.title}
+            </c:otherwise>
+													</c:choose>
+												</span> <br> <span class="review-info"> <c:forEach
+														var="i" begin="1" end="${list.score}">
+            ⭐️
+        </c:forEach>
 												</span>
 											</div>
+
 											<div class="col-lg-2">
 												<a href="#!" class="action eyebrow underline"
 													onclick="redirectToDetail(${list.review_no})">View

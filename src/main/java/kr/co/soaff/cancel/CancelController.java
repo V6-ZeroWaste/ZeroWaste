@@ -54,8 +54,8 @@ public class CancelController {
     		return "/user/include/404";
     	}
     	int origin_price = order.getPayment_price() + order.getPoint() - order.getDelivery_price();
-    	int refund_point = (int) Math.floor(order.getPoint() * ((double)(orderDetail.getPrice() * orderDetail.getAmount()) / origin_price));
-    	int refund_price = orderDetail.getPrice() * orderDetail.getAmount() - refund_point;
+    	int refund_point = (int) Math.floor(order.getPoint() * ((double)((orderDetail.getPacking_status() == 1? orderDetail.getPrice()+2000 : orderDetail.getPrice()) * orderDetail.getAmount()) / origin_price));
+    	int refund_price = (orderDetail.getPacking_status() == 1? orderDetail.getPrice()+2000 : orderDetail.getPrice()) * orderDetail.getAmount() - refund_point;
     	if(("form".equals(type) && order.getCancel_count() <= 1)
     		||("info".equals(type) && (order.getLast_cancel_date()).equals(orderDetail.getCancel_request_date()))) {
     		refund_price += order.getDelivery_price();

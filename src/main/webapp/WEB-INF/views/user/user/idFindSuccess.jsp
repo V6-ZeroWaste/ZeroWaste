@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/user/css/vendor.css" />
   <link rel="stylesheet" href="/user/css/style.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <title>soaff</title>
+  <title>soaff find</title>
   <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
   <script>
 
@@ -23,7 +23,7 @@
       <div class="col-md-10 col-lg-6">
         <div class="card-header" id="headingOne">
           <h6 class="mb-0">
-            <p style="color: #68ae68"><strong>회원님의 아이디</strong></p>
+            <p style="color: #68ae68"><strong>User ID</strong></p>
           </h6>
         </div>
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
@@ -31,12 +31,12 @@
             <div class="card-title py-2 px-3">
               <div class="row align-items-center">
                 <div class="col justify-content-center align-items-center d-flex" >
-                  <h3 class="fs-28 mb-0">${find.id}</h3>
+                  <h3 style="color: #7d7d7d;" class="fs-28 mb-0">${find.id}</h3>
                 </div>
               </div>
             </div>
             <div class="col-12 mt-3">
-              <a href="/user/user/login" class="btn btn-block btn-primary">Go to Login Page</a>
+              <a href="/login" class="btn btn-block btn-primary">Go to Login Page</a>
             </div>
             <div class="col-12 mt-2" style="text-align: right;">
             </div>

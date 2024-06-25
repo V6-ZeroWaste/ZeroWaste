@@ -40,6 +40,7 @@ public class QnaServiceImpl implements QnaService {
 		map.put("endPage", endPage);
 		map.put("isPrev", isPrev);
 		map.put("isNext", isNext);
+		map.put("currentPage", vo.getPage());
 
 		vo.setStartIdx((vo.getPage() - 1) * pageSize);
 		List<QnaVO> list = mapper.list(vo);

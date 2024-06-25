@@ -9,20 +9,19 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @Controller
 public class UserLoginController {
     @Autowired
     private UserLoginService userLoginService;
 
-    @GetMapping("/user/user/login")
+    @GetMapping("/login")
     public String login(Model model, @CookieValue(value = "saved_id", required = false) String id) {
         model.addAttribute("saved_id", id);
         return "user/user/login"; 
     }
 
-    @PostMapping(value = "/user/user/login")
+    @PostMapping(value = "/login")
     @ResponseBody
     public String login(@RequestBody UserVO vo,HttpSession session, HttpServletResponse res) throws IOException {
 //        res.setContentType("text/html;charset=utf-8");

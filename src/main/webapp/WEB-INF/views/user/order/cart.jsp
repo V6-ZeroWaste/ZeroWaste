@@ -58,8 +58,14 @@
         var cart_no = e.getAttribute('cart_no');
         var field = e.getAttribute('field');
         var amount = document.getElementById(field).value;
-        if (active == '+') {
+        var inventory = parseInt(e.getAttribute('inventory'));
+
+        if (active == '+' && inventory >= amount) {
             amount++;
+        }
+        if(active == '+' && inventory < amount) {
+        	alert("주문 불가능한 수량입니다. 다시 시도해주세요.")
+            return location.href = "/cart";
         }
         if (amount > 0 && active == '-') {
             amount--;
@@ -68,6 +74,7 @@
             alert("1개 이상부터 주문이 가능합니다")
             return location.href = "/cart";
         }
+        
 
         var data = {
             cart_no: cart_no,

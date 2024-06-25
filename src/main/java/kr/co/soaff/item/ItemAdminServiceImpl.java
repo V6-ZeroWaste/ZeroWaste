@@ -114,26 +114,48 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 	@Transactional
 	@Override
 	public int update(ItemVO vo, MultipartFile file, HttpServletRequest request) {
-		String voDetail = vo.getDetail();
-		if(voDetail != null && !voDetail.isEmpty()){
-			List<String> strings = extractSrcAttributes(voDetail);
-			List<String> uploadedImages = new ArrayList<>();
-			for (String imageUrl : strings) {
+		String newDetail = vo.getDetail();
+
+		if(newDetail != null && !newDetail.isEmpty()){
+			// 기존 이미지 URL 추출
+			String oldDetail = detail(vo).getDetail();
+			List<String> oldImageUrls = extractSrcAttributes(oldDetail);
+
+			// 새로운 이미지 URL 추출
+			List<String> newImageUrls = extractSrcAttributes(newDetail);
+
+			// 사라진 이미지 URL 찾기
+			List<String> deletedImages = new ArrayList<>(oldImageUrls);
+			deletedImages.removeAll(newImageUrls);
+
+			// 추가된 이미지 URL 찾기
+			List<String> addedImages = new ArrayList<>(newImageUrls);
+			addedImages.removeAll(oldImageUrls);
+
+			// 사라진 이미지 삭제
+			for (String imageUrl : deletedImages) {
 				try {
-					if(!imageUrl.startsWith("http://soaff")){
-						s3Uploader.deleteFile(imageUrl);
-					}
-					MultipartFile fileFromUrl = getFileFromUrl(imageUrl);
-					String uploadImage = s3Uploader.uploadFile(fileFromUrl);
-					uploadedImages.add(uploadImage);
-				}catch (Exception e){
+					s3Uploader.deleteFile(imageUrl);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			String updatedDetail = updateHtmlWithUploadedImages(voDetail, uploadedImages);
-			vo.setDetail(updatedDetail);
-		}
 
+			// 추가된 이미지 업로드
+			List<String> uploadedImages = new ArrayList<>();
+			for (String imageUrl : addedImages) {
+				try {
+					MultipartFile fileFromUrl = getFileFromUrl(imageUrl);
+					String uploadedImage = s3Uploader.uploadFile(fileFromUrl);
+					uploadedImages.add(uploadedImage);
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+
+			String upadtedDetail = updateHtmlWithUploadedImages(newDetail, uploadedImages);
+			vo.setDetail(upadtedDetail);
+		}
 
 		if (!file.isEmpty()) {
 			if(vo.getItem_img() != null && !vo.getItem_img().isEmpty()){ //기존 파일이 있을 경우 s3 update
@@ -263,6 +285,10 @@ public class ItemAdminServiceImpl implements ItemAdminService {
 		matcher.appendTail(updatedHtml);
 
 		return updatedHtml.toString();
+	}
+
+	public boolean isLocalUrl(String url) {
+		return url.startsWith("file://") || url.startsWith("http://localhost") || url.startsWith("https://localhost");
 	}
 
 }
