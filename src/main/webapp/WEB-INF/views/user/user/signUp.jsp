@@ -307,8 +307,6 @@
             $("#email_domain").prop("readonly", false);
             eventEnable();
             $('#emailSel').on("change",addEmailSelEvent);
-
-
           }
         });
       }
@@ -324,11 +322,15 @@
           $('#emailcheck_id').focus();
           $("#email_id").prop("readonly", false);
           $("#email_domain").prop("readonly", false);
-          $('#emailSel').on("change",addEmailSelEvent);
           eventEnable();
+          $('#emailSel').on("change",addEmailSelEvent);
+
         }
         if(key !== '' && key === 'asigned'){
           $('#emailcheck_idErrorMsg').html("이미 승인되었습니다").css("display", "block");
+          $("#email_id").prop("readonly", true);
+          $("#email_domain").prop("readonly", true);
+          eventdisable();
         }
         else {
           $.ajax({
@@ -349,8 +351,8 @@
               } else {
                 $("#email_id").prop("readonly", false);
                 $("#email_domain").prop("readonly", false);
-                $('#emailSel').on("change",addEmailSelEvent);
                 eventEnable();
+                $('#emailSel').on("change",addEmailSelEvent);
                 if(key == "expired"){
                   $('#emailcheck_idErrorMsg').html("인증코드가 다릅니다").css("display", "block");
                 }
@@ -577,7 +579,6 @@
 </section>
 
 <section class="pt-5">
-
   <div class="container form-container">
     <div class="form-content">
 <%--      <form action="/user/user/signUp" method="POST" name="frm" id="frm">--%>

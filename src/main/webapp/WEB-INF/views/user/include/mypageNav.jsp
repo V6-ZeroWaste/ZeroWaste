@@ -8,7 +8,7 @@
               <a id="mp-order" class="nav-link" href="/mypage/order/list" aria-selected="false">Orders</a>
               <a id="mp-review" class="nav-link" href="/mypage/review/list" aria-selected="false">Reviews</a>
               <a id="mp-qna" class="nav-link" href="/mypage/qna/list" aria-selected="false">QnA</a>
-              <a id="mp-profile" class="nav-link" href="/user/user/profile" aria-selected="false">Profile</a>
+              <a id="mp-profile" class="nav-link" href="/mypage/profile" aria-selected="false">Profile</a>
               <a id="mp-point" class="nav-link" href="/mypage/point" aria-selected="false">Point</a>
             </div>
             <br>
