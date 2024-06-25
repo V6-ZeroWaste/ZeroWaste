@@ -102,7 +102,7 @@ function deleteQna() {
 
 						<div class="col-12">
 							<div class="order">
-								<div class="row align-items-center" style="height: 100px">
+								<div class="row align-items-center" style="height: 110px">
 									<div class="col-lg-2 order-preview justify-content-center">
 										<!-- 상품이미지 -->
 										<a href="product-1.html" title="${vo.item_name }"
@@ -143,7 +143,8 @@ function deleteQna() {
 										</tr>
 										<tr>
 											<th>Content</th>
-											<td colspan="2"><textarea rows="5" cols="85" readonly>${vo.content}</textarea>
+											<td colspan="2"><pre
+													style="white-space: pre-wrap; word-wrap: break-word;">${vo.content}</pre>
 											</td>
 										</tr>
 										<c:if test="${not empty vo.qna_img}">
