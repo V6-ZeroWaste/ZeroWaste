@@ -18,6 +18,7 @@ public class CancelAdminOrderVO {
 	private int delivery_price;
 	private String user_id;
 	private int refund_price;
+	private int refund_point;
 	private Timestamp last_cancel_date;
 
 }

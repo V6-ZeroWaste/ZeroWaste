@@ -17,6 +17,7 @@ public class CancelAdminDetailVO {
     private Timestamp cancel_approve_date;
     private int cancel_reason_type;
     private String cancel_reason_detail;
+    private int packing_status;
     
     private int total_price;
     private int delivery_price;
@@ -24,6 +25,7 @@ public class CancelAdminDetailVO {
     private int payment_price;
     private String item_name;
     private String user_id;
+    
     
     // 환불 계산에 필요한 필드
     private int refund_price; // 환불금액
