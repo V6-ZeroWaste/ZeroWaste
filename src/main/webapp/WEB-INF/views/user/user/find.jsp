@@ -109,7 +109,7 @@
                             displayErrorMessage("#pwErrorMsg", "입력하신 정보가 없습니다");
                         }
                         else if (response == '2') {
-                            alert("탈퇴하신 계정입니다 메인페이지로 이동합니다");
+                            alert("탈퇴하신 계정입니다");
                             location.href="/";
                         }
                         else if (response == "1") {
