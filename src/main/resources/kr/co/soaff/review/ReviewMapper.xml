@@ -126,6 +126,7 @@
 		review.content,
 		review.score,
 		review.regist_date,
+		review.item_no,
 		item.name as item_name,
 		item.item_img as item_img,
 		user.id as user_id

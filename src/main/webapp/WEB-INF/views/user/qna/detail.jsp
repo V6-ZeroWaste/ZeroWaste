@@ -59,7 +59,8 @@ function redirectToUpdate() {
 }
 
 function redirectToItem(itemNo) {
-    window.location.href = '/item/detail?item_no=' + itemNo;
+	console.log("Item No: ", itemNo);
+	window.location.href = '/item/detail?item_no=' + itemNo;
 }
 
 var qna_no = ${vo.qna_no};
@@ -83,7 +84,7 @@ function deleteQna() {
         });
     }
 }
-
+console.log("Initial Item No: ", ${vo.item_no});
 	</script>
 </head>
 <body>
@@ -118,7 +119,7 @@ function deleteQna() {
 									<div class="col-lg-2">
 										<!-- 상품 바로가기 링크 -->
 										<a href="#!" class="action eyebrow underline"
-											onclick="redirectToItem('${vo.item_no}')">View Item</a>
+											onclick="redirectToItem(${vo.item_no})">View Item</a>
 									</div>
 								</div>
 							</div>
