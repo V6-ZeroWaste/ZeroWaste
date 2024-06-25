@@ -8,7 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
   <link rel="stylesheet" href="/user/css/vendor.css" />
   <link rel="stylesheet" href="/user/css/style.css" />
-  <title>soaff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+  <title>soaff sign up</title>
   <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -41,7 +44,7 @@
         let tel = $("#tel1").val()+"-"+$("#tel2").val()+"-"+$("#tel3").val();
         let email = $("#email_id").val()+"@"+$("#email_domain").val();
         $.ajax({
-          url: '/user/user/signUp',
+          url: '/signUp',
           method: 'post',
           contentType: "application/json; charset=UTF-8",
           dataType: "json",
@@ -58,10 +61,10 @@
           async: false,
           success: function (res) {
             if (res === '0') {
-              location.href="/user/user/signUp"; // 실패
+              location.href="/signUp"; // 실패
             } else {
               alert("회원가입 성공");
-              location.href="/user/user/login"; // 성공
+              location.href="/login"; // 성공
             }
           }
         });
@@ -248,9 +251,14 @@
 
       function idbtnCheck() {
         let isValid = false;
+        if(!idRegex.test($("#id").val())){
+          idErrorMsg.html("올바른 아이디를 입력해주세요");
+          idErrorMsg.css("display", "block");
+          let isValid = false;
+        }
         if ($('#id').val()) {
           $.ajax({
-            url: '/user/user/idcheck',
+            url: '/idcheck',
             method: 'post',
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
@@ -343,6 +351,9 @@
                 $("#email_domain").prop("readonly", false);
                 $('#emailSel').on("change",addEmailSelEvent);
                 eventEnable();
+                if(key == "expired"){
+                  $('#emailcheck_idErrorMsg').html("인증코드가 다릅니다").css("display", "block");
+                }
                 $('#emailcheck_idErrorMsg').html("인증코드가 다릅니다").css("display", "block");
                 $('#emailcheck_id').focus();
               }
@@ -415,8 +426,8 @@
       $(function () {
         //아이디
         $('#id_btn').on('click', function () {
-          idbtnClickedCheck = true;
-          idbtnCheck();
+            idbtnClickedCheck = true;
+            idbtnCheck();
         });
 
         $('#id').on('change', function () {
@@ -424,8 +435,6 @@
             $("#idErrorMsg").html("올바른 아이디를 입력해주세요");
             $("#idErrorMsg").css("display", "block");
             isValid = false;
-          }else{
-            $("#idErrorMsg").css("display", "none");
           }
           idbtnClickedCheck = false;
         });
@@ -536,6 +545,8 @@
     .text-center {
       text-align: center;
       padding-right: 0.5rem;
+      font-family : "Open Sans", sans-serif;
+      font-size: 18px;
     }
     .form-container {
       display: flex;
@@ -544,6 +555,10 @@
     .form-content {
       width: 100%;
       max-width: 80%;
+    }
+    .btn btn-primary btn-rounded{
+      font-size: 16px;
+      font-family: "Noto Sans KR", sans-serif;
     }
   </style>
 </head>
@@ -555,7 +570,7 @@
   <div class="container">
     <div class="row">
       <div class="col text-center">
-        <h1>Sign In</h1>
+        <h1>Sign UP</h1>
       </div>
     </div>
   </div>
@@ -567,7 +582,7 @@
 <%--      <form action="/user/user/signUp" method="POST" name="frm" id="frm">--%>
         <table class="table">
           <tr>
-            <td class="text-center" style="color: #3d733d; width: 30%;"><strong>아이디</strong></td>
+            <td class="text-center" style="color: #3d733d; width: 30%;"><strong>User ID</strong></td>
             <td colspan="2" class="col-8">
               <input type="text" class="form-control col-6 d-lg-inline-block" id="id" name="id">
               <button type="button" class="btn btn-primary btn-rounded ml-1" id="id_btn">중복확인</button>
@@ -577,28 +592,28 @@
           <tr>
           </tr>
           <tr>
-            <td class="text-center" style="color: #3d733d;"><strong>비밀번호</strong></td>
+            <td class="text-center" style="color: #3d733d;"><strong>Password</strong></td>
             <td colspan="3" class="col-4">
               <input type="password" class="form-control" id="pw" name="pw">
               <div class="invalid-feedback" id="pwdErrorMsg"></div>
             </td>
           </tr>
           <tr>
-            <td class="text-center" style="color: #3d733d;"><strong>비밀번호 확인</strong></td>
+            <td class="text-center" style="color: #3d733d;"><strong>Confirm Password</strong></td>
             <td colspan="3" class="col-4">
               <input type="password" class="form-control" id="pw_check">
               <div class="invalid-feedback" id="pwd_checkErrorMsg"></div>
             </td>
           </tr>
           <tr>
-            <td class="text-center" style="color: #3d733d;"><strong>이름</strong></td>
+            <td class="text-center" style="color: #3d733d;"><strong>User Name</strong></td>
             <td colspan="3" class="col-4">
               <input type="text" class="form-control" id="name">
               <div class="invalid-feedback" id="nameErrorMsg"></div>
             </td>
           </tr>
           <tr>
-            <td class="text-center" style="color: #3d733d;"><strong>전화번호</strong></td>
+            <td class="text-center" style="color: #3d733d;"><strong>Tel</strong></td>
             <td colspan="3" class="col-4">
               <div class="form-row">
                 <div class="col">
@@ -617,7 +632,7 @@
             </td>
           </tr>
           <tr>
-            <td class="text-center" style="color: #3d733d;"><strong>이메일</strong></td>
+            <td class="text-center" style="color: #3d733d;"><strong>Email</strong></td>
             <td colspan="3" class="col-4">
               <div class="form-row">
                 <div class="col">
@@ -667,7 +682,7 @@
             </td>
           </tr>
           <tr>
-            <td class="text-center" style="color: #3d733d;"><strong>주소</strong></td>
+            <td class="text-center" style="color: #3d733d;"><strong>Address</strong></td>
             <td colspan="3" class="col-4">
               <div class="form-row">
                 <div class="col">
@@ -696,9 +711,8 @@
           </tr>
           <tr>
             <td class="text-center"></td>
-            <td></td>
-            <td colspan="2">
-              <button type="button" class="btn btn-primary" onclick="history.back();">취소</button>
+            <td colspan="2" class="d-flex align-items-center justify-content-end" style="width: 622.4px;padding: 15px">
+              <button type="button" class="btn btn-secondary mr-3" onclick="history.back();">취소</button>
               <button type="button" class="btn btn-primary" onclick="goLogin(event)">확인</button>
             </td>
           </tr>

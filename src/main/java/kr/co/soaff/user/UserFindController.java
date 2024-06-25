@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,13 +14,13 @@ public class UserFindController {
     @Autowired
     UserFindService service;
 
-    @GetMapping("/user/user/{find}")
+    @GetMapping("/{find}")
     public String userFind(@PathVariable String find, Model model) {
         model.addAttribute("find", find);
         return "user/user/find";
     }
 
-    @PostMapping("/user/user/idFindCheck")
+    @PostMapping("/idFindCheck")
     @ResponseBody
     public String idFindCheck(@RequestBody UserVO vo) {
         UserVO idfinds = service.idFindCheck(vo);
@@ -30,7 +31,7 @@ public class UserFindController {
         }
     }
 
-    @PostMapping("/user/user/pwFindCheck")
+    @PostMapping("/pwFindCheck")
     @ResponseBody
     public String pwFindCheck(@RequestBody UserVO vo) {
 //        System.out.println(vo);
@@ -43,14 +44,26 @@ public class UserFindController {
         }
     }
 
-    @PostMapping("/user/user/idFind")
-    public String idFind(UserVO vo, Model model) {
+    @PostMapping("/idFind")
+    public String idFind(UserVO vo, RedirectAttributes redirectAttributes) {
         UserVO idfinds = service.idFindCheck(vo);
-        model.addAttribute("find", idfinds);
-        return "/user/user/idFindSuccess";
+        redirectAttributes.addFlashAttribute("find", idfinds);
+        return "redirect:/idFindSuccess";
     }
 
-    @PostMapping("/user/user/pwFind") //아이디 , 이름
+    @GetMapping("/idFindSuccess")
+    public String idFindSuccess(Model model) {
+        if (model.containsAttribute("find")) {
+            UserVO idfinds = (UserVO) model.getAttribute("find");
+            model.addAttribute("find", idfinds);
+        }
+        return "user/user/idFindSuccess";
+    }
+
+
+
+
+    @PostMapping("/pwFind") //아이디 , 이름
     public String pwFind(UserVO vo, HttpSession session) {
         UserVO pwfinds = service.pwFindCheck(vo);
         session.setAttribute("find", pwfinds);
@@ -58,13 +71,13 @@ public class UserFindController {
     }
 
 
-    @PostMapping("/user/user/pwFindResubmit")
+    @PostMapping("/pwFindResubmit")
     public String pwFindResubmit(HttpSession session) {
         session.getAttribute("find");
         return "/user/user/pwFindResubmit";
     }
 
-    @PostMapping("/user/user/pwNewCheck")
+    @PostMapping("/pwNewCheck")
     @ResponseBody
     public String pwNewCheck(@RequestBody UserVO vo,HttpSession session) {
         UserVO pwNewCheck = (UserVO) session.getAttribute("find");

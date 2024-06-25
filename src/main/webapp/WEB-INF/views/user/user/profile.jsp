@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/user/css/style.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <title>soaff</title>
+    <title>soaff profile</title>
     <style>
         input[type=number]::-webkit-outer-spin-button,
         input[type=number]::-webkit-inner-spin-button {
@@ -19,55 +19,53 @@
         }
     </style>
     <script>
-        let tel1Regex = /^[0-9]{3}$/;
-        let tel2Regex = /^[0-9]{3,4}$/;
-        let tel3Regex = /^[0-9]{4}$/;
-        let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const tel1Regex = /^[0-9]{3}$/;
+        const tel2Regex = /^[0-9]{3,4}$/;
+        const tel3Regex = /^[0-9]{4}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-        $(function (){
-            $("#pw").on("input", function (){
+        $(function () {
+            $("#pw").on("input", function () {
                 pwdRegex();
             });
-            $("#tel1, #tel2, #tel3").on("input", function (){
+            $("#tel1, #tel2, #tel3").on("input", function () {
                 telRegex();
             });
-
+            $('#pwd_check').on('input', function () {
+                if ($('#pw').val() !== $('#pwd_check').val()) {
+                    $('#pwd_checkErrorMsg').html("비밀번호가 일치하지 않습니다");
+                    $('#pwd_checkErrorMsg').css("display", "block");
+                } else {
+                    $('#pwd_checkErrorMsg').css("display", "none");
+                }
+            });
             $('#adr_btn').on('click', function () {
                 zipcode();
             });
-            $("#pw").on("change", function (){
-                if($("#pw").val() !== $("#pwd_check").val() ){
-                    $("pwd_checkErrorMsg").html("일치하지 않습니다").css("display","block");
-                    isValid = false;
-                }else{
-                    $("pwd_checkErrorMsg").css("display","none")
-                }
-            });
-
         });
 
         function telRegex() {
             let isValid = true;
-            let tel1 = $("#tel1");
-            let tel2 = $("#tel2");
-            let tel3 = $("#tel3");
-            let tel1ErrorMsg = $("#tel1ErrorMsg");
+            const tel1 = $("#tel1").val();
+            const tel2 = $("#tel2").val();
+            const tel3 = $("#tel3").val();
+            const tel1ErrorMsg = $("#tel1ErrorMsg");
 
             tel1ErrorMsg.css("display", "none");
 
-            if (!tel1Regex.test(tel1.val()) && tel1.val() !== '') {
+            if (!tel1Regex.test(tel1)) {
                 tel1ErrorMsg.html("올바른 전화번호를 입력해주세요");
                 tel1ErrorMsg.css("display", "block");
                 isValid = false;
             }
 
-            if (!tel2Regex.test(tel2.val()) && tel2.val() !== '') {
+            if (!tel2Regex.test(tel2)) {
                 tel1ErrorMsg.html("올바른 전화번호를 입력해주세요");
                 tel1ErrorMsg.css("display", "block");
                 isValid = false;
             }
 
-            if (!tel3Regex.test(tel3.val()) && tel3.val() !== '') {
+            if (!tel3Regex.test(tel3)) {
                 tel1ErrorMsg.html("올바른 전화번호를 입력해주세요");
                 tel1ErrorMsg.css("display", "block");
                 isValid = false;
@@ -77,40 +75,33 @@
         }
 
         function pwdRegex() {
-            let pw = $("#pw");
-            let pwdErrorMsg = $("#pwdErrorMsg");
+            const pw = $("#pw").val();
+            const pwdErrorMsg = $("#pwdErrorMsg");
+            pwdErrorMsg.css("display", "none");
 
-            if (!passwordRegex.test(pw.val()) && pw.val() !== '') {
+            if (!passwordRegex.test(pw) && pw) {
                 pwdErrorMsg.html("8자리 이상/대문자/소문자/특수문자/숫자가 포함됩니다");
                 pwdErrorMsg.css("display", "block");
                 return false;
-            } else {
-                pwdErrorMsg.css("display", "none");
             }
             return true;
         }
 
         function goProfile(event) {
             event.preventDefault();
-            isValid = fieldCheckProfile();
-            if (isValid) {
-                let tel = $("#tel1").val() +"-"+ $("#tel2").val()+"-"+ $("#tel3").val();
+            if (fieldCheckProfile()) {
+                const tel = $("#tel1").val() + "-" + $("#tel2").val() + "-" + $("#tel3").val();
                 let pw = $("#pw").val();
-                let zipcode = $("#zipcode").val();
-                let addr = $("#addr1").val();
-                let addr_detail = $("#addr_detail").val();
+                const zipcode = $("#zipcode").val();
+                const addr = $("#addr1").val();
+                const addr_detail = $("#addr_detail").val();
 
-                if (pw === '' || pw === null) {
+                if (!pw) {
                     pw = "default";
                 }
-                console.log(tel);
-                console.log(pw);
-                console.log(zipcode);
-                console.log(addr);
-                console.log(addr_detail);
 
                 $.ajax({
-                    url: "/user/user/updateInfo",
+                    url: "/updateInfo",
                     method: 'post',
                     contentType: "application/json",
                     dataType: "json",
@@ -123,14 +114,11 @@
                         "addr_detail": addr_detail
                     }),
                     success: function (response) {
-                        console.log(response)
-                        if(response == '0'){
-                            console.log("안녕")
+                        if (response === '0') {
                             alert("실패");
-                        } else{
-                            console.log("제발")
-                            alert("성공");
-                            location.href="/user/user/profile";
+                        } else {
+                            alert("변경 완료");
+                            location.href = "/mypage/profile";
                         }
                     }
                 });
@@ -138,19 +126,20 @@
         }
 
         function fieldCheckProfile() {
-            let tel1 = $("#tel1");
-            let tel2 = $("#tel2");
-            let tel3 = $("#tel3");
-            let pw = $("#pw");
-            let pwd_check = $("#pwd_check");
-            let zipcode = $("#zipcode");
-            let addr1 = $("#addr1");
+            let isValid = true;
+            const tel1 = $("#tel1").val();
+            const tel2 = $("#tel2").val();
+            const tel3 = $("#tel3").val();
+            const pw = $("#pw").val();
+            const pwd_check = $("#pwd_check").val();
+            const zipcode = $("#zipcode").val();
+            const addr1 = $("#addr1").val();
 
-            let tel1ErrorMsg = $("#tel1ErrorMsg");
-            let pwdErrorMsg = $("#pwdErrorMsg");
-            let pwd_checkErrorMsg = $("#pwd_checkErrorMsg");
-            let zipcodeErrorMsg = $("#zipcodeErrorMsg");
-            let addr1ErrorMsg = $("#addr1ErrorMsg");
+            const tel1ErrorMsg = $("#tel1ErrorMsg");
+            const pwdErrorMsg = $("#pwdErrorMsg");
+            const pwd_checkErrorMsg = $("#pwd_checkErrorMsg");
+            const zipcodeErrorMsg = $("#zipcodeErrorMsg");
+            const addr1ErrorMsg = $("#addr1ErrorMsg");
 
             tel1ErrorMsg.css("display", "none");
             pwdErrorMsg.css("display", "none");
@@ -158,33 +147,29 @@
             zipcodeErrorMsg.css("display", "none");
             addr1ErrorMsg.css("display", "none");
 
-            let isValid = true;
-
-            if (!tel1.val() || !tel2.val() || !tel3.val() || !telRegex()) {
+            if (!tel1 || !tel2 || !tel3 || !telRegex()) {
                 tel1ErrorMsg.html("전화번호를 입력해 주세요");
                 tel1ErrorMsg.css("display", "block");
                 isValid = false;
             }
 
-            if (!pw.val() && pwd_check.val()) {
-                pwdErrorMsg.html("비밀번호를 입력해 주세요");
-                pwdErrorMsg.css("display", "block");
+            if (!pwdRegex()) {
                 isValid = false;
             }
 
-            if (!pwd_check.val() && pw.val()) {
-                pwd_checkErrorMsg.html("비밀번호 확인을 입력해 주세요");
+            if (pwd_check !== pw) {
+                pwd_checkErrorMsg.html("비밀번호가 일치하지 않습니다");
                 pwd_checkErrorMsg.css("display", "block");
                 isValid = false;
             }
 
-            if (!zipcode.val()) {
+            if (!zipcode) {
                 zipcodeErrorMsg.html("우편주소를 입력해 주세요");
                 zipcodeErrorMsg.css("display", "block");
                 isValid = false;
             }
 
-            if (!addr1.val()) {
+            if (!addr1) {
                 addr1ErrorMsg.html("주소를 입력해 주세요");
                 addr1ErrorMsg.css("display", "block");
                 isValid = false;
@@ -194,9 +179,6 @@
         }
 
 
-
-
-
         function goDelete(event) {
             event.preventDefault();
             let pw = $("#wdPwd").val();
@@ -204,7 +186,7 @@
             isValid = fieldCheckDelete()
             if (isValid) {
                 $.ajax({
-                    url: "/user/user/deletecheck",
+                    url: "/deletecheck",
                     method: 'post',
                     contentType: "application/json",
                     dataType: "json",
@@ -274,7 +256,6 @@
     <div class="container">
         <div class="row gutter-4 justify-content-between">
             <%@ include file="/WEB-INF/views/user/include/mypageNav.jsp" %>
-
             <div class="col-lg-9">
                 <div class="row">
                     <div class="col">
@@ -296,6 +277,12 @@
                                         <div class="form-group">
                                             <label for="email">이메일</label>
                                             <input id="email" name="email" type="text" class="form-control" placeholder="" readonly value="${vo.email}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label for="email">이름</label>
+                                            <input id="name" name="name" type="text" class="form-control" placeholder="" readonly value="${vo.name}">
                                         </div>
                                     </div>
                                     <div class="col-md-8 align-content-between">
@@ -374,16 +361,16 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div style="padding: 15px" class="d-flex align-items-center justify-content-center">
-                                            <h4>Withdrawal</h4><br>
+                                            <h4 style="color: #7d7d7d" class="eyebrow">Withdrawal</h4><br>
                                         </div>
                                         <div style="padding: 15px" class="d-flex align-items-center justify-content-center">
                                             <div><strong>비밀번호 확인 후 탈퇴가 진행됩니다.</strong></div>
                                         </div>
-                                            <form id="frmDelete" action="http:/user/user/delete" method="get">
+                                            <form id="frmDelete" action="http:/delete" method="get">
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <label for="wdPwd">비밀번호</label>
-                                                    <input type="password" id="wdPwd" class="form-control form-control-lg" placeholder="password" aria-label="wdPwd" name="pw">
+                                                    <label for="wdPwd" class="eyebrow">비밀번호</label>
+                                                    <input type="password" id="wdPwd" class="form-control form-control-lg" placeholder="" aria-label="wdPwd" name="pw">
                                                 </div>
                                                 <div style="padding: 10px" class="d-flex align-items-center justify-content-center">
                                                     <div class="invalid-feedback" id="wdPwdErrorMsg">비밀번호를 확인해 주세요</div>
@@ -393,7 +380,7 @@
                                                 <div class="container-fluid">
                                                     <div class="row gutter-0">
                                                         <div class="col">
-                                                            <button type="button" class="btn btn-block btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-block btn-secondary" data-dismiss="modal">취소</button>
                                                         </div>
                                                         <div class="col">
                                                             <button type="button" class="btn btn-block btn-primary" id="btn_frm2" onclick="goDelete(event)">확인</button>

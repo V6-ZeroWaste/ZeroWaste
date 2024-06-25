@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/user/css/vendor.css" />
     <link rel="stylesheet" href="/user/css/style.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>soaff</title>
+    <title>soaff find</title>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
     <script>
         let emailIdRegex = /^[a-zA-Z0-9._%+-]+$/;
@@ -37,7 +37,7 @@
             $('#email').val(email);
             if (fieldCheckId()) {
                 $.ajax({
-                    url: "/user/user/idFindCheck",
+                    url: "/idFindCheck",
                     method: 'post',
                     contentType: "application/json",
                     dataType: "json",
@@ -91,7 +91,7 @@
             let name = $('#pw_name').val();
             if (fieldCheckPw()) {
                 $.ajax({
-                    url: "/user/user/pwFindCheck",
+                    url: "/pwFindCheck",
                     method: 'post',
                     contentType: "application/json",
                     dataType: "json",
@@ -154,7 +154,7 @@
         <div class="row justify-content-center align-items-center vh-md-100">
             <div class="col-md-10 col-lg-7">
                 <div class="l" id="accordionExample">
-                    <form id="frmFindId" method="post" action="/user/user/idFind">
+                    <form id="frmFindId" method="post" action="/idFind">
                         <div class="card active">
                             <div class="card-header" id="headingOne">
                                 <h2 class="mb-0">
@@ -206,14 +206,14 @@
                                         </div>
                                         <div class="col-12 mt-2">
                                             <div class="invalid-feedback" id="idErrorMsg"></div>
-                                            <button type="button" class="btn btn-block btn-primary" onclick="goFindId()">Submit</button>
+                                            <button type="button" class="btn btn-block btn-primary" onclick="goFindId()">전송</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <form id="frmFindPw" action="/user/user/pwFind" method="post">
+                    <form id="frmFindPw" action="/pwFind" method="post">
                         <div class="card">
                             <div class="card-header" id="headingTwo">
                                 <h2 class="mb-0">
@@ -237,7 +237,7 @@
                                         </div>
                                         <div class="col-12 mt-2">
                                             <div class="invalid-feedback" id="pwErrorMsg"></div>
-                                            <button type="button" class="btn btn-block btn-primary" onclick="goFindPw()">Submit</button>
+                                            <button type="button" class="btn btn-block btn-primary" onclick="goFindPw()">전송</button>
                                         </div>
                                     </div>
                                 </div>

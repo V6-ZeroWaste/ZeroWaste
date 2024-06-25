@@ -73,8 +73,8 @@
                    	if(resp.list.length == 0){
                    		printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
                    	}
-                   	
-               		$("#printList").html(resp.printList);
+
+                    renderQnaList(resp.list)
                		
                		// 페이지네이션 출력
                		// 총 개수
@@ -109,6 +109,45 @@
            	})
         	
 		}
+
+        function renderQnaList(items) {
+            var printList = "";
+
+            if (items.length > 0) {
+                items.forEach(function(item) {
+                    printList += "<tr onclick=\"location.href='/admin/qna/detail?qna_no=" + item.qna_no + "'\">";
+                    printList += "<td>" + item.qna_no + "</td>";
+                    printList += "<td>" + item.name + "</td>";
+                    printList += "<td>" + (item.type == 0 ? "교환/환불 문의" : "상품 상세 문의") + "</td>";
+                    printList += "<td>" + item.title + "</td>";
+                    printList += "<td>" + item.user_no + "</td>";
+
+                    // 타임스탬프를 변환하여 출력
+                    let dateObject = new Date(item.question_date);
+
+                    // 날짜와 시간을 원하는 형식으로 포맷팅
+                    let formattedDate = dateObject.getFullYear() + '-' +
+                        ('0' + (dateObject.getMonth() + 1)).slice(-2) + '-' +
+                        ('0' + dateObject.getDate()).slice(-2) + ' ' +
+                        ('0' + dateObject.getHours()).slice(-2) + ':' +
+                        ('0' + dateObject.getMinutes()).slice(-2) + ':' +
+                        ('0' + dateObject.getSeconds()).slice(-2);
+                        printList += "<td>" + formattedDate + "</td>";
+
+                    if (item.reply_date != null) {
+                        item.replyState = "답변 완료";
+                        printList += "<td>" + item.replyState + "</td>";
+                    } else {
+                        item.replyState = "답변 대기";
+                        printList += "<td>" + item.replyState + "</td>";
+                    }
+
+                    printList += "</tr>";
+                });
+
+                $("#printList").html(printList);
+            }
+        }
         </script>
     </head>
     <body>
@@ -148,7 +187,7 @@
 							        </div>
 							     <div class="row align-items-center">
                             	 <div class="col-md-9">
-                                        <input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="상품명/작성자/문의 제목" <c:if test="${qnaVO.searchWord} != null">value=${qnaVO.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width:280px">
+                                        <input id="searchWord" name="searchWord" class="datatable-input" type="search" placeholder="상품명/작성자/문의 제목" <c:if test="${item.searchWord} != null">value=${item.searchWord}</c:if> onkeyup="if(window.event.keyCode==13){applyCondition();}" style="width:280px">
                                  </div>                                    
                                  <div class="col-md-1">
                                        	<input type="button" value="검색" class="btn btn-primary" onclick="applyCondition()"> 
