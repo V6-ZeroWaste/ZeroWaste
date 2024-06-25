@@ -333,7 +333,7 @@
         let amount = itemAmountArray();
         let price = priceArray();
         let item_no = itemNoArray();
-        let packing_status = 
+        let packing_status = packingStatusArray();
 
 
         let data = {
@@ -363,7 +363,8 @@
             // orderDetail 정보
             amountArray: amount,
             priceArray: price,
-            itemNoArray: item_no
+            itemNoArray: item_no,
+            packingStatusArray : packing_status
 
 
         };
@@ -423,6 +424,30 @@
 
         return itemPrice; // 배열 반환
     }
+    
+    function packingStatusArray() {
+        // 배열을 저장할 빈 배열을 선언
+        const statusArray = [];
+
+        // 모든 span 태그를 선택
+        const allSpanTags = document.querySelectorAll('span');
+
+        // span 태그들을 순회
+        allSpanTags.forEach((span) => {
+            // span 태그의 id가 'itemTotalPrice'로 시작하는지 확인
+            if (span.id && span.id.startsWith('itemTotalPrice')) {
+                // 'packing_status' 속성의 값을 배열에 추가
+                const packingStatus = span.getAttribute('packing_status');
+                if (packingStatus !== null) {
+                    statusArray.push(packingStatus);
+                }
+            }
+        });
+
+        // 결과 배열 반환
+        return statusArray;
+    }
+    
 
     function deleteCart() {
         let spans = document.querySelectorAll('span[id^="itemTotalPrice"]');

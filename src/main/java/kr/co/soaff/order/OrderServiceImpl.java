@@ -130,6 +130,7 @@ public class OrderServiceImpl implements OrderService {
 		int[] amountArray = vo.getAmountArray();
 		int[] priceArray = vo.getPriceArray();
 		int[] itemNoArray = vo.getItemNoArray();
+		int[] packingStatusArray = vo.getPackingStatusArray();
 		int inventoryUpdateResult = 0;
 		List<OrderVO> list = new ArrayList<OrderVO>();
 		for (int i = 0; i < amountArray.length; i++) {
@@ -139,6 +140,7 @@ public class OrderServiceImpl implements OrderService {
 			orderVO.setAmount(amountArray[i]);
 			orderVO.setPrice(priceArray[i]);
 			orderVO.setItem_no(itemNoArray[i]);
+			orderVO.setPacking_status(packingStatusArray[i]);
 			inventoryUpdateResult += mapper.inventoryUpdate(orderVO);
 
 			list.add(orderVO);
