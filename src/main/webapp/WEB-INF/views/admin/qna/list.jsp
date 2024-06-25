@@ -22,45 +22,75 @@
         <script type="text/javascript">
 
         let page = 1;
-        let filter = null;
-
-        window.onload = function() {
-  	      const urlParams = new URLSearchParams(window.location.search);
-  	      filter = urlParams.get('filter');
-  	      if (filter !== null) {
-  	         $('#filter').val(filter);
-  	      } else {
-  	         $('#filter').val("");  // 전체보기 시 필터를 빈 문자열로 설정
-  	      }
-  	      getList();
-  	   }
+        // let filter = null;
+        //
+        // window.onload = function() {
+  	  //     const urlParams = new URLSearchParams(window.location.search);
+  	  //     filter = urlParams.get('filter');
+  	  //     if (filter !== null) {
+  	  //        $('#filter').val(filter);
+  	  //     } else {
+  	  //        $('#filter').val("");  // 전체보기 시 필터를 빈 문자열로 설정
+  	  //     }
+  	  //     getList();
+  	  //  }
+        // function applyCondition(){
+       	// 	page = 1;
+       	// 	getList();
+        // }
+        // function changePage(obj){
+       	// 	page = obj.getAttribute("data-page");
+       	// 	getList();
+        // }
+        // function getList(){
+        // 	    var orderByValue = $('#orderBy').val();
+        // 	    var filterValue = $('#filter').val();
+        // 	    if (orderByValue === "") {
+        // 	        orderByValue = null;
+        // 	    }
+        //
+        //
+        // 	var data = {
+        // 			searchWord: $('#searchWord').val(),
+        // 			orderBy: orderByValue,
+        // 			page: page,
+        //             start_date: $('#start_date').val(),
+        //             end_date: $('#end_date').val(),
+        //             filter : filterValue !== "" ? parseInt(filterValue) : null
+        //
+        //
+        // 	}
+        window.onload=function(){
+            const urlParams = new URLSearchParams(window.location.search);
+            Dashfilter = urlParams.get('filter');
+            console.log(Dashfilter);
+            getList();
+        }
         function applyCondition(){
-       		page = 1;
-       		getList();
+            page = 1;
+            getList();
         }
         function changePage(obj){
-       		page = obj.getAttribute("data-page");
-       		getList();
+            page = obj.getAttribute("data-page");
+            getList();
         }
         function getList(){
-        	    var orderByValue = $('#orderBy').val();
-        	    var filterValue = $('#filter').val();
-        	    if (orderByValue === "") {
-        	        orderByValue = null;
-        	    }
-        	
-        	    
-        	var data = {
-        			searchWord: $('#searchWord').val(),
-        			orderBy: orderByValue,
-        			page: page,
-                    start_date: $('#start_date').val(),
-                    end_date: $('#end_date').val(),
-                    filter : filterValue !== "" ? parseInt(filterValue) : null
-                    
-        		
-        	}
-            console.log(data);
+            var orderByValue = $('#orderBy').val();
+            if (orderByValue === "") {
+                orderByValue = null;
+            }
+            var filter = $('#filter').val();
+            if(Dashfilter !== null && filter === ""){
+                filter = Dashfilter;
+            }
+            var data = {
+                searchWord: $('#searchWord').val(),
+                orderBy: orderByValue,
+                page: page,
+                start_date: $('#start_date').val(),
+                end_date: $('#end_date').val(),
+                filter: filter,
+            }
            	$.ajax({
 				type: "GET", // method type
 				url: "/admin/qna/list.do", // 요청할 url
@@ -74,7 +104,7 @@
                    		printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
                    	}
 
-                    renderQnaList(resp.list)
+                    renderQnaList(resp.list);
                		
                		// 페이지네이션 출력
                		// 총 개수
@@ -98,8 +128,6 @@
                			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
                		}
                		$(".datatable-pagination-list").html(printPage);
-               		
-                   	
                    	
                 },
                 error:function (data, textStatus) {
@@ -120,7 +148,7 @@
                     printList += "<td>" + item.name + "</td>";
                     printList += "<td>" + (item.type == 0 ? "교환/환불 문의" : "상품 상세 문의") + "</td>";
                     printList += "<td>" + item.title + "</td>";
-                    printList += "<td>" + item.user_no + "</td>";
+                    printList += "<td>" + item.user_id + "</td>";
 
                     // 타임스탬프를 변환하여 출력
                     let dateObject = new Date(item.question_date);
@@ -132,7 +160,7 @@
                         ('0' + dateObject.getHours()).slice(-2) + ':' +
                         ('0' + dateObject.getMinutes()).slice(-2) + ':' +
                         ('0' + dateObject.getSeconds()).slice(-2);
-                        printList += "<td>" + formattedDate + "</td>";
+                    printList += "<td>" + formattedDate + "</td>";
 
                     if (item.reply_date != null) {
                         item.replyState = "답변 완료";
@@ -177,8 +205,8 @@
 							            </label>
 							            <label>
                                           <select id="filter" name="filter" class="datatable-selector" onchange="applyCondition();">
-                                             <option value="">전체</option>
-                                            <option value="답변대기" <c:if test="${vo.filter}== '답변대기'">selected</c:if>>답변대기</option>
+                                             <option value="전체">전체</option>
+                                            <option value="답변대기" <c:if test="${vo.filter eq '답변대기'}">selected</c:if>>답변대기</option>
                                              <option value="답변완료" >답변완료</option>
                                              <option value="교환/환불문의" >교환/환불 문의</option>
            									 <option value="상품상세문의" >상품 상세 문의</option>
@@ -225,7 +253,7 @@
                         </div>
                     </div>
         		</main>
-                <%@ include file="/WEB-INF/views/admin//include/footer.jsp" %>
+                <%@ include file="/WEB-INF/views/admin/include/footer.jsp" %>
             </div>
         </div>
         

@@ -58,28 +58,19 @@ public class ProfileController {
 
     @PostMapping("/deletecheck")
     @ResponseBody
-    public String deleteCheck(@RequestBody UserVO vo, HttpSession session) {
+    public String deleteCheck(@RequestBody UserVO vo, HttpSession session, HttpServletResponse res) {
         UserVO deleteCheck = (UserVO) session.getAttribute("vo");
         deleteCheck.setPw(vo.getPw());
         int i = service.deleteCheck(deleteCheck);
         if (i > 0) {
-            return "1";
-        }else {
-            return "0";
-        }
-    }
-
-    @GetMapping("/delete")
-    public String delete(UserVO vo, HttpSession session, HttpServletResponse res) {
-        UserVO delete = (UserVO) session.getAttribute("vo");
-        delete.setPw(vo.getPw());
-        int i = service.delete(delete);
-        if (i > 0) {
+            service.delete(deleteCheck);
             session.invalidate();
             Cookie cookie = new Cookie("saved_id", null);
             cookie.setMaxAge(0); // 쿠키 삭제
             res.addCookie(cookie);
+            return "1";
+        }else {
+            return "0";
         }
-        return "redirect:/";
     }
 }

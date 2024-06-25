@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/user/css/style.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <title>soaff profile</title>
+    <title>soaff mypage profile</title>
     <style>
         input[type=number]::-webkit-outer-spin-button,
         input[type=number]::-webkit-inner-spin-button {
@@ -200,7 +200,8 @@
                             wdPwdErrorMsg.html("비밀번호가 맞지 않습니다").css("display","block");
                         } else{
                             // console.log(response);
-                            $("#frmDelete").submit();
+                            alert("탈퇴 완료");
+                            location.href="/";
                         }
                     }
                 });
@@ -366,7 +367,6 @@
                                         <div style="padding: 15px" class="d-flex align-items-center justify-content-center">
                                             <div><strong>비밀번호 확인 후 탈퇴가 진행됩니다.</strong></div>
                                         </div>
-                                            <form id="frmDelete" action="http:/delete" method="get">
                                             <div class="modal-body">
                                                 <div class="form-group">
                                                     <label for="wdPwd" class="eyebrow">비밀번호</label>
@@ -388,7 +388,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            </form>
                                     </div>
                                 </div>
                             </div>

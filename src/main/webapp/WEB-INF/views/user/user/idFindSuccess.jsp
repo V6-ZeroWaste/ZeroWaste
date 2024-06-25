@@ -18,20 +18,24 @@
 </head>
 <body>
 <section class="py-md-0">
+  <div class="image image-overlay" style="background-image:url(/user/images/main_test1.png)"></div>
   <div class="container">
-    <div class="row justify-content-center align-items-center vh-md-100">
+    <div class="row justify-content-center align-items-center vh-md-100" >
       <div class="col-md-10 col-lg-6">
-        <div class="card-header" id="headingOne">
+        <div class="card-header" id="headingOne" style="background-color: #FFFFFF">
           <h6 class="mb-0">
             <p style="color: #68ae68"><strong>User ID</strong></p>
           </h6>
         </div>
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample" style="background-color: #FFFFFF">
           <div class="card-body" style="border : 1px #c2c2c2 solid">
             <div class="card-title py-2 px-3">
+              <div class="align-items-center d-flex justify-content-center">
+              <h5 style="color: #7d7d7d;" class="fs-28 mb-0">아이디 찾기가 완료되었습니다</h5>
+              </div>
               <div class="row align-items-center">
                 <div class="col justify-content-center align-items-center d-flex" >
-                  <h3 style="color: #7d7d7d;" class="fs-28 mb-0">${find.id}</h3>
+                  <h3 style="color: #7d7d7d;" class="fs-28 mb-0">ID : ${find.id}</h3>
                 </div>
               </div>
             </div>

@@ -25,6 +25,9 @@ public class UserFindController {
     public String idFindCheck(@RequestBody UserVO vo) {
         UserVO idfinds = service.idFindCheck(vo);
         if (idfinds != null) {
+            if(idfinds.getDelete() != null){
+                return "2";
+            }
             return "1";
         } else {
             return "0";
@@ -38,6 +41,9 @@ public class UserFindController {
         UserVO pwfinds = service.pwFindCheck(vo);
 //        System.out.println(pwfinds);
         if (pwfinds != null) {
+            if(pwfinds.getDelete() != null){
+                return "2";
+            }
             return "1";
         } else {
             return "0";
