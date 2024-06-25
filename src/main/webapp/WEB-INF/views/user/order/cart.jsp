@@ -458,13 +458,13 @@
                                 <div class="col-4 col-lg-2 text-center">
                                     <div class="counter">
                                         <span class="counter-minus icon-minus" id='plusAmount${vo.cart_no}'
-                                              field='amount${vo.cart_no}' onclick="chageAmount(this, '-');"
+                                              field='amount${vo.cart_no}' <c:if test="${vo.inventory > 0}"> onclick="chageAmount(this, '-');"</c:if>
                                               cart_no="${vo.cart_no}" inventory="${vo.inventory }"></span>
                                         <input type='text' id='amount${vo.cart_no}'
                                                class="counter-value" value="${vo.amount}"
                                                min="0" max="${vo.inventory}" cart_no="${vo.cart_no}" readonly>
                                         <span class="counter-plus icon-plus" id='minusAmount${vo.cart_no}'
-                                              field='amount${vo.cart_no}' onclick="chageAmount(this, '+');"
+                                              field='amount${vo.cart_no}' <c:if test="${vo.inventory > 0}"> onclick="chageAmount(this, '-');"</c:if>
                                               cart_no="${vo.cart_no}" inventory="${vo.inventory }"></span>
                                     </div>
                                 </div>
