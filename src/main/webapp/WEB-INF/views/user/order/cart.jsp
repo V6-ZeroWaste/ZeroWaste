@@ -378,16 +378,20 @@
 
                                         <!-- id, for 가 일치해야 토글이 됩니다 -->
                                         <div class="custom-control custom-checkbox mb-2">
-                                            <input type="checkbox" class="custom-control-input"
-                                                   id="checkbox${vo.cart_no}" name="checkedCartNo" value="${vo.cart_no}"
-                                                   cart_no="${vo.cart_no}"
-                                                   checked>
-                                            <label class="custom-control-label" for="checkbox${vo.cart_no}"></label>
-                                        </div>
+										    <input type="checkbox" class="custom-control-input"
+										           id="checkbox${vo.cart_no}" name="checkedCartNo" value="${vo.cart_no}"
+										           cart_no="${vo.cart_no}"
+										           <c:if test="${vo.inventory <= 0}">disabled</c:if>
+										           <c:if test="${vo.inventory > 0}">checked</c:if>>
+										    <label class="custom-control-label" for="checkbox${vo.cart_no}"></label>
+										</div>
+
+
 
                                         <a href="/item/detail?${vo.item_no}"><img src="${vo.item_img}" alt="Image"></a>
                                         <div class="media-body">
-                                            <h5 class="media-title">${vo.name}</h5>
+                                            <h5 class="media-title">${vo.name}<c:if test="${vo.inventory <= 0}"><span class="text-danger"> 품절</span></c:if>
+                                            </h5>
                                             <c:if test="${vo.packing_status eq 1}">
                                                 <span class="small">포장 (+2,000원)</span>
                                             </c:if>
