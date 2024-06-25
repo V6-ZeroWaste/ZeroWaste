@@ -58,14 +58,14 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		// 최종 결제 정보 공식 계산
 		int total_price = order.getPayment_price() - order.getDelivery_price() + order.getPoint();
-		int refundPoint = (int) (order.getPoint() * (( (double) orderDetail.getPrice() * orderDetail.getAmount())
+		int refundPoint = (int) (order.getPoint() * (( (double) (orderDetail.getPacking_status() == 1? orderDetail.getPrice()+2000 : orderDetail.getPrice()) * orderDetail.getAmount())
 				/ (order.getPayment_price() - order.getDelivery_price() + order.getPoint())));
 
 		// 주문 상품 총 개수 및 남은 개수 가져오기
 		int totalOrderItems = mapper.countOrderItems(orderDetail.getOrder_no());
 		int remainingItems = totalOrderItems - orderDetail.getAmount(); // 현재 취소 요청 중인 상품을 제외한 나머지 상품 수량
 
-		int refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
+		int refundPrice = (orderDetail.getPacking_status() == 1? orderDetail.getPrice()+2000 : orderDetail.getPrice()) * orderDetail.getAmount() - refundPoint;
 		if ((orderDetail.getCancel_request_date()).equals(order.getLast_cancel_date())) {
 			// 마지막 취소 요청 상품
 			refundPrice += order.getDelivery_price();
@@ -110,9 +110,9 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		CancelAdminDetailVO orderDetail = mapper.detailFromOrderDetailVO(order_detail_no);
 		CancelAdminOrderVO order = mapper.detailFromOrderVO(orderDetail.getOrder_no());
 
-		int refundPoint = (int) (order.getPoint() * (( (double) orderDetail.getPrice() * orderDetail.getAmount())
+		int refundPoint = (int) (order.getPoint() * (( (double) (orderDetail.getPacking_status() == 1? orderDetail.getPrice()+2000 : orderDetail.getPrice()) * orderDetail.getAmount())
 				/ (order.getPayment_price() - order.getDelivery_price() + order.getPoint())));
-		int refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
+		int refundPrice = (orderDetail.getPacking_status() == 1? orderDetail.getPrice()+2000 : orderDetail.getPrice()) * orderDetail.getAmount() - refundPoint;
 		if ((orderDetail.getCancel_request_date()).equals(order.getLast_cancel_date())) {
 			refundPrice += order.getDelivery_price(); //마지막 취소 상품
 		}
@@ -126,14 +126,18 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 			result += mapper.completeCancel(orderDetail);
 			// order 취소 금액 UPDATE
 			order.setRefund_price(refundPrice);
+			order.setRefund_point(refundPoint);
 			result += mapper.cancelOrderUpdate(order);
 			// point 취소 금액 UPDATE
-			PointVO pointVo =  new PointVO();
-			pointVo.setContent("환불 적립금");
-			pointVo.setPoint(refundPoint);
-			pointVo.setOrder_no(order.getOrder_no());
-			result += pointMapper.insert(pointVo);
-			
+			if(refundPoint > 0) {
+				PointVO pointVo =  new PointVO();
+				pointVo.setContent("환불 적립금");
+				pointVo.setPoint(refundPoint);
+				pointVo.setOrder_no(order.getOrder_no());
+				result += pointMapper.insert(pointVo);
+			}
+			// item 재고 수량 UPDATE
+			mapper.updateItemAmount(orderDetail);
 			
 		}else {
 			return 0;
@@ -160,7 +164,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		// 최종 결제 정보 공식 계산
 		int total_price = order.getPayment_price() - order.getDelivery_price() + order.getPoint();
-		int refundPoint = (int) (((double) orderDetail.getPrice() * orderDetail.getAmount())
+		int refundPoint = (int) (((double) (orderDetail.getPacking_status() == 1? orderDetail.getPrice()+2000 : orderDetail.getPrice()) * orderDetail.getAmount())
 				/ ((order.getPayment_price() - order.getDelivery_price() + order.getPoint())) * order.getPoint());
 
 		// 주문 상품 총 개수 및 남은 개수 가져오기
@@ -170,10 +174,10 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		int refundPrice;
 		if (remainingItems == 0) {
 			// 모든 상품을 취소하는 경우
-			refundPrice = orderDetail.getPrice() * orderDetail.getAmount() + order.getDelivery_price() - refundPoint;
+			refundPrice = (orderDetail.getPacking_status() == 1? orderDetail.getPrice()+2000 : orderDetail.getPrice()) * orderDetail.getAmount() + order.getDelivery_price() - refundPoint;
 		} else {
 			// 일부 상품만 취소하는 경우
-			refundPrice = orderDetail.getPrice() * orderDetail.getAmount() - refundPoint;
+			refundPrice = (orderDetail.getPacking_status() == 1? orderDetail.getPrice()+2000 : orderDetail.getPrice()) * orderDetail.getAmount() - refundPoint;
 		}
 
 		// VO에 필요한 데이터 설정

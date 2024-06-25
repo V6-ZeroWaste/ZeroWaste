@@ -20,12 +20,6 @@ public class MainController {
 		return "/user/main/index";
 	}
 
-	@GetMapping("/login")
-	public String login() {
-		return "user/user/login";
-
-	}
-
 	@GetMapping("/about")
 	public String about() {
 		return "/user/main/about";

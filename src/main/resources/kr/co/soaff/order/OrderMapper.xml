@@ -92,7 +92,7 @@
 	<select id="orderDetailList" parameterType="kr.co.soaff.order.OrderDetailVO">
 		SELECT 
 			order_detail_no,
-		    od.amount, od.price,
+		    od.amount, od.price, od.packing_status,
 		    cancel_status, confirm_date,
 		    od.item_no, item_img, item.name as item_name,
 		    (select review_no from review where order_detail_no = od.order_detail_no and user_no = od.user_no) as review_no
@@ -104,7 +104,7 @@
 	<!-- OrderDetailVO에 담는 정보 -->
 	<select id="orderDetailInfo" parameterType="kr.co.soaff.order.OrderDetailVO">
 		SELECT
-			order_no, order_detail_no,
+			order_no, order_detail_no, packing_status,
 		    od.amount, od.price,
 		    cancel_status, confirm_date, cancel_reason_detail, cancel_reason_type,cancel_request_date,
 		    od.item_no, item_img, item.name as item_name
@@ -189,23 +189,23 @@
 	</insert>
 	<!-- order detail 부분 -->
 	<insert id="orderDetailInsert" parameterType="java.util.List">
-	    INSERT INTO `order_detail` (order_no, user_no, amount, price, item_no)
+	    INSERT INTO `order_detail` (order_no, user_no, amount, price, item_no, packing_status)
 	    VALUES
 	    <foreach collection="list" item="orderDetail" separator=",">
 	        (
 	            #{orderDetail.order_no}, #{orderDetail.user_no}, #{orderDetail.amount},
-	            #{orderDetail.price}, #{orderDetail.item_no}
+	            #{orderDetail.price}, #{orderDetail.item_no}, #{orderDetail.packing_status}
 	        )
 	    </foreach>
 	</insert>
 	
 	<!-- 상품재고 업데이트 -->
-	<update id="inventoryUpdate" parameterType="java.util.List">
-	    <foreach collection="list" item="vo" separator=";">
+
+	<update id="inventoryUpdate" parameterType="kr.co.soaff.order.OrderVO">
 	        UPDATE item
-	        SET amount = amount - #{vo.amount}
-	        WHERE item_no = #{vo.item_no}
-	    </foreach>
+	        SET amount = (amount - #{amount})
+	        WHERE item_no = #{item_no}
+
 	</update>
 
 	<insert id="pointPlus" parameterType="kr.co.soaff.order.OrderVO">
@@ -242,7 +242,9 @@
 		</foreach>
 	</delete>
 	
+
 	<!-- 재고확인 -->
+
     <select id="checkAmount" parameterType="java.util.List" resultType="java.lang.Integer">
         SELECT amount
         FROM item

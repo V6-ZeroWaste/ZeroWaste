@@ -15,7 +15,7 @@ public class ProfileController {
     @Autowired
     ProfileService service;
 
-    @GetMapping("/user/user/profile")
+    @GetMapping("/mypage/profile")
     public String profile(HttpSession session, Model model) {
         int user_no = (int) session.getAttribute("user_no");
         UserVO vo  = service.getInfo(user_no);
@@ -32,7 +32,7 @@ public class ProfileController {
         return "/user/user/profile";
     }
 
-    @PostMapping("/user/user/updateInfo")
+    @PostMapping("/updateInfo")
     @ResponseBody
     public String update(@RequestBody UserVO vo, HttpSession session) {
 //        UserVO info = (UserVO) session.getAttribute("vo");
@@ -56,7 +56,7 @@ public class ProfileController {
         }
     }
 
-    @PostMapping("/user/user/deletecheck")
+    @PostMapping("/deletecheck")
     @ResponseBody
     public String deleteCheck(@RequestBody UserVO vo, HttpSession session) {
         UserVO deleteCheck = (UserVO) session.getAttribute("vo");
@@ -69,7 +69,7 @@ public class ProfileController {
         }
     }
 
-    @GetMapping("/user/user/delete")
+    @GetMapping("/delete")
     public String delete(UserVO vo, HttpSession session, HttpServletResponse res) {
         UserVO delete = (UserVO) session.getAttribute("vo");
         delete.setPw(vo.getPw());

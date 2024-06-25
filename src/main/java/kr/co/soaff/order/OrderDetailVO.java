@@ -22,6 +22,7 @@ public class OrderDetailVO {
 	private String endRequestDate;
 	private String startApproveDate;
 	private String endApproveDate;
+	private int packing_status;
 
 	// join으로 가져올 데이터
 	private String user_id; // 유저아이디

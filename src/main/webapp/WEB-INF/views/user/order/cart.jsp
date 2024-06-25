@@ -58,9 +58,8 @@
         var cart_no = e.getAttribute('cart_no');
         var field = e.getAttribute('field');
         var amount = document.getElementById(field).value;
-        var inventory = e.getAttribute('inventory');
-        
-        
+        var inventory = parseInt(e.getAttribute('inventory'));
+
         if (active == '+' && inventory >= amount) {
             amount++;
         }
@@ -378,7 +377,7 @@
                 <form action="/order" method="post" id="frm">
                     <c:forEach var="vo" items="${map.list }">
 
-                        <!-- cart item -->
+                          <!-- cart item -->
                         <div class="cart-item" id="cart${vo.cart_no}">
                             <div class="row align-items-center">
                                 <div class="col-12 col-lg-6">
@@ -464,7 +463,7 @@
                                                class="counter-value" value="${vo.amount}"
                                                min="0" max="${vo.inventory}" cart_no="${vo.cart_no}" readonly>
                                         <span class="counter-plus icon-plus" id='minusAmount${vo.cart_no}'
-                                              field='amount${vo.cart_no}' <c:if test="${vo.inventory > 0}"> onclick="chageAmount(this, '-');"</c:if>
+                                              field='amount${vo.cart_no}' <c:if test="${vo.inventory > 0}"> onclick="chageAmount(this, '+');"</c:if>
                                               cart_no="${vo.cart_no}" inventory="${vo.inventory }"></span>
                                     </div>
                                 </div>

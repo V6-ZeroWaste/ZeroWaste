@@ -205,13 +205,12 @@
         $("#goPay").on('click', function () {
             var agree = $("#agree").is(":checked");
 
+            var flag = checkAmount();
             if (fieldCheck()) {
-            	
-            	if(!checkAmount()){
-            		
+            	if(checkAmount()){
             		request_pay();
             	}else{
-            		alert("품절된 상품이 포함되었습니다. 주문을 취소합니다.")
+            		alert("가능한 주문 수량을 초과했습니다. 주문을 취소합니다.")
             		location.href="/cart";
             	}
 
@@ -334,6 +333,7 @@
         let amount = itemAmountArray();
         let price = priceArray();
         let item_no = itemNoArray();
+        let packing_status = 
 
 
         let data = {
@@ -612,7 +612,7 @@
         var data = {
             itemNo: itemNo // checkedCartNo를 배열로 전달
         };
-
+        var flag = true;
         // AJAX 요청
         $.ajax({
             type: "GET", // 요청 메서드 타입
@@ -622,22 +622,18 @@
             success: function (resp) {
                 let dbAmount = resp;
                 console.log(dbAmount);
-                
+
                 for (let i = 0; i < amount.length; i++) {
                     if (dbAmount[i] < amount[i]) {
                     	console.log("false");
-                        return false;
-                    }else{
-                    	console.log("true");
-                    	return true;
+                        flag = false;
                     }
                 }
                 
-
                 console.log("itemAmount values: ", itemNo);
                 console.log("itemAmount values: ", amount);
                 console.log("dbAmount values: ", dbAmount);
-                
+
 
             },
             error: function (data, textStatus) {
@@ -645,6 +641,8 @@
                 console.log('error', data, textStatus);
             }
         });
+
+        return flag;
 
     }
 
@@ -798,14 +796,14 @@
 
                                         <c:if test="${vo.packing_status eq 1}">
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                                  cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                  cart_no="${vo.cart_no}" packing_status = "${vo.packing_status }"><fmt:formatNumber
                                                     value="${vo.amount*(vo.price+2000)}" type="number"
                                                     pattern="#,##0"/>원</span>
                                         </c:if>
 
                                         <c:if test="${vo.packing_status eq 0}">
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                                  cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                  cart_no="${vo.cart_no}" packing_status = "${vo.packing_status }"><fmt:formatNumber
                                                     value="${vo.amount*vo.price}" type="number"
                                                     pattern="#,##0"/>원</span>
                                         </c:if>
@@ -819,7 +817,7 @@
                                         <c:if test="${vo.packing_status eq 1}">
                                     	
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                                  cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                  cart_no="${vo.cart_no}" packing_status = "${vo.packing_status }"><fmt:formatNumber
                                                     value="${vo.amount*(vo.discounted_price+2000)}" type="number"
                                                     pattern="#,##0"/>원</span>
 
@@ -828,7 +826,7 @@
                                         <c:if test="${vo.packing_status eq 0}">
                                     	
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
-                                                  cart_no="${vo.cart_no}"><fmt:formatNumber
+                                                  cart_no="${vo.cart_no}" packing_status = "${vo.packing_status }"><fmt:formatNumber
                                                     value="${vo.amount*vo.discounted_price}" type="number"
                                                     pattern="#,##0"/>원</span>
 
