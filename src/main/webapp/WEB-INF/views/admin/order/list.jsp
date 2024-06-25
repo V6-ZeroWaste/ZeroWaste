@@ -227,26 +227,6 @@
                                     <th>배송 상태</th>
                                 </tr>
                                 </thead>
-                                <tbody id="printList">
-
-                                </tbody>
-
-                            </table>
-                        </div>
-
-
-                        <div class="datatable-container">
-                            <table class="datatable-table">
-                                <thead>
-                                <tr>
-                                    <th>주문 번호</th>
-                                    <th>주문 일자</th>
-                                    <th>주문한 유저ID</th>
-                                    <th>결제 금액</th>
-                                    <th>결제 수량</th>
-                                    <th>배송 상태</th>
-                                </tr>
-                                </thead>
                                 <tbody id="printList2">
 
                                 </tbody>

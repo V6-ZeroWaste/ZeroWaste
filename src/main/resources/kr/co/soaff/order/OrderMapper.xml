@@ -198,6 +198,15 @@
 	        )
 	    </foreach>
 	</insert>
+	
+	<!-- 상품재고 업데이트 -->
+	<update id="inventoryUpdate" parameterType="java.util.List">
+	    <foreach collection="list" item="vo" separator=";">
+	        UPDATE item
+	        SET amount = amount - #{vo.amount}
+	        WHERE item_no = #{vo.item_no}
+	    </foreach>
+	</update>
 
 	<insert id="pointPlus" parameterType="kr.co.soaff.order.OrderVO">
 		INSERT INTO `point`(

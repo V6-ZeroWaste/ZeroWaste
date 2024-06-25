@@ -207,7 +207,7 @@
 
             if (fieldCheck()) {
             	
-            	if(checkAmount()){
+            	if(!checkAmount()){
             		
             		request_pay();
             	}else{
