@@ -102,7 +102,7 @@
         }
     </style>
 
-    <title>${item.name}</title>
+    <title>soaff</title>
     <script>
         // 스크롤 이동
         function scrollToSection(sectionId) {
@@ -748,7 +748,7 @@
                             <div class="item-price" id="item-price"><fmt:formatNumber type="number" maxFractionDigits="3" value="${item.discounted_price}" />원 </div>
                             <c:if test="${item.amount<=5}">
                                 <br>
-                                <div>남은 수량 ${item.amount}개</div>
+                                <div style="font-size: 12px">남은 수량 ${item.amount}개</div>
                             </c:if>
                         </div>
                     </div>
