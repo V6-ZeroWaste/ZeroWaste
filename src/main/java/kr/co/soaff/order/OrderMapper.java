@@ -46,5 +46,6 @@ public interface OrderMapper {
 
 	List<Integer> checkAmount(List<OrderVO> list);
 
-	int inventoryUpdate(List<OrderVO> list);
+	int inventoryUpdate(OrderVO vo);
+
 }

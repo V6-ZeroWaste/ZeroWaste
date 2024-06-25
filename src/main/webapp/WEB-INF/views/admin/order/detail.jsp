@@ -134,9 +134,11 @@
 	                                   <thead>
                             			   <tr>
                             			   	  <th>주문 상세 번호</th>
-	                                      	  <th colspan="2">상품 정보</th>
-	                                          <th>상품별 주문 금액</th>
-	                                          <th>상품별 주문 수량</th>
+                            			   	  <th>상품 이미지</th>
+	                                      	  <th>상품명</th>
+	                                      	  <th>상품 판매 금액</th>
+	                                      	  <th>주문 수량</th>
+	                                          <th>주문 금액</th>
 	                                          <th>취소 상태</th>
 	                                          <th>취소 상세</th>
 	                                          <th>구매 확정</th>
@@ -144,10 +146,12 @@
 	                                       		<c:forEach var="vo" items="${detailMap.detailFromOrderDetailVO}">
 		                                       		  <tr>
 		                                       		  	  <td>${vo.order_detail_no }</td>
-			                                       		  <td>${vo.item_name} </td>
-			                                       		  <td><img src="${vo.item_img}" style="max-width: 100px; max-height: 100px;"></img></td>
-				                                          <td>${vo.price*vo.amount}(${vo.amount}) </td>
-				                                          <td>${vo.amount} </td>
+		                                       		  	  <td><img src="${vo.item_img}" style="max-width: 100px; max-height: 100px;"></img></td>
+			                                       		  <td>${vo.item_name}<br><span>${vo.packing_status == 1? "포장 (+2,000 원)": ""}</span></td>
+			                                       		  <td>${(vo.price+(vo.packing_status == 1? 2000 : 0))} 원</td>
+			                                       		  <td>${vo.amount} 개</td>
+				                                          <td>${(vo.price+(vo.packing_status == 1? 2000 : 0))*vo.amount} 원</td>
+				                                          
 		                                                  <td id="cancel_status">
 												            <c:choose>
 												                <c:when test="${empty vo.cancel_status}">

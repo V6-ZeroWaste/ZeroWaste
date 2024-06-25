@@ -43,7 +43,7 @@
 		    item_amount, cancel_count, item_img
 		FROM (
 			SELECT 
-				order_no, MIN(item_no) AS item_no, SUM(price) AS total_item_price, max(confirm_date) as confirm_date,
+				order_no, MIN(item_no) AS item_no, SUM((price+if(packing_status=0, 0, 2000)) * amount) AS total_item_price, max(confirm_date) as confirm_date,
 				SUM(amount) AS total_amount, MIN(cancel_status) AS cancel_status, COUNT(*) AS item_amount, COUNT(cancel_status) as cancel_count
 			FROM order_detail
 			GROUP BY order_no
@@ -189,23 +189,23 @@
 	</insert>
 	<!-- order detail 부분 -->
 	<insert id="orderDetailInsert" parameterType="java.util.List">
-	    INSERT INTO `order_detail` (order_no, user_no, amount, price, item_no)
+	    INSERT INTO `order_detail` (order_no, user_no, amount, price, item_no, packing_status)
 	    VALUES
 	    <foreach collection="list" item="orderDetail" separator=",">
 	        (
 	            #{orderDetail.order_no}, #{orderDetail.user_no}, #{orderDetail.amount},
-	            #{orderDetail.price}, #{orderDetail.item_no}
+	            #{orderDetail.price}, #{orderDetail.item_no}, #{orderDetail.packing_status}
 	        )
 	    </foreach>
 	</insert>
 	
 	<!-- 상품재고 업데이트 -->
-	<update id="inventoryUpdate" parameterType="java.util.List">
-	    <foreach collection="list" item="vo" separator=";">
+
+	<update id="inventoryUpdate" parameterType="kr.co.soaff.order.OrderVO">
 	        UPDATE item
-	        SET amount = amount - #{vo.amount}
-	        WHERE item_no = #{vo.item_no}
-	    </foreach>
+	        SET amount = (amount - #{amount})
+	        WHERE item_no = #{item_no}
+
 	</update>
 
 	<insert id="pointPlus" parameterType="kr.co.soaff.order.OrderVO">
@@ -242,7 +242,9 @@
 		</foreach>
 	</delete>
 	
+
 	<!-- 재고확인 -->
+
     <select id="checkAmount" parameterType="java.util.List" resultType="java.lang.Integer">
         SELECT amount
         FROM item

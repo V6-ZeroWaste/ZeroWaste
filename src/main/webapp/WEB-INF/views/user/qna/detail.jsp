@@ -41,7 +41,8 @@ th {
 }
 
 .qna-img {
-	max-width: 70%;
+    width: 200px; 
+    height: auto; 
 }
 
 .disable-link {
@@ -59,7 +60,8 @@ function redirectToUpdate() {
 }
 
 function redirectToItem(itemNo) {
-    window.location.href = '/item/detail?item_no=' + itemNo;
+	console.log("Item No: ", itemNo);
+	window.location.href = '/item/detail?item_no=' + itemNo;
 }
 
 var qna_no = ${vo.qna_no};
@@ -83,7 +85,7 @@ function deleteQna() {
         });
     }
 }
-
+console.log("Initial Item No: ", ${vo.item_no});
 	</script>
 </head>
 <body>
@@ -102,7 +104,7 @@ function deleteQna() {
 
 						<div class="col-12">
 							<div class="order">
-								<div class="row align-items-center" style="height: 100px">
+								<div class="row align-items-center" style="height: 102px">
 									<div class="col-lg-2 order-preview justify-content-center">
 										<!-- 상품이미지 -->
 										<a href="product-1.html" title="${vo.item_name }"
@@ -118,7 +120,7 @@ function deleteQna() {
 									<div class="col-lg-2">
 										<!-- 상품 바로가기 링크 -->
 										<a href="#!" class="action eyebrow underline"
-											onclick="redirectToItem('${vo.item_no}')">View Item</a>
+											onclick="redirectToItem(${vo.item_no})">View Item</a>
 									</div>
 								</div>
 							</div>
@@ -143,7 +145,8 @@ function deleteQna() {
 										</tr>
 										<tr>
 											<th>Content</th>
-											<td colspan="2"><textarea rows="5" cols="85" readonly>${vo.content}</textarea>
+											<td colspan="2"><pre
+													style="white-space: pre-wrap; word-wrap: break-word;">${vo.content}</pre>
 											</td>
 										</tr>
 										<c:if test="${not empty vo.qna_img}">

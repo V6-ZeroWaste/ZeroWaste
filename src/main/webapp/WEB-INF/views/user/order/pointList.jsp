@@ -98,7 +98,7 @@
 			      <li class="page-item"><a class="page-link" href="#!">4</a></li>
 			       */             
 			                    
-			      console.log(resp)        
+			          
 				  let printPage = "";
 				  if(resp.isPrev){
 					  printPage += `<li class="page-item"><a class="page-link" onclick="changePage(this)" data-page="1">‹‹</a></li>`
@@ -118,10 +118,10 @@
 					  printPage += `<li class="page-item"><a class="page-link" onclick="changePage(this)" data-page="`+(resp.endPage+1)+`">›</a></li>`
 					  printPage += `<li class="page-item"><a class="page-link" onclick="changePage(this)" data-page="`+(resp.totalPage)+`">››</a></li>`
 				  }
-				  console.log("printPAge:   ", printPage)
+				  
 				  
 				  $(".pagination").html(printPage);
-				  console.log($(".pagination"))
+				  
 				
 
 

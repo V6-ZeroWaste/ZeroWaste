@@ -19,7 +19,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             PrintWriter writer = response.getWriter();
             writer.println("<script>");
             writer.println("if(confirm('로그인이 필요한 기능입니다.\\n로그인 하시겠습니까?')){");			
-            writer.println("location.href = '/user/user/login';}");
+            writer.println("location.href = '/login';}");
             writer.println("else{window.history.go(-1);}");
             writer.println("</script>");
             return false;

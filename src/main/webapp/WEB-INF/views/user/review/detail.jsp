@@ -40,8 +40,9 @@ th {
 	width: 120px;
 }
 
-.review-img {
-	max-width: 70%;
+.review_img {
+    width: 200px; 
+    height: auto; 
 }
 
 .disable-link {
@@ -58,6 +59,7 @@ function redirectToUpdate() {
     window.location.href = '/mypage/review/update?review_no=' + reviewNo;
 }
 function redirectToItem(itemNo) {
+	console.log("Item No: ", itemNo);
     window.location.href = '/item/detail?item_no=' + itemNo;
 }
 
@@ -103,7 +105,7 @@ function deleteReview() {
 						<!-- item info card -->
 						<div class="col-12">
 							<div class="order">
-								<div class="row align-items-center" style="height: 100px">
+								<div class="row align-items-center" style="height: 102px">
 									<div class="col-lg-2 order-preview justify-content-center">
 										<!-- 상품이미지 -->
 										<a href="product-1.html" title="${vo.item_name }"
@@ -149,7 +151,8 @@ function deleteReview() {
 										</tr>
 										<tr>
 											<th>Content</th>
-											<td colspan="2"><textarea rows="5" cols="85" readonly>${vo.content}</textarea>
+											<td colspan="2"><pre
+													style="white-space: pre-wrap; word-wrap: break-word;">${vo.content}</pre>
 											</td>
 										</tr>
 										<c:if test="${not empty vo.review_img}">

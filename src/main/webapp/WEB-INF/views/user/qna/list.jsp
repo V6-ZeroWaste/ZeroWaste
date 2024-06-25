@@ -16,6 +16,10 @@
 <title>soaff mypage QnA</title>
 
 <style>
+.order {
+	height: 102px;
+}
+
 .search-filter>div {
 	margin: 10px 0px 10px 0px;
 }
@@ -251,7 +255,16 @@
             </c:otherwise>
 													</c:choose>
 												</div>
-												<div class="qna-info">${list.replyState}</div>
+												<div class="qna-info">
+													<c:choose>
+														<c:when test="${list.replyState == '답변 완료'}">
+															<span class="order-status sent">답변 완료</span>
+														</c:when>
+														<c:otherwise>
+															<span class="order-status shipping">답변 대기</span>
+														</c:otherwise>
+													</c:choose>
+												</div>
 											</div>
 
 											<div class="col-lg-2">

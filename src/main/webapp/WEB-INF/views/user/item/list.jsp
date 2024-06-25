@@ -99,8 +99,13 @@
                       printList += "</a>";
                       printList += "</figure>";
                       printList += "<div class='product-meta'>";
-                      printList += "<h3 class='product-title'><a href='detail?item_no=" + item.item_no + "'>"
-                          + item.name;
+                      if(item.amount==0){
+                          printList += "<h3 class='product-title'><a href='detail?item_no=" + item.item_no + "'>"
+                              +"<s class='text-muted'> "+ item.name + "(품절)</s>";
+                      }else{
+                          printList += "<h3 class='product-title'><a href='detail?item_no=" + item.item_no + "'>"
+                              + item.name;
+                      }
                       if (item.discount_rate != 0) {
                           printList += "&nbsp;&nbsp;<span class='text-red text-sm-center'>"+ item.discount_rate +"%</span>";
                       }
@@ -120,7 +125,7 @@
               }
           }
 	  </script>
-    <title>soaff items</title>
+    <title>soaff</title>
   </head>
     <body>
     <%@ include file="/WEB-INF/views/user/include/header.jsp" %>

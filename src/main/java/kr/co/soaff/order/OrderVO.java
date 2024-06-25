@@ -38,14 +38,15 @@ public class OrderVO {
 	private int[] amountArray;
 	private int[] itemNoArray;
 	private int[] priceArray;
+	private int[] packingStatusArray;
 	private int amount;
 	private int item_no;
 	private int price;
+	private int packing_status;
 	// 포인트 관련
 	private String pointPlusContent;
 	private String pointContent;
 	private int pointPlus;
-
 
 	private int total_amount; // 주문 총 수량
 	private int item_amount; // 주문 총 수량

@@ -19,8 +19,11 @@
 
     window.onload = function () {
         //  getList();
+        console.log($(".cart-item .custom-control-input:checked").length);
+        updateTotalItemCount();
         sumItemTotalPrice();
         updatePaymentPrice();
+        
     }
 
     function sumItemTotalPrice() {
@@ -217,7 +220,7 @@
         // 체크된 항목 개수 확인
         var checkedItemsCount = $(".cart-item .custom-control-input:checked").length;
 
-        $('#countItemTotal').html("총 " + checkedItemsCount + "개의 상품금액");
+        $('#countItemTotal').text("총 " + checkedItemsCount + "개의 상품금액");
     }
 
 
@@ -292,8 +295,13 @@
     let con = false;
     $(document).ready(function () {
         $("#checkAll").on('change', function () {
-            $(".cart-item .custom-control-input").prop('checked', $(this).prop('checked'));
-            updateConState();
+        	$(".cart-item .custom-control-input").each(function () {
+                // 체크박스가 disabled 상태가 아닌 경우에만
+                if (!$(this).prop('disabled')) {
+                    // 체크 상태를 변경
+                    $(this).prop('checked', shouldCheck);
+                }
+            });            updateConState();
             sumItemTotalPrice();
             updatePaymentPrice();
             updateTotalItemCount();
@@ -342,7 +350,7 @@
                 <!--전체선택-->
                 <div class="custom-control custom-checkbox col-lg-8">
                     <input type="checkbox" class="custom-control-input" id="checkAll"
-                           checked="">
+                           >
                     <label class="custom-control-label" for="checkAll"></label>
                 </div>
                 <br>
@@ -377,7 +385,7 @@
                 <form action="/order" method="post" id="frm">
                     <c:forEach var="vo" items="${map.list }">
 
-                        <!-- cart item -->
+                          <!-- cart item -->
                         <div class="cart-item" id="cart${vo.cart_no}">
                             <div class="row align-items-center">
                                 <div class="col-12 col-lg-6">
@@ -529,7 +537,7 @@
                     <div class="card-body">
                         <ul class="list-group list-group-minimal">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span id="countItemTotal" style="margin-left: 0px; color: #555555;">총 ${map.count}개의 상품 금액</span>
+                                <span id="countItemTotal" style="margin-left: 0px; color: #555555;"></span>
                                 <span class="list-group-item" id="sumItemTotal" style="color: #555555;"></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">

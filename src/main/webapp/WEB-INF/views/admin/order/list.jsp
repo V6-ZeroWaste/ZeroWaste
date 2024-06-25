@@ -131,8 +131,8 @@
                     console.log(vo.payment_date);
 
                     printList += "<td>" + vo.id + "</td>";
-                    printList += "<td>" + vo.payment_price + "</td>";
-                    printList += "<td>" + vo.total_amount + "</td>";
+                    printList += "<td>" + vo.payment_price + " 원</td>";
+                    printList += "<td>" + vo.total_amount + " 개</td>";
                     let delivery_status = "";
                     if (vo.delivery_status == 0) {
                         delivery_status = "상품준비중";

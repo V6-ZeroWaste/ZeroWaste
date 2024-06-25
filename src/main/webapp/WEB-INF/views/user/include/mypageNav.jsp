@@ -29,7 +29,7 @@
           if(url[2]=='qna'){
         	  element = document.getElementById('mp-qna');
           }
-          if(url[2]=='profile' || url[3] == 'profile'){
+          if(url[2]=='profile'){
         	  element = document.getElementById('mp-profile');
         	  temp = `<p style="text-align:center;margin-bottom: 0; text-decoration-color:#c2c2c2; font-size: x-large; background-color:#79AC78;border-color: #79AC78; color: #FFFFFF;">Withdrawal</p>`
         	  temp += `<button class="btn"  style="color: rgb(108, 117, 125); font-family: 'Open Sans', sans-serif;" data-toggle="modal" data-target="#exampleModal-2" type="button" role="tab" aria-controls="sidebar-1-2" aria-selected="false">Deactivate Account</button>`

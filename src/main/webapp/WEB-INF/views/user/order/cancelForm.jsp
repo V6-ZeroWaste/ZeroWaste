@@ -208,9 +208,6 @@
          	
          	
 				</div>
-				<script type="text/javascript">
-				console.log($("#cancel_reason_detail").val());
-				</script>
 				<!-- /content -->
 							
 						</div>
