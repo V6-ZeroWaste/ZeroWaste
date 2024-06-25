@@ -97,6 +97,7 @@
 		od.user_no,
 		od.amount,
 		od.price,
+		od.packing_status,
 		od.cancel_status,
 		od.confirm_date,
 		od.cancel_request_date,
@@ -193,7 +194,8 @@
 	<update id="cancelOrderUpdate"
 		parameterType="kr.co.soaff.cancel.CancelAdminOrderVO">
 		UPDATE `order`
-		SET refund_price = IF(refund_price IS NULL, 0 , refund_price) + #{refund_price}
+		SET refund_price = IF(refund_price IS NULL, 0 , refund_price) + #{refund_price},
+		refund_point = IF(refund_point IS NULL, 0 , refund_point) + #{refund_point}
 		WHERE order_no = #{order_no}
 	</update>
 	
@@ -207,6 +209,15 @@
 		cancel_reason_detail = #{cancel_reason_detail}
 		WHERE order_detail_no = #{order_detail_no} and user_no = #{user_no}
 	</update>
+	<!--  취소 승인 시 상품 재고 수  업데이트  -->
+	<update id="updateItemAmount" parameterType="kr.co.soaff.cancel.CancelAdminDetailVO">
+	 	UPDATE item
+		SET amount = amount + #{amount}
+		WHERE item_no = #{item_no}
+	</update>
+	<!--  취소 승인 시 상품 재고 수  업데이트  -->
+	
+	
 	
 
 </mapper>
