@@ -31,6 +31,10 @@
     <sql id="filter">
         <where>
             <choose>
+                <when test="filter == '전체'">
+                    1=1
+                    <include refid="searchAndCal"/>
+                </when>
                 <when test="filter == '답변대기'">
                     qna.reply IS NULL
                     <include refid="searchAndCal"/>

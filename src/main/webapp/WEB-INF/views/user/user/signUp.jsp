@@ -577,6 +577,7 @@
 </section>
 
 <section class="pt-5">
+
   <div class="container form-container">
     <div class="form-content">
 <%--      <form action="/user/user/signUp" method="POST" name="frm" id="frm">--%>
