@@ -133,8 +133,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		// 포트원 결제 취소
 		int result = 0;
-		if (refundPrice > 0) {
-			if (cancelPortone(order.getPayment_Id(), reason, refundPrice)) { // 결제 취소 완료 시
+		
+		if (cancelPortone(order.getPayment_Id(), reason, refundPrice)) { // 결제 취소 완료 시
 				// order_detail 결제 취소 정보 UPDATE
 				result += mapper.completeCancel(orderDetail);
 				// order 취소 금액 UPDATE
@@ -152,13 +152,9 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 				// item 재고 수량 UPDATE
 				mapper.updateItemAmount(orderDetail);
 
-			} else {
-				return 0;
-			}
 		} else {
-			mapper.updateItemAmount(orderDetail);
-			result = 3;
-		}
+				return 0;
+		} 
 
 		return result == 3 ? 1 : 0;
 	}
@@ -220,6 +216,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 	}
 
 	public boolean cancelPortone(String paymengt_id, String reason, int amount) {
+		if(amount <= 0) {return true;}
 		try {
 
 			String apiUrl = "https://api.portone.io/payments/" + paymengt_id + "/cancel";
