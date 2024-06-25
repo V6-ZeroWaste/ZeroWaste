@@ -189,15 +189,22 @@
 	</insert>
 	<!-- order detail 부분 -->
 	<insert id="orderDetailInsert" parameterType="java.util.List">
-	    INSERT INTO `order_detail` (order_no, user_no, amount, price, item_no)
+	    INSERT INTO `order_detail` (order_no, user_no, amount, price, item_no, packing_status)
 	    VALUES
 	    <foreach collection="list" item="orderDetail" separator=",">
 	        (
 	            #{orderDetail.order_no}, #{orderDetail.user_no}, #{orderDetail.amount},
-	            #{orderDetail.price}, #{orderDetail.item_no}
+	            #{orderDetail.price}, #{orderDetail.item_no}, #{orderDetail.packing_status}
 	        )
 	    </foreach>
 	</insert>
+	
+	<!-- 상품재고 업데이트 -->
+	<update id="inventoryUpdate" parameterType="kr.co.soaff.order.OrderVO">
+	        UPDATE item
+	        SET amount = (amount - #{amount})
+	        WHERE item_no = #{item_no}
+	</update>
 
 	<insert id="pointPlus" parameterType="kr.co.soaff.order.OrderVO">
 		INSERT INTO `point`(
@@ -232,6 +239,16 @@
 			#{cartNo}
 		</foreach>
 	</delete>
+	
+		<!-- 재고확인 -->
+    <select id="checkAmount" parameterType="java.util.List" resultType="java.lang.Integer">
+        SELECT amount
+        FROM item
+        WHERE item_no IN 
+        <foreach item="vo" collection="list" open="(" separator="," close=")">
+            #{vo.item_no}
+        </foreach>
+    </select>
 	
 	
 	<!-- end -->
