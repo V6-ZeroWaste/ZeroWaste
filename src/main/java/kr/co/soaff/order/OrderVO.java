@@ -38,6 +38,7 @@ public class OrderVO {
 	private int[] amountArray;
 	private int[] itemNoArray;
 	private int[] priceArray;
+	private int[] packingStatusArray;
 	private int amount;
 	private int item_no;
 	private int price;
