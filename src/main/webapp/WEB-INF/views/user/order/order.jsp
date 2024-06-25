@@ -234,6 +234,15 @@
                 paymentInfo();
             }
         });
+        
+        var paymentPrice = parseInt($('#paymentPrice').text().replace(/[^0-9.-]/g, '').trim()) - 3000;
+
+        // 천단위 구분 기호를 포함하여 숫자 포맷팅
+        var formattedPrice = new Intl.NumberFormat('ko-KR').format(paymentPrice);
+
+        // pointToUse input 요소의 placeholder 속성에 paymentPriceText 값을 설정
+        $('#pointToUse').attr('placeholder', "사용 가능한 적립금 : "+formattedPrice+"원");
+        
 
     };
 
@@ -576,36 +585,27 @@
         $('#estimatedPoint').text(estimatedPoint.toLocaleString() + "원");
     }
 
+    // 포인트 입력 검증 함수
     function validatePointInput() {
-        // JSP에서 전달된 map.point 값을 JavaScript 변수로 가져옴
         var availablePoints = parseFloat("${map.point}");
-
-        // id가 pointToUse인 input 요소의 값을 숫자로 변환하여 가져옴
         var inputPoints = parseFloat($('#pointToUse').val().replace(/[^0-9.-]/g, '')) || 0;
+        var paymentPrice = parseFloat($('#paymentPrice').text().replace(/[^0-9.-]/g, ''));
 
-
-        var paymentPrice = parseFloat($('#paymentPrice').text().replace(/[^0-9.-]/g, ''))
-
-        // 입력값이 사용 가능한 포인트보다 큰 경우
+        // 입력된 포인트가 보유 포인트보다 크거나 결제 금액보다 큰 경우
         if (inputPoints > availablePoints) {
-            // 경고 메시지를 표시
-            alert("보유 포인트보다 작은 금액을 입력해주세요");
-
-            // 입력값을 0으로 초기화
-            $('#pointToUse').val();
-
-            // 유효성 검사 실패를 나타내는 false 반환
+            alert("보유 포인트보다 작은 금액을 입력해주세요.");
+            $('#pointToUse').val(0); // 입력값을 0으로 초기화
             return false;
-        }
-
-        if (paymentPrice - inputPoints < 3000 && paymentPrice - inputPoints > 0) {
+        } else if (inputPoints > paymentPrice) {
+            alert("사용할 포인트는 결제 금액보다 클 수 없습니다.");
+            $('#pointToUse').val(0); // 입력값을 0으로 초기화
+            return false;
+        } else if (paymentPrice - inputPoints < 3000 && paymentPrice - inputPoints > 0) {
             alert("최종결제금액이 3000원(배송비) 이상이어야 합니다.");
             return false;
-
         }
 
-        // 유효성 검사 성공을 나타내는 true 반환
-        return true;
+        return true; // 유효성 검사 통과
     }
 
     function portOneOrderName() {
@@ -1024,17 +1024,24 @@
                             <td>3,000원</td>
                         </tr>
                         <tr>
+                            <th><b>보유 적립금</b></th>
+                            <td>
+                                <fmt:formatNumber value="${map.point }" type="number" pattern="#,##0"/>원
+                            </td>
+                        </tr>
+                        <tr>
                             <th><b>적립금 사용</b></th>
                             <td>
                                 <div class="d-inline-flex col-12" style="padding-left: 0px;">
-                                    <input type="text" class="form-control col-md-6" name="point" id="pointToUse"
-                                           placeholder="사용가능한 포인트 : <fmt:formatNumber value="${map.point }" type="number" pattern="#,##0"/>">
+                                    <input type="number" class="form-control col-md-6" name="point" id="pointToUse"
+                                           placeholder="">
                                     <button type=button class="form-control col-sm-3 btn btn-primary ml-2" id="pointBtn"
-                                            value=0>사용
-                                    </button>
+                                            value=0>사용</button>
                                 </div>
+                                
                             </td>
                         </tr>
+                        
                         <tr>
                             <th><b>예상 적립 금액</b></th>
                             <td id="estimatedPoint"></td>
