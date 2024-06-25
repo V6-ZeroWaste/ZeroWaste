@@ -147,8 +147,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
-                                            <a href="/idFind" style="color: #555555;">아이디 찾기 | </a>
-                                            <a href="/pwFind" style="color: #555555;">비밀번호 찾기</a>
+                                            <a href="/idFind" style="color: #555555;" class="eyebrow">FIND ID | </a>
+                                            <a href="/pwFind" style="color: #555555; ">비밀번호 찾기</a>
                                         </div>
                                         <div class="col-12 mt-2">
                                             <input type="button" value="LOG IN" alt="LOG IN" id="login"

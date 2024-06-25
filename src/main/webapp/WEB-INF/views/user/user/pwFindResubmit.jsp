@@ -9,6 +9,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
   <link rel="stylesheet" href="/user/css/vendor.css" />
   <link rel="stylesheet" href="/user/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <title>soaff find</title>
   <%@ include file="/WEB-INF/views/user/include/header.jsp" %>
@@ -43,10 +46,10 @@
           success : function (res){
             if(res == "1")
             {
-                alert("1");
-              pwd_usedErrorMsg.html('사용중이신 비밀번호입니다. 새로윤 비밀번호를 입력해주세요').css("display","block");
+                // alert("1");
+              pwd_usedErrorMsg.html('이미 사용중이신 비밀번호입니다. 새로운 비밀번호를 입력해주세요').css("display","block");
             }else if(res == "2"){
-                alert("2");
+                // alert("2");
               alert("비밀번호 변경 완료");
               location.href="/";
             }else{
@@ -98,25 +101,25 @@
         <div class="card active">
           <div class="card-header" id="headingOne">
             <h6 class="mb-0">
-              <p style="color: #68ae68"><strong>비밀번호 변경</strong></p>
+              <p style="color: #68ae68;  font-size: 16px" class="eyebrow"><strong>Change Password</strong></p>
             </h6>
           </div>
           <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-            <div class="card-body" style="border : 1px #c2c2c2 solid">
+            <div class="card-body">
 <%--              <form method="POST" name="frm" id="frm" class="row mt-2 needs-validation" novalidate>--%>
                 <div class="form-group col-12 mb-2">
-                  <label for="pwd" style="color: #3d733d"><strong>새 비밀번호</strong></label>
+                  <label for="pwd" style="color: #3d733d; font-size: 14px"><strong>New Password</strong></label>
                   <input type="password" class="form-control" id="pwd" name="pwd" required>
                   <div class="invalid-feedback" id="pwdErrorMsg"></div>
                 </div>
                 <div class="form-group col-12 mb-2">
-                  <label for="pwd_check" style="color: #3d733d"><strong>새 비밀번호 다시입력</strong></label>
+                  <label for="pwd_check" style="color: #3d733d; font-size: 14px"><strong>Confirm Password</strong></label>
                   <input type="password" class="form-control" id="pwd_check" name="pwd_check" required>
                   <div class="invalid-feedback" id="pwd_checkErrorMsg"></div>
                 </div>
                 <div class="col-12 mt-3">
                   <div class="invalid-feedback" id="pwd_usedErrorMsg"></div>
-                  <button class="btn btn-block btn-primary" id="btn" onclick="goResubmit(event);">제출</button>
+                  <button class="btn btn-block btn-primary" id="btn" onclick="goResubmit(event);" style="font-family: 'Noto Sans KR', sans-serif; font-size: 16px">제출</button>
                 </div>
 <%--              </form>--%>
             </div>
