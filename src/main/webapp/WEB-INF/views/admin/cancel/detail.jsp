@@ -29,6 +29,7 @@
 	justify-content: space-between;
 	align-items: center;
 }
+
 </style>
 <script>
 function confirmApproveCancel(order_detail_no) {
@@ -188,10 +189,9 @@ ${cancelDetail.cancel_reason_detail }
 							</div>
 						</div>
 					</div>
-				</div>
 
 
-				<div class="list-group-item d-flex justify-content-center">
+				<div class="list-group-item d-flex justify-content-center" style ="padding-bottom:30px;">
 					<c:choose>
 						<c:when test="${cancelDetail.cancel_status == 0}">
 							<button id="rejectBtn" class="btn btn-danger"
@@ -202,6 +202,7 @@ ${cancelDetail.cancel_reason_detail }
 								onclick="confirmApproveCancel(${cancelDetail.order_detail_no})">승인</button>
 						</c:when>
 					</c:choose>
+				</div>
 				</div>
 			</main>
 			<%@ include file="/WEB-INF/views/admin/include/footer.jsp"%>
