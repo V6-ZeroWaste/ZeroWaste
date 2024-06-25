@@ -41,7 +41,8 @@ th {
 }
 
 .qna-img {
-	max-width: 70%;
+    width: 200px; 
+    height: auto; 
 }
 
 .disable-link {
@@ -103,7 +104,7 @@ console.log("Initial Item No: ", ${vo.item_no});
 
 						<div class="col-12">
 							<div class="order">
-								<div class="row align-items-center" style="height: 110px">
+								<div class="row align-items-center" style="height: 102px">
 									<div class="col-lg-2 order-preview justify-content-center">
 										<!-- 상품이미지 -->
 										<a href="product-1.html" title="${vo.item_name }"

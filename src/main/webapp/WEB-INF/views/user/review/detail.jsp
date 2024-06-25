@@ -40,8 +40,9 @@ th {
 	width: 120px;
 }
 
-.review-img {
-	max-width: 70%;
+.review_img {
+    width: 200px; 
+    height: auto; 
 }
 
 .disable-link {
@@ -104,7 +105,7 @@ function deleteReview() {
 						<!-- item info card -->
 						<div class="col-12">
 							<div class="order">
-								<div class="row align-items-center" style="height: 100px">
+								<div class="row align-items-center" style="height: 102px">
 									<div class="col-lg-2 order-preview justify-content-center">
 										<!-- 상품이미지 -->
 										<a href="product-1.html" title="${vo.item_name }"
