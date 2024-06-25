@@ -233,6 +233,16 @@
 		</foreach>
 	</delete>
 	
+	<!-- 재고확인 -->
+    <select id="checkAmount" parameterType="java.util.List" resultType="java.lang.Integer">
+        SELECT amount
+        FROM item
+        WHERE item_no IN 
+        <foreach item="vo" collection="list" open="(" separator="," close=")">
+            #{vo.item_no}
+        </foreach>
+    </select>
+	
 	
 	<!-- end -->
 	

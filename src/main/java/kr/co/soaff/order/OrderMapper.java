@@ -15,7 +15,9 @@ public interface OrderMapper {
 
 	// Mypage > order > detail
 	OrderVO orderInfo(OrderVO vo);
+
 	OrderDetailVO orderDetailInfo(OrderDetailVO vo);
+
 	List<OrderDetailVO> orderDetailList(OrderVO vo);
 
 	List<OrderDetailVO> orderDetailInfo(OrderVO vo);
@@ -41,4 +43,6 @@ public interface OrderMapper {
 
 //	int orderDetailInsert(OrderVO vo);
 	int orderDetailInsert(List<OrderVO> list);
+
+	List<Integer> checkAmount(List<OrderVO> list);
 }
