@@ -64,6 +64,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             Dashfilter = urlParams.get('filter');
             console.log(Dashfilter);
+            if(Dashfilter !== null){
+                $('#filter').val( Dashfilter);
+            }else{
+                $('#filter').val("");
+            }
             getList();
         }
         function applyCondition(){
@@ -75,13 +80,10 @@
             getList();
         }
         function getList(){
+            var filterValue = $('#filter').val();
             var orderByValue = $('#orderBy').val();
             if (orderByValue === "") {
                 orderByValue = null;
-            }
-            var filter = $('#filter').val();
-            if(Dashfilter !== null && filter === ""){
-                filter = Dashfilter;
             }
             var data = {
                 searchWord: $('#searchWord').val(),
@@ -89,7 +91,7 @@
                 page: page,
                 start_date: $('#start_date').val(),
                 end_date: $('#end_date').val(),
-                filter: filter,
+                filter: filterValue !=="" ? filterValue : "전체",
             }
            	$.ajax({
 				type: "GET", // method type
@@ -137,7 +139,13 @@
            	})
         	
 		}
-
+        function truncateText(text, maxLength) {
+            if (text.length > maxLength) {
+                return text.substring(0, maxLength) + '...';
+            } else {
+                return text;
+            }
+        }
         function renderQnaList(items) {
             var printList = "";
 
@@ -205,7 +213,7 @@
 							            </label>
 							            <label>
                                           <select id="filter" name="filter" class="datatable-selector" onchange="applyCondition();">
-                                             <option value="전체">전체</option>
+                                             <option value="">전체보기</option>
                                             <option value="답변대기" <c:if test="${vo.filter eq '답변대기'}">selected</c:if>>답변대기</option>
                                              <option value="답변완료" >답변완료</option>
                                              <option value="교환/환불문의" >교환/환불 문의</option>
