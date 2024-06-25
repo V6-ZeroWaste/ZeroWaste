@@ -377,7 +377,7 @@
                 <form action="/order" method="post" id="frm">
                     <c:forEach var="vo" items="${map.list }">
 
-                        <!-- cart item -->
+                          <!-- cart item -->
                         <div class="cart-item" id="cart${vo.cart_no}">
                             <div class="row align-items-center">
                                 <div class="col-12 col-lg-6">
