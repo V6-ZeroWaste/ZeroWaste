@@ -41,7 +41,8 @@ th {
 }
 
 .qna-img {
-	max-width: 70%;
+    width: 200px; 
+    height: auto; 
 }
 
 .disable-link {

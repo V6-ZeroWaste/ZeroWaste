@@ -40,8 +40,9 @@ th {
 	width: 120px;
 }
 
-.review-img {
-	max-width: 70%;
+.review_img {
+    width: 200px; 
+    height: auto; 
 }
 
 .disable-link {

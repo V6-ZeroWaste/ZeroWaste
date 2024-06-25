@@ -43,7 +43,7 @@ public class ReviewController {
 		}
 		vo.setUser_no(user_no);
 		vo.setPageSize(10);
-		vo.setStartIdx((vo.getPage() - 1) * vo.getPageSize()); // 페이지 시작 인덱스 설정
+		vo.setStartIdx((vo.getPage() - 1) * vo.getPageSize());
 		Map<String, Object> map = service.list(vo);
 		String printList = "";
 		List<ReviewVO> reviewList = (List<ReviewVO>) map.get("list");
@@ -79,16 +79,6 @@ public class ReviewController {
 		model.addAttribute("vo", service.detail(vo));
 		return "/user/review/detail";
 	}
-
-//	@GetMapping("/post")
-//	public String write(Model model, @RequestParam int item_no, int order_detail_no, HttpSession session) {
-//		Integer user_no = (Integer) session.getAttribute("user_no");
-//		String user_id = (String) session.getAttribute("user_id");
-//		
-//		
-//		model.addAttribute("vo", service.write(item_no));
-//		return "/user/review/post";
-//	}
 
 	@GetMapping("/post")
 	public String write(Model model, @RequestParam Integer item_no, @RequestParam Integer order_detail_no, HttpSession session) {
