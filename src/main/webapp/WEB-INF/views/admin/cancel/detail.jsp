@@ -137,10 +137,12 @@ function goToList() {
 									변심
 								</label>
 								<div>
-									<input type="text" value="${cancelDetail.cancel_reason_detail}"
-										readonly
-										style="width: 100%; margin-top: 10px; background-color: #f0f0f0; border: 1px solid #ddd;">
+									<textarea readonly
+										style="width: 100%; margin-top: 10px; background-color: #f0f0f0; border: 1px solid #ddd; padding: 0; text-align: left; overflow: hidden;">
+${cancelDetail.cancel_reason_detail }
+                </textarea>
 								</div>
+
 							</div>
 						</div>
 
