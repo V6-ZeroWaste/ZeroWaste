@@ -7,8 +7,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.soaff.cart.CartVO;
+import kr.co.soaff.point.PointMapper;
+import kr.co.soaff.point.PointVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -17,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderServiceImpl implements OrderService {
 	@Autowired
 	OrderMapper mapper;
+	@Autowired
+	PointMapper pointMapper;
 
 	@Override
 	public Map<String, Object> list(OrderVO orderVO) {
@@ -66,8 +71,29 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	@Transactional
 	public boolean orderConfirm(OrderDetailVO vo) {
-		return mapper.orderConfirm(vo) == 0 ? false : true;
+		if(mapper.orderConfirm(vo) == 1 ) {
+			OrderVO ovo = new OrderVO();
+			ovo.setOrder_no(vo.getOrder_no());
+			ovo.setUser_no(vo.getUser_no());
+			OrderVO order = mapper.orderInfo(ovo);
+			int point = (int) ((order.getPayment_price() - order.getDelivery_price()) 
+			/ (vo.getAmount() * (vo.getPacking_status() == 0? vo.getPrice() : vo.getPrice() + 2000)) * 0.03);
+			if(point > 0) {
+				PointVO pvo = new PointVO();
+				pvo.setContent("구매확정 적립");
+				pvo.setUser_no(vo.getUser_no());
+				pvo.setOrder_no(vo.getOrder_no());
+				pvo.setPoint(point);
+				if(pointMapper.insert(pvo) == 1) {
+					return true;
+				} else {
+					return false;
+				}
+			}return true;
+		}
+		return false;
 	}
 
 	@Override

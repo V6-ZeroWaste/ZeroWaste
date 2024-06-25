@@ -92,7 +92,7 @@
 	<select id="orderDetailList" parameterType="kr.co.soaff.order.OrderDetailVO">
 		SELECT 
 			order_detail_no,
-		    od.amount, od.price,
+		    od.amount, od.price, od.packing_status,
 		    cancel_status, confirm_date,
 		    od.item_no, item_img, item.name as item_name,
 		    (select review_no from review where order_detail_no = od.order_detail_no and user_no = od.user_no) as review_no
