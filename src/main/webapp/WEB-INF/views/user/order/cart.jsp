@@ -58,8 +58,15 @@
         var cart_no = e.getAttribute('cart_no');
         var field = e.getAttribute('field');
         var amount = document.getElementById(field).value;
-        if (active == '+') {
+        var inventory = e.getAttribute('inventory');
+        
+        
+        if (active == '+' && inventory >= amount) {
             amount++;
+        }
+        if(active == '+' && inventory < amount) {
+        	alert("주문 불가능한 수량입니다. 다시 시도해주세요.")
+            return location.href = "/cart";
         }
         if (amount > 0 && active == '-') {
             amount--;
@@ -68,6 +75,7 @@
             alert("1개 이상부터 주문이 가능합니다")
             return location.href = "/cart";
         }
+        
 
         var data = {
             cart_no: cart_no,
@@ -451,13 +459,13 @@
                                     <div class="counter">
                                         <span class="counter-minus icon-minus" id='plusAmount${vo.cart_no}'
                                               field='amount${vo.cart_no}' onclick="chageAmount(this, '-');"
-                                              cart_no="${vo.cart_no}"></span>
+                                              cart_no="${vo.cart_no}" inventory="${vo.inventory }"></span>
                                         <input type='text' id='amount${vo.cart_no}'
                                                class="counter-value" value="${vo.amount}"
                                                min="0" max="${vo.inventory}" cart_no="${vo.cart_no}" readonly>
                                         <span class="counter-plus icon-plus" id='minusAmount${vo.cart_no}'
                                               field='amount${vo.cart_no}' onclick="chageAmount(this, '+');"
-                                              cart_no="${vo.cart_no}"></span>
+                                              cart_no="${vo.cart_no}" inventory="${vo.inventory }"></span>
                                     </div>
                                 </div>
                                 <div class="col-4 col-lg-2 text-center">
