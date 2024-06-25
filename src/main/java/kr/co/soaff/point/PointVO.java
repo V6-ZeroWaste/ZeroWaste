@@ -13,6 +13,9 @@ public class PointVO {
 	private int point;
 	private Timestamp point_date;
 	
+	private String startDate;
+	private String endDate;
+	
 	private int page; // 사용자 요청 페이지 번호 
 	public PointVO() {
 		this.page = 1; // 처음 페이지 접속할 때 page 초기값은 항상 1
