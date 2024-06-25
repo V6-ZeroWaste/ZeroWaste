@@ -58,6 +58,7 @@ function redirectToUpdate() {
     window.location.href = '/mypage/review/update?review_no=' + reviewNo;
 }
 function redirectToItem(itemNo) {
+	console.log("Item No: ", itemNo);
     window.location.href = '/item/detail?item_no=' + itemNo;
 }
 
@@ -149,7 +150,8 @@ function deleteReview() {
 										</tr>
 										<tr>
 											<th>Content</th>
-											<td colspan="2"><textarea rows="5" cols="85" readonly>${vo.content}</textarea>
+											<td colspan="2"><pre
+													style="white-space: pre-wrap; word-wrap: break-word;">${vo.content}</pre>
 											</td>
 										</tr>
 										<c:if test="${not empty vo.review_img}">

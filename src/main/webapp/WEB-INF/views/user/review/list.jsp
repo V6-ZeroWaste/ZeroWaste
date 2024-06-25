@@ -43,7 +43,7 @@
 }
 
 .order {
-	height: 100px;
+	height: 102px;
 }
 
 .disable-link {

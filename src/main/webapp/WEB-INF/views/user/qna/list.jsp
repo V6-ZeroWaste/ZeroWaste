@@ -16,6 +16,11 @@
 <title>soaff mypage QnA</title>
 
 <style>
+.order{
+	height:102px;
+}
+
+
 .search-filter>div {
 	margin: 10px 0px 10px 0px;
 }
