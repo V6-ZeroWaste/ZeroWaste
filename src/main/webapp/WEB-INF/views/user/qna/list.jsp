@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,55 +103,56 @@
 	    }
 
 	    $.ajax({
-	        type : "GET",
-	        url : "/mypage/qna/getList",
-	        data : data,
-	        dataType : "json",
+	        type : "GET", // method type
+	        url : "/mypage/qna/getList", // 요청할 url
+	        data : data, // 전송할 데이터
+	        dataType : "json", // 응답 받을 데이터 type
 	        success : function(resp) {
 	            let printList = "";
 	            if (resp.list.length == 0) {
 	                printList = "<td class='first' colspan='10' style='text-align: center;'>등록된 글이 없습니다.</td>";
-	            } else {
-	                resp.list.forEach(function(qna) {
-	                    printList += `
-	                        <tr onclick="location.href='/mypage/qna/detail?qna_no=${qna.qna_no}'">
-	                        <td><c:if test="${qna.qna_img != null && qna.qna_img != ''}"><img src="${qna.qna_img}"/></c:if></td>
-
-	                            <td>${qna.item_name}</td>
-	                            <td>${qna.title}</td>
-	                            <td>${qna.typeString}</td>
-	                            <td>${qna.user_id}</td>
-	                            <td>${qna.question_date}</td>
-	                            <td>${qna.replyState}</td>
-	                        </tr>`;
-	                });
 	            }
 
-	            $("#printList").html(printList);
+	            $("#printList").html(resp.printList);
 	            $(".datatable-info").html(
-	                `Showing ${(page - 1) * 10 + 1} to ${(page * 10 <= resp.count ? page * 10 : resp.count)} of ${resp.count} entries`
-	            );
+	                    "Showing "
+	                            + ((page - 1) * 20 + 1)
+	                            + " to "
+	                            + (page * 20 <= resp.count ? page * 20
+	                                    : resp.count) + " of "
+	                            + resp.count + " entries");
 
-	            // 페이지네이션 업데이트
+	            // 페이지네이션
 	            let printPage = "";
 	            if (resp.isPrev) {
 	                printPage += '<li class="datatable-pagination-list-item">';
 	                printPage += '<a data-page="1" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹‹</a></li>';
 	                printPage += '<li class="datatable-pagination-list-item">';
-	                printPage += '<a data-page="' + (resp.startPage - 1) + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
+	                printPage += '<a data-page="'
+	                        + (resp.startPage - 1)
+	                        + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">‹</a></li>';
 	            }
 	            for (let i = resp.startPage; i <= resp.endPage; i++) {
-	                printPage += `<li class="datatable-pagination-list-item${i == page ? ' datatable-active' : ''}">
-	                    <a data-page="${i}" class="datatable-pagination-list-item-link" onclick="changePage(this);">${i}</a></li>`;
+	                printPage += '<li class="datatable-pagination-list-item'
+	                        + (i == page ? ' datatable-active' : '')
+	                        + '">';
+	                printPage += '<a data-page="'
+	                        + i
+	                        + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">'
+	                        + i + '</a></li>';
 	            }
 	            if (resp.isNext) {
 	                printPage += '<li class="datatable-pagination-list-item">';
-	                printPage += '<a data-page="' + (resp.endPage + 1) + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
+	                printPage += '<a data-page="'
+	                        + (resp.endPage + 1)
+	                        + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
 	                printPage += '<li class="datatable-pagination-list-item">';
-	                printPage += '<a data-page="' + resp.totalPage + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
+	                printPage += '<a data-page="'
+	                        + resp.totalPage
+	                        + '" class="datatable-pagination-list-item-link" onclick="changePage(this);">›</a></li>';
 	            }
 	            $(".datatable-pagination-list").html(printPage);
-
+	            
 	            const newUrl = '/mypage/qna/list?filter=' + (data.filter !== null ? data.filter : '');
 	            history.pushState(null, '', newUrl);
 	        },
@@ -157,9 +160,8 @@
 	            $('#fail').html("관리자에게 문의하세요.");
 	            console.log('error', data, textStatus);
 	        }
-	    });
+	    })
 	}
-
 
 </script>
 
@@ -185,7 +187,8 @@
 								<div class="d-flex align-items-center justify-content-between">
 									<div>
 										<label> <select id="orderBy" name="orderBy"
-											class="datatable-selector" onchange="applyCondition();">
+											class="btn btn-outline-secondary btn-sm dropdown-toggle"
+											onchange="applyCondition();">
 												<option value="" hidden>정렬</option>
 												<option value="최신순"
 													<c:if test="${qnaVO.orderBy == '최신순'}">selected</c:if>>최신순</option>
@@ -193,7 +196,8 @@
 													<c:if test="${qnaVO.orderBy == '오래된순'}">selected</c:if>>오래된순</option>
 										</select>
 										</label> <label> <select id="filter" name="filter"
-											class="datatable-selector" onchange="applyCondition();">
+											class="btn btn-outline-secondary btn-sm dropdown-toggle"
+											onchange="applyCondition();">
 												<option value="">전체보기</option>
 												<option value="답변대기">답변대기</option>
 												<option value="답변완료">답변완료</option>
@@ -201,8 +205,8 @@
 										</label>
 									</div>
 									<div class="search-container">
-										<input id="searchWord" name="searchWord"
-											class="datatable-input" type="search" placeholder="상품명/문의 제목"
+										<input id="searchWord" name="searchWord" class="form-control"
+											type="search" placeholder="상품명/문의 제목"
 											<c:if test="${qnaVO.searchWord} != null">value=${qnaVO.searchWord}</c:if>
 											onkeyup="if(window.event.keyCode==13){applyCondition();}"
 											style="width: 250px"> <input type="button" value="검색"
@@ -233,10 +237,23 @@
 												<h3 class="order-number">${list.item_name}</h3>
 											</div>
 											<div class="col-lg-4">
-												<span class="qna-info">${list.question_date}</span> <br>
-												<span class="qna-info">${list.title}</span> <br> <span
-													class="qna-info">${list.replyState}</span>
+												<div class="qna-info">
+													<fmt:formatDate value="${list.question_date}"
+														pattern="yyyy-MM-dd" />
+												</div>
+												<div class="qna-info">
+													<c:choose>
+														<c:when test="${fn:length(list.title) > 10}">
+                ${fn:substring(list.title, 0, 10)}...
+            </c:when>
+														<c:otherwise>
+                ${list.title}
+            </c:otherwise>
+													</c:choose>
+												</div>
+												<div class="qna-info">${list.replyState}</div>
 											</div>
+
 											<div class="col-lg-2">
 												<a href="#!" class="action eyebrow underline"
 													onclick="redirectToDetail(${list.qna_no})">View Detail</a>
