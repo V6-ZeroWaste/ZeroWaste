@@ -205,13 +205,12 @@
         $("#goPay").on('click', function () {
             var agree = $("#agree").is(":checked");
 
+            var flag = checkAmount();
             if (fieldCheck()) {
-            	
-            	if(!checkAmount()){
-            		
+            	if(checkAmount()){
             		request_pay();
             	}else{
-            		alert("품절된 상품이 포함되었습니다. 주문을 취소합니다.")
+            		alert("가능한 주문 수량을 초과했습니다. 주문을 취소합니다.")
             		location.href="/cart";
             	}
 
@@ -612,7 +611,7 @@
         var data = {
             itemNo: itemNo // checkedCartNo를 배열로 전달
         };
-
+        var flag = true;
         // AJAX 요청
         $.ajax({
             type: "GET", // 요청 메서드 타입
@@ -622,22 +621,18 @@
             success: function (resp) {
                 let dbAmount = resp;
                 console.log(dbAmount);
-                
+
                 for (let i = 0; i < amount.length; i++) {
                     if (dbAmount[i] < amount[i]) {
                     	console.log("false");
-                        return false;
-                    }else{
-                    	console.log("true");
-                    	return true;
+                        flag = false;
                     }
                 }
                 
-
                 console.log("itemAmount values: ", itemNo);
                 console.log("itemAmount values: ", amount);
                 console.log("dbAmount values: ", dbAmount);
-                
+
 
             },
             error: function (data, textStatus) {
@@ -645,6 +640,8 @@
                 console.log('error', data, textStatus);
             }
         });
+
+        return flag;
 
     }
 

@@ -140,7 +140,7 @@ public class OrderServiceImpl implements OrderService {
 			list.add(orderVO);
 		}
 		int orderDetailInsertResult = mapper.orderDetailInsert(list);
-		int inventoryUpdateResult = mapper.orderDetailInsert(list);
+//		int inventoryUpdateResult = mapper.orderDetailInsert(list);
 //		int orderDetailInsertResult = 0;
 //
 //		int[] amountArray = vo.getAmountArray();
@@ -156,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
 //		}
 
 		return orderInsertResult > 0 && pointInsertResult > 0 && orderDetailInsertResult > 0
-				&& inventoryUpdateResult > 0 ? orderNo : null;
+				? orderNo : null;
 
 	}
 

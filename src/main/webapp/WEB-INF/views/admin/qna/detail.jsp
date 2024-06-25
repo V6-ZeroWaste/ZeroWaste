@@ -211,10 +211,10 @@
                                             <td>
                                                 <div>
                                                     <c:if test="${empty vo.reply_date}">
-                                                    <textarea id="reply" class="input-box" value=""></textarea>
+                                                        <textarea id="reply" class="input-box" value=""></textarea>
                                                     </c:if>
                                                     <c:if test="${not empty vo.reply_date}">
-                                                        <textarea id="reply" class="input-box" value="${vo.reply}"></textarea>
+                                                        <textarea id="reply" class="input-box">${vo.reply}</textarea>
                                                     </c:if>
                                                 </div>
                                             </td>
