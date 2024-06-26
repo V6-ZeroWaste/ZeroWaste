@@ -417,30 +417,30 @@
 
 
                                     <!-- `discountedPrice`가 비어 있으면 -->
-                                    <c:if test="${empty vo.discounted_price}">
+                                    <c:if test="${vo.discounted_price == vo.price}">
                                     	<c:if test="${vo.packing_status eq 1}">
                                     		<p class="cart-item-price" id="itemPrice${vo.cart_no}">
                                             <fmt:formatNumber value="${vo.price+2000}" type="number" pattern="#,##0"/>원</p>
-                                    	
-                                    	
+
+
                                     	</c:if>
                                     	<c:if test="${vo.packing_status eq 0}">
                                     		<p class="cart-item-price" id="itemPrice${vo.cart_no}">
                                             <fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</p>
-                                    	
-                                    	
+
+
                                     	</c:if>
                                     
                                     
-                                        <p class="cart-item-price" id="itemPrice${vo.cart_no}">
-                                            <fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</p>
+<%--                                        <p class="cart-item-price" id="itemPrice${vo.cart_no}">--%>
+<%--                                            <fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</p>--%>
                                     </c:if>
 
                                     <!-- `discountedPrice`가 비어 있지 않으면 -->
-                                    <c:if test="${!empty vo.discounted_price}">
+                                    <c:if test="${vo.discounted_price != vo.price}">
                                     
                                     	<c:if test="${vo.packing_status eq 1}">
-                                    		<del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원
+                                    		<del><fmt:formatNumber value="${vo.price+2000}" type="number" pattern="#,##0"/>원
 	                                        </del>
 	                                        <p class="cart-item-price" id="itemPrice${vo.cart_no}">
 	                                            <fmt:formatNumber value="${vo.discounted_price+2000}" type="number"
@@ -478,7 +478,7 @@
                                 <div class="col-4 col-lg-2 text-center">
 
                                     <!-- `discountedPrice`가 비어 있으면 -->
-                                    <c:if test="${empty vo.discounted_price}">
+                                    <c:if test="${vo.discounted_price == vo.price}">
                                     
                                     
                                     	<c:if test="${vo.packing_status eq 1}">
@@ -497,7 +497,7 @@
                                     </c:if>
 
                                     <!-- `discountedPrice`가 비어 있지 않으면 -->
-                                    <c:if test="${!empty vo.discounted_price}">
+                                    <c:if test="${vo.discounted_price != vo.price}">
 									    <c:if test="${vo.packing_status eq 1}">
 										    <span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
 	                                              cart_no="${vo.cart_no}"><fmt:formatNumber

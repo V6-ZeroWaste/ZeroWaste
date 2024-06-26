@@ -77,9 +77,23 @@
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 <script>
 
+    // $(document).ready(() => {
+    //     $('.totalAmount').html(itemTotalAmount());
+    // });
+    //
+    // function itemTotalAmount() {
+    //     let amountElements = document.querySelectorAll("span[id^='itemAmount']");
+    //     let totalAmount = 0;
+    //
+    //     amountElements.forEach((element) => {
+    //         totalAmount += parseInt(element.textContent) || 0; // textContent를 숫자로 변환하고, 변환 실패 시 0을 더합니다.
+    //     });
+    //
+    //     return totalAmount;
+    // }
+
 
     let isValid;
-
     //let paymentResult;
 
     function fieldCheck() {
@@ -242,7 +256,7 @@
 
         // pointToUse input 요소의 placeholder 속성에 paymentPriceText 값을 설정
         $('#pointToUse').attr('placeholder', "사용 가능한 적립금 : "+formattedPrice+"원");
-        
+
 
     };
 
@@ -401,7 +415,6 @@
     }
 
     function itemAmountArray() {
-
         let amountElements = document.querySelectorAll("span[id^='itemAmount']");
         let amount = Array.from(amountElements, element => parseInt(element.textContent));
         return amount
@@ -793,19 +806,34 @@
                                 <div class="col-4 col-lg-2 text-center">
 
                                     <!-- `discountedPrice`가 비어 있으면 -->
-                                    <c:if test="${empty vo.discounted_price}">
+                                    <c:if test="${vo.discounted_price == vo.price}">
                                         <p class="cart-item-price" id="itemPrice${vo.cart_no}">
+                                        <c:if test="${vo.packing_status eq 1}">
+                                            <fmt:formatNumber value="${vo.price+2000}" type="number" pattern="#,##0"/>원</p>
+                                        </c:if>
+                                        <c:if test="${vo.packing_status eq 0}">
                                             <fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원</p>
+                                        </c:if>
                                     </c:if>
 
                                     <!-- `discountedPrice`가 비어 있지 않으면 -->
-                                    <c:if test="${!empty vo.discounted_price}">
-                                        <del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원
-                                        </del>
-                                        <p class="cart-item-price" id="itemPrice${vo.cart_no}">
-                                            <fmt:formatNumber value="${vo.discounted_price}" type="number"
-                                                              pattern="#,##0"/>원
-                                        </p>
+                                    <c:if test="${vo.discounted_price != vo.price}">
+                                        <c:if test="${vo.packing_status eq 1}">
+                                            <del><fmt:formatNumber value="${vo.price+2000}" type="number" pattern="#,##0"/>원
+                                            </del>
+                                            <p class="cart-item-price" id="itemPrice${vo.cart_no}">
+                                                <fmt:formatNumber value="${vo.discounted_price+2000}" type="number"
+                                                                  pattern="#,##0"/>원
+                                            </p>
+                                        </c:if>
+                                        <c:if test="${vo.packing_status eq 0}">
+                                            <del><fmt:formatNumber value="${vo.price}" type="number" pattern="#,##0"/>원
+                                            </del>
+                                            <p class="cart-item-price" id="itemPrice${vo.cart_no}">
+                                                <fmt:formatNumber value="${vo.discounted_price}" type="number"
+                                                                  pattern="#,##0"/>원
+                                            </p>
+                                        </c:if>
                                     </c:if>
 
                                 </div>
@@ -817,7 +845,7 @@
                                 <div class="col-4 col-lg-2 text-center">
 
                                     <!-- `discountedPrice`가 비어 있으면 -->
-                                    <c:if test="${empty vo.discounted_price}">
+                                    <c:if test="${vo.discounted_price == vo.price}">
 
                                         <c:if test="${vo.packing_status eq 1}">
                                     		<span class="cart-item-price" id="itemTotalPrice${vo.cart_no}"
@@ -837,7 +865,7 @@
                                     </c:if>
 
                                     <!-- `discountedPrice`가 비어 있지 않으면 -->
-                                    <c:if test="${!empty vo.discounted_price}">
+                                    <c:if test="${vo.discounted_price != vo.price}">
 
                                         <c:if test="${vo.packing_status eq 1}">
                                     	
@@ -867,7 +895,7 @@
                     <div class="row gutter-1 mb-12">
                         <div class="col-4">
                             <div class="inline-block">
-                                <h6 style="text-align: right">총 ${map.checkedCartCount}개의 상품 금액</h6>
+                                <h6 style="text-align: right">총 ${map.cartCount}개의 상품 금액</h6>
                                 <h4 style="text-align: right" class="h2" id="sumItemTotal"></h4>
                             </div>
                         </div>
