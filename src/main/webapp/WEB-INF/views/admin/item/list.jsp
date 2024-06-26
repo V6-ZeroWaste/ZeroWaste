@@ -159,9 +159,11 @@
 
 						printList += "</tr>";
 					});
-
-					$("#printList").html(printList);
 				}
+				else{
+					printList = "<td class='first' colspan='9' style='text-align: center;'>등록된 글이 없습니다.</td>";
+				}
+				$("#printList").html(printList);
 			}
         </script>
     </head>
