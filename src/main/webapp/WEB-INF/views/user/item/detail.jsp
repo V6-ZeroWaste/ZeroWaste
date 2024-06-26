@@ -575,9 +575,9 @@
                         printList += "<div class='card-body text-left content-box border-top'>";
                         printList += "<br>";
                         printList += "<h4>A</h4>";
-                        printList += "<p>";
+                        printList += "<pre>";
                         printList += qna.reply;
-                        printList += "</p>";
+                        printList += "</pre>";
                         printList += "</div>";
                     }
                     printList += "</div>";

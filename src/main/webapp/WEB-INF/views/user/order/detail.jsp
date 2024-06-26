@@ -126,8 +126,8 @@
 										<strong>${vo.item_name}</strong><br>
 										<span>${vo.packing_status == 1? "포장 (+2,000원)" : "" }&nbsp;&nbsp;</span><br>
 			                          	<span>${vo.amount} 개</span>
-									</td>
-			                        <td><fmt:formatNumber value="${(vo.packing_status==1? vo.price:vo.price)*vo.amount }" pattern="#,###" /> 원</td>
+			                        <td><fmt:formatNumber value="${vo.price *vo.amount }" pattern="#,###" /> 원</td>
+
 			                        <c:if test="${vo.cancel_status != null}">
 			                        	<td><span class="order-status canceled">${vo.cancel_status == 0 ? '취소요청' : '취소완료'}</span></td>
 			                        	<td><button type="button" class="btn btn-outline-danger" onclick="location.href='/order/cancel/info?order_detail_no=${vo.order_detail_no}'">취소상세</button></td>

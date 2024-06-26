@@ -133,7 +133,6 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		if (cancelPortone(order.getPayment_Id(), reason, refundPrice)) { // 결제 취소 완료 시
 				// order_detail 결제 취소 정보 UPDATE
 				result += mapper.completeCancel(orderDetail);
-
 				// order 취소 금액 UPDATE
 				order.setRefund_price(refundPrice);
 				order.setRefund_point(refundPoint);
@@ -145,14 +144,17 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 					pointVo.setPoint(refundPoint);
 					pointVo.setOrder_no(order.getOrder_no());
 					result += pointMapper.insert(pointVo);
-				}else {result++;}
+				}else {
+					result++;
+				}
 				// item 재고 수량 UPDATE
 				mapper.updateItemAmount(orderDetail);
 
 		} else {
 				return 0;
-		}
-		return (result == 3 || result == 2) ? 1 : 0;
+		} 
+
+		return result == 3 ? 1 : 0;
 	}
 
 	@Override
@@ -174,8 +176,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		// 최종 결제 정보 공식 계산
 		int total_price = order.getPayment_price() - order.getDelivery_price() + order.getPoint();
-		int refundPoint = (int) (((double) (orderDetail.getPacking_status() == 1 ? orderDetail.getPrice() + 2000
-				: orderDetail.getPrice()) * orderDetail.getAmount())
+		int refundPoint = (int) (((double) (orderDetail.getPrice()) * orderDetail.getAmount())
 				/ ((order.getPayment_price() - order.getDelivery_price() + order.getPoint())) * order.getPoint());
 
 		// 주문 상품 총 개수 및 남은 개수 가져오기
@@ -185,12 +186,10 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		int refundPrice;
 		if (remainingItems == 0) {
 			// 모든 상품을 취소하는 경우
-			refundPrice = (orderDetail.getPacking_status() == 1 ? orderDetail.getPrice() + 2000
-					: orderDetail.getPrice()) * orderDetail.getAmount() + order.getDelivery_price() - refundPoint;
+			refundPrice = (orderDetail.getPrice()) * orderDetail.getAmount() + order.getDelivery_price() - refundPoint;
 		} else {
 			// 일부 상품만 취소하는 경우
-			refundPrice = (orderDetail.getPacking_status() == 1 ? orderDetail.getPrice() + 2000
-					: orderDetail.getPrice()) * orderDetail.getAmount() - refundPoint;
+			refundPrice = (orderDetail.getPrice()) * orderDetail.getAmount() - refundPoint;
 		}
 
 		// VO에 필요한 데이터 설정

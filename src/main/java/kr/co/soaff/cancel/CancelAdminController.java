@@ -110,7 +110,7 @@ public class CancelAdminController {
 	public ResponseEntity<Map<String, String>> refuseCancel(@PathVariable int order_detail_no) {
 		int r = service.refuseCancel(order_detail_no);
 		Map<String, String> response = new HashMap<>();
-		if (r == 1 || r ==2) {
+		if (r > 0) {
 			response.put("status", "success");
 			response.put("message", "거절 완료");
 		} else {
