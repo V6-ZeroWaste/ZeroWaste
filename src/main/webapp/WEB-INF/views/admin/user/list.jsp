@@ -37,7 +37,6 @@
         			searchWord: $('#searchWord').val(),
         			orderBy: $('#orderBy').val(),
         			page: page,
-        		
         	}
             
            	$.ajax({
@@ -48,10 +47,9 @@
                 success : function(resp){
                    	// 데이터 리스트 출력
                		$("#printList").html(resp.printList);
-               		
                		// 페이지네이션 출력
                		// 총 개수
-               		$(".datatable-info").html("Showing "+((page-1)*20+1)+" to "+(page*20<=resp.total? page*20 : resp.total)+" of "+resp.total+" entries"); 
+               		$(".datatable-info").html("Showing "+((page-1)*20+1)+" to "+(page*20<=resp.total? page*20 : resp.total)+" of "+resp.total+" entries");
                		// 페이지네이션
                		let printPage = "";
                		if(resp.isPrev){
@@ -71,8 +69,6 @@
                			printPage += '<a data-page="'+resp.totalPage+'" class="datatable-pagination-list-item-link" onclick="changePage(this);">››</a></li>';
                		}
                		$(".datatable-pagination-list").html(printPage);
-               		
-                   	
                    	
                 },
                 error:function (data, textStatus) {

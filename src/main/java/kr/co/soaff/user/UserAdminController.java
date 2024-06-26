@@ -33,7 +33,7 @@ public class UserAdminController {
 		String printList = "";
 		List<UserVO> userList = (List<UserVO>) map.get("list");
 		if (userList.size() == 0) {
-			printList = "<td class='first' colspan='5' style='text-align: center;'>검색 결과가 없습니다.</td>";
+			printList = "<td class='first' colspan='5' style='text-align: center;'>등록된 글이 없습니다.</td>";
 		}
 		for (UserVO userVo : userList) {
 			printList += "<tr onclick=\"location.href='/admin/user/detail?user_no=" + userVo.getUser_no() + "'\">";
