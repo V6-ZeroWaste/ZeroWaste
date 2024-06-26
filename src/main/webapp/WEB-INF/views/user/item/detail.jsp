@@ -438,7 +438,7 @@
                     if (review.review_img) {
                         printList += "<img src='" + review.review_img + "' style='max-width: 20%; margin-right: 20px;' >";
                     }
-                    printList += "<p>" + review.content + "</p>";
+                    printList += "<pre>" + review.content + "</pre>";
                     printList += "</div>";
                     printList += "</div>";
                     printList += "</div>";
@@ -566,9 +566,9 @@
                     if (qna.qna_img != null && qna.qna_img !== '') {
                         printList += "<img src='" + qna.qna_img + "' style='max-width: 20%; margin-right: 20px;'>";
                     }
-                    printList += "<p>";
+                    printList += "<pre>";
                     printList += qna.content;
-                    printList += "</p>";
+                    printList += "</pre>";
                     printList += "</div>";
                     printList += "</div>";
                     if(qna.reply_date != null){
