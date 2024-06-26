@@ -141,8 +141,12 @@ function deleteReview() {
 													pattern="yyyy-MM-dd" /></td>
 										</tr>
 										<tr>
-											<th scope="row">Score</th>
-											<td colspan="2">⭐️⭐️⭐️⭐️⭐️</td>
+										    <th scope="row">Score</th>
+										    <td colspan="2">
+										        <c:forEach var="i" begin="1" end="${vo.score}">
+										            ⭐️
+										        </c:forEach>
+										    </td>
 										</tr>
 
 										<tr>
