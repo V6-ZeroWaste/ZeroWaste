@@ -122,11 +122,11 @@
 	                      				<%-- <a href="/item/detail?item_no=${vo.item_no}"><img class="order-itemImg" src="/upload/item_img/${vo.item_img}" alt="item-img"></a> --%>
 	                      				<img class="order-itemImg" src="${vo.item_img}" alt="item-img">
 	                      			</td>
-	                      			<td>
-			                          	<strong>${vo.item_name}</strong><br>
-			                          	<span>${vo.packing_status == 1? "포장 (+2,000원)" : "" }&nbsp;&nbsp;<span><br>
+									<td>
+										<strong>${vo.item_name}</strong><br>
+										<span>${vo.packing_status == 1? "포장 (+2,000원)" : "" }&nbsp;&nbsp;<span><br>
 			                          	<span>${vo.amount} 개</span>
-			                        </td>
+									</td>
 			                        <td><fmt:formatNumber value="${(vo.packing_status==1? vo.price:vo.price)*vo.amount }" pattern="#,###" /> 원</td>
 			                        <c:if test="${vo.cancel_status != null}">
 			                        	<td><span class="order-status canceled">${vo.cancel_status == 0 ? '취소요청' : '취소완료'}</span></td>
