@@ -109,7 +109,7 @@
 								        <div class="col-lg-6">
 								        	<h3 class="order-number">${vo.order_name}</h3>
 								        	<br>
-								        	<p><fmt:formatNumber value="${vo.total_item_price + 3000원}" pattern="#,###" /> 원</p>
+								        	<p><fmt:formatNumber value="${vo.total_item_price + 3000}" pattern="#,###" /> 원</p>
 								     		<p>총 ${vo.total_amount}개</p>	
 								   		</div>
 					
