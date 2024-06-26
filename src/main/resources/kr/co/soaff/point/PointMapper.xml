@@ -11,6 +11,7 @@
                 and point_date < DATE_ADD(STR_TO_DATE(#{endDate}, '%Y-%m-%d'), INTERVAL 1 DAY)
                 ]]>
             </if>
+                and point != 0
     </sql>
 	
 	<!-- 적립금 리스트 -->
