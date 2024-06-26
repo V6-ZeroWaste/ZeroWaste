@@ -124,7 +124,7 @@
 	                      			</td>
 									<td>
 										<strong>${vo.item_name}</strong><br>
-										<span>${vo.packing_status == 1? "포장 (+2,000원)" : "" }&nbsp;&nbsp;<span><br>
+										<span>${vo.packing_status == 1? "포장 (+2,000원)" : "" }&nbsp;&nbsp;</span><br>
 			                          	<span>${vo.amount} 개</span>
 									</td>
 			                        <td><fmt:formatNumber value="${(vo.packing_status==1? vo.price:vo.price)*vo.amount }" pattern="#,###" /> 원</td>
