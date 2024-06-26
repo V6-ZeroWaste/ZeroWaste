@@ -65,16 +65,14 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		// 최종 결제 정보 공식 계산
 		int total_price = order.getPayment_price() - order.getDelivery_price() + order.getPoint();
 		int refundPoint = (int) (order.getPoint()
-				* (((double) (orderDetail.getPacking_status() == 1 ? orderDetail.getPrice() + 2000
-						: orderDetail.getPrice()) * orderDetail.getAmount())
+				* (((double) (orderDetail.getPrice()) * orderDetail.getAmount())
 						/ (order.getPayment_price() - order.getDelivery_price() + order.getPoint())));
 
 		// 주문 상품 총 개수 및 남은 개수 가져오기
 		int totalOrderItems = mapper.countOrderItems(orderDetail.getOrder_no());
 		int remainingItems = totalOrderItems - orderDetail.getAmount(); // 현재 취소 요청 중인 상품을 제외한 나머지 상품 수량
 
-		int refundPrice = (orderDetail.getPacking_status() == 1 ? orderDetail.getPrice() + 2000
-				: orderDetail.getPrice()) * orderDetail.getAmount() - refundPoint;
+		int refundPrice = (orderDetail.getPrice()) * orderDetail.getAmount() - refundPoint;
 		if ((orderDetail.getCancel_request_date()).equals(order.getLast_cancel_date())) {
 			// 마지막 취소 요청 상품
 			refundPrice += order.getDelivery_price();
@@ -120,11 +118,9 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		CancelAdminOrderVO order = mapper.detailFromOrderVO(orderDetail.getOrder_no());
 
 		int refundPoint = (int) (order.getPoint()
-				* (((double) (orderDetail.getPacking_status() == 1 ? orderDetail.getPrice() + 2000
-						: orderDetail.getPrice()) * orderDetail.getAmount())
+				* (((double) (orderDetail.getPrice()) * orderDetail.getAmount())
 						/ (order.getPayment_price() - order.getDelivery_price() + order.getPoint())));
-		int refundPrice = (orderDetail.getPacking_status() == 1 ? orderDetail.getPrice() + 2000
-				: orderDetail.getPrice()) * orderDetail.getAmount() - refundPoint;
+		int refundPrice = (orderDetail.getPrice()) * orderDetail.getAmount() - refundPoint;
 		if ((orderDetail.getCancel_request_date()).equals(order.getLast_cancel_date())) {
 			refundPrice += order.getDelivery_price(); // 마지막 취소 상품
 		}
