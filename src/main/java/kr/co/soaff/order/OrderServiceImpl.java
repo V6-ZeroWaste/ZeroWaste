@@ -78,8 +78,9 @@ public class OrderServiceImpl implements OrderService {
 			ovo.setOrder_no(vo.getOrder_no());
 			ovo.setUser_no(vo.getUser_no());
 			OrderVO order = mapper.orderInfo(ovo);
-			int point = (int) ((order.getPayment_price() - order.getDelivery_price())
-					/ (vo.getAmount() * (vo.getPacking_status() == 0 ? vo.getPrice() : vo.getPrice() + 2000)) * 0.03);
+			OrderDetailVO orderDetail = mapper.orderDetailInfo(vo);
+			int point = (int) (order.getPayment_price() * 0.03 * (orderDetail.getAmount() * (orderDetail.getPacking_status() == 0 ? orderDetail.getPrice() : orderDetail.getPrice() + 2000))
+					/  (order.getPayment_price() - order.getDelivery_price() + order.getPoint()));
 			if (point > 0) {
 				PointVO pvo = new PointVO();
 				pvo.setContent("구매확정 적립");

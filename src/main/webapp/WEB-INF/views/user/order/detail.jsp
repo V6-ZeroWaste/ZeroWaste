@@ -224,7 +224,7 @@
 	                      		<th>최종 결제 금액</th>
 	                      		<td>
 	                      			<strong><fmt:formatNumber value="${order.payment_price}" pattern="#,###" /> 원</strong>
-	                      			<br><span>예상 적립금 <fmt:formatNumber value="${Math.floor((order.payment_price-order.refund_price) *0.03)}" pattern="#,###" /> 원</span>
+	                      			<br><span>예상 적립금 <fmt:formatNumber value="${Math.floor((order.payment_price-order.refund_price - (order.payment_price == order.refund_price ? 0 : 3000)) *0.03)}" pattern="#,###" /> 원</span>
 	                      		</td>
 	                        </tr>
 	                      	<tr>
