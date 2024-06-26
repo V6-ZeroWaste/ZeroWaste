@@ -20,130 +20,40 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <h1 class="mb-2">Our Story</h1>
-                <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore quas omnis iure
-                    perferendis tempore et nulla sed neque eligendi. Nemo temporibus omnis neque consequatur illum quae
-                    et, laudantium minus nam!</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam cumque consectetur a porro natus
-                    maiores repellendus nostrum voluptates praesentium. Velit enim quibusdam tenetur nisi eaque veniam
-                    debitis, labore modi at!</p>
+                <h1 class="mb-2">SOAFF STORY</h1>
+                <p>제로웨이스트를 널리 실현하기 위해 SOAFF를 만들었습니다.</p>
+                <p>SOAFF는 'Soap'과 'Show off'의 합성어로, '자랑하고 싶은 비누'라는 의미를 담고 있습니다. SOAFF의 제품을 사용하면 플라스틱 사용을 줄일 수 있습니다. 샴푸, 바디워시, 주방세제 등을 비누 형태로 바꿔 제공함으로써, 환경에 긍정적인 영향을 미치고 있습니다. SOAFF는 비누로 시작해 다양한 상품군으로 확장해 나가며, 플라스틱 발생량 감소에 기여하고자 하는 책임감을 가지고 기업을 운영하고 있습니다.</p>
+                <p>SOAFF를 소비하는 것만으로도 제로웨이스트 운동에 동참한다는 사실, 매력적이지 않나요?</p>
             </div>
         </div>
         <div class="row gutter-1 masonry gallery collage mb-10">
             <div class="col-6">
                 <figure class="equal equal-75">
-                    <a class="image image-scale" href="assets/images/about-1.jpg"
-                       style="background-image: url(/user/images/about-1.jpg);">
+                    <a class="image image-scale" 
+                       style="background-image: url(/user/images/about-1.png);">
                     </a>
                 </figure>
             </div>
             <div class="col-6">
                 <figure class="equal equal-125">
-                    <a class="image image-scale" href="assets/images/about-2.jpg"
-                       style="background-image: url(/user/images/about-2.jpg);">
+                    <a class="image image-scale" 
+                       style="background-image: url(/user/images/about-2.png);">
                     </a>
                 </figure>
             </div>
             <div class="col-6">
                 <figure class="equal equal-50">
-                    <a class="image image-scale" href="assets/images/about-3.jpg"
-                       style="background-image: url(/user/images/about-3.jpg);">
+                    <a class="image image-scale" 
+                       style="background-image: url(/user/images/about-3.png);">
                     </a>
                 </figure>
             </div>
         </div>
-        <div class="row gutter-4">
-            <div class="col-md-4">
-                <div class="text-center px-2">
-                    <i class="icon-Money---Alt fs-40 mb-2"></i>
-                    <h4 class="eyebrow d-block text-white">Moneyback Guarantee</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="text-center px-2">
-                    <i class="icon-Airplane fs-40 mb-2"></i>
-                    <h4 class="eyebrow d-block text-white">Free Delivery</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="text-center px-2">
-                    <i class="icon-Guard fs-40 mb-2"></i>
-                    <h4 class="eyebrow d-block text-white">International Warranty</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </section>
 
 
-<!-- text -->
-<section>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <p class="lead">
-                    Our products are inspired by the people and world around us. Beautiful, high quality goods that are
-                    designed especially for you. Discover our story and meet the people that make our brand what it is.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- cta -->
-<section class="pt-0">
-    <div class="container">
-        <div class="cta bg-primary">
-            <div class="row align-items-center gutter-0">
-                <div class="col-md-6 cta-image">
-                    <div class="image image-overlay image-scroll" style="background-image:url(/user/images/card-2.jpg)"
-                         data--100-bottom-top="transform: translateY(0%);"
-                         data-top-bottom="transform: translateY(25%);"></div>
-                </div>
-                <div class="col-md-6 py-5 py-md-0 text-white text-center">
-                    <h2 class="mb-2"><b class="d-block font-weight-bold">Have a project ?</b> Let's talk.</h2>
-                    <a href="#!" class="underline action">Get in Touch</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- numbers -->
-<section>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h2 class="section-title">
-                    Numbers
-                </h2>
-            </div>
-        </div>
-        <div class="row gutter-2 gutter-md-4">
-            <div class="col-md-6 col-lg-3">
-                <span class="h1 font-weight-bold">50</span>
-                <p>Collective years experience — Working with clients like Google and Amazon.</p>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <span class="h1 font-weight-bold">120</span>
-                <p>Collective years experience — Working with clients like Google and Amazon.</p>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <span class="h1 font-weight-bold">20</span>
-                <p>Collective years experience — Working with clients like Google and Amazon.</p>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <span class="h1 font-weight-bold">15</span>
-                <p>Collective years experience — Working with clients like Google and Amazon.</p>
-            </div>
-        </div>
-    </div>
-</section>
 <%@ include file="/WEB-INF/views/user/include/footer.jsp" %>
 </body>
 </html>
