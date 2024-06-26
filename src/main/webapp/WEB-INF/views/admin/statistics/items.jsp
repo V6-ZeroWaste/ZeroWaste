@@ -260,7 +260,7 @@
                         <div class="card mb-4 sub-card">
                         	<div class="card-header">
                         		<i class="fas fa-table me-1"></i>
-                                table
+                                Table
                             </div>
                         	<div class="card-body">
                         		<div class="datatable-top">
@@ -299,7 +299,7 @@
                     </div>
                     </div>
         		</main>
-                <%@ include file="/WEB-INF/views/admin//include/footer.jsp" %>
+                <%@ include file="/WEB-INF/views/admin/include/footer.jsp" %>
             </div>
         </div>
 	</body>
