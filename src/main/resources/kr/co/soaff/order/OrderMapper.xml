@@ -43,7 +43,7 @@
 		    item_amount, cancel_count, item_img
 		FROM (
 			SELECT 
-				order_no, MIN(item_no) AS item_no, SUM((price+if(packing_status=0, 0, 2000)) * amount) AS total_item_price, max(confirm_date) as confirm_date,
+				order_no, MIN(item_no) AS item_no, SUM((price+if(packing_status=0, 0, 0)) * amount) AS total_item_price, max(confirm_date) as confirm_date,
 				SUM(amount) AS total_amount, MIN(cancel_status) AS cancel_status, COUNT(*) AS item_amount, COUNT(cancel_status) as cancel_count
 			FROM order_detail
 			GROUP BY order_no
