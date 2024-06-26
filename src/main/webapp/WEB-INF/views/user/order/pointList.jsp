@@ -152,7 +152,9 @@
 						printList += "<td class='pointConsume'>"+data.point+"</td>";
 					}else{
 						printList += "<td class='pointAccum'>적립</td>";
-						printList += "<td class='pointAccum'>"+data.point+"</td>";
+						printList += "<td class='pointAccum'>"+data.point.toString()
+						  .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
++"</td>";
 					}
 
 					printList += "<td class='ellipsis'>"+data.content+"</td>";
