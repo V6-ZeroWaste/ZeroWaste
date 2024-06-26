@@ -214,7 +214,7 @@
 							            <label>
                                           <select id="filter" name="filter" class="datatable-selector" onchange="applyCondition();">
                                              <option value="">전체보기</option>
-                                            <option value="답변대기" <c:if test="${vo.filter eq '답변대기'}">selected</c:if>>답변대기</option>
+                                            <option value="답변대기">답변대기</option>
                                              <option value="답변완료" >답변완료</option>
                                              <option value="교환/환불문의" >교환/환불 문의</option>
            									 <option value="상품상세문의" >상품 상세 문의</option>
