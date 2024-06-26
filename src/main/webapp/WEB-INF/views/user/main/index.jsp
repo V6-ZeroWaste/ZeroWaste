@@ -20,37 +20,68 @@
           <!-- hero -->
           <div class="swiper-container">
             <div class="swiper-wrapper">
+            
               <div class="swiper-slide">
-                <div class="image image-overlay image-zoom" style="background-image:url(/user/images/main_bestseller_1.png)">
+                <div class="image image-overlay image-zoom" style="background-image:url(/user/images/soaff_BestItem_5.png)">
                 </div>
                 <div class="container">
                   <div class="row align-items-center vh-100">
                     <div class="col-lg-8 text-white" data-swiper-parallax-x="-100%">
-                    <!-- 
-                      <h1 class="display-1 mt-1 mb-3 font-weight-light">SOAFF BEST Item <b class="d-block">Greener24</b>
-                      </h1>
-                      <a href="listing-full.html" class="btn btn-sm btn-white btn-action">Shop Now <span
-                          class="icon-arrow-right"></span></a>
-                     -->
+     
                     </div>
                   </div>
                 </div>
               </div>
+              
               <div class="swiper-slide">
-                <div class="image image-overlay image-zoom" style="background-image:url(/user/images/main_bestseller_2.png)">
+                <div class="image image-overlay image-zoom" style="background-image:url(/user/images/soaff_BestItem_4.png)">
                 </div>
                 <div class="container">
                   <div class="row align-items-end align-items-center vh-100">
                     <div class="col-lg-8 text-white" data-swiper-parallax-x="-100%">
-                    <!-- 
-                      <h1 class="display-1 mb-2 font-weight-light">Brand New <b>Sunglasses</b></h1>
-                      <a href="listing-full.html" class="btn btn-sm btn-white btn-action">Shop Now <span
-                          class="icon-arrow-right"></span></a>
-                     -->
+
                     </div>
                   </div>
                 </div>
               </div>
+              
+              <div class="swiper-slide">
+                <div class="image image-overlay image-zoom" style="background-image:url(/user/images/soaff_BestItem_3.png)">
+                </div>
+                <div class="container">
+                  <div class="row align-items-end align-items-center vh-100">
+                    <div class="col-lg-8 text-white" data-swiper-parallax-x="-100%">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="swiper-slide">
+                <div class="image image-overlay image-zoom" style="background-image:url(/user/images/soaff_BestItem_2.png)">
+                </div>
+                <div class="container">
+                  <div class="row align-items-end align-items-center vh-100">
+                    <div class="col-lg-8 text-white" data-swiper-parallax-x="-100%">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="swiper-slide">
+                <div class="image image-overlay image-zoom" style="background-image:url(/user/images/soaff_BestItem_1.png)">
+                </div>
+                <div class="container">
+                  <div class="row align-items-end align-items-center vh-100">
+                    <div class="col-lg-8 text-white" data-swiper-parallax-x="-100%">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              
             </div>
             <div class="swiper-footer">
               <div class="container">
