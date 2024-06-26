@@ -77,6 +77,9 @@
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 <script>
 
+let payPrice = [];
+let payPoint = [];
+
     // $(document).ready(() => {
     //     $('.totalAmount').html(itemTotalAmount());
     // });
@@ -217,6 +220,7 @@
         });
 
         $("#goPay").on('click', function () {
+
             var agree = $("#agree").is(":checked");
 
             var flag = checkAmount();
@@ -241,6 +245,7 @@
 
 
         });
+        
 
         $('#pointBtn').on('click', function () {
             // 유효성 검사를 실행하고 성공하면 paymentInfo 함수 호출
@@ -357,7 +362,7 @@
         let price = priceArray();
         let item_no = itemNoArray();
         let packing_status = packingStatusArray();
-
+		payPriceArray();
 
         let data = {
             //payment_date: payment_date,
@@ -387,7 +392,9 @@
             amountArray: amount,
             priceArray: price,
             itemNoArray: item_no,
-            packingStatusArray : packing_status
+            packingStatusArray : packing_status,
+            payPriceArray : payPrice,
+            payPointArray : payPoint
 
 
         };
@@ -446,6 +453,44 @@
 
         return itemPrice; // 배열 반환
     }
+
+    function payPriceArray() {
+    	var sumItemTotal = 0;
+
+        // id가 'itemTotalPrice'로 시작하는 모든 span 요소를 선택
+        $('span[id^="itemTotalPrice"]').each(function () {
+            // 각 span 요소의 텍스트 값을 가져와서 숫자로 변환
+            var value = parseFloat($(this).text().replace(/[^0-9.-]/g, ''));
+
+            // 값이 유효한 경우 total에 더함
+            if (!isNaN(value)) {
+            	sumItemTotal += value;
+            }
+        });
+    	let point = $('#pointToUse').val();
+        let priceElements = document.querySelectorAll("p[id^='itemPrice']");
+        payPrice = [];
+        payPoint = [];
+        let temppoint = 0;
+        let tempprice = 0;
+        for(let i = 0; i<priceElements.length-1 ; i++){
+        	let text = priceElements[i].textContent.trim();
+        	text = text.replace('원', '').replace(/,/g, '');        
+        	itemprice = parseInt(text, 10);
+        	itempaypoint = parseInt(point * itemprice / sumItemTotal, 10)
+        	itempayprice = itemprice - itempaypoint;
+        	
+        	temppoint += itempaypoint;
+        	tempprice += itemprice;
+        	payPoint.push(itempaypoint);
+        	payPrice.push(itempayprice);
+        	
+        }
+        payPoint.push(point - temppoint);
+        payPrice.push((sumItemTotal - tempprice) - (point - temppoint));
+    }
+    
+ 
     
     function packingStatusArray() {
         // 배열을 저장할 빈 배열을 선언

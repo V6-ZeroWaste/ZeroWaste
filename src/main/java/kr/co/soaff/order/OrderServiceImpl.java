@@ -132,6 +132,8 @@ public class OrderServiceImpl implements OrderService {
 		int[] priceArray = vo.getPriceArray();
 		int[] itemNoArray = vo.getItemNoArray();
 		int[] packingStatusArray = vo.getPackingStatusArray();
+		int[] payPriceArray = vo.getPayPriceArray();
+		int[] payPointArray = vo.getPayPointArray();
 		int inventoryUpdateResult = 0;
 		List<OrderVO> list = new ArrayList<OrderVO>();
 		for (int i = 0; i < amountArray.length; i++) {
@@ -142,6 +144,8 @@ public class OrderServiceImpl implements OrderService {
 			orderVO.setPrice(priceArray[i]);
 			orderVO.setItem_no(itemNoArray[i]);
 			orderVO.setPacking_status(packingStatusArray[i]);
+			orderVO.setPay_point(payPointArray[i]);
+			orderVO.setPay_price(payPriceArray[i]);
 			inventoryUpdateResult += mapper.inventoryUpdate(orderVO);
 
 			list.add(orderVO);

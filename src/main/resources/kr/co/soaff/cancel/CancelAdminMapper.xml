@@ -104,7 +104,9 @@
 		od.cancel_approve_date,
 		od.cancel_reason_type,
 		od.cancel_reason_detail,
-		i.name AS item_name
+		i.name AS item_name,
+		od.pay_price,
+		od.pay_point
 		FROM order_detail od
 		JOIN item i ON od.item_no = i.item_no
 		WHERE
