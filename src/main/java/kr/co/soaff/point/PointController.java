@@ -34,15 +34,17 @@ public class PointController {
 			printList = "<td class='first' colspan='6' style='text-align: center;'>검색 결과가 없습니다.</td>";
 		} 
 		for(PointVO pointVo: pointList) {
-			printList += "<tr>";
-			printList += "<td style='color:" + (pointVo.getPoint() < 0 ? "red;'>사용":"blue;'>적립") + "</td>";
-       		printList += "<td style='color:" + (pointVo.getPoint() < 0 ? "red;'>":"blue;'>") + pointVo.getPoint() + "</td>";
-       		printList += "<td>" + pointVo.getContent() + "</td>";
-       		printList += "<td>" +( pointVo.getOrder_no() == 0 ? "" :pointVo.getOrder_no() )+ "</td>";
+			if(pointVo.getPoint()!=0){
+				printList += "<tr>";
+				printList += "<td style='color:" + (pointVo.getPoint() < 0 ? "red;'>사용":"blue;'>적립") + "</td>";
+				printList += "<td style='color:" + (pointVo.getPoint() < 0 ? "red;'>":"blue;'>") + pointVo.getPoint() + "</td>";
+				printList += "<td>" + pointVo.getContent() + "</td>";
+				printList += "<td>" +( pointVo.getOrder_no() == 0 ? "" :pointVo.getOrder_no() )+ "</td>";
 //       		printList += "<td>"+pointVo.getPoint_date()+"</td>";
-       		printList += "<td>"+(pointVo.getPoint_date()+"").substring(0, 10)+"</td>";
-       		printList += "<td><button class='btn btn-danger' point_no='"+pointVo.getPoint_no()+"' onclick='pointDelete(this);'>삭제</td>";
-       		printList += "</tr>";
+				printList += "<td>"+(pointVo.getPoint_date()+"").substring(0, 10)+"</td>";
+				printList += "<td><button class='btn btn-danger' point_no='"+pointVo.getPoint_no()+"' onclick='pointDelete(this);'>삭제</td>";
+				printList += "</tr>";
+			}
 		}
 		map.put("printList", printList);
 		

@@ -145,19 +145,21 @@
 
         if (dataList.length > 0) {
         	dataList.forEach(function(data) { //
-        		printList += "<tr>"
-            	if(data.point < 0){
-            		printList += "<td class='pointConsume'>사용</td>";
-            		printList += "<td class='pointConsume'>"+data.point+"</td>";
-            	}else{
-            		printList += "<td class='pointAccum'>적립</td>";
-            		printList += "<td class='pointAccum'>"+data.point+"</td>";
-            	}
-            	
-        		printList += "<td class='ellipsis'>"+data.content+"</td>";
-        		printList += "<td>"+(data.order_no == 0? "" : data.order_no )+"</td>";
-        		printList += "<td>" +yyyymmdd(new Date(data.point_date)) + "</td>";
-        		printList += "</tr>"
+				if(data.point!=0){
+					printList += "<tr>"
+					if(data.point < 0){
+						printList += "<td class='pointConsume'>사용</td>";
+						printList += "<td class='pointConsume'>"+data.point+"</td>";
+					}else{
+						printList += "<td class='pointAccum'>적립</td>";
+						printList += "<td class='pointAccum'>"+data.point+"</td>";
+					}
+
+					printList += "<td class='ellipsis'>"+data.content+"</td>";
+					printList += "<td>"+(data.order_no == 0? "" : data.order_no )+"</td>";
+					printList += "<td>" +yyyymmdd(new Date(data.point_date)) + "</td>";
+					printList += "</tr>"
+				}
             });
 
             $("#printList").html(printList);
