@@ -106,13 +106,13 @@
     <script>
         // 스크롤 이동
         function scrollToSection(sectionId) {
-            // 모든 버튼의 active-border 클래스 제거
-            document.getElementById('detailBtn').classList.remove('active-border');
-            document.getElementById('reviewBtn').classList.remove('active-border');
-            document.getElementById('qnaBtn').classList.remove('active-border');
-            // 클릭된 버튼에 active-border 클래스 추가
-
-            document.getElementById(sectionId + 'Btn').classList.add('active-border');
+            // // 모든 버튼의 active-border 클래스 제거
+            // document.getElementById('detailBtn').classList.remove('active-border');
+            // document.getElementById('reviewBtn').classList.remove('active-border');
+            // document.getElementById('qnaBtn').classList.remove('active-border');
+            // // 클릭된 버튼에 active-border 클래스 추가
+            //
+            // document.getElementById(sectionId + 'Btn').classList.add('active-border');
             document.getElementById(sectionId + 'Section').scrollIntoView({behavior: 'smooth'});
         }
 
@@ -275,44 +275,44 @@
             return totalQuantity;
         }
         $(document).ready(function() {
-            // 처음에는 detailBtn에 active-border 클래스 추가
-            $('#detailBtn').addClass('active-border');
-
-            // IntersectionObserver의 콜백 함수
-            const callback = (entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // 모든 버튼에서 active-border 클래스 제거
-                        $('#detailBtn').removeClass('active-border');
-                        $('#reviewBtn').removeClass('active-border');
-                        $('#qnaBtn').removeClass('active-border');
-
-                        // 현재 보이는 섹션에 해당하는 버튼에 active-border 클래스 추가
-                        if ($(entry.target).attr('id') === 'detailSection') {
-                            $('#detailBtn').addClass('active-border');
-                        } else if ($(entry.target).attr('id') === 'reviewSection') {
-                            $('#reviewBtn').addClass('active-border');
-                        } else if ($(entry.target).attr('id') === 'qnaSection') {
-                            $('#qnaBtn').addClass('active-border');
-                        }
-                    }
-                });
-            };
-
-            // IntersectionObserver 옵션
-            const options = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.5 // 원하는 임계값 (0.5는 절반 이상 보여야 함)
-            };
-
-            // IntersectionObserver 인스턴스 생성
-            const observer = new IntersectionObserver(callback, options);
-
-            // 각 섹션을 관찰 대상으로 설정
-            observer.observe(document.getElementById('detailSection'));
-            observer.observe(document.getElementById('reviewSection'));
-            observer.observe(document.getElementById('qnaSection'));
+            // // 처음에는 detailBtn에 active-border 클래스 추가
+            // $('#detailBtn').addClass('active-border');
+            //
+            // // IntersectionObserver의 콜백 함수
+            // const callback = (entries, observer) => {
+            //     entries.forEach(entry => {
+            //         if (entry.isIntersecting) {
+            //             // 모든 버튼에서 active-border 클래스 제거
+            //             $('#detailBtn').removeClass('active-border');
+            //             $('#reviewBtn').removeClass('active-border');
+            //             $('#qnaBtn').removeClass('active-border');
+            //
+            //             // 현재 보이는 섹션에 해당하는 버튼에 active-border 클래스 추가
+            //             if ($(entry.target).attr('id') === 'detailSection') {
+            //                 $('#detailBtn').addClass('active-border');
+            //             } else if ($(entry.target).attr('id') === 'reviewSection') {
+            //                 $('#reviewBtn').addClass('active-border');
+            //             } else if ($(entry.target).attr('id') === 'qnaSection') {
+            //                 $('#qnaBtn').addClass('active-border');
+            //             }
+            //         }
+            //     });
+            // };
+            //
+            // // IntersectionObserver 옵션
+            // const options = {
+            //     root: null,
+            //     rootMargin: '0px',
+            //     threshold: 0.5 // 원하는 임계값 (0.5는 절반 이상 보여야 함)
+            // };
+            //
+            // // IntersectionObserver 인스턴스 생성
+            // const observer = new IntersectionObserver(callback, options);
+            //
+            // // 각 섹션을 관찰 대상으로 설정
+            // observer.observe(document.getElementById('detailSection'));
+            // observer.observe(document.getElementById('reviewSection'));
+            // observer.observe(document.getElementById('qnaSection'));
         });
     </script>
     <script>
