@@ -124,9 +124,10 @@
 	                      			</td>
 	                      			<td>
 			                          	<strong>${vo.item_name}</strong><br>
+			                          	<span>${vo.packing_status == 1? "포장 (+2,000원)" : "" }&nbsp;&nbsp;<span><br>
 			                          	<span>${vo.amount} 개</span>
 			                        </td>
-			                        <td><fmt:formatNumber value="${vo.price*vo.amount }" pattern="#,###" /> 원</td>
+			                        <td><fmt:formatNumber value="${(vo.packing_status==1? vo.price+2000:vo.price)*vo.amount }" pattern="#,###" /> 원</td>
 			                        <c:if test="${vo.cancel_status != null}">
 			                        	<td><span class="order-status canceled">${vo.cancel_status == 0 ? '취소요청' : '취소완료'}</span></td>
 			                        	<td><button type="button" class="btn btn-outline-danger" onclick="location.href='/order/cancel/info?order_detail_no=${vo.order_detail_no}'">취소상세</button></td>
@@ -223,7 +224,7 @@
 	                      		<th>최종 결제 금액</th>
 	                      		<td>
 	                      			<strong><fmt:formatNumber value="${order.payment_price}" pattern="#,###" /> 원</strong>
-	                      			<br><span>예상 적립금 <fmt:formatNumber value="${Math.floor((order.payment_price-order.refund_price) *0.03)}" pattern="#,###" /> 원</span>
+	                      			<br><span>예상 적립금 <fmt:formatNumber value="${Math.floor((order.payment_price-order.refund_price - (order.payment_price == order.refund_price ? 0 : 3000)) *0.03)}" pattern="#,###" /> 원</span>
 	                      		</td>
 	                        </tr>
 	                      	<tr>

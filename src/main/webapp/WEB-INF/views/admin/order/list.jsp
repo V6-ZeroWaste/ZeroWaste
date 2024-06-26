@@ -105,11 +105,6 @@
         function renderOrderList(list) {
             var printList = "";
 
-            if (list.length === 0) {
-
-                printList = "<td class='first' colspan='6' style='text-align: center;'>등록된 글이 없습니다.</td>";
-            }
-
             if (list.length > 0) {
                 list.forEach(function (vo) {
 
@@ -131,8 +126,8 @@
                     console.log(vo.payment_date);
 
                     printList += "<td>" + vo.id + "</td>";
-                    printList += "<td>" + vo.payment_price + "</td>";
-                    printList += "<td>" + vo.total_amount + "</td>";
+                    printList += "<td>" + vo.payment_price + " 원</td>";
+                    printList += "<td>" + vo.total_amount + " 개</td>";
                     let delivery_status = "";
                     if (vo.delivery_status == 0) {
                         delivery_status = "상품준비중";
@@ -144,9 +139,11 @@
                     printList += "<td>" + delivery_status + "</td>";
                     printList += "</tr>";
                 });
-
-                $("#printList2").html(printList);
+            }else
+            {
+                printList = "<td class='first' colspan='8' style='text-align: center;'>등록된 글이 없습니다.</td>";
             }
+            $("#printList2").html(printList);
         }
     </script>
 </head>

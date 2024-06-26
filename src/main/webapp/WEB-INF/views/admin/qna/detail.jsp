@@ -171,7 +171,7 @@
                                            	<c:if test="${not empty vo.qna_img}">
                                             <td colspan="1">
                                                 <div>
-                                                    <img src='${vo.qna_img}' alt='Image' class="img-fluid">
+                                                    <img src='${vo.qna_img}' alt='Image' class="img-fluid" style="max-width: 500px">
                                                 </div>
                                             </td>
                                             <td colspan="2">
@@ -204,7 +204,7 @@
                                     <tbody>
                                         <tr>
                                             <th>답변 등록 날짜</th>
-                                            <td>${vo.reply_date}</td>
+                                            <td><fmt:formatDate value="${vo.reply_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         </tr>
                                         <tr>
                                             <th>답변 내용</th>

@@ -23,6 +23,7 @@ public class QnaAdminController {
             return "admin/include/404";
         }
         model.addAttribute("map", service.list(vo));
+        System.out.println(service.list(vo));
         return "admin/qna/list";
     }
 

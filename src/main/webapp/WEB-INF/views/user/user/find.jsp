@@ -49,7 +49,12 @@
                         // console.log(response+"1adasd");
                         if(response == "0"){
                             displayErrorMessage("#idErrorMsg", "입력하신 정보가 없습니다");
-                        } else if(response == "1") {
+                        }
+                        else if (response == "2") {
+                            alert("탈퇴하신 계정입니다");
+                            location.href="/";
+                        }
+                        else if (response == "1") {
                             $('#frmFindId').submit();
                             // console.log("adadasdasda");
                         }
@@ -100,10 +105,14 @@
                         "name": name
                     }),
                     success: function (response) {
-                        // console.log(response+"1adasd");
                         if(response == "0"){
                             displayErrorMessage("#pwErrorMsg", "입력하신 정보가 없습니다");
-                        } else if(response == "1") {
+                        }
+                        else if (response == '2') {
+                            alert("탈퇴하신 계정입니다");
+                            location.href="/";
+                        }
+                        else if (response == "1") {
                             $('#frmFindPw').submit();
                             // console.log("adadasdasda");
                         }
@@ -146,16 +155,22 @@
         })
 
     </script>
+    <style>
+        .eyebrow{
+         font-size: 10px;
+        }
+    </style>
 </head>
 <body>
 <section class="py-md-0">
+    <div class="image image-overlay" style="background-image:url(/user/images/main_test1.png)"></div>
     <div style="background-color: #c2c2c2"></div>
     <div class="container">
         <div class="row justify-content-center align-items-center vh-md-100">
             <div class="col-md-10 col-lg-7">
                 <div class="l" id="accordionExample">
                     <form id="frmFindId" method="post" action="/idFind">
-                        <div class="card active">
+                        <div class="card active" style="background-color: #FFFFFF">
                             <div class="card-header" id="headingOne">
                                 <h2 class="mb-0">
                                     <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -167,24 +182,24 @@
                                 <div class="card-body">
                                     <div class="row mt-2">
                                         <div class="form-group col-12">
-                                            <label for="id_name">이름</label>
+                                            <label for="id_name" class="eyebrow">name</label>
                                             <input type="text" class="form-control" id="id_name" name="name">
                                             <div class="invalid-feedback" id="id_nameErrorMsg"></div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
-                                            <label for="id_email_id">이메일</label>
+                                            <label for="id_email_id" class="eyebrow">email</label>
                                             <div class="col-12 div">
                                                 <div class="row">
                                                     <div class="col-md-4" style="padding: 0;">
                                                         <div style="display: flex">
-                                                            <input type="text" class="form-control" id="id_email_id" name="id_email_id" placeholder="이메일" aria-label="이메일입력">
+                                                            <input type="text" class="form-control" id="id_email_id" name="id_email_id" placeholder="" aria-label="">
                                                             <span class="col-form-label">&nbsp;&nbsp;@&nbsp;&nbsp;</span>
                                                         </div>
                                                         <div class="valid-feedback"></div>
                                                         <div class="invalid-feedback" id="id_email_idErrorMsg"></div>
                                                     </div>
                                                     <div class="col-md-4" style="padding: 0;">
-                                                        <input type="text" class="form-control" id="id_email_domain" name="id_email_domain" placeholder="도메인이름" aria-label="도메인이름" >
+                                                        <input type="text" class="form-control" id="id_email_domain" name="id_email_domain" placeholder="" aria-label="" >
                                                         <div class="valid-feedback"></div>
                                                         <div class="invalid-feedback" id="id_email_domainErrorMsg"></div>
                                                     </div>
@@ -214,7 +229,7 @@
                         </div>
                     </form>
                     <form id="frmFindPw" action="/pwFind" method="post">
-                        <div class="card">
+                        <div class="card" style="background-color: #FFFFFF">
                             <div class="card-header" id="headingTwo">
                                 <h2 class="mb-0">
                                     <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -226,12 +241,12 @@
                                 <div class="card-body">
                                     <div class="row mt-2">
                                         <div class="form-group col-12">
-                                            <label for="pw_id">아이디</label>
+                                            <label for="pw_id" class="eyebrow">ID</label>
                                             <input type="text" class="form-control form-control" id="pw_id" name="id">
                                             <div class="invalid-feedback" id="pw_idErrorMsg"></div>
                                         </div>
                                         <div class="form-group col-12 mt-1">
-                                            <label for="pw_name">이름</label>
+                                            <label for="pw_name" class="eyebrow">Name</label>
                                             <input type="text" class="form-control" id="pw_name" name="name">
                                             <div class="invalid-feedback" id="pw_nameErrorMsg"></div>
                                         </div>

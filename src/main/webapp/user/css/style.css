@@ -13533,7 +13533,7 @@ img {
     bottom: 0;
     left: 0;
     content: "";
-    background: rgba(0, 0, 0, 0.3); }
+    background-color: rgba(0, 0, 0, 0) !important; }
   .image[class*="-overlay"]::after {
     opacity: 1; }
   .image[class*="-scroll"] {

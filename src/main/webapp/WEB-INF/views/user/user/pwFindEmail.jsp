@@ -134,17 +134,18 @@
 </head>
 <body>
 <section class="py-md-0">
+  <div class="image image-overlay" style="background-image:url(/user/images/main_test1.png)"></div>
   <div class="container">
-    <div class="row justify-content-center align-items-center vh-md-100">
+    <div class="row justify-content-center align-items-center vh-md-100" >
       <div class="col-md-10 col-lg-6">
         <div class="card active">
-          <div class="card-header" id="headingOne">
+          <div class="card-header" id="headingOne" style="background-color: #FFFFFF">
             <h6 class="mb-0">
               <p style="color: #68ae68; font-size: 16px" class="eyebrow" ><strong>Email Verification</strong></p>
             </h6>
           </div>
           <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-            <div class="card-body">
+            <div class="card-body" style="background-color: #FFFFFF">
               <div class="form-group">
                 <ul class="list-group list-group-minimal mb-2">
                   <li class="list-group-item d-flex justify-content-center align-items-center">
