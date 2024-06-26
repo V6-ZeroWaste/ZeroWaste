@@ -80,6 +80,7 @@ public class OrderServiceImpl implements OrderService {
 			OrderVO order = mapper.orderInfo(ovo);
 			int point = (int) ((order.getPayment_price() - order.getDelivery_price())
 					/ (vo.getAmount() * (vo.getPacking_status() == 0 ? vo.getPrice() : vo.getPrice() + 2000)) * 0.03);
+			
 			if (point > 0) {
 				PointVO pvo = new PointVO();
 				pvo.setContent("구매확정 적립");
