@@ -137,6 +137,7 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 		if (cancelPortone(order.getPayment_Id(), reason, refundPrice)) { // 결제 취소 완료 시
 				// order_detail 결제 취소 정보 UPDATE
 				result += mapper.completeCancel(orderDetail);
+
 				// order 취소 금액 UPDATE
 				order.setRefund_price(refundPrice);
 				order.setRefund_point(refundPoint);
@@ -154,9 +155,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 
 		} else {
 				return 0;
-		} 
-
-		return result == 3 ? 1 : 0;
+		}
+		return (result == 3 || result == 2) ? 1 : 0;
 	}
 
 	@Override
