@@ -144,6 +144,8 @@ public class CancelAdminServiceImpl implements CancelAdminService {
 					pointVo.setPoint(refundPoint);
 					pointVo.setOrder_no(order.getOrder_no());
 					result += pointMapper.insert(pointVo);
+				}else {
+					result++;
 				}
 				// item 재고 수량 UPDATE
 				mapper.updateItemAmount(orderDetail);
