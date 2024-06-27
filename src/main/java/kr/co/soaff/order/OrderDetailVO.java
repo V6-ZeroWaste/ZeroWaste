@@ -23,6 +23,8 @@ public class OrderDetailVO {
 	private String startApproveDate;
 	private String endApproveDate;
 	private int packing_status;
+	private int pay_price;
+	private int pay_point;
 
 	// join으로 가져올 데이터
 	private String user_id; // 유저아이디

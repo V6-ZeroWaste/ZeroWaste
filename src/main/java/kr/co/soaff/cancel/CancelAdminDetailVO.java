@@ -19,6 +19,8 @@ public class CancelAdminDetailVO {
 	private int cancel_reason_type;
 	private String cancel_reason_detail;
 	private int packing_status;
+	private int pay_point;
+	private int pay_price;
 
 	private int total_price;
 	private int delivery_price;

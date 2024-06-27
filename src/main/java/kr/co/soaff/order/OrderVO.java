@@ -39,10 +39,14 @@ public class OrderVO {
 	private int[] itemNoArray;
 	private int[] priceArray;
 	private int[] packingStatusArray;
+	private int[] payPriceArray;
+	private int[] payPointArray;
 	private int amount;
 	private int item_no;
 	private int price;
 	private int packing_status;
+	private int pay_price;
+	private int pay_point;
 	// 포인트 관련
 	private String pointPlusContent;
 	private String pointContent;
