@@ -1,6 +1,6 @@
 # SOAFF🌳
 
-![Soaff Logo](./path/to/your/image.png)
+![Soaff Logo](https://file.notion.so/f/f/e28b4bbd-4167-4e81-b79e-2543bebfef8d/dde5995e-fbab-48d5-b404-d6a800eacce7/Untitled.png?id=ba719e71-ecea-482d-82c8-80b81c7fff9f&table=block&spaceId=e28b4bbd-4167-4e81-b79e-2543bebfef8d&expirationTimestamp=1722556800000&signature=fxgUx6l8DYH-wWiqbKtxhrJ5kMGPPUZwIbPcB0BPKqA&downloadName=Untitled.png)
 
 ## 목차
 
