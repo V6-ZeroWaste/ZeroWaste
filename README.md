@@ -17,7 +17,7 @@
 
 ### SOAFF 팀구성 및 역할
 
-| 황세현                | 백승준            | 서석환            | 이봉욱            | 정형진            |
+| 황세현                | 백승준            | 서석환            | 이봉욱            | 정현진            |
 |--------------------|----------------|----------------|----------------|----------------|
 | [@HwangSettong](https://github.com/HwangSettong) | [@minit723](https://github.com/minit723) | [@shseo232](https://github.com/shseo232) | [@kiv9908](https://github.com/kiv9908) | [@nijnuyhj](https://github.com/nijnuyhj) |
 | 팀장, 기획, 프론트엔드, 백엔드 | 기획, 프론트엔드, 백엔드 | 기획, 프론트엔드, 백엔드 | 기획, 프론트엔드, 백엔드 | 기획, 프론트엔드, 백엔드 |
